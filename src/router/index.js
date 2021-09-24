@@ -315,6 +315,16 @@ const routes = [
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/SummaryReport.vue')
 
                     },
+                    {
+                        path: 'attendanceperformancereport',
+                        name: "AttendancePerformanceReport",
+                        meta: {
+                            title: 'Churchplus - Reports',
+                        },
+                        component: () =>
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/AttendancePerformanceReport.vue')
+
+                    },
 
                     {
                         path: 'newconvertperformancereport',
@@ -358,10 +368,10 @@ const routes = [
                     },
                     {
                         path: 'financialofferingreport',
-                        name:"FinancialOfferingReport",
+                        name: "FinancialOfferingReport",
                         component: () =>
 
-                        import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialOfferingReport.vue')
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialOfferingReport.vue')
                     },
                     {
                         path: 'financialactivitiesbalance',
@@ -393,36 +403,36 @@ const routes = [
 
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/weddinganniversaryReport.vue')
                     },
+                    {
+                        path: 'statementofactivity',
+                        name: "StatementOfActivity",
+                        meta: {
+                            title: 'Churchplus - Reports',
+                        },
+                        component: () =>
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/StatementOfActivity.vue')
+                    },
+                    {
+                        path: 'incomereport',
+                        name: "IncomeReport",
+                        meta: {
+                            title: 'Churchplus - Reports',
+                        },
+                        component: () =>
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/IncomeReport.vue')
+                    },
                 ]
             },
 
-            {
-                path: 'attendanceservicereport',
-                name:"ServiceAttendanceReport",
-                meta: {
-                    title: 'Churchplus - Reports',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/ServiceAttendanceReport.vue')
-            },
-            {
-                path: 'statementofactivity',
-                name:"StatementOfActivity",
-                meta: {
-                    title: 'Churchplus - Reports',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/StatementOfActivity.vue')
-            },
-            {
-                path: 'incomereport',
-                name:"IncomeReport",
-                meta: {
-                    title: 'Churchplus - Reports',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/IncomeReport.vue')
-            },
+            // {
+            //     path: 'attendanceservicereport',
+            //     name:"ServiceAttendanceReport",
+            //     meta: {
+            //         title: 'Churchplus - Reports',
+            //     },
+            //     component: () =>
+            //         import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/ServiceAttendanceReport.vue')
+            // },
             {
                 path: 'family',
                 name: 'Family',

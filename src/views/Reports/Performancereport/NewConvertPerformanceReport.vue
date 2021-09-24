@@ -1,18 +1,36 @@
 <template>
-    <div class="container-top container-wide mb-4  ">
-        <div class="heading-text col-12 pl-2">
-            New Convert Performance Report
+    <div class=" container container-top container-wide mb-4  ">
+        <div class="row d-flex justify-content-between px-3">
+          <div class="heading-text"> New Convert Performance Report</div>
+          <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
         </div>
+        <transition name="move" mode="out-in">
+          <div class="row my-4 " v-if="showExport">
+              <!-- <div class="col-sm-2">Enter file name</div> -->
+              <div class="col-sm-5">
+                  <!-- <input type="text" class="form-control" /> -->
+                  <span class="p-float-label">
+                      <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
+                      <label for="inputtext">Enter file name</label>
+                  </span>
+              </div>
+              <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
+                  <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type"  />
+              </div>
+              <!-- <div class="">Export</div> -->
+              <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn d-flex align-items-center generate-report c-pointer justify-content-center">Download</div></div>
+          </div>
+        </transition>
            <!-- date area -->
         <div class="container-fluid my-2 py-5   bg-area">
             <div class="row justify-content-center pl-3 ">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 "> 
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0  "> 
                     <div><label for="icon" class="font-weight-bold">Start Date</label></div>
                     <div>
                         <Calendar id="icon" v-model="startDate" :showIcon="true" />
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 ">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0  ">
                     <div><label for="icon" class="font-weight-bold">End Date</label></div>
                     <div>
                         <Calendar id="icon" v-model="endDate" :showIcon="true" />
@@ -22,7 +40,7 @@
                 <div @click="genarateReport" class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                     <label for="icon"></label>
                     <div class="mt-2">
-                        <button class=" default-btn primary-bg text-white  c-pointer font-weight-bold">
+                        <button class=" default-btn  generate-report  c-pointer font-weight-bold">
                             Generate
                         </button>
                     </div>
@@ -32,7 +50,7 @@
     <!--end of date area -->
         <div class="container-fluid ">
             <div class="row w-100">
-                <div class="col-12 ">
+                <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                     <div class="mt-5 display-1 font-weight-bold text-center heading-text">
                        New Convert Analysis Report 
                     </div>
@@ -57,13 +75,13 @@
                     </div>
                 </div> -->
              </div>
-            <div class="  row ">
+            <div class="  row " :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                 <div class="col-12 container-fluid table d-flex flex-wrap">
                     <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                         <div class="col-12  text-center">
                             <div class="col-12  font-weight-bold">Gender Distribution</div>
-                            <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                            <div class="col-12 "  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                            <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                            <div class="col-12 " >
                                 <PerformancePieChart
                                 domId="chart2"
                                 distance="5"
@@ -76,8 +94,8 @@
                     <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                         <div class="col-12  text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0 ">
                             <div class="col-12  font-weight-bold ">Marital Status</div>
-                            <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                            <div class="col-12 "   :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                            <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                            <div class="col-12 " >
                             <PerformancePieChart
                                domId="chart3"
                                 distance="5"
@@ -108,9 +126,9 @@
             <!-- <div class="row "> -->
         <section>
             <!-- table header -->
-            <div class=" container container-top table-main px-0  remove-styles2 remove-border "
-                :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
-                <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
+            <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness "
+            :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
+                <table class="table remove-styles mt-0 table-hover table-header-area" id="table">
                 <thead class="table-header-area-main">
                     <tr
                     class="small-text text-capitalize text-nowrap"
@@ -141,9 +159,9 @@
                     </tr>
                 </tbody>
                 </table>
-                <div class="table-foot d-flex justify-content-end mt-n3">
+                <!-- <div class="table-foot d-flex justify-content-end mt-n3">
                 <PaginationButtons />
-                </div>
+                </div> -->
             </div>
             <!--end table header -->
         </section>
@@ -154,24 +172,31 @@
 
 <script>
 import {computed,ref } from "vue";
+import InputText from 'primevue/inputtext';
 // import PerformancePieChart from '../../../components/charts/PieChart.vue';
 import Calendar from "primevue/calendar";
 import axios from "@/gateway/backendapi";
 import PerformancePieChart from '../../../components/charts/PieChart.vue';
-import PaginationButtons from "../../../components/pagination/PaginationButtons";
+// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
-// import Dropdown from "primevue/dropdown";
+import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
 import dateFormatter from  "../../../services/dates/dateformatter";
+// import ExcelExport from "../../../services/exportFile/exportToExcel"
+import exportService from "../../../services/exportFile/exportservice"
+import printJS from "print-js";
+// import html2pdf from "html2pdf.js"
 // import Piechart from "../../../components/charts/PieChart2.vue"
 export default {
     components: {
+        InputText,
         MultiSelect,
         PerformancePieChart,
         PerformanceColumnChart,
-        // Dropdown, 
+        Dropdown, 
         Calendar, 
-        PaginationButtons },
+        // PaginationButtons
+         },
     setup() {
     //     const membership = ref([
     //   { name: "FIRST-TIMER" },
@@ -208,9 +233,17 @@ export default {
     const attendanceSeries = ref("weekly");
     const attendanceData = ref([]);
     const mainAttendanceData = ref([]);
+    const showExport = ref(false);
+    const fileName = ref("")
+    const bookTypeList = ref([ 'xlsx', 'csv', 'txt' ])
+    const selectedFileType = ref("");
+    const fileHeaderToExport = ref([])
+    const fileToExport = ref([]);
 
     const attendanceChart = computed(() => {
          if (newConvertInChurch.value.length === 0) return []
+         attendanceData.value = []
+         mainAttendanceData.value = []
            newConvertInChurch.value.forEach(i => {
             let attendanceIndex = Object.keys(i).findIndex(i => i === 'activityDate')
             let attendanceValue = Object.values(i)[attendanceIndex]
@@ -234,6 +267,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        // genderChartResult.value = []
         genderChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -261,6 +295,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        // maritalStatusChartResult.value = []
         maritalStatusChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -287,6 +322,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        eventDateChartResult.value = []
         eventDateChartResult.value.push({
           name: prop,
         //   value: result[prop].length
@@ -311,16 +347,115 @@ export default {
           genderChart(res.data,'gender')
           maritalStatusChart(res.data,'maritalStatus')
           eventDateChart(res.data,'activityDate')
+          setTimeout(() => {
+                        fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
+                        fileToExport.value = exportService.tableToJson(document.getElementById("table"))
+                    }, 1000)
+                    showReport.value = true;
         })
         .catch((err) => {
           console.log(err);
         });
-        showReport.value = true;
+        
 
     }
+    const downloadFile = () => {
+        exportService.downLoadExcel(selectedFileType.value, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
+      }
+    // const downLoadExcel = () => {
+    //         if (selectedFileType.value === "pdf") {
+    //             // printJS({
+    //             // //   ignoreElements: ['ignore1', 'ignore2'],
+    //             //   maxWidth: 867,
+    //             //   header: 'DONATION TRANSACTIONS',
+    //             //   printable: [{
+    //             //         DATE: '543',
+    //             //         EVENT: '5242',
+    //             //         DONATION: '4242',
+    //             //         AMOUNT: 23432,
+    //             //         DONOR: '234234234'
+    //             //         }],
+    //             //   properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
+    //             //   type: 'json',
+    //             //   headerStyle:
+    //             //     'font-family: Nunito Sans, Calibri; text-align: center;',
+    //             //   gridHeaderStyle:
+    //             //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
+    //             //   gridStyle:
+    //             //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
+    //             // })
+    //             var element = document.getElementById('element-to-print');
+    //             var opt = {
+    //                 // margin:       1,
+    //                 filename:     `${fileName.value}.pdf`,
+    //                 // image:        { type: 'jpeg', quality: 0.98 },
+    //                 // html2canvas:  { scale: 2 },
+    //                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+    //                 pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    //             };
 
-     const formatDate = (activityDate) => {
-      return dateFormatter.monthDayYear(activityDate);
+    //                 // New Promise-based usage:
+    //                 html2pdf().set(opt).from(element).save();
+    //             // html2pdf(element);
+    //         } else {
+    //             const filterVal = fileHeaderToExport.value.map((i, index) => index)
+    //             const list = fileToExport.value
+    //             const header = fileHeaderToExport.value
+    //             console.log(filterVal)
+    //             console.log(fileHeaderToExport.value)
+                
+    //             ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
+    //         }
+    //     }
+
+    //   const tableHeaderToJson = () => {
+    //         // let _htmlToJSON = function(){
+    //             // let _tr = _table.getElementsByTagName("tr")[index];
+    //             let _th = document.getElementsByTagName("th");
+    //             let _arr = [].map.call( _th, function( th ) {
+    //                 return th.innerHTML;
+    //             }).join( ',' );
+    //             let _data = _arr.split(",");
+    //             console.log(_data)
+    //             console.log("html to JSON", _data);
+    //             // emit('data-header-to-export', _data)          
+    //         // };
+    //         fileHeaderToExport.value = _data
+    //             // _htmlToJSON();
+    //   }
+
+    //   const tableToJson = () => {
+    //         let _table = document.getElementById("table");
+    //         let _trLength = _table.getElementsByTagName("tr").length;
+    //         let _jsonData = [];
+    //         let _obj = {};
+
+    //         let _htmlToJSON = function(index){
+    //             let _tr = _table.getElementsByTagName("tr")[index];
+    //             let _td = _tr.getElementsByTagName("td");
+    //             let _arr = [].map.call( _td, function( td ) {
+    //                 return td.innerHTML;
+    //             }).join( ',' );
+    //             let _data = _arr.split(",");
+    //             // console.log(_data)
+                
+    //             _obj = Object.assign({}, _data)
+                
+    //             _jsonData.push(_obj);
+                
+    //         };
+    //         for(var i = 1; i < _trLength; i++){
+    //             _htmlToJSON(i);
+    //         }
+    //         fileToExport.value = _jsonData
+    //         console.log("html to JSON", _jsonData);
+    //         console.log(fileToExport.value,'my alldata')
+    //         // emit('data-to-export', _jsonData)
+    //     }
+        
+
+    const formatDate = (date) => {
+      return dateFormatter.normalDate(date);
     };
 
     
@@ -355,11 +490,22 @@ export default {
         mappedEventDate,
         maritalStatusChartResult,
         eventDateChartResult,
-         startDate,
-         endDate,
-         genarateReport,
-         showReport,
-         pieChart,
+        startDate,
+        endDate,
+        genarateReport,
+        showReport,
+        pieChart,
+        showExport,
+        fileName,
+        bookTypeList, 
+        selectedFileType,
+        fileToExport,
+        fileHeaderToExport,
+        // tableToJson,
+        // tableHeaderToJson,
+        printJS,
+        // downLoadExcel,
+        downloadFile,
         //  series,
         //  membership,
         //  gender,
@@ -453,9 +599,27 @@ box-shadow: none !important;
 
 .remove-styles2{
 padding-right: 0;
- padding-left: 0;
+padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
+overflow-x: scroll;
+}
+.move-enter-active {
+  animation: move-in .8s;
+}
+.move-leave-active {
+  animation: move-in .8s reverse;
+}
+@keyframes move-in {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
 }
 
 .remove-border{

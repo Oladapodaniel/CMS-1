@@ -1,30 +1,50 @@
 <template>
     <div class="container container-top container-wide mb-4">
-        <div class="heading-text col-12 pl-2">
-           Offering And Contribution Report
+         <div class="row d-flex justify-content-between px-3">
+          <div class="heading-text"> Offering And Contribution Report</div>
+          <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
         </div>
-        <div class="col-12 pl-2">
+        <transition name="move" mode="out-in">
+          <div class="row my-4 " v-if="showExport">
+              <!-- <div class="col-sm-2">Enter file name</div> -->
+              <div class="col-sm-5">
+                  <!-- <input type="text" class="form-control" /> -->
+                  <span class="p-float-label">
+                      <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
+                      <label for="inputtext">Enter file name</label>
+                  </span>
+              </div>
+              <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
+                  <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type"  />
+              </div>
+              <!-- <div class="">Export</div> -->
+              <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn d-flex align-items-center  generate-report  c-pointer justify-content-center">Download</div></div>
+          </div>
+        </transition>
+        <div class="col-12 pl-2 mt-3 py-2">
            This reports provides a detailed list of all the offerings and contribution reports, you can also generate report for individual contributions 
         </div>
         <div class="container-fluid ">
                 <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
-                    <div class="p-field col-12 col-md-3 col-lg-3 font-weight-bold  mt-0">
-                        <label for="icon" >Start Date</label>
+                    <div class="p-field col-12 col-md-6 col-lg-3 font-weight-bold  mt-0">
+                        <div><label for="icon">Start Date</label></div>
                         <Calendar id="icon" v-model="startDate" :showIcon="true" />
                     </div>
-                    <div class="p-field col-12 col-md-3 col-lg-3 font-weight-bold mt-0">
-                        <label for="icon">End Date</label>
+                    <div class="p-field col-12 col-md-12 col-lg-3 font-weight-bold mt-2 mt-sm-2 mt-md-0 mt-lg-0">
+                        <div><label for="icon">End Date</label></div>
                         <Calendar id="endDate" v-model="endDate" :showIcon="true" />
                     </div>
-                    <div class="col-12 col-md-6 col-lg-3 mt-0 ">
-                        <div class="col-12 "><label for="" class="font-weight-bold ml-2">Select Member</label></div>
-                        <div class="dropdown col-12  w-100">
-                           <button id="dropdownMenuButton" class="col-12 w-100 btn default-btn" data-toggle="dropdown">{{ userSearchString ? userSearchString: 'Search Member' }}</button> 
-                            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" >
-                                 <input type="text" class="form-control" 
+                    <div class="col-8 col-sm-7 col-md-5 col-lg-3 mt-2 mt-sm-2 mt-md-0 mt-lg-0 ">
+                        <div><label for="" class="font-weight-bold ">Select Member</label></div>
+                        <div class="dropdown ">
+                           <!-- <button id="dropdownMenuButton" class="btn border-secondary default-btn" data-toggle="dropdown">{{ userSearchString ? userSearchString: 'Search Member' }}</button>  -->
+                           <input type="text" class="form-control" 
                                     v-model="userSearchString"
                                     @input="searchForUsers"
+                                    data-toggle="dropdown"
                                 />
+                            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" >
+                                 
                                 <a
                                 class="dropdown-item font-weight-700 small-text" href="#"
                                 v-for="(member, index) in searchedMembers"
@@ -60,26 +80,25 @@
                     <div class="col-12 col-md-6 col-lg-2 mt-2">
                         <div><label for="" ></label></div>
                         <div @click="genarateReport">
-                            <button class="btn default-btn primary-bg "><div class="text-white">Generate</div></button>
+                            <button class="btn default-btn generate-report  "><div class="text-white">Generate</div></button>
                         </div>
                     </div> 
                 </div>
         </div>
         <div class="container-fluid  ">
-            <div class="row">
+            <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                 <div class="col-12 ">
-                    <div class="mt-5 display-1 font-weight-bold text-center heading-text">
+                    <div class="mt-5 display-1 pb-2 font-weight-bold text-center heading-text" >
                       Offering And Givings Report
                     </div>
                 </div>
             </div>
-            <div class="row">
-              <div class="col-12 container-fluid d-flex mt-2 flex-wrap">
-                  <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                      <div class="col-12   text-center" >
-                          <!-- <div class="col-12 font-weight-bold">Membership By Gender</div> -->
-                          <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                          <div class="col-12" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+            <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+              <!-- <div class="col-12 container-fluid d-flex mt-2 flex-wrap"> -->
+                  <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-12"> -->
+                      <!-- <div class="col-12   text-center" > -->
+                          <!-- <div class="col-12 text-center" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">No Data Available</div> -->
+                          <div class="col-12 p-0 " >
                               <OfferingColumnChart
                                   domId="chart1"
                                   title="Offering Report"
@@ -88,32 +107,33 @@
                                   :data="offeringDetail"
                                   subtitle="Offering And Giving Data"
                                   :series="mappedOfferingCol"
+                                  yAxisText = "Offering"
                                   
                               />
                           </div>
-                      </div>
-                  </div>
-                  <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12  text-center" >
+                      <!-- </div> -->
+                  <!-- <div class="col-12 "> -->
+                    <!-- <div class="col-12  text-center" > -->
                         <!-- <div class="col-12  font-weight-bold">Membership By Marital Status</div> -->
-                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                        <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                        <!-- <div class="col-12 text-center" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                          <div class="col-12 table " >
                             <OfferingPieChart
                               domId="chart3"
                                 distance="5"
                                 :titleMargin="10"
                                 :summary="mappedOffering"
                             />
-                        </div>
-                    </div>
-                </div>
-              </div>
+                          </div>
+                    <!-- </div> -->
+                <!-- </div> -->
+              <!-- </div> -->
             </div>
         </div>
            <section>
                     <!-- table header -->
-                <div class=" container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " >
-                        <table class="table remove-styles mt-0  table-hover table-header-area ">
+                <div class=" container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness "
+                :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
+                        <table class="table remove-styles mt-0  table-hover table-header-area " id="table">
                           <thead class="table-header-area-main">
                             <tr class="small-text text-capitalize text-nowrap" style="border-bottom: 0">
                                 <!-- <th class="">Group Name</th> -->
@@ -125,34 +145,20 @@
                                 <th scope="col">Channel</th>
                             </tr>
                           </thead>
-                        <!-- <div class=" row t-header row font-weight-bold"> -->
-                            <!-- <div
-                            class="small-text text-capitalize col-12 d-flex text-nowrap"
-                            style="border-bottom: 0"
-                            > -->
-                            <!-- <th scope="col-2">Building Project</th> -->
-                              <!-- <div class="col-2">Offering name</div>
-                              <div class="col-2">Amount</div>
-                              <div class="col-2">Event Name</div>
-                              <div class="col-2">Date</div>
-                              <div class="col-2">Contact Name</div>
-                              <div class="col-2">Channel</div> -->
-                            <!-- </div> -->
-                        <!-- </div> -->
-                        <tbody class="font-weight-normal text-nowrap">
-                            <tr v-for="(OfferingList, index) in offeringInChurch" :key="index">
-                            <td>{{ OfferingList.contributionName }}</td>
-                            <td>{{ OfferingList.amount }}</td>
-                            <td>{{ OfferingList.eventName }}</td>
-                            <td>{{ formatDate(OfferingList.date) }}</td>
-                            <td>{{ OfferingList.contactName }}</td>
-                            <td>{{ OfferingList.channel }}</td>
-                            </tr>
-                        </tbody>
+                          <tbody class="font-weight-normal text-nowrap">
+                              <tr v-for="(OfferingList, index) in offeringInChurch" :key="index">
+                              <td>{{ OfferingList.contributionName }}</td>
+                              <td>{{ OfferingList.amount }}</td>
+                              <td>{{ OfferingList.eventName }}</td>
+                              <td>{{ formatDate(OfferingList.date) }}</td>
+                              <td>{{ OfferingList.contactName }}</td>
+                              <td>{{ OfferingList.channel }}</td>
+                              </tr>
+                          </tbody>
                         </table>
-                        <div class="table-foot d-flex justify-content-end mt-n3">
+                        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
                         <PaginationButtons />
-                        </div>
+                        </div> -->
                 </div>
                     <!--end table header -->
             </section>
@@ -163,21 +169,29 @@
 
  import { computed, ref } from "vue";
  import Calendar from "primevue/calendar";
- import MultiSelect from 'primevue/multiselect';
+//  import MultiSelect from 'primevue/multiselect';
  import axios from "@/gateway/backendapi";
- import PaginationButtons from "../../../components/pagination/PaginationButtons";
+//  import PaginationButtons from "../../../components/pagination/PaginationButtons";
  import OfferingPieChart from '../../../components/charts/PieChart.vue';
  import OfferingColumnChart from "../../../components/charts/ColumnChart2.vue";
  import membershipService from "../../../services/membership/membershipservice";
  import dateFormatter from  "../../../services/dates/dateformatter";
+//  import ExcelExport from "../../../services/exportFile/exportToExcel"
+ import printJS from "print-js";
+//  import html2pdf from "html2pdf.js"
+ import InputText from 'primevue/inputtext';
+ import exportService from "../../../services/exportFile/exportservice"
+ import Dropdown from "primevue/dropdown";
 
 export default {
       components: {
+        Dropdown,
+        InputText,
         OfferingPieChart,
         OfferingColumnChart,
         Calendar,
-        MultiSelect, 
-        PaginationButtons 
+        // MultiSelect, 
+        // PaginationButtons 
         },
     setup() {
         const showReport = ref(false);
@@ -195,6 +209,12 @@ export default {
         // const pieChart= ref([])
         const mainOfferingData= ref([])
         const mappedOfferingCol = ref([])
+        const showExport = ref(false);
+        const fileName = ref("")
+        const bookTypeList = ref([ 'xlsx', 'csv', 'txt' ])
+        const selectedFileType = ref("");
+        const fileHeaderToExport = ref([])
+        const fileToExport = ref([]);
          
         // onMounted(()=>{
         // pieChart.value = { name: "First Timer ", value: 2, name: "First Timer ", value: 2, };
@@ -230,7 +250,6 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
-        offeringChartResult.value = []
         offeringChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -239,7 +258,7 @@ export default {
       console.log(offeringChartResult.value,'giddy')
     };
     const mappedOffering = computed(() => {
-      if (offeringChartResult.value.length === 0) return []
+      if (offeringChartResult.value.length === 0 ) return []
       return offeringChartResult.value.map(i => i)
     })
     // const mappedOfferingCol = computed(() => {
@@ -257,13 +276,111 @@ export default {
           offeringChart(res.data,'contributionName')
         //   maritalStatusChart(res.data,'maritalStatus')
         //   eventDateChart(res.data,'activityDate')
+         setTimeout(() => {
+                        fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
+                        fileToExport.value = exportService.tableToJson(document.getElementById("table"))
+                    }, 1000)
+                    showReport.value = true;
         })
         .catch((err) => {
           console.log(err);
         });
-        showReport.value = true;
 
     }
+     const downloadFile = () => {
+        exportService.downLoadExcel(selectedFileType.value, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
+      }
+    // const downLoadExcel = () => {
+    //         if (selectedFileType.value === "pdf") {
+    //             // printJS({
+    //             // //   ignoreElements: ['ignore1', 'ignore2'],
+    //             //   maxWidth: 867,
+    //             //   header: 'DONATION TRANSACTIONS',
+    //             //   printable: [{
+    //             //         DATE: '543',
+    //             //         EVENT: '5242',
+    //             //         DONATION: '4242',
+    //             //         AMOUNT: 23432,
+    //             //         DONOR: '234234234'
+    //             //         }],
+    //             //   properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
+    //             //   type: 'json',
+    //             //   headerStyle:
+    //             //     'font-family: Nunito Sans, Calibri; text-align: center;',
+    //             //   gridHeaderStyle:
+    //             //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
+    //             //   gridStyle:
+    //             //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
+    //             // })
+    //             var element = document.getElementById('element-to-print');
+    //             var opt = {
+    //                 // margin:       1,
+    //                 filename:     `${fileName.value}.pdf`,
+    //                 // image:        { type: 'jpeg', quality: 0.98 },
+    //                 // html2canvas:  { scale: 2 },
+    //                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+    //                 pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    //             };
+
+    //                 // New Promise-based usage:
+    //                 html2pdf().set(opt).from(element).save();
+    //             // html2pdf(element);
+    //         } else {
+    //             const filterVal = fileHeaderToExport.value.map((i, index) => index)
+    //             const list = fileToExport.value
+    //             const header = fileHeaderToExport.value
+    //             console.log(filterVal)
+    //             console.log(fileHeaderToExport.value)
+                
+    //             ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
+    //         }
+    //     }
+
+    //   const tableHeaderToJson = () => {
+    //         // let _htmlToJSON = function(){
+    //             // let _tr = _table.getElementsByTagName("tr")[index];
+    //             let _th = document.getElementsByTagName("th");
+    //             let _arr = [].map.call( _th, function( th ) {
+    //                 return th.innerHTML;
+    //             }).join( ',' );
+    //             let _data = _arr.split(",");
+    //             console.log(_data)
+    //             console.log("html to JSON", _data);
+    //             // emit('data-header-to-export', _data)          
+    //         // };
+    //         fileHeaderToExport.value = _data
+    //             // _htmlToJSON();
+    //   }
+
+    //   const tableToJson = () => {
+    //         let _table = document.getElementById("table");
+    //         let _trLength = _table.getElementsByTagName("tr").length;
+    //         let _jsonData = [];
+    //         let _obj = {};
+
+    //         let _htmlToJSON = function(index){
+    //             let _tr = _table.getElementsByTagName("tr")[index];
+    //             let _td = _tr.getElementsByTagName("td");
+    //             let _arr = [].map.call( _td, function( td ) {
+    //                 return td.innerHTML;
+    //             }).join( ',' );
+    //             let _data = _arr.split(",");
+    //             // console.log(_data)
+                
+    //             _obj = Object.assign({}, _data)
+                
+    //             _jsonData.push(_obj);
+                
+    //         };
+    //         for(var i = 1; i < _trLength; i++){
+    //             _htmlToJSON(i);
+    //         }
+    //         fileToExport.value = _jsonData
+    //         console.log("html to JSON", _jsonData);
+    //         console.log(fileToExport.value,'my alldata')
+    //         // emit('data-to-export', _jsonData)
+    //     }
+
     const searchForUsers = () => {
           if (userSearchString.value.length >= 3) {
             startSearch(userSearchString.value);
@@ -289,7 +406,7 @@ export default {
           display.value = true;
         };
          const formatDate = (date) => {
-      return dateFormatter.monthDayYear(date);
+      return dateFormatter.normalDate(date);
     };
 
         return{
@@ -312,6 +429,17 @@ export default {
             offeringReportItem,
             offeringInChurch,
             endDate,
+            showExport,
+            fileName,
+            bookTypeList, 
+            selectedFileType,
+            fileToExport,
+            fileHeaderToExport,
+            // tableToJson,
+            // tableHeaderToJson,
+            printJS,
+            // downLoadExcel,
+            downloadFile,
             // offeringCategory,
             genarateReport,
             showReport,
@@ -425,9 +553,27 @@ box-shadow: none !important;
 
 .remove-styles2{
 padding-right: 0;
- padding-left: 0;
+padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
+overflow-x: scroll;
+}
+.move-enter-active {
+  animation: move-in .8s;
+}
+.move-leave-active {
+  animation: move-in .8s reverse;
+}
+@keyframes move-in {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
 }
 
 .remove-border{

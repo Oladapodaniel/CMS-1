@@ -17,12 +17,58 @@
            <p class="ml-2">This is a detailed report of all the income and expenses of the ministry in a given period, it also gives the margin of the two.</p>
         </div>
 
-        <!-- <div class="centered-items">
-          <button class="default-btn font-weight-normal">
+        <div class="centered-items pr-3">
+          <button class="default-btn font-weight-normal"
+          @click="() => (showExport = !showExport)">
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div> -->
+        </div>
       </div>
+<!-- name="fade" -->
+    <transition
+      name="move" mode="out-in">
+     <div class="row my-4" v-if="showExport">
+        <!-- <div class="col-sm-2">Enter file name</div> -->
+        <div class="col-sm-5">
+          <!-- <input type="text" class="form-control" /> -->
+          <span class="p-float-label ml-n1">
+            <InputText
+              id="inputtext"
+              class="w-100"
+              type="text"
+              v-model="fileName"
+            />
+            <label for="inputtext">Enter file name</label>
+          </span>
+        </div>
+        <div class="col-sm-4">
+          <Dropdown
+            v-model="selectedFileType"
+            class="w-100"
+            :options="bookTypeList"
+            placeholder="Select file type"
+          />
+        </div>
+        <!-- <div class="">Export</div> -->
+        <div @click="downloadFile" class="col-sm-2 offset-sm-1">
+          <div
+		class="
+			default-btn
+			d-flex
+			align-items-center
+			justify-content-center
+			c-pointer
+			generate-report
+		"
+          >
+            Download
+          </div>
+        </div>
+      </div>
+
+    </transition>
+
+
     </div>
     <!--end of header area -->
     <!-- date area -->
@@ -46,7 +92,7 @@
           </div>
         </div>
 
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
+        <div class="col-md-3 d-sm-flex justify-content-end align-items-center pr-5">
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
             @click="generateReport"
@@ -60,25 +106,45 @@
 
     <section>
       <!-- chart area -->
-      <!-- <div class="chart row"
-      :class=" accountTransaction &&  accountTransaction.length > 0 ? 'graph-area' : '' ">
-        <div class="chart1 col-12 col-md-6">
+      <div class="chart row"
+      :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
+        <div class="chart1 col-12 col-md-12">
           <ByGenderChart
             domId="chart"
-            title="By Gender"
+            title="Income Statement Report"
             distance="5"
             :titleMargin="10"
-            :summary="groupedAllIncome"
+            :summary="groupofIcomeAndExpense"
           />
+      </div>
         </div>
-      </div> -->
+        <div class="chart row">
+          <div class="col-12 col-md-12">
+        <NegativeChart :data="incomeStatementDetail"/>
+        </div>
+        </div>
+        <!-- <div class="chart row">
+          <div class="chart1 col-12 col-md-12">
+         <IncomeStatmentColumnChart
+            domId="chart1"
+            title="Income Statement Report"
+            distance="5"
+            :titleMargin="10"
+            :data="incomeStatementDetail"
+            subtitle="c"
+            :series="['Income', 'Expense']"
+            yAxisText = "Amount"
+             />
+        </div>
+        </div> -->
       <!--end of chart area -->
     </section>
 
     <section>
       <!-- table header -->
-      <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
-        <table class="table remove-styles mt-0 table-hover table-header-area">
+	<div v-if="groupedIncomeItemToDisplay.length > 0">
+         <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+        <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
              class="small-text text-capitalize text-nowrap"
@@ -94,31 +160,55 @@
           </thead>
 
           <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(statement, index) in incomeStatement"
+            <tr v-for="(groupedIncome, index) in groupedIncomeItemToDisplay"
             :key="index">
-              <td>{{ statement ? statement.fund : ""}}</td>
-              <td>{{ statement ? statement.accountName : "" }}</td>
-              <td>{{ statement ? statement.accountCategory : "" }}</td>
-              <td>{{ statement ? statement.description : "" }}</td>
-              <td>{{ statement ? statement.amount : "" }}</td>
-              <td>{{ formatDate(statement ? statement.date : "") }}</td>
+              <td>{{ groupedIncome ? groupedIncome.fund : ""}}</td>
+              <td>{{ groupedIncome ? groupedIncome.accountName : "" }}</td>
+              <td>{{ groupedIncome ? groupedIncome.accountCategory : "" }}</td>
+              <td>{{ groupedIncome ? groupedIncome.description : "" }}</td>
+              <td>{{ groupedIncome ? groupedIncome.amount : "" }}</td>
+              <td>{{ formatDate(groupedIncome ? groupedIncome.date : "") }}</td>
             </tr>
             <tr class="answer-row">
-              <td class="answer">Total</td>
+              <td class="answer">Total Income</td>
               <td></td>
-              <td></td>
+              <td ></td>
               <td></td>
               <td class="answer">
                 {{ totalIncome.toLocaleString()}}
               </td>
               <td></td>
             </tr>
+
+             <tr v-for="(groupedExpense, index) in groupedExpenseItemToDisplay"
+            :key="index">
+              <td>{{ groupedExpense ? groupedExpense.fund : ""}}</td>
+              <td>{{ groupedExpense ? groupedExpense.accountName : "" }}</td>
+              <td>{{ groupedExpense ? groupedExpense.accountCategory : "" }}</td>
+              <td>{{ groupedExpense ? groupedExpense.description : "" }}</td>
+              <td>{{ groupedExpense ? groupedExpense.amount : "" }}</td>
+              <td>{{ formatDate(groupedExpense ? groupedExpense.date : "") }}</td>
+            </tr>
+            <tr class="answer-row">
+              <td class="answer">Total Expense</td>
+              <td></td>
+              <td ></td>
+              <td></td>
+              <td class="answer">
+                {{ totalExpense.toLocaleString()}}
+              </td>
+              <td></td>
+            </tr>
+
           </tbody>
         </table>
         <!-- <div class="table-foot d-flex justify-content-end mt-n3">
           <PaginationButtons />
         </div> -->
       </div>
+
+	</div>
+
       <!--end table header -->
     </section>
   </div>
@@ -126,17 +216,27 @@
 
 <script>
 
-import { ref, computed } from "vue";
+import { ref, computed} from "vue";
 import Calendar from "primevue/calendar";
-// import ByGenderChart from "@/components/charts/PieChart.vue";
-// import PaginationButtons from "../../../components/pagination/PaginationButtons";
+import ByGenderChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
+// import IncomeStatmentColumnChart from "../../../components/charts/ColumnChart2.vue";
+import NegativeChart from "../../../components/charts/NegativeColumnChart";
+import Dropdown from "primevue/dropdown";
+import InputText from "primevue/inputtext";
+import printJS from "print-js";
+import exportService from "../../../services/exportFile/exportservice";
+// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 
 export default {
   components: {
     Calendar,
-    // ByGenderChart,
+    ByGenderChart,
+    // IncomeStatmentColumnChart,
+    NegativeChart,
+      Dropdown,
+    InputText,
     // PaginationButtons,
   },
   setup() {
@@ -144,7 +244,20 @@ export default {
     const endDate = ref("");
     const incomeStatement = ref([]);
     const groupedIncomeStatements = ref([])
-    // const groupedAllIncome = ref([])
+    const groupedExpenseStatements = ref([])
+    const groupedExpenseItemToDisplay = ref([])
+    const chartForIcomeAndExpense = ref([])
+    const groupofIcomeAndExpense =ref([])
+    // const mappedIncomeAndExpense = ref([])
+    const allIncomeAndExpenses = ref([])
+    const incomeStatementData = ref([])
+     const showExport = ref(false);
+    const fileName = ref("");
+    const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const selectedFileType = ref("");
+    const fileHeaderToExport = ref([]);
+    const fileToExport = ref([]);
+
 
 
 
@@ -156,16 +269,94 @@ export default {
           incomeStatement.value = res.data.filter(i => i !== null)
           console.log(incomeStatement.value);
           let response = res.data
-          console.log(response)
+           chartForIcomeAndExpense.value = response ;
+          churchIncomes(incomeStatement.value, 'accountCategory');
+          churchExpense(incomeStatement.value, 'accountCategory');
+          pieChart(incomeStatement.value, 'accountCategory')
 
-          churchIncomes(incomeStatement.value, 'accountCategory')
-
+              /* function to call service and populate table */
+          setTimeout(() => {
+            fileHeaderToExport.value = exportService.tableHeaderToJson(
+              document.getElementsByTagName("th")
+            );
+            fileToExport.value = exportService.tableToJson(
+              document.getElementById("table")
+            );
+          }, 1000);
+          /* End function to call service and populate table */
         })
         .catch((err) => {
           console.log(err);
         });
     };
 
+                /* Code For Exporting File */
+    const downloadFile = () => {
+      exportService.downLoadExcel(
+        selectedFileType.value,
+        document.getElementById("element-to-print"),
+        fileName.value,
+        fileHeaderToExport.value,
+        fileToExport.value
+      );
+    };
+    /* End Code For Exporting File */
+
+/* Chart Area */
+    const pieChart = (array, key) => {
+            let result = array.reduce((result, currentValue) => {
+                // If an array already present for key, push it to the array. Else create an array and push the object
+                (result[currentValue[key]] = result[currentValue[key]] || []).push(
+                currentValue
+                );
+                // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
+                return result;
+            }, {}); // empty object is the initial value for result object
+            console.log(result)
+            groupofIcomeAndExpense.value = []
+            for (const prop in result) {
+                console.log(prop, result[prop])
+                groupofIcomeAndExpense.value.push({
+                name: prop,
+                value: result[prop].reduce((acc, cur) => {
+                  return acc + cur.amount
+                }, 0),
+                })
+            }
+
+            console.log(groupofIcomeAndExpense.value)
+        };
+
+
+         const incomeStatementDetail = computed(() => {
+         if (groupofIcomeAndExpense.value.length === 0) return []
+        //    incomeStatementData.value = []
+        //     allIncomeAndExpenses.value = []
+        //     mappedIncomeAndExpense.value = []
+        //    groupofIcomeAndExpense.value.forEach(i => {
+        //     let incomeExpenseIndex = Object.keys(i).findIndex(i => i === 'amount')
+        //     let incomeExpenseValue = Object.values(i)[incomeExpenseIndex]
+        //     incomeStatementData.value.push(incomeExpenseValue)
+        //     console.log(groupofIcomeAndExpense.value)
+        //     mappedIncomeAndExpense.value.push(i.amount)
+        //     console.log(mappedIncomeAndExpense.value,"🎄🎄🎄")
+        //  });
+         allIncomeAndExpenses.value.push({
+             name: 'Income',
+            //  color: '#002044',
+             data: [groupofIcomeAndExpense.value[0].value]
+         })
+
+         allIncomeAndExpenses.value.push({
+             name: 'Expense',
+            //  color: '#002044',
+             data: [groupofIcomeAndExpense.value[1].value]
+         })
+         console.log(allIncomeAndExpenses.value)
+         return allIncomeAndExpenses.value
+     })
+/*End of Chart Area */
+    let groupedIncomeItemToDisplay = ref([])
     const churchIncomes = (array, key) => {
             let result = array.reduce((result, currentValue) => {
                 // If an array already present for key, push it to the array. Else create an array and push the object
@@ -178,7 +369,6 @@ export default {
                 return result;
             }, {}); // empty object is the initial value for result object
             console.log(result)
-
              groupedIncomeStatements.value = []
             for (const prop in result) {
                 console.log(prop, result[prop])
@@ -187,17 +377,55 @@ export default {
                 value: result[prop]
                 })
             }
-            console.log(groupedIncomeStatements.value)
-            console.log(groupedIncomeStatements.value.[1])
+            // console.log(groupedIncomeStatements.value)
+            // console.log(groupedIncomeStatements.value.[1])
+
+             groupedIncomeItemToDisplay.value = groupedIncomeStatements.value[0].value
+
+            // console.log(groupedIncomeItemToDisplay.value, "💐💐")
         };
 
-
         const totalIncome = computed (() => {
-         if(incomeStatement.value.length === 0) return []
-          return incomeStatement.value.reduce((acc, cur) => {
-                return acc + cur.amount
-          }, 0)
+                if(groupedIncomeItemToDisplay.value.length === 0) return []
+                return groupedIncomeItemToDisplay.value.reduce((acc, cur) => {
+                  return acc + cur.amount
+                }, 0)
         })
+        // console.log(totalIncome.value, "🥁🥁")
+
+
+    const churchExpense = (array, key) => {
+            let result = array.reduce((result, currentValue) => {
+                (result[currentValue[key]] = result[currentValue[key]] || []).push(
+                currentValue
+                );
+                return result;
+            }, {});
+            console.log(result)
+             groupedExpenseStatements.value = []
+            for (const prop in result) {
+                console.log(prop, result[prop])
+                groupedExpenseStatements.value.push({
+                name: prop,
+                value: result[prop]
+                })
+            }
+            // console.log(groupedExpenseStatements.value)
+            // console.log(groupedExpenseStatements.value.[1])
+
+            groupedExpenseItemToDisplay.value = groupedExpenseStatements.value[1].value
+
+            // console.log(groupedExpenseItemToDisplay.value, "💐💐")
+        };
+
+        const totalExpense = computed (() => {
+                if(groupedExpenseItemToDisplay.value.length === 0) return []
+                return groupedExpenseItemToDisplay.value.reduce((acc, cur) => {
+                  return acc + cur.amount
+                }, 0)
+        })
+        // console.log(totalExpense.value, "🥁🥁")
+
 
      const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
@@ -216,15 +444,33 @@ export default {
       generateReport,
       formatDate,
       groupedIncomeStatements,
+      groupedExpenseStatements,
       churchIncomes,
-      totalIncome
+      churchExpense,
+      totalExpense,
+      totalIncome,
+      groupedIncomeItemToDisplay,
+      groupedExpenseItemToDisplay,
+      chartForIcomeAndExpense,
+      groupofIcomeAndExpense,
+      pieChart,
+      incomeStatementDetail,
+      incomeStatementData,
+      printJS,
+       showExport,
+      fileName,
+      bookTypeList,
+      selectedFileType,
+      downloadFile
+      // incomeAndExpenseChart,
+      // groupedExpenseAndIncomeStatements
     };
   },
 };
 </script>
 
 <style scoped>
-.default-btn {
+/* .default-btn {
   font-weight: 800;
   font-size: 1rem;
   white-space: initial;
@@ -237,12 +483,27 @@ export default {
   max-height: 2.5rem;
   background: #fff;
   min-width: 7.6rem;
+} */
+
+.default-btn {
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    /* outline: transparent !important; */
+    max-height: 40px;
+    background: #6c757d47 !important;
+    min-width: 121px;
 }
 
 .generate-report {
   font-size: 1rem;
   color: #fff;
-  background-color: #136acd;
+  background-color: #136acd !important;
   border: none;
   min-width: 7rem;
 }
@@ -324,14 +585,51 @@ border-top-right-radius: 0 !important;
 
 .answer{
   font-weight: bolder;
-   color:#fff ;
+   color: #000;
+
 }
 
 .answer-row{
-  background-color: #136acd;
+  background-color: #ebeff4;
 }
 
 .answer-row:hover{
-  background-color:#136acd;
+  background-color:none;
 }
+
+.move-enter-active {
+  animation: move-in .8s;
+}
+.move-leave-active {
+  animation: move-in .8s reverse;
+}
+@keyframes move-in {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+}
+
+/* .fade-enter-active {
+  animation: fade-in .5s;
+}
+.fade-leave-active {
+  animation: fade-in .5s reverse;
+}
+@keyframes fade-in {
+  0% {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+} */
 </style>
