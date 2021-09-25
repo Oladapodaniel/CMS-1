@@ -2,7 +2,7 @@
 <div class="container container-wide mt-5 mb-4">
      <div>
             <h3 class="font-weight-bold mt-5 mb-2">Church Activities Attendance Report</h3>
-            <span class="mt-5 mb-3">This reports gives an indepth view of the growth and attendance pattern   <div>{{activityReport1.name}}</div>of the ministry.</span>
+            <span class="mt-5 mb-3">This reports gives an indepth view of the growth and attendance pattern of the ministry.</span>
              
         </div>
         <div class="row">
@@ -12,36 +12,21 @@
                     
                     <div>
                         <Dropdown v-model="selectedEvents" :options="allEvents" optionLabel="text" class="w-100" placeholder="Select Member" :filter="false" filterPlaceholder="Find Car"/>
-                        <!-- <MultiSelect v-model="selectedEvents" :options="allEvents" optionLabel="text" placeholder="Select Member" :filter="true" class="multiselect-custom w-100">
-                            <template #value="slotProps">
-                                <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
-                                    <div>{{option.text}}</div>
-                                </div>
-                                <template v-if="!slotProps.value || slotProps.value.length === 0">
-                                    Select Event
-                                </template>
-                            </template>
-                            <template #option="slotProps">
-                                <div class="country-item">
-                                    <div>{{slotProps.option.text}}</div>
-                                </div>
-                            </template>
-                        </MultiSelect> -->
                     </div>
 
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div class=""><label for="" class=" ml-2 font-weight-bold">START DATE</label></div>
+                    <div class=""><label for="" class=" ml-2 font-weight-bold mt-3">START DATE</label></div>
                     <div>
                         <div>
-                            <Calendar id="icon" v-model="startDate" class="calendar1" :showIcon="true" />
+                            <Calendar id="icon" v-model="startDate" class="calendar1 w-100" :showIcon="true" />
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div><label for="" class="font-weight-bold">END DATE</label></div>
+                    <div><label for="" class="font-weight-bold mt-3">END DATE</label></div>
                      <div>
-                            <Calendar id="icon" v-model="endDate" :showIcon="true" />
+                            <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" />
                         </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
@@ -86,6 +71,7 @@
                         :series="attendanceData"
                       />
                     </div>
+                    
                     <div class=" borderInner mb-2">
                      <h5 class="ml-3 mt-4"></h5>
                          <div class="" v-show="activityReport.length > 0">
@@ -101,8 +87,59 @@
                         />
                         </div>
                  </div>
+                 <!-- <div
+                      class="area-chart mt-5"
+                      v-show="
+                        activityReport.length > 0
+                      "
+                    >
+                      <ReportAreaChart
+                        elemId="chart"
+                        domId="areaChart"
+                        title="Attendance Analysis Line Graph By Category"
+                        subtitle=""
+                       lineColor="#50AB00"
+                        :xAxis="series"
+                        :series="categoryData"
+                      />
+                    </div> -->
              </div>
              <section>
+                 <!-- table header -->
+       
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-2" >
+        <table class="table remove-styles mt-0 table-hover table-header-area">
+          <thead class="table-header-area-main">
+            <tr
+              class="small-text text-capitalize text-nowrap"
+              style="border-bottom: 0"
+            >
+              <th scope="col">Event Name & Date</th>
+              <th scope="col">Category</th>
+              <th scope="col">Category Attendance</th>
+            </tr>
+          </thead>
+          <tbody class="font-weight-normal text-nowrap">
+            <tr v-for="(activityTable, index) in grousService" :key="index" >
+              <td>{{ activityTable.name}}</td>
+              <td>
+              <div v-for="(item, index) in activityTable.value" :key="index">
+                <div class="py-2">{{item.attendanceCategory}}</div>
+              </div>
+              </td>
+              <td>
+                <div v-for="(item, index) in activityTable.value" :key="index">
+                  <div class="py-2">{{item.attendance}}</div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <div class="table-foot d-flex justify-content-end">
+          <PaginationButtons />
+        </div> -->
+      </div>
+      <!--end table header -->
       </section>
              </div>
      
@@ -113,13 +150,13 @@
 <script>
 import { computed, ref } from 'vue';
 import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
+import groupData from '../../../services/groupArray/groupResponse'
 
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import ReportAreaChart from "@/components/charts/AreaChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter.js"
-
     export default {
         components:{
           Dropdown,
@@ -137,7 +174,6 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
     const selectedEvents =ref()
     const series = ref([])
     const activityReport = ref([])
-    const activityReport1 = ref([])
     const startDate = ref('');
     const endDate = ref('');
     const attendanceData = ref([])
@@ -152,6 +188,7 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
     const mainAttendanceData = ref([])
     const categoryData = ref([])
     const attendanceGroup = ref({})
+    const grousService = ref([])
 
     const getAllEvents = ()=>{
             axios.get('/api/Reports/events/getEvents')
@@ -166,17 +203,33 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
          axios.get(`/api/Reports/events/getActivityAttendanceReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&activityId=${selectedEvents.value.id}`)
          .then((res)=>{
              activityReport.value = res.data;
-             activityReport1.value = res.data;
              console.log(activityReport.value);
              mainAttendanceData.value = []
              attendanceData.value = []
              series.value = []
-            groupCatergory(activityReport.value, 'attendanceCategory')
+             groupCategory()
+             groupName()
              categoryData.value = []
              getActivityServices()  
           }) 
          .catch((err)=> console.log(err))
      };
+
+     const groupCategory = () => {
+        attendanceGroup.value = groupData.groupData(activityReport.value, 'attendanceCategory');
+            console.log(attendanceGroup.value)
+     }
+     const groupName = () =>{
+       const result = groupData.groupData(activityReport.value, 'name');
+        for (const prop in result) {
+                grousService.value.push({
+                name: prop,
+                value: result[prop]
+                })
+            }
+       console.log(grousService.value);
+
+     }
 
      const attendanceChart = computed(() => {
          if (activityReport.value.length === 0) return []
@@ -194,27 +247,6 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
          return mainAttendanceData.value
           
      })
-
-
-      const groupCatergory = (array, key) => {
-            let result = array.reduce((result, currentValue) => {
-                // If an array already present for key, push it to the array. Else create an array and push the object
-                (result[currentValue[key]] = result[currentValue[key]] || []).push(
-                currentValue
-                );
-                // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
-                return result;
-            }, {}); // empty object is the initial value for result object
-             attendanceGroup.value = result
-            // for (const prop in result) {
-            //     attendanceGroup.value.push({
-            //     name: prop,
-            //     value: result[prop]
-            //     })
-            // }
-            console.log(attendanceGroup.value)
-            return attendanceGroup.value
-        };
      const getActivityServices = () => {
            activityReport.value.forEach(i => {
             let serviceIndex = Object.keys(i).findIndex(i => i === 'date')
@@ -318,8 +350,10 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
                 color: '#f7d68f',
                 data: SinglesData
             })
+            console.log(categoryData.value);
 
         return categoryData.value
+        
       })
 
         return{
@@ -330,7 +364,6 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
             allEvents,
             activityReport,
            getActivityReport,
-           activityReport1,
             series,
             attendanceChart,
             womenData,
@@ -345,7 +378,8 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
            categoryData,
             babiesData,
             summaryChart,
-            attendanceGroup
+            attendanceGroup,
+            grousService
         }
         
     }

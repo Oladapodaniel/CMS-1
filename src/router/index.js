@@ -240,7 +240,8 @@ const routes = [
                 },
                 component: () =>
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Reports.vue'),
-                children: [{
+                children: [
+                    {
                         path: '',
                         meta: {
                             title: 'Churchplus - Report',
@@ -402,6 +403,24 @@ const routes = [
 
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/weddinganniversaryReport.vue')
                     },
+                    {
+                        path: 'statementofactivity',
+                        name: "StatementOfActivity",
+                        meta: {
+                            title: 'Churchplus - Reports',
+                        },
+                        component: () =>
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/StatementOfActivity.vue')
+                    },
+                    {
+                        path: 'incomereport',
+                        name: "IncomeReport",
+                        meta: {
+                            title: 'Churchplus - Reports',
+                        },
+                        component: () =>
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/IncomeReport.vue')
+                    },
                 ]
             },
 
@@ -414,24 +433,6 @@ const routes = [
             //     component: () =>
             //         import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/ServiceAttendanceReport.vue')
             // },
-            {
-                path: 'statementofactivity',
-                name: "StatementOfActivity",
-                meta: {
-                    title: 'Churchplus - Reports',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/StatementOfActivity.vue')
-            },
-            {
-                path: 'incomereport',
-                name: "IncomeReport",
-                meta: {
-                    title: 'Churchplus - Reports',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/IncomeReport.vue')
-            },
             {
                 path: 'family',
                 name: 'Family',

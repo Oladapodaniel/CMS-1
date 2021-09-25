@@ -4,24 +4,26 @@
             <div class="heading-text">People Report</div>
             <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
         </div>
-        <div class="row my-4" v-if="showExport">
-            <!-- <div class="col-sm-2">Enter file name</div> -->
-            <div class="col-sm-5">
-                <!-- <input type="text" class="form-control" /> -->
-                <span class="p-float-label">
-                    <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
-                    <label for="inputtext">Enter file name</label>
-                </span>
-            </div>
-            <div class="col-sm-4">
-                <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
-            </div>
-            <!-- <div class="">Export</div> -->
-            <div @click="downloadFile" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center justify-content-center">Export</div></div>
-        </div>
+        <transition name="move" mode="out-in">
+          <div class="row my-4" v-if="showExport">
+              <!-- <div class="col-sm-2">Enter file name</div> -->
+              <div class="col-sm-5">
+                  <!-- <input type="text" class="form-control" /> -->
+                  <span class="p-float-label">
+                      <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
+                      <label for="inputtext">Enter file name</label>
+                  </span>
+              </div>
+              <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
+                  <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
+              </div>
+              <!-- <div class="">Export</div> -->
+              <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn generate-report d-flex align-items-center c-pointer justify-content-center">Download</div></div>
+          </div>
+        </transition>
         <div class="container-fluid mt-2 ">
             <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
-                <div class="col-12 col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
                     <div><label for="" class="font-weight-bold">Select Members</label></div>
                     <div>
                         <MultiSelect v-model="selectedMember" :options="memberShips" optionLabel="name" placeholder="Select Member" :filter="true" class="multiselect-custom w-100">
@@ -42,7 +44,7 @@
                     </div>
 
                 </div>
-                <div class="col-12 col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
                     <div class=""><label for="" class=" ml-2 font-weight-bold">Gender</label></div>
                     <div>
                         <MultiSelect v-model="selectedGender" :options="memberGender" optionLabel="name" placeholder="Select gender" :filter="true" class="multiselect-custom w-100">
@@ -62,7 +64,7 @@
                         </MultiSelect>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
                     <div><label for="" class="font-weight-bold">Marital Status</label></div>
                     <div>
                         <MultiSelect v-model="selectedMaritalStatus" :options="memberMaritalStatus" optionLabel="name" placeholder="Marital status" :filter="true" class="multiselect-custom w-100">
@@ -85,15 +87,15 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="" ></label>
                     <div class="mt-2" @click="genarateReport">
-                        <button class="btn default-btn border-0 primary-bg "><div class="text-white">Generate Report</div></button>
+                        <button class="btn default-btn border-0 generate-report "><div class="text-white">Generate </div></button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="container-fluid  ">
-            <div class="row">
+            <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                 <div class="col-12 ">
-                    <div class="mt-5 text-center Display-1 heading-text">
+                    <div class="mt-5 pb-2 text-center Display-1 heading-text">
                         Congregation Members Report
                     </div>
                 </div>
@@ -101,8 +103,8 @@
                     <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                     <div class="col-12 mt-sm-3 mt-md-0 mt-lg-2  text-center">
                         <div class="col-12 font-weight-bold">Membership By Gender</div>
-                        <div class="col-12"  :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                        <div class="col-12" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                        <!-- <div class="col-12" >No Data Available</div> -->
+                        <div class="col-12">
                             <MembershipPieChart
                                 domId="chart1"
                                 distance="5"
@@ -115,8 +117,8 @@
                 <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                     <div class="col-12  mt-3 mt-sm-3 mt-md-0 mt-lg-2 text-center">
                         <div class="col-12  font-weight-bold">Membership By Marital Status</div>
-                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                        <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                        <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                        <div class="col-12 " >
                             <MembershipPieChart
                                 domId="chart2"
                                 distance="5"
@@ -128,13 +130,13 @@
                 </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
               <div class="col-12 table d-flex flex-wrap">
                   <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                     <div class="col-12 text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2 " >
                         <div class="col-12  font-weight-bold ">Membership By Members</div>
-                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                        <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                        <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                        <div class="col-12 ">
                             <MembershipPieChart
                                 domId="chart3"
                                 distance="5"
@@ -144,11 +146,11 @@
                         </div>
                     </div>
                   </div>
-                  <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                  <div class="col-12 col-sm-12  col-md-6 col-lg-6" >
                     <div class="col-12   text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2  ">
-                        <div class="col-12 w-100  font-weight-bold">Membership By Age Group</div>
-                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                        <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                        <div class="col-12 w-100  font-weight-bold" >Membership By Age Group</div>
+                        <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                        <div class="col-12 ">
                             <MembershipPieChart
                                 domId="char4"
                                 distance="5"
@@ -166,7 +168,8 @@
             <!-- <div class="row "> -->
                 <section>
                     <!-- table header -->
-                    <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness   ">
+                    <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness  "
+                    :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                         <table class="table remove-styles mt-0 table-hover table-header-area " id="table" >
                         <thead class="table-header-area-main" >
                             <tr
@@ -181,8 +184,8 @@
                             <th scope="col">Home Address</th>
                             <th scope="col">Gender</th>
                             <th scope="col">Marital Status</th>
-                            <th scope="col">Activity Date</th>
-                            <th scope="col">Current Status</th>
+                            <th scope="col">Age Group</th>
+                            <th scope="col">Birthday</th>
                             </tr>
                         </thead>
                         <tbody class="font-weight-normal text-nowrap">
@@ -195,14 +198,14 @@
                             <td>{{member.homeAddress}}</td>
                             <td>{{member.gender}}</td>
                             <td>{{member.maritalStatus}}</td>
-                            <td>{{member.activityDate}}</td>
-                            <td>{{member.isActive}}</td>
+                            <td>{{member.ageGroup}}</td>
+                            <td>{{member.birthDay}}</td>
                             </tr>
                         </tbody>
                         </table>
-                        <div class="table-foot d-flex justify-content-end mt-n3">
+                        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
                         <PaginationButtons />
-                        </div>
+                        </div> -->
                     </div>
                     <!--end table header -->
                 </section>
@@ -215,7 +218,7 @@
 import {computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 import MembershipPieChart from '../../../components/charts/PieChart.vue';
-import PaginationButtons from "../../../components/pagination/PaginationButtons";
+// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
 // import ExcelExport from "../../../services/exportFile/exportToExcel"
@@ -231,7 +234,8 @@ export default {
         MembershipPieChart,
         Dropdown,
         MultiSelect,
-        PaginationButtons },
+        // PaginationButtons
+         },
     setup() {
     const selectedMember = ref();
     const selectedGender = ref();
@@ -477,6 +481,8 @@ export default {
                         fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
                         fileToExport.value = exportService.tableToJson(document.getElementById("table"))
                     }, 1000)
+                    
+                    showReport.value = true;
 
         }).catch((error) =>{
             console.log(error)
@@ -646,6 +652,24 @@ padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
 overflow-x: scroll;
+}
+
+.move-enter-active {
+  animation: move-in .8s;
+}
+.move-leave-active {
+  animation: move-in .8s reverse;
+}
+@keyframes move-in {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
 }
 
 .remove-border{

@@ -700,7 +700,6 @@
 </template>
 
 <script>
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { computed, onMounted, ref } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
@@ -718,7 +717,6 @@ export default {
   setup() {
     const toast = useToast();
     const router = useRouter()
-    const editor = ClassicEditor;
     const editorData = ref("");
     const disableBtn = ref(false)
     const editorConfig = {
@@ -1261,7 +1259,6 @@ export default {
     }
 
     return {
-      editor,
       editorData,
       editorConfig,
       possibleSMSDestinations,

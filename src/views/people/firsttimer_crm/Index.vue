@@ -67,7 +67,8 @@
             </div>
         </div>
     </div>
-    <!-- <Button label="BottomRight" icon="pi pi-arrow-up" class="p-button-warning" /> -->
+    
+    <!-- Modal for Note -->
             
     <Dialog header="Create note" v-model:visible="displayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
         <Editor v-model="note" editorStyle="height: 320px"/>
@@ -79,6 +80,7 @@
         </template>
     </Dialog>
    
+   <!-- Modal for email -->
     <Dialog header="Compose
      email" v-model:visible="emailDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
         <div class="container" style="height: 480px">
@@ -147,14 +149,14 @@
     </Dialog>
 
 
+    <!-- Modal for task -->
      <Dialog header="Create task" v-model:visible="taskDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
         <div class="container" style="height: 480px">
             <div class="row mt-3">
                <div class="row">
                         <div class="col-12">
-                            <textarea type="text" class="form-control col-12" placeholder="Enter your task" v-model="theTask"></textarea>
+                            <textarea class="form-control col-12" placeholder="Enter your task" v-model="theTask"></textarea>
                         </div>
-                    
                         <div class="col-8 label-text mt-3">Due date</div>
                         <div class="col-4 label-text mt-3">Reminder</div>
                         <div class="col-4 mt-2">
@@ -190,12 +192,14 @@
                         <div class="col-3 label-text"></div>
                         <!-- <div class="col-4"></div> -->
                         <div class="col-2 mt-2">
-                            <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
-                                Todo&nbsp; <i class="pi pi-sort-down"></i>
+                            <div @click="toggleTodo" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                {{ Object.keys(selectedTodo).length > 0 ? selectedTodo.value : 'Todo&nbsp;' }} <i class="pi pi-sort-down"></i>
                             </div>
-                            <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                <div v-for="(item, index) in taskTime" :key="index">
-                                    <div class="px-3 py-1">{{ item.name }}</div>
+                            <OverlayPanel ref="todoTask" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <div class="container-fluid p-0">
+                                    <div class="row" v-for="(item, index) in activityType" :key="index">
+                                        <div class="py-2 px-3 hover-log" @click="setActivityType(item)">{{ item.value }}</div>
+                                    </div>
                                 </div>
                             </OverlayPanel>
                         </div>
@@ -259,8 +263,10 @@ import { useToast } from "primevue/usetoast";
 import Dropdown from "primevue/dropdown";
 import { useRoute } from "vue-router"
 import axios from "@/gateway/backendapi";
+import lookupTable from "../../../services/lookup/lookupservice"
 // import SelectButton from 'primevue/selectbutton';
 export default {
+    inheritAttrs: false,
     components: {
         SideActions,
         Activity,
@@ -296,11 +302,15 @@ export default {
         const taskDisplayPosition = ref(false)
         const taskTime = ref([{ name: '08:00' },{ name: '09:00' }, { name: '10:00' }])
         const op = ref("")
+        const todoTask = ref("")
         const theTask = ref("")
         const personDetails = ref({})
         const logList = ref([])
         const activities = ref([])
         const callLog = ref(false)
+        const activityType = ref([])
+        const selectedTodo = ref({})
+
         
 
         const toggleActivity = () => {
@@ -444,6 +454,10 @@ export default {
         const toggle = (event) => {
             op.value.toggle(event);
         };
+        
+        const toggleTodo = (event) => {
+            todoTask.value.toggle(event);
+        };
 
         const saveTask = () => {
             taskDisplayPosition.value = false;
@@ -523,6 +537,23 @@ export default {
             logList.value[payload].hoverLog = false
         }
 
+        const getActivityType = async () => {
+            try {
+                let data = await lookupTable.getLookUps()
+                console.log(data)
+                activityType.value = data.activityType
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        getActivityType()
+
+        const setActivityType = (activity) => {
+            selectedTodo.value = activity
+            todoTask.value.hide()
+        }
+
         return {
             toggleActivity,
             toggleNotes,
@@ -578,7 +609,12 @@ export default {
             setHoverTaskProp2,
             setOutHoverTaskProp2,
             setHoverLogProp,
-            setOutHoverLogProp
+            setOutHoverLogProp,
+            todoTask,
+            toggleTodo,
+            activityType,
+            selectedTodo,
+            setActivityType
         }
     }
 }
@@ -699,5 +735,10 @@ export default {
     background-color: #425b76;
     border: 1px solid #425b76;
     color: #fff;    
+}
+
+.hover-log:hover {
+    background: rgba(202, 202, 202, 0.356);
+    cursor: pointer
 }
 </style>
