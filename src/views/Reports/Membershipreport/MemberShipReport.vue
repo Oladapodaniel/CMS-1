@@ -1,26 +1,49 @@
 <template>
     <div class="container container-top container-wide mb-4">
        <div class="row d-flex justify-content-between px-3">
-            <div class="heading-text">People Report</div>
-            <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
+              <div class="heading-text">People Report</div>
+              <div class="default-btn font-weight-normal c-pointer"
+                @click="() => (showExport = !showExport)"
+                style="width: fixed; position:relative">
+                        Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                        <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+                              <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                        </div>
+              </div>
+            <!-- <div class="col-8 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
+                <a class="dropdown  align-items-center justify-content-center w-100 d-flex default-btn border-0 text-decoration-none">
+                  <a class=" text-decoration-none text-dark" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
+                  </a>
+
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <div class=" d-block dropdown-menu col-12 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
+                      <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
+                    </div>
+                    <a class="d-block c-pointer">
+                    <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn d-flex align-items-center c-pointer justify-content-center">Download</div></div>
+                    </a>
+                  </div>
+                </a>
+            </div> -->
         </div>
-        <transition name="move" mode="out-in">
-          <div class="row my-4" v-if="showExport">
+        <!-- <transition name="move" mode="out-in"> -->
+          <!-- <div class="row my-4" v-if="showExport"> -->
               <!-- <div class="col-sm-2">Enter file name</div> -->
-              <div class="col-sm-5">
+              <!-- <div class="col-sm-5"> -->
                   <!-- <input type="text" class="form-control" /> -->
-                  <span class="p-float-label">
+                  <!-- <span class="p-float-label">
                       <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
                       <label for="inputtext">Enter file name</label>
-                  </span>
-              </div>
-              <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
+                  </span> -->
+              <!-- </div> -->
+              <!-- <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
                   <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
-              </div>
+              </div> -->
               <!-- <div class="">Export</div> -->
-              <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn generate-report d-flex align-items-center c-pointer justify-content-center">Download</div></div>
-          </div>
-        </transition>
+              <!-- <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn generate-report d-flex align-items-center c-pointer justify-content-center">Download</div></div> -->
+          <!-- </div> -->
+        <!-- </transition> -->
         <div class="container-fluid mt-2 ">
             <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
                 <div class="col-12 col-md-6 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
@@ -219,10 +242,10 @@ import {computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 import MembershipPieChart from '../../../components/charts/PieChart.vue';
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
-import Dropdown from "primevue/dropdown";
+import Listbox from 'primevue/listbox';
 import MultiSelect from 'primevue/multiselect';
 // import ExcelExport from "../../../services/exportFile/exportToExcel"
-import InputText from 'primevue/inputtext';
+// import InputText from 'primevue/inputtext';
 import printJS from "print-js";
 // import html2pdf from "html2pdf.js";
 import exportService from "../../../services/exportFile/exportservice"
@@ -230,9 +253,10 @@ import exportService from "../../../services/exportFile/exportservice"
 export default {
     components: {
         // GenderPieChart,
-        InputText,
+        // InputText,
         MembershipPieChart,
-        Dropdown,
+        // Dropdown,
+        Listbox,
         MultiSelect,
         // PaginationButtons
          },
@@ -252,7 +276,7 @@ export default {
     const ageGroupChartResult = ref([]);
     const showExport = ref(false);
     const fileName = ref("")
-    const bookTypeList = ref([ 'xlsx', 'csv', 'txt' ])
+    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'} ])
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);

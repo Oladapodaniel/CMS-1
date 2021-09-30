@@ -1,13 +1,18 @@
 <template>
   <div class="container-fluid px-5 mt-5">
      <div class="row d-flex justify-content-between px-3">
-            <h3 class="heading-text ml-1 text-secondary">Basic Income And Revenue Report</h3>
-            <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
+            <h3 class="heading-text ml-1">Basic Income And Revenue Report</h3>
+            <div class="default-btn border-secondary font-weight-normal c-pointer"
+                @click="() => (showExport = !showExport)"
+                style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+                      <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                </div>
+          </div>
+            <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
       </div>
-      <div class="row my-4" v-if="showExport">
-          <!-- <div class="col-sm-2">Enter file name</div> -->
+      <!-- <div class="row my-4" v-if="showExport">
           <div class="col-sm-5">
-              <!-- <input type="text" class="form-control" /> -->
               <span class="p-float-label">
                   <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
                   <label for="inputtext">Enter file name</label>
@@ -16,9 +21,8 @@
           <div class="col-sm-4">
               <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
           </div>
-          <!-- <div class="">Export</div> -->
-          <div @click="downLoadExcel" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center justify-content-center">Export</div></div>
-      </div>
+          <div @click="downloadFile" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center justify-content-center c-pointer exportButton">Export</div></div>
+      </div> -->
     <!-- header area -->
     <div class="container">
       <div
@@ -47,17 +51,16 @@
 
         <div class="col-md-7 d-sm-flex">
           <div class="p-field p-col-12 p-md-4 mt-1">
-            <!-- <label for="icon">Start Date</label> -->
+            <div><label for="icon" class="font-weight-bold">Start Date</label></div>
             <Calendar id="icon" v-model="startDate" :showIcon="true" />
           </div>
           <div class="p-field p-col-12 p-md-4 my-1">
-            <!-- <label for="icon">End Date</label> -->
+            <div><label for="icon" class="font-weight-bold">End Date</label></div>
             <Calendar id="endDate" v-model="endDate" :showIcon="true" />
           </div>
         </div>
-
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
-            <!-- {{ startDate }} -->
+        
+        <div class="col-md-3 d-sm-flex justify-content-end align-items-center mt-4">
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
             @click="incomeEndPoint"
@@ -71,18 +74,18 @@
         <!-- chart area -->
           <div class="row">
                 <div class="col-12 ">
-                    <div class="my-5 text-center text-secondary serviceAttendance">
+                    <div class="my-5 text-center  serviceAttendance">
                        <span class="heading-text">INCOME STATEMENT</span> <span class="statement">-[Statement of Activities]</span> 
                     </div>
                 </div>
                 <div class="col-12 col-sm-12  col-md-12 col-lg-12">
                     <div class="col-12 text-center" style="">
-                        <div class="col-12  font-weight-bold pt-3">Membership By Marital Status</div>
-                        <div class="col-12">No Data Available</div>
+                        <!-- <div class="col-12  font-weight-bold pt-3">Membership By Marital Status</div> -->
+                        <!-- <div class="col-12">No Data Available</div> -->
                         <div class="col-12 " style="">
                          <ColumnChart2
                             domId="chart"
-                            title="Interested In Joining"
+                            title=""
                             :titleMargin="10"
                             :series="series"
                             :yAxisText="'Amount'"
@@ -93,12 +96,12 @@
                 </div>
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
                     <div class="col-12 text-center">
-                        <div class="col-12 font-weight-bold pt-3">Membership By Marital Status</div>
+                        <!-- <div class="col-12 font-weight-bold pt-3">Membership By Marital Status</div> -->
                         <!-- <div class="col-12">No Data Available</div> -->
                         <div class="col-12 chart-div " style="">
                          <ByMaritalStatusChart
                             domId="chart1"
-                            title="Interested In Joining"
+                            title=""
                             :titleMargin="10"
                             :summary="pieChartData"
                          />
@@ -136,7 +139,7 @@
             </div>
       <!-- table header -->
       <div class="container-fluid table-main px-0 remove-styles2 remove-border my-5" >
-        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
+        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area" id="table">
           <thead class="table-header-area-main">
             <tr
               class="small-text text-capitalize text-nowrap"
@@ -157,7 +160,7 @@
               <td>{{getIncomeDetail ? getIncomeDetail.accountName : ''}}</td>
               <td>{{getIncomeDetail ? getIncomeDetail.description : ''}}</td>
               <td>{{getIncomeDetail ? getIncomeDetail.amount : ''}}</td>
-              <td>{{getIncomeDetail ? getIncomeDetail.date: ''}}</td>
+              <td>{{getIncomeDetail ? formatDate(getIncomeDetail.date): ''}}</td>
             </tr>        
           </tbody>
         </table>
@@ -177,10 +180,12 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import ByMaritalStatusChart from "@/components/charts/PieChart";
 import ColumnChart2 from "@/components/charts/ColumnChart2";
-import InputText from 'primevue/inputtext';
-import Dropdown from "primevue/dropdown";
-import ExcelExport from "../../../services/exportFile/exportToExcel"
+// import InputText from 'primevue/inputtext';
+// import Dropdown from "primevue/dropdown";
+import Listbox from 'primevue/listbox';
+import exportService from "../../../services/exportFile/exportservice"
 import axios from "@/gateway/backendapi";
+import dateFormatter from  "../../../services/dates/dateformatter";
 
 export default {
   components: {
@@ -189,17 +194,19 @@ export default {
     Calendar,
     ByGenderChart,
     PaginationButtons,
-    InputText,
-    Dropdown,
+    // InputText,
+    // Dropdown,
+    Listbox
   },
   setup() {
-    const startDate = ref(new Date(new Date().setDate(new Date().getDate() - 8)));
+    const startDate = ref(new Date());
     const endDate = ref(new Date());
     const membersInChurch = ref([]);
     const toggleReport = ref(false);
     const summary = ref([]);
     const columnChartData = ref([]);
     const series = ref([]);
+    const showReport = ref(false)
     //   onMounted (() => {
     //        columnChartData.value = [
     //             {
@@ -222,102 +229,15 @@ export default {
      const pieChartData = ref([]);
      const fileName = ref("");
      const selectedFileType = ref("");
-     const bookTypeList = ref([ 'xlsx', 'csv', 'txt' ])
+    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'} ])
      const fileHeaderToExport = ref([]);
      const fileToExport = ref([]);
      const getIncomeDetails = ref([]);
      const showExport = ref(false);
+     const formatDate = (activityDate) => {
+        return dateFormatter.normalDate(activityDate);
+      };
 
-     
-    const downLoadExcel = () => {
-          if (selectedFileType.value === "pdf") {
-              // printJS({
-              // //   ignoreElements: ['ignore1', 'ignore2'],
-              //   maxWidth: 867,
-              //   header: 'DONATION TRANSACTIONS',
-              //   printable: [{
-              //         DATE: '543',
-              //         EVENT: '5242',
-              //         DONATION: '4242',
-              //         AMOUNT: 23432,
-              //         DONOR: '234234234'
-              //         }],
-              //   properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
-              //   type: 'json',
-              //   headerStyle:
-              //     'font-family: Nunito Sans, Calibri; text-align: center;',
-              //   gridHeaderStyle:
-              //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
-              //   gridStyle:
-              //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
-              // })
-              var element = document.getElementById('element-to-print');
-              var opt = {
-                  // margin:       1,
-                  filename:     `${fileName.value}.pdf`,
-                  // image:        { type: 'jpeg', quality: 0.98 },
-                  // html2canvas:  { scale: 2 },
-                  jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
-                  pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-              };
-
-                  // New Promise-based usage:
-                  html2pdf().set(opt).from(element).save();
-              // html2pdf(element);
-          } else {
-              const filterVal = fileHeaderToExport.value.map((i, index) => index)
-              const list = fileToExport.value
-              const header = fileHeaderToExport.value
-              console.log(filterVal)
-              console.log(fileHeaderToExport.value)
-              
-              ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
-          }
-      }
-
-      const tableHeaderToJson = () => {
-            // let _htmlToJSON = function(){
-                // let _tr = _table.getElementsByTagName("tr")[index];
-                let _th = document.getElementsByTagName("th");
-                let _arr = [].map.call( _th, function( th ) {
-                    return th.innerHTML;
-                }).join( ',' );
-                let _data = _arr.split(",");
-                console.log(_data)
-                console.log("html to JSON", _data);
-                // emit('data-header-to-export', _data)  
-                 fileHeaderToExport.value = _data       
-            // };
-                // _htmlToJSON();
-      }
-
-      const tableToJson = () => {
-            let _table = document.getElementById("table");
-            let _trLength = _table.getElementsByTagName("tr").length;
-            let _jsonData = [];
-            let _obj = {};
-
-            let _htmlToJSON = function(index){
-                let _tr = _table.getElementsByTagName("tr")[index];
-                let _td = _tr.getElementsByTagName("td");
-                let _arr = [].map.call( _td, function( td ) {
-                    return td.innerHTML;
-                }).join( ',' );
-                let _data = _arr.split(",");
-                // console.log(_data)
-                
-                _obj = Object.assign({}, _data)
-                
-                _jsonData.push(_obj);
-                
-            };
-            for(var i = 1; i < _trLength; i++){
-                _htmlToJSON(i);
-            }
-            fileToExport.value = _jsonData
-            console.log("html to JSON",_jsonData);
-            // emit('data-to-export', _jsonData)
-        }
      const incomeEndPoint = () => {
         axios
         .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
@@ -346,10 +266,10 @@ export default {
             console.log(columnChartData.value, "COLUMN CHART DATA");
             console.log(pieChartData.value, 'pieChartData,,,,');
 
-             setTimeout(() => {
-                        tableHeaderToJson()
-                        tableToJson()
-                    }, 1000)
+            setTimeout(() => {
+                fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
+                fileToExport.value = exportService.tableToJson(document.getElementById("table"))
+            }, 1000)
           
         }).catch((error) =>{
             console.log(error)
@@ -357,6 +277,10 @@ export default {
 
           showReport.value = true;
     }
+    const downloadFile = () => {
+      exportService.downLoadExcel(selectedFileType.value, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
+    }
+
     // incomeEndPoint();
     const constructChartData  = (accounts, series) => {
         console.log(series, 'SERIES...');
@@ -398,13 +322,15 @@ export default {
       series,
       showExport,
       fileName,
+      showReport,
       selectedFileType,
       bookTypeList,
       fileHeaderToExport,
       fileToExport,
+      downloadFile,
+      formatDate,
       incomeEndPoint,
       getRandomColor,
-      downLoadExcel,
 
     };
   },
@@ -422,7 +348,7 @@ export default {
   border-radius: 3rem;
   border: 1px solid #136acd;
   padding: 0.5rem 1.25rem;
-  color: #136acd;
+  /* color: #136acd; */
   width: auto;
   outline: transparent !important;
   max-height: 2.5rem;
@@ -510,5 +436,19 @@ export default {
 }
 .showClass { 
     display: block;
+}
+.exportButton {
+    font-weight: 800;
+    font-size: 1rem;
+    white-space: initial;
+    border-radius: 3rem;
+    border: 1px solid #136acd;
+    padding: 0.5rem 1.25rem;
+    color: black;
+    width: auto;
+    outline: transparent !important;
+    max-height: 2.5rem;
+    background: #fff;
+    min-width: 7.6rem;
 }
 </style>
