@@ -2,25 +2,33 @@
     <div class=" container container-top container-wide mb-4  ">
         <div class="row d-flex justify-content-between px-3">
           <div class="heading-text"> New Convert Performance Report</div>
-          <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
+          <div class="default-btn font-weight-normal border-secondary c-pointer"
+                @click="() => (showExport = !showExport)"
+                style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+                      <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                </div>
+          </div>
+          <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
         </div>
-        <transition name="move" mode="out-in">
-          <div class="row my-4 " v-if="showExport">
+        
+        <!-- <transition name="move" mode="out-in"> -->
+          <!-- <div class="row my-4 " v-if="showExport"> -->
               <!-- <div class="col-sm-2">Enter file name</div> -->
-              <div class="col-sm-5">
+              <!-- <div class="col-sm-5"> -->
                   <!-- <input type="text" class="form-control" /> -->
-                  <span class="p-float-label">
+                  <!-- <span class="p-float-label">
                       <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
                       <label for="inputtext">Enter file name</label>
-                  </span>
-              </div>
-              <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
+                  </span> -->
+              <!-- </div> -->
+              <!-- <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
                   <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type"  />
-              </div>
+              </div> -->
               <!-- <div class="">Export</div> -->
-              <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn d-flex align-items-center generate-report c-pointer justify-content-center">Download</div></div>
-          </div>
-        </transition>
+              <!-- <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn d-flex align-items-center generate-report c-pointer justify-content-center">Download</div></div> -->
+          <!-- </div> -->
+        <!-- </transition> -->
            <!-- date area -->
         <div class="container-fluid my-2 py-5   bg-area">
             <div class="row justify-content-center pl-3 ">
@@ -172,14 +180,15 @@
 
 <script>
 import {computed,ref } from "vue";
-import InputText from 'primevue/inputtext';
+// import InputText from 'primevue/inputtext';
 // import PerformancePieChart from '../../../components/charts/PieChart.vue';
 import Calendar from "primevue/calendar";
 import axios from "@/gateway/backendapi";
 import PerformancePieChart from '../../../components/charts/PieChart.vue';
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
-import Dropdown from "primevue/dropdown";
+// import Dropdown from "primevue/dropdown";
+import Listbox from 'primevue/listbox';
 import MultiSelect from 'primevue/multiselect';
 import dateFormatter from  "../../../services/dates/dateformatter";
 // import ExcelExport from "../../../services/exportFile/exportToExcel"
@@ -189,11 +198,12 @@ import printJS from "print-js";
 // import Piechart from "../../../components/charts/PieChart2.vue"
 export default {
     components: {
-        InputText,
+        // InputText,
+        Listbox,
         MultiSelect,
         PerformancePieChart,
         PerformanceColumnChart,
-        Dropdown, 
+        // Dropdown, 
         Calendar, 
         // PaginationButtons
          },
@@ -235,7 +245,7 @@ export default {
     const mainAttendanceData = ref([]);
     const showExport = ref(false);
     const fileName = ref("")
-    const bookTypeList = ref([ 'xlsx', 'csv', 'txt' ])
+    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'} ])
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);

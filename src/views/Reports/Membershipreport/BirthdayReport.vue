@@ -15,21 +15,25 @@
         <div class="centered-items">
           <h3 class="heading-text ml-2">Birthday Report</h3>
         </div>
-        <!-- @click="exportReport" -->
-        <div class="centered-items pr-3">
+        <div class="default-btn border-secondary font-weight-normal c-pointer"
+                @click="() => (showExport = !showExport)"
+                style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+                      <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                </div>
+        </div>
+        <!-- <div class="centered-items pr-3">
           <button
             class="default-btn font-weight-normal"
             @click="() => (showExport = !showExport)"
           >
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div>
+        </div> -->
       </div>
-      <transition name="move" mode="out-in">
+      <!-- <transition name="move" mode="out-in">
         <div class="row my-4" v-if="showExport">
-          <!-- <div class="col-sm-2">Enter file name</div> -->
           <div class="col-sm-5">
-            <!-- <input type="text" class="form-control" /> -->
             <span class="p-float-label ml-n3">
               <InputText
                 id="inputtext"
@@ -48,7 +52,6 @@
               placeholder="Select file type"
             />
           </div>
-          <!-- <div class="">Export</div> -->
           <div @click="downloadFile" class="col-sm-2 offset-sm-1">
             <div
               class="
@@ -64,7 +67,7 @@
             </div>
           </div>
         </div>
-      </transition>
+      </transition> -->
     </div>
 
     <div class="container-fluid my-3 px-0 bg-area">
@@ -234,6 +237,7 @@ import Calendar from "primevue/calendar";
 // import ByGenderChart from "@/components/charts/PieChart.vue";
 import BirthdayChart from "../../../components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
+import Listbox from 'primevue/listbox';
 import axios from "@/gateway/backendapi";
 import html2pdf from "html2pdf.js";
 import Dropdown from "primevue/dropdown";
@@ -244,6 +248,7 @@ import exportService from "../../../services/exportFile/exportservice";
 export default {
   components: {
     Calendar,
+    Listbox,
     // ByGenderChart,
     // PaginationButtons,
     BirthdayChart,
@@ -259,7 +264,7 @@ export default {
     const maritalStatusResult = ref([]);
     const showExport = ref(false);
     const fileName = ref("");
-    const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'} ])
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
