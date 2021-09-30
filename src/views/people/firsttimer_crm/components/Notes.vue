@@ -6,13 +6,13 @@
             <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : note.noteIcon, 'unroll-note-icon' : !note.noteIcon}" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;Note</span> by Oladapo Daniel <span class="font-weight-700 uniform-primary-color">Actions&nbsp;<i class="pi pi-sort-down"></i></span></div>
+                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : note.noteIcon, 'unroll-note-icon' : !note.noteIcon}" @click="toggleNoteIcon(index)"></i>Note</span></div>
                         
-                            <div class="col mt-4 enlargen-font">{{ note.body }}</div>
+                            <div class="col mt-4 enlargen-font">{{ note.description }}</div>
                         
                     </div>
                     <div>
-                        <div class="col text-right"><span class="ml-2 small-text">July 29 2021 at 12:50pm GMT +1</span></div>
+                        <div class="col text-right"><span class="ml-2 small-text">{{ formatDate(note.date) }} {{ note.time }}</span></div>
                     </div>
                 </div>
                 <transition name="fade">
@@ -32,6 +32,7 @@
 
 
 <script>
+import dateFormatter from '../../../../services/dates/dateformatter'
 export default {
     props: ['addNotes'],
     emits: ['individualtoggle', 'opennoteeditor'],
@@ -46,9 +47,14 @@ export default {
             emit('opennoteeditor', true)
         }
 
+        const formatDate = (date) => {
+            return dateFormatter.monthDayYear(date)
+        }
+
         return {
             toggleNoteIcon,
-            openNoteEditor
+            openNoteEditor,
+            formatDate
         }
     }
 }

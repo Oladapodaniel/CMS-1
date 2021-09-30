@@ -1,8 +1,10 @@
-<template>
+<template> 
+<!-- reminder{{reminder}} -->
+<!-- {{selectedDueDate}} -->
     <div class="container-top container adjust-font">
         <div class="row">
             <div class="col-4 p-0 side-bar">
-                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails" @calllogdesc="setCallLogDesc" :callLog="callLog" @resetlog="resetLog"/>
+                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails" @calllogdesc="setCallLogDesc" :callLog="callLog" @resetlog="resetLog" @allcontact="setAllContacts" :activityType="activityType" @updatelogtoview="updateLogToView"/>
             </div>
             <div class="col-8 main-view">
                 <div class="row">
@@ -49,7 +51,7 @@
               
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
-                        <Activity :activities="activities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" :taskTime="taskTime" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @savetask2="saveTaskItem2" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp" @hovertask2="setHoverTaskProp2" @outhovertask2="setOutHoverTaskProp2"/>
+                        <Activity :activities="groupedActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" :taskTime="taskTime" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @savetask2="saveTaskItem2" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp" @hovertask2="setHoverTaskProp2" @outhovertask2="setOutHoverTaskProp2" :loader="loader"/>
                     </div>
                     <div class="col-12" v-if="showNotes" transition="bounce">
                         <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
@@ -108,7 +110,7 @@
                         <div class="mt-3">Connect Office 365</div>
                     </div>
                 </div> -->
-                <div class="offset-4 col-4 mt-5" @click="toggleDisplayEmailPane">
+                <div class="offset-3 col-6 mt-5" @click="toggleDisplayEmailPane">
                     <div class="mail-connect">
                         <div>
                             <img src="../../../assets/unknown-email.svg"/>
@@ -135,9 +137,9 @@
                 <div class="col-12 mt-3">
                     <Editor v-model="emailBody" editorStyle="height: 260px"/>
                 </div>
-                <div class="col-12 mt-2 d-flex justify-content-end">
-                    <Button label="Send" icon="pi pi-check"  autofocus />
-                    <div class="primary-bg default-btn border-0 text-white text-center ml-3" @click="sendEmail">Send</div>
+                <div class="col-12 mt-2 d-flex justify-content-start">
+                    <!-- <Button label="Send" icon="pi pi-check"  autofocus /> -->
+                    <div class="primary-bg default-btn border-0 text-white text-center" @click="sendEmail">Send</div>
                 </div>
             </div>
         </div>
@@ -157,87 +159,92 @@
                         <div class="col-12">
                             <textarea class="form-control col-12" placeholder="Enter your task" v-model="theTask"></textarea>
                         </div>
-                        <div class="col-8 label-text mt-3">Due date</div>
-                        <div class="col-4 label-text mt-3">Reminder</div>
-                        <div class="col-4 mt-2">
-                            <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
-                                In 3 business days&nbsp; <i class="pi pi-sort-down"></i>
+                        <div class="col-6 label-text mt-3">Due date</div>
+                        <div class="col-6 label-text mt-3">Reminder</div>
+                        <div class="col-6 mt-2">
+                            <div @click="toggleDueDate" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                {{ Object.keys(selectedDueDate).length > 0 ? selectedDueDate.name : 'Select due date' }} &nbsp; <i class="pi pi-sort-down"></i>
                             </div>
-                            <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                <div v-for="(item, index) in taskTime" :key="index">
-                                    <div class="px-3 py-1">{{ item.name }}</div>
+                            <OverlayPanel ref="dueDateRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <div class="container-fluid p-0">
+                                    <div class="row hover-log" v-for="(item, index) in dueDate" :key="index">
+                                        <div class="py-2 px-3 " @click="setDueDate(item)">{{ item.name }}</div>
+                                    </div>
                                 </div>
                             </OverlayPanel>
                         </div>
-                        <div class="col-4 mt-2">
-                            <input type="date" class="form-control"/>
-                        </div>
-                        <div class="col-4 mt-2">
-                            <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
-                                No reminder&nbsp; <i class="pi pi-sort-down"></i>
+                        <div class="col-6 mt-2">
+                            <div @click="toggleReminder" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                {{ Object.keys(selectedReminder).length > 0 ? selectedReminder.name : 'Select reminder' }}&nbsp; <i class="pi pi-sort-down"></i>
                             </div>
-                            <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                <div v-for="(item, index) in taskTime" :key="index">
-                                    <div class="px-3 py-1">{{ item.name }}</div>
+                            <OverlayPanel ref="reminderRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <div class="container-fluid p-0">
+                                    <div class="row hover-log" v-for="(item, index) in reminder" :key="index">
+                                        <div class="py-2 px-3 " @click="setReminder(item)">{{ item.name }}</div>
+                                    </div>
                                 </div>
                             </OverlayPanel>
                         </div>
                         <div class="col-12 mt-3">
                             <hr />
                         </div>
-                        <div class="col-2 label-text">Type</div>
-                        <div class="col-2 label-text">Priority</div>
-                        <div class="col-2 label-text">Queue</div>
-                        <div class="col-3 label-text">Assigned to</div>
-                        <div class="col-3 label-text"></div>
+                        <div class="col-4 label-text">Type</div>
+                        <div class="col-4 label-text">Priority</div>
+                        <!-- <div class="col-2 label-text">Queue</div> -->
+                        <div class="col-4 label-text">Assigned to</div>
+                        <!-- <div class="col-5 label-text"></div> -->
                         <!-- <div class="col-4"></div> -->
-                        <div class="col-2 mt-2">
+                        <div class="col-4 mt-2">
                             <div @click="toggleTodo" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
                                 {{ Object.keys(selectedTodo).length > 0 ? selectedTodo.value : 'Todo&nbsp;' }} <i class="pi pi-sort-down"></i>
                             </div>
                             <OverlayPanel ref="todoTask" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                 <div class="container-fluid p-0">
-                                    <div class="row" v-for="(item, index) in activityType" :key="index">
-                                        <div class="py-2 px-3 hover-log" @click="setActivityType(item)">{{ item.value }}</div>
+                                    <div class="row hover-log" v-for="(item, index) in activityType" :key="index">
+                                        <div class="py-2 px-3" @click="setActivityType(item)">{{ item.value }}</div>
                                     </div>
                                 </div>
                             </OverlayPanel>
                         </div>
-                        <div class="col-2 mt-2">
-                            <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
-                                None&nbsp; <i class="pi pi-sort-down"></i>
-                            </div>
-                            <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                <div v-for="(item, index) in taskTime" :key="index">
-                                    <div class="px-3 py-1">{{ item.name }}</div>
-                                </div>
-                            </OverlayPanel>
-                        </div>
-                        <div class="col-2 mt-2">
-                            <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
-                                None&nbsp; <i class="pi pi-sort-down"></i>
-                            </div>
-                            <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                <div v-for="(item, index) in taskTime" :key="index">
-                                    <div class="px-3 py-1">{{ item.name }}</div>
-                                </div>
-                            </OverlayPanel>
-                        </div>
                         <div class="col-4 mt-2">
+                            <div @click="togglePriority" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                {{ Object.keys(selectedPriority).length > 0 ? selectedPriority.name : 'Select priority' }}&nbsp; <i class="pi pi-sort-down"></i>
+                            </div>
+                            <OverlayPanel ref="priorityRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <div class="container-fluid p-0">
+                                    <div class="row hover-log" v-for="(item, index) in taskPriority" :key="index">
+                                        <div class="py-2 px-3" @click="setPriority(item)">{{ item.name }}</div>
+                                    </div>
+                                </div>
+                            </OverlayPanel>
+                        </div>
+                        <!-- <div class="col-2 mt-2">
                             <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
-                                Oladapo Daniel&nbsp; <i class="pi pi-sort-down"></i>
+                                None&nbsp; <i class="pi pi-sort-down"></i>
                             </div>
                             <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                 <div v-for="(item, index) in taskTime" :key="index">
                                     <div class="px-3 py-1">{{ item.name }}</div>
+                                </div>
+                            </OverlayPanel>
+                        </div> -->
+                        <div class="col-4 mt-2">
+                            <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                {{ Object.keys(selectedContact).length > 0 ? selectedContact.firstName + ' ' + selectedContact.lastName : "Select contact" }}&nbsp; <i class="pi pi-sort-down"></i>
+                            </div>
+                            <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="make-scrollable">
+                                <div class="container-fluid p-0">
+                                    <div class="row hover-log" v-for="(item, index) in allContacts" :key="index">
+                                        <div class="py-2 px-3" @click="chooseContact(item)">{{ item.firstName }} {{ item.lastName }}</div>
+                                    </div>
                                 </div>
                             </OverlayPanel>
                         </div>
 
                         <div class="col-12">
-                        <textarea class="form-control col-12 mt-3" rows="4"  placeholder="Notes..."></textarea>
+                        <textarea class="form-control col-12 mt-3" rows="4" v-model="taskNote" placeholder="Notes..."></textarea>
                         <div class="d-flex justify-content-start">
-                            <div class="p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveTask">Save</div>
+                            <div class="col-2 mt-3 pointer-cursor primary-bg default-btn border-0 text-white text-center" @click="saveTask">Save</div>
                         </div>
                         </div>
             
@@ -258,12 +265,14 @@ import Tasks from "./components/Tasks"
 import InputText from 'primevue/inputtext'
 import Dialog from 'primevue/dialog';
 import Editor from 'primevue/editor';
-import composeService from "../../../services/communication/composer";
 import { useToast } from "primevue/usetoast";
 import Dropdown from "primevue/dropdown";
 import { useRoute } from "vue-router"
 import axios from "@/gateway/backendapi";
 import lookupTable from "../../../services/lookup/lookupservice"
+import frmservice from "@/services/FRM/firsttimermanagement"
+import groupResponse from '../../../services/groupArray/groupResponse'
+import dateFormatter from '../../../services/dates/dateformatter'
 // import SelectButton from 'primevue/selectbutton';
 export default {
     inheritAttrs: false,
@@ -304,12 +313,27 @@ export default {
         const op = ref("")
         const todoTask = ref("")
         const theTask = ref("")
+        const taskNote = ref("")
         const personDetails = ref({})
         const logList = ref([])
         const activities = ref([])
         const callLog = ref(false)
         const activityType = ref([])
         const selectedTodo = ref({})
+        const taskPriority = ref(frmservice.priority())
+        const priorityRef = ref("")
+        const selectedPriority = ref({})
+        const dueDate = ref([])
+        const dueDateRef = ref("")
+        const selectedDueDate = ref({})
+        const reminder = ref([])
+        const reminderRef = ref("")
+        const selectedReminder = ref({})
+        const allContacts = ref([])
+        const selectedContact = ref({})
+        const contactRef = ref("")
+        const loader = ref(false)
+        const groupedActivities = ref([])
 
         
 
@@ -386,10 +410,6 @@ export default {
 
         const sendEmail = async () => {
             let data = {
-                ToContacts: route.params.personId,
-                // ToContacts: "5f33cb89-d002-4607-a688-08d8f38b4d33",
-                groupedContacts: [],
-                isPersonalized: false,
                 message: `<!DOCTYPE html>
                 <html lang="en">
                     <head>
@@ -425,9 +445,8 @@ export default {
             }
 
             try {
-                let response = await composeService.sendMessage("/api/Messaging/sendEmail", data)
+                let response = await frmservice.sendEmail(route.params.personId, data)
                 console.log(response)
-                if(response.status === 200) {
                     toast.add({
                         severity: "success",
                         summary: "Sent",
@@ -435,7 +454,7 @@ export default {
                         life: 5000,
                     });
                     emailDisplayPosition.value = false
-                }
+                    getLogs()
 
             }
             catch (err) {
@@ -458,12 +477,60 @@ export default {
         const toggleTodo = (event) => {
             todoTask.value.toggle(event);
         };
+        
+        const togglePriority = (event) => {
+            priorityRef.value.toggle(event);
+        };
+        
+        const toggleDueDate = (event) => {
+            dueDateRef.value.toggle(event);
+        };
+        
+        const toggleReminder = (event) => {
+            reminderRef.value.toggle(event);
+        };
+        
+        const toggleContact = (event) => {
+            contactRef.value.toggle(event);
+        };
 
-        const saveTask = () => {
+        const setDueDate = (item) => {
+            dueDateRef.value.hide();
+            selectedDueDate.value = item
+        }
+        
+        const setReminder = (item) => {
+            reminderRef.value.hide();
+            selectedReminder.value = item
+        }
+
+        const saveTask = async() => {
             taskDisplayPosition.value = false;
             taskList.value.unshift({ body: theTask.value })
             activities.value.unshift({ body: theTask.value, type: 'task' })
+            
+
+            let payload = {
+                instructions: theTask.value,
+                reminder: selectedReminder.value.value,
+                dueDate: selectedDueDate.value.value,
+                note: taskNote.value,
+                type: selectedTodo.value.id,
+                priority: selectedPriority.value.id,
+                personID: selectedContact.value.id,
+                contacts: route.params.personId
+            }
+
+            try {
+                const res = await frmservice.saveTask(payload)
+                console.log(res)
+                getLogs()
+            }
+            catch (err) {
+                console.log(err)
+            }
             theTask.value = ""
+
         };
 
         const getPersonDetails = () => {
@@ -472,6 +539,9 @@ export default {
             .then((res) => {
                 console.log(res)
                 personDetails.value = res.data
+            })
+            .catch(err => {
+                console.log(err)
             })
         }
         getPersonDetails()
@@ -541,7 +611,7 @@ export default {
             try {
                 let data = await lookupTable.getLookUps()
                 console.log(data)
-                activityType.value = data.activityType
+                activityType.value = data.activityType.filter(i => !i.value.toLowerCase().includes("update"))
             }
             catch (err) {
                 console.log(err)
@@ -552,6 +622,91 @@ export default {
         const setActivityType = (activity) => {
             selectedTodo.value = activity
             todoTask.value.hide()
+            console.log(selectedTodo.value)
+        }
+
+        const getDueDate = () => {
+            try {
+                let result = frmservice.dueDate()
+                console.log(result);
+                dueDate.value = result
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getDueDate()
+       
+       const getReminder = () => {
+            try {
+                let result = frmservice.reminder()
+                console.log(result);
+                reminder.value = result
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getReminder()
+
+        const setAllContacts = (payload) => {
+            allContacts.value = payload
+        }
+
+        const setPriority = (payload) => {
+            priorityRef.value.hide();
+            selectedPriority.value = payload
+        }
+
+        const chooseContact = (payload) => {
+            contactRef.value.hide();
+            selectedContact.value = payload
+        }
+
+        const getLogs = async() => {
+            loader.value = true
+            try {
+                let logs = await frmservice.getAllLogs(route.params.personId)
+                console.log(logs)
+                activities.value = logs.returnObject.reverse()
+                groupActivities()
+                loader.value = false
+            }
+            catch (err) {
+                console.log(err)
+                loader.value = false
+            }
+        }
+        getLogs()
+
+        const formatDate = (date) => {
+            return dateFormatter.monthDayYear(date)
+        }
+
+        const groupActivities = () => {
+            // Group by type
+            const type = groupResponse.groupData(activities.value, 'type')
+            console.log(type)
+            noteList.value = type[91]
+            taskList.value = type[87]
+            
+            // Group by date
+            const mappedActivities = activities.value.map(i => {
+                i.date = formatDate(i.date)
+                return i
+            })
+            const date = groupResponse.groupData(mappedActivities, 'date')
+            console.log(date)
+             groupedActivities.value = []
+            for (const prop in date) {
+                groupedActivities.value.push({
+                name: prop,
+                value: date[prop]
+                })
+            }
+            console.log(groupedActivities.value)
+        }
+
+        const updateLogToView = () => {
+            getLogs()
         }
 
         return {
@@ -614,7 +769,32 @@ export default {
             toggleTodo,
             activityType,
             selectedTodo,
-            setActivityType
+            setActivityType,
+            taskPriority,
+            priorityRef,
+            togglePriority,
+            dueDate,
+            dueDateRef,
+            toggleDueDate,
+            setDueDate,
+            selectedDueDate,
+            reminder,
+            reminderRef,
+            toggleReminder,
+            selectedReminder,
+            setReminder,
+            taskNote,
+            selectedPriority,
+            setPriority,
+            allContacts,
+            setAllContacts,
+            selectedContact,
+            chooseContact,
+            contactRef,
+            toggleContact,
+            updateLogToView,
+            loader,
+            groupedActivities
         }
     }
 }
@@ -740,5 +920,11 @@ export default {
 .hover-log:hover {
     background: rgba(202, 202, 202, 0.356);
     cursor: pointer
+}
+
+.make-scrollable {
+    height: 800px;
+    overflow: scroll;
+    margin-top: 100px
 }
 </style>
