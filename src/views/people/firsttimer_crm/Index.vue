@@ -1,6 +1,4 @@
 <template> 
-<!-- reminder{{reminder}} -->
-<!-- {{selectedDueDate}} -->
     <div class="container-top container adjust-font">
         <div class="row">
             <div class="col-4 p-0 side-bar">
@@ -10,7 +8,7 @@
                 <div class="row">
                     <div class="col-6 mt-3">
                         <span class="p-input-icon-right">
-                            <InputText type="text" placeholder="Search activities" />
+                            <InputText type="text" placeholder="Search activities" @input="searchActivities"/>
                             <i class="pi pi-search uniform-primary-color" />
                         </span>
                     </div>
@@ -255,7 +253,7 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import { computed, ref } from "vue"
 import SideActions from "./components/SideActions"
 import Activity from "./components/Activity"
 import Notes from "./components/Notes"
@@ -709,6 +707,11 @@ export default {
             getLogs()
         }
 
+        const searchActivities = computed(() => {
+            // if (groupedActivities.value.length === 0) return []
+            // return 
+        })
+
         return {
             toggleActivity,
             toggleNotes,
@@ -794,7 +797,8 @@ export default {
             toggleContact,
             updateLogToView,
             loader,
-            groupedActivities
+            groupedActivities,
+            searchActivities
         }
     }
 }
