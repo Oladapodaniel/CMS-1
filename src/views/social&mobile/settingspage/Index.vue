@@ -312,7 +312,7 @@
       <!--twitter area ended  -->
 
       <!--instagram area  -->
-      <!-- <div class="row mx-2 mx-md-0 my-4">
+      <div class="row mx-2 mx-md-0 my-4">
         <div class="col-md-9 bordersocials py-3 box box-shadow">
           <div class="row">
             <div class="col-md-8">
@@ -341,11 +341,11 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
       <!--instergram area ended  -->
 
       <!--what'sApp area  -->
-      <!-- <div class="row mx-2 mx-md-0 my-4">
+      <div class="row mx-2 mx-md-0 my-4">
         <div class="col-md-9 bordersocials py-3 box box-shadow">
           <div class="row">
             <div class="col-md-8">
@@ -374,7 +374,7 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
       <!--what'sApp area ended  -->
       <Toast/>
 
