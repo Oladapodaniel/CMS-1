@@ -5,11 +5,11 @@
             <div class="col font-weight-700 text-right uniform-primary-color">Actions <i class="pi pi-angle-down"></i></div>
         </div>
         <div class="row mt-5">
-            <div class="col-3">
-                <img :src="personDetails.pictureUrl" class="contact-image" v-if="personDetails.pictureUrl"/>
-                <img src="../../../../assets/people/phone-import.svg" class="contact-image" v-else/>
+            <div class="col-6 offset-3">
+                <img :src="personDetails.pictureUrl" class="contact-image w-100 h-100" v-if="personDetails.pictureUrl"/>
+                <img src="../../../../assets/people/phone-import.svg" class="contact-image w-100 h-100" v-else/>
             </div>
-            <div class="col-9">
+            <div class="col-12 text-center">
                 <div class="contact-name">{{ `${personDetails.firstName ? personDetails.firstName : ""} ${personDetails.lastName ? personDetails.lastName : ""}` }}</div>
                 <div>{{ personDetails.email }}</div>
                 <div><i class="pi pi-copy uniform-primary-color"></i>&nbsp;<i class="pi pi-pencil uniform-primary-color" @click="editContactName"></i></div>
@@ -24,9 +24,10 @@
                 <div class="icon-bg c-pointer" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
                 <div>Email</div>
             </div>
-            <div class="ml-4 c-pointer" @click="call">
+            <!-- @click="call" -->
+            <div class="ml-4 c-pointer"  @click="toggleCallSms">
                 <div class="icon-bg" v-tooltip.top="'Make a phone call'"><i class="pi pi-phone"></i></div>
-                <div>Call</div>
+                <div>Reach</div>
             </div>
             <div class="ml-4 c-pointer" @click="openTaskEditor">
                 <div class="icon-bg" v-tooltip.top="'Create a task'"><i class="pi pi-calendar-plus"></i></div>
@@ -198,17 +199,20 @@
         </OverlayPanel>
 
         <OverlayPanel ref="logDropDown" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-            <!-- <div class="p-0 container-fluid">
-                <div class="row d-flex flex-column"> -->
-                    <!-- <div class="py-2 px-3 hover-log" @click="toggleLogPane($event)">Log a call</div>
-                    <div class="py-2 px-3 hover-log" @click="toggleLogPane($event)">Log an email</div> -->
                     <div class="container-fluid p-0">
                         <div class="row hover-log" v-for="(item, index) in activityType" :key="index">
                             <div class="py-2 px-3 " @click="toggleLogPane($event, item)">{{ item.value }}</div>
                         </div>
                     </div>
-                <!-- </div>
-            </div> -->
+        </OverlayPanel>
+        
+        <OverlayPanel ref="callDropDown" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                    <div class="container-fluid p-0">
+                        <div class="row">
+                            <div class="py-2 px-3 col-12 hover-log" @click="toggleCallSmsPane($event)">Call</div>
+                            <div class="py-2 px-3 col-12 hover-log" @click="toggleCallSmsPane($event)">SMS</div>
+                        </div>
+                    </div>
         </OverlayPanel>
 
         <!-- Log Pane -->
@@ -273,6 +277,20 @@
                 </div>
            </div>
         </Dialog>
+       
+        <!-- SMS Pane -->
+        <Dialog header="Send SMS" v-model:visible="displaySMSPane" :style="{width: '50vw'}" :position="position" :modal="true">
+           <div class="container-fluid">
+               <div class="row mt-3">
+                   <div class="col-12 p-0 mt-1">
+                       <textarea name="" placeholder="SMS here" class="w-100 form-control" rows="12" v-model="smsMessage"></textarea>
+                   </div>
+               </div>
+               <div class="row d-flex justify-content-start mt-3">
+                    <div class="primary-bg default-btn border-0 text-white text-center c-pointer" @click="sendSms">Send</div>
+                </div>
+           </div>
+        </Dialog>
     <Toast />
 </template>
 
@@ -286,6 +304,7 @@ import lookupTable from "../../../../services/lookup/lookupservice"
 import Contacts from "./AllMembers.vue"
 import { useRoute } from "vue-router"
 import frmservice from "@/services/FRM/firsttimermanagement"
+import { useStore } from "vuex";
 // import MultiSelect from 'primevue/multiselect';
 // import SinchClient from 'sinch-rtc/sinch.min.js'
 // import { useConfirm } from "primevue/useConfirm";
@@ -305,6 +324,7 @@ export default {
         // const confirm = useConfirm()
         // const toast = useToast()
         const route = useRoute()
+        const store = useStore()
         const selectedContact = ref({})
         const contacts = ref([])
         const lifeCycle = ref([
@@ -342,8 +362,10 @@ export default {
         const phoneNumber = ref(8076543254)
         const email = ref('olad@gamil.com')
         const logDropDown = ref(false)
+        const callDropDown = ref(false)
         const position = ref('bottomright')
         const displayLogPane = ref(false)
+        const displaySMSPane = ref(false)
         const contactRef = ref(false)
         const outcomeRef = ref(false)
         const selectedCallOutcome = ref({})
@@ -361,6 +383,8 @@ export default {
         const wantVisitArr = ref(["Yes", "No", "Maybe", "On Transit"]);
         const selectedVisitOption = ref(null);
         const selectedLog = ref({})
+        const smsMessage = ref("")
+        const isoCode = ref("")
 
 
         const selectedContactLog = computed(() => {
@@ -428,6 +452,10 @@ export default {
               
             }
 
+        const toggleCallSms = (event) => {
+            callDropDown.value.toggle(event);
+        }
+
         const toggleLog = (event) => {
             logDropDown.value.toggle(event);
 
@@ -438,6 +466,21 @@ export default {
             displayLogPane.value = true;
             console.log(e)
             selectedLog.value = item
+        }
+        
+        const toggleCallSmsPane = (e) => {
+            callDropDown.value.hide();
+            if (e.target.innerText.toLowerCase() === "call") {
+                call()
+            }   else {
+                console.log('sms')
+                toggleSMSPane()
+            }
+        }
+
+        const toggleSMSPane = () => {
+            callDropDown.value.hide();
+            displaySMSPane.value = true;
         }
 
         const toggleContact = (event) => {
@@ -467,6 +510,37 @@ export default {
                 let data = await frmservice.createLog(body)
                 console.log(data)
                 emit('updatelogtoview')
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
+        const getIsoCode = () => {
+            if (store.getters.currentUser && store.getters.currentUser.isoCode) {
+            isoCode.value = store.getters.currentUser.isoCode;
+            } else {
+            axios
+                .get("/api/Membership/GetCurrentSignedInUser")
+                .then((res) => {
+                isoCode.value = res.data.isoCode;
+                })
+                .catch((err) => console.log(err));
+            }
+        }
+        getIsoCode()
+
+        const sendSms = async() => {
+            let body = {
+                message: smsMessage.value,
+                toOthers: props.personDetails.phoneNumber,
+                isoCode: isoCode.value,
+                gateWayToUse: "hostedsms",
+            }
+            console.log(body)
+            try {
+                let res = await frmservice.sendSms(route.params.personId, body)
+                console.log(res)
             }
             catch (err) {
                 console.log(err)
@@ -656,7 +730,14 @@ export default {
             updateOwner,
             updateLifeCycle,
             selectedLog,
-            updateLeadStatus
+            updateLeadStatus,
+            callDropDown,
+            toggleCallSms,
+            toggleCallSmsPane,
+            displaySMSPane,
+            sendSms,
+            smsMessage,
+            isoCode
         }
             
     }

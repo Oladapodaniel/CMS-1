@@ -27,7 +27,7 @@
                     <div class="col-12 card-bg p-4">
                         <div class="row d-flex justify-content-between">
                             <div>
-                                <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.noteIcon, 'unroll-note-icon' : !item.noteIcon}" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;Note</span> by Oladapo Daniel </div>
+                                <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.noteIcon, 'unroll-note-icon' : !item.noteIcon}" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;Note</span> by {{ item.person }} </div>
                                 
                                     <div class="col mt-4 enlargen-font">{{ item.description }}</div>
                                 
@@ -46,12 +46,12 @@
                 </div>
 
 
-            <!-- Card for tasks -->
+            <!-- Card for tasks (visit/sms) -->
             <div class="col-12 mt-4" v-if="item.type === 87 || item.type === 89">
                 <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.taskIcon, 'unroll-note-icon' : !item.taskIcon}" @click="toggleTaskIcon(index)"></i>&nbsp;&nbsp;{{ item.typeText }} task</span>  {{ item.person ? `assigned to ${item.person}` : '' }}</div>
+                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.taskIcon, 'unroll-note-icon' : !item.taskIcon}" @click="toggleTaskIcon(index)"></i>&nbsp;&nbsp;{{ item.typeText }} {{ item.person ? 'task' : 'logged' }}</span>  {{ item.person ? `assigned to ${item.person}` : '' }}</div>
                         
                     </div>
                     <div>
@@ -194,7 +194,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12 mt-4 enlargen-font"  :class="{ 'hover-border' : item.hoverLog, 'log-border' : !item.hoverLog }" v-if="!item.editLog">
-                            <div>{{item.description }}</div>
+                            <div>{{ condenseEmailText(item.description) }}</div>
                         </div>
 
                         <textarea v-model="item.description" class="form-control col-12 mt-4" v-if="item.editLog" rows="5"></textarea>
@@ -390,13 +390,14 @@ export default {
             return dateFormatter.monthDayYear(date)
         }
 
-        const condenseEmail = (text) => {
-            console.log(text)
-            let first = text.search('<p>')
-            let last = text.search('</p>')
-            let body = text.slice(first, last)
-            let result = body.substring(3)
-            return result
+        const condenseEmailText = (text) => {
+            if (text !== null) {
+                if (text.toLowerCase().includes('<!doctype')) {
+                    return 'Email sent successfully.'
+                }   else {
+                    return text
+                }
+            }
         }
 
         return {
@@ -423,7 +424,8 @@ export default {
             op,
             toggleLogIcon,
             formatDate,
-            condenseEmail
+            condenseEmailText
+
 
         }
     }

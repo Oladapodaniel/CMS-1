@@ -159,13 +159,14 @@ const frm = {
         dueDate.push(inOneMonth)
         return dueDate
     },
-    reminder () {
+    reminder (payload) {
+        console.log(payload)
         const reminder = []
-        const thirtyMins = new Date()
-        const oneHour = new Date()
-        const aDayBefore = new Date()
+        const thirtyMins = payload ? new Date(payload) : new Date()
+        const oneHour =  payload ? new Date(payload) : new Date()
+        const aDayBefore = payload ? new Date(payload) : new Date()
 
-        thirtyMins.setTime(new Date().getTime() - (30 * 60 * 1000));
+        thirtyMins.setTime(payload ? new Date(payload).getTime() - (30 * 60 * 1000) : new Date().getTime() - (30 * 60 * 1000));
         const thirtyMinsBefore = {
             name: '30 minutes before',
             value: thirtyMins.toISOString()
@@ -238,6 +239,36 @@ const frm = {
     sendEmail (firsttimerID, body) {
         return new Promise((resolve, reject) => {
             axios.post(`/api/FirsttimerManager/${firsttimerID}/sendemail`, body)
+                .then(res => {
+                    resolve(res.data)
+                })
+                .catch(error => {
+                    if (error.response) {
+                        reject(error.response)
+                    }   else {
+                        reject(error)
+                    }
+                })
+        })
+    },
+    saveNote (firsttimerID, body) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/FirsttimerManager/${firsttimerID}/notes/add`, body)
+                .then(res => {
+                    resolve(res.data)
+                })
+                .catch(error => {
+                    if (error.response) {
+                        reject(error.response)
+                    }   else {
+                        reject(error)
+                    }
+                })
+        })
+    },
+    sendSms (firsttimerID, body) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/FirsttimerManager/${firsttimerID}/sendsms`, body)
                 .then(res => {
                     resolve(res.data)
                 })
