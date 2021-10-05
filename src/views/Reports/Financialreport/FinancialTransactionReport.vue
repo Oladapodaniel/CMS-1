@@ -26,7 +26,7 @@
           class="default-btn font-weight-normal c-pointer mr-4"
           @click="() => (showExport = !showExport)"
           style="width: fixed; position:relative">
-                   Export As &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                   Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
                    <div
                         class=" c-pointer"
                         style="width: 6rem; z-index:1000; position:absolute"
@@ -50,7 +50,7 @@
         class="row d-flex flex-row justify-content-center align-items-center"
       >
         <div class="col-md-2">
-          <h4 class="small font-weight-bold ml-2">Date Range</h4>
+          <h4 class="small font-weight-bold ml-4">Date Range</h4>
         </div>
 
         <div class="col-md-7 d-sm-flex">
@@ -64,7 +64,7 @@
           </div>
         </div>
 
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
+        <div class="col-md-3 d-sm-flex justify-content-end align-items-center pr-5">
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
             @click="generateReport"
@@ -94,7 +94,8 @@
 
     <section>
       <!-- table header -->
-      <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+      <div v-if="accountTransaction.length > 0">
+            <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
         <table class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
@@ -127,6 +128,8 @@
           <PaginationButtons />
         </div> -->
       </div>
+      </div>
+
       <!--end table header -->
     </section>
   </div>
@@ -229,7 +232,7 @@ export default {
 </script>
 
 <style scoped>
-.default-btn {
+/* .default-btn {
   font-weight: 800;
   font-size: 1rem;
   white-space: initial;
@@ -242,12 +245,29 @@ export default {
   max-height: 2.5rem;
   background: #fff;
   min-width: 7.6rem;
+} */
+
+
+.default-btn {
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    /* outline: transparent !important; */
+    max-height: 40px;
+    background: #6c757d47 !important;
+    min-width: 121px;
 }
+
 
 .generate-report {
   font-size: 1rem;
   color: #fff;
-  background-color: #136acd;
+  background-color: #136acd !important;
   border: none;
   min-width: 7rem;
 }

@@ -125,7 +125,7 @@
             </div>
           </div>
           <!-- <div class="col-12 col-sm-12 col-md-6 col-lg-6"> -->
-          <div class="row table">
+          <div class="row table" :class=" birthdays &&  birthdays.length > 0 ? 'graph-area' : '' ">
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center">
               <div class="col-12 font-weight-bold">Membership By Gender</div>
               <div class="col-12" v-if="genderSummary.length === 0">
@@ -240,8 +240,8 @@ import BirthdayChart from "../../../components/charts/PieChart.vue";
 import Listbox from 'primevue/listbox';
 import axios from "@/gateway/backendapi";
 import html2pdf from "html2pdf.js";
-import Dropdown from "primevue/dropdown";
-import InputText from "primevue/inputtext";
+// import Dropdown from "primevue/dropdown";
+// import InputText from "primevue/inputtext";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
 
@@ -252,8 +252,8 @@ export default {
     // ByGenderChart,
     // PaginationButtons,
     BirthdayChart,
-    Dropdown,
-    InputText,
+    // Dropdown,
+    // InputText,
   },
   setup() {
     const startDate = ref();
@@ -495,6 +495,15 @@ export default {
   border-bottom: 0 !important;
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
+}
+
+.graph-area{
+    border: 1px solid #dde2e6;
+    border-radius: 0.5rem;
+    padding: 1rem 0rem;
+    margin: 2rem 0rem !important;
+     width: 100% !important;
+  box-shadow: 0 0.063rem 0.25rem #02172e45;
 }
 
 .remove-styles2 {

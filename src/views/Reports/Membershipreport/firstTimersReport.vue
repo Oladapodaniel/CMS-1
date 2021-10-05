@@ -94,7 +94,7 @@
         class="row d-flex flex-row justify-content-center align-items-center"
       >
         <div class="col-md-2 pl-4">
-          <h4 class="small font-weight-bold ml-2">Date Range</h4>
+          <h4 class="small font-weight-bold ml-4">Date Range</h4>
         </div>
 
         <div class="col-md-7 d-sm-flex">
