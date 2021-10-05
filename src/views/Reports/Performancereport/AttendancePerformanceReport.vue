@@ -1,13 +1,11 @@
 <template>
 <div class="container container-wide mt-5 mb-4">
-  <div class="row d-flex justify-content-between px-3">
-            <div class="heading-text">Attendance Report</div>
-            <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
+  <!-- <div class="row d-flex justify-content-between px-3">
+            <div class="heading-text">Attendance Report</div> -->
+            <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
         </div>
         <div class="row my-4" v-if="showExport">
-            <!-- <div class="col-sm-2">Enter file name</div> -->
             <div class="col-sm-5">
-                <!-- <input type="text" class="form-control" /> -->
                 <span class="p-float-label">
                     <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
                     <label for="inputtext">Enter file name</label>
@@ -16,9 +14,8 @@
             <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
                 <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
             </div>
-            <!-- <div class="">Export</div> -->
             <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn border-secondary d-flex align-items-center c-pointer justify-content-center">Download</div></div>
-        </div>
+        </div> -->
      <div>
             <h3 class="font-weight-bold mt-5 mb-2">Church Activities Attendance Report</h3>
             <span class="mt-5 mb-3">This reports gives an indepth view of the growth and attendance pattern of the ministry.</span>
@@ -175,7 +172,7 @@ import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import ReportAreaChart from "@/components/charts/AreaChart.vue";
 import axios from "@/gateway/backendapi";
-import InputText from "primevue/inputtext"
+// import InputText from "primevue/inputtext"
 import dateFormatter from "../../../services/dates/dateformatter.js"
 import exportService from "../../../services/exportFile/exportservice"
 import printJS from "print-js";
@@ -183,7 +180,7 @@ import printJS from "print-js";
         components:{
           Dropdown,
             Calendar,
-            InputText,
+            // InputText,
             PerformanceColumnChart,
             ReportAreaChart
 
