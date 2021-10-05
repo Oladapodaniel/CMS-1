@@ -2,40 +2,58 @@
     <div class="d-flex justify-content-end mx-3">
         <div class="col-3 mt-3 save-btn btn-btn c-pointer" @click="openEmailModal">Compose</div>
    </div>
-    <div class="col-12 mt-4">
+    <div class="col-12 mt-4" v-for="(item, index) in emailList" :key="index">
             <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;Email</span> by Oladapo Daniel <span class="font-weight-700 uniform-primary-color">Actions&nbsp;<i class="pi pi-sort-down"></i></span></div>
+                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;{{ item.person ? `${item.typeText} task assigned to` : `${item.typeText} logged` }}</span>  {{ item.person }}</div>
                         
-                            <div class="col mt-4 enlargen-font">Email Body </div>
+                            <div class="col mt-4 enlargen-font">{{ condenseEmailText(item.description) }}</div>
                         
                     </div>
                     <div>
-                        <div class="col text-right"><span class="ml-2 small-text">July 29 2021 at 12:50pm GMT +1</span></div>
+                        <div class="col text-right"><span class="ml-2 small-text">{{ formatDate(item.date) }} {{ item.time }}</span></div>
                     </div>
                 </div>
-                <transition name="fade">
+                <!-- <transition name="fade">
                     <div class="row mt-4">
                         <div class="col font-weight-700 uniform-primary-color">Add Comment</div>
                         <div class="col text-right font-weight-700 uniform-primary-color">1 Association</div>
                     </div>
-                </transition>
+                </transition> -->
             </div>
         </div>
 </template>
 
 
 <script>
+import dateFormatter from '../../../../services/dates/dateformatter'
 export default {
     emits: ['openemailmodal'],
+    props: ['emailList'],
     setup(props, { emit }) {
         const openEmailModal = () => {
             emit('openemailmodal', true)
         }
 
+        const condenseEmailText = (text) => {
+            if (text !== null) {
+                if (text.toLowerCase().includes('<!doctype')) {
+                    return 'Email sent successfully.'
+                }   else {
+                    return text
+                }
+            }
+        }
+
+        const formatDate = (date) => {
+            return dateFormatter.monthDayYear(date)
+        }
+
         return {
-            openEmailModal
+            openEmailModal,
+            condenseEmailText,
+            formatDate
         }
     }
 }

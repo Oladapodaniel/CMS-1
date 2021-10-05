@@ -93,18 +93,18 @@
             <div class="col-12 card-bg p-4">
             <div class="row d-flex justify-content-between">
                 <div>
-                    <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : task.taskIcon, 'unroll-note-icon' : !task.taskIcon}" @click="toggleTaskIcon(index)"></i>&nbsp;&nbsp;Task</span> assigned to Peter Ihesie <span class="font-weight-700 uniform-primary-color">Actions <i class="pi pi-sort-down"></i></span></div>
+                    <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : task.taskIcon, 'unroll-note-icon' : !task.taskIcon}" @click="toggleTaskIcon(index)"></i>&nbsp;&nbsp;Visit</span> assigned to Peter</div>
                     
                 </div>
                 <div>
-                    <div class="col text-right"><span class="ml-2 small-text">July 29 2021 at 12:50pm GMT +1</span></div>
+                    <div class="col text-right"><span class="ml-2 small-text">{{ formatDate(task.date) }} {{ task.time }}</span></div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 mt-4 enlargen-font" v-if="!task.taskIcon">
-                    {{ task.body ? task.body : "Create your task" }}
+                    {{ task.description ? task.description : "Create your task" }}
                 </div>
-                <div v-if="!taskIcon && task.body" class="col mt-4 enlargen-font">{{ theTask }}</div>
+                <div v-if="!taskIcon && task.description" class="col mt-4 enlargen-font">{{ theTask }}</div>
                 <div class="col-12">
                     <transition name="fade">
                         <div class="row mt-4" v-if="task.taskIcon">
@@ -114,11 +114,11 @@
                             <!-- <div class="col-11">Call the firstimers</div> -->
                 
                         <div class="col-11 p-2 d-flex task-border justify-content-between" :class="{ 'hover-border' : hoverTask }" @mouseover="onHoverBorder" @mouseleave="outHoverBorder" v-if="!editTask" @click="toggleEditTask">
-                            <div v-if="!task.body">Create a task here</div>
-                            <div v-else>{{ task.body }}</div>
+                            <div v-if="!task.description">Create a task here</div>
+                            <div v-else>{{ task.description }}</div>
                             <div><i class="pi pi-pencil" :class="{ 'uniform-primary-color' : hoverTask, 'text-white' : !hoverTask }"></i></div>
                         </div>
-                        <input type="text" class="form-control col-10" v-model="task.body" v-if="editTask"/>
+                        <input type="text" class="form-control col-10" v-model="task.description" v-if="editTask"/>
                         <div class="offset-1 p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveTask" v-if="editTask">Save</div>
                         <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" v-if="editTask" @click="cancelTaskEdit">Cancel</div>
                         <div class="col-12">
@@ -232,6 +232,7 @@
 
 <script>
 import { ref } from "vue"
+import dateFormatter from '../../../../services/dates/dateformatter'
 export default {
     props: ['addTask', 'taskTime'],
     emits: ['individualtoggletask', 'opentaskeditor'],
@@ -263,6 +264,10 @@ export default {
             emit('opentaskeditor', true)
         }
 
+        const formatDate = (date) => {
+            return dateFormatter.monthDayYear(date)
+        }
+
         return {
             editTask,
             toggleTaskIcon,
@@ -271,7 +276,8 @@ export default {
             outHoverBorder,
             toggle,
             op,
-            openTaskEditor
+            openTaskEditor,
+            formatDate
         }
     }
 }

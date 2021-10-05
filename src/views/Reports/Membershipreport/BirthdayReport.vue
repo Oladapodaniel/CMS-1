@@ -15,21 +15,25 @@
         <div class="centered-items">
           <h3 class="heading-text ml-2">Birthday Report</h3>
         </div>
-        <!-- @click="exportReport" -->
-        <div class="centered-items pr-3">
+        <div class="default-btn border-secondary font-weight-normal c-pointer"
+                @click="() => (showExport = !showExport)"
+                style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+                      <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                </div>
+        </div>
+        <!-- <div class="centered-items pr-3">
           <button
             class="default-btn font-weight-normal"
             @click="() => (showExport = !showExport)"
           >
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div>
+        </div> -->
       </div>
-      <transition name="move" mode="out-in">
+      <!-- <transition name="move" mode="out-in">
         <div class="row my-4" v-if="showExport">
-          <!-- <div class="col-sm-2">Enter file name</div> -->
           <div class="col-sm-5">
-            <!-- <input type="text" class="form-control" /> -->
             <span class="p-float-label ml-n3">
               <InputText
                 id="inputtext"
@@ -48,7 +52,6 @@
               placeholder="Select file type"
             />
           </div>
-          <!-- <div class="">Export</div> -->
           <div @click="downloadFile" class="col-sm-2 offset-sm-1">
             <div
               class="
@@ -64,7 +67,7 @@
             </div>
           </div>
         </div>
-      </transition>
+      </transition> -->
     </div>
 
     <div class="container-fluid my-3 px-0 bg-area">
@@ -122,7 +125,7 @@
             </div>
           </div>
           <!-- <div class="col-12 col-sm-12 col-md-6 col-lg-6"> -->
-          <div class="row table">
+          <div class="row table" :class=" birthdays &&  birthdays.length > 0 ? 'graph-area' : '' ">
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center">
               <div class="col-12 font-weight-bold">Membership By Gender</div>
               <div class="col-12" v-if="genderSummary.length === 0">
@@ -234,21 +237,23 @@ import Calendar from "primevue/calendar";
 // import ByGenderChart from "@/components/charts/PieChart.vue";
 import BirthdayChart from "../../../components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
+import Listbox from 'primevue/listbox';
 import axios from "@/gateway/backendapi";
 import html2pdf from "html2pdf.js";
-import Dropdown from "primevue/dropdown";
-import InputText from "primevue/inputtext";
+// import Dropdown from "primevue/dropdown";
+// import InputText from "primevue/inputtext";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
 
 export default {
   components: {
     Calendar,
+    Listbox,
     // ByGenderChart,
     // PaginationButtons,
     BirthdayChart,
-    Dropdown,
-    InputText,
+    // Dropdown,
+    // InputText,
   },
   setup() {
     const startDate = ref();
@@ -259,7 +264,7 @@ export default {
     const maritalStatusResult = ref([]);
     const showExport = ref(false);
     const fileName = ref("");
-    const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'} ])
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
@@ -490,6 +495,15 @@ export default {
   border-bottom: 0 !important;
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
+}
+
+.graph-area{
+    border: 1px solid #dde2e6;
+    border-radius: 0.5rem;
+    padding: 1rem 0rem;
+    margin: 2rem 0rem !important;
+     width: 100% !important;
+  box-shadow: 0 0.063rem 0.25rem #02172e45;
 }
 
 .remove-styles2 {

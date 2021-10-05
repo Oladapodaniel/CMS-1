@@ -5,11 +5,11 @@
             <div class="col font-weight-700 text-right uniform-primary-color">Actions <i class="pi pi-angle-down"></i></div>
         </div>
         <div class="row mt-5">
-            <div class="col-3">
-                <img :src="personDetails.pictureUrl" class="contact-image" v-if="personDetails.pictureUrl"/>
-                <img src="../../../../assets/people/phone-import.svg" class="contact-image" v-else/>
+            <div class="col-6 offset-3">
+                <img :src="personDetails.pictureUrl" class="contact-image w-100 h-100" v-if="personDetails.pictureUrl"/>
+                <img src="../../../../assets/people/phone-import.svg" class="contact-image w-100 h-100" v-else/>
             </div>
-            <div class="col-9">
+            <div class="col-12 text-center">
                 <div class="contact-name">{{ `${personDetails.firstName ? personDetails.firstName : ""} ${personDetails.lastName ? personDetails.lastName : ""}` }}</div>
                 <div>{{ personDetails.email }}</div>
                 <div><i class="pi pi-copy uniform-primary-color"></i>&nbsp;<i class="pi pi-pencil uniform-primary-color" @click="editContactName"></i></div>
@@ -24,9 +24,10 @@
                 <div class="icon-bg c-pointer" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
                 <div>Email</div>
             </div>
-            <div class="ml-4 c-pointer" @click="call">
+            <!-- @click="call" -->
+            <div class="ml-4 c-pointer"  @click="toggleCallSms">
                 <div class="icon-bg" v-tooltip.top="'Make a phone call'"><i class="pi pi-phone"></i></div>
-                <div>Call</div>
+                <div>Reach</div>
             </div>
             <div class="ml-4 c-pointer" @click="openTaskEditor">
                 <div class="icon-bg" v-tooltip.top="'Create a task'"><i class="pi pi-calendar-plus"></i></div>
@@ -71,7 +72,24 @@
                 <div class="col-12 mt-4 label-text">Contact owner</div>
                 <div class="col-12 mt-2">
                     <!-- <Contacts /> -->
-                    <Dropdown v-model="selectedContact" :options="contacts" :filter="true" class="w-100 phone-input" optionLabel="firstName" placeholder="Select Contact" />
+                    <!-- <Dropdown v-model="selectedContact" :options="contacts" :filter="true" class="w-100 phone-input" optionLabel="firstName" placeholder="Select Contact" /> -->
+                    <Dropdown v-model="selectedContact" :options="contacts" optionLabel="firstName" :filter="true" placeholder="Select a contact" :showClear="false" class="w-100 phone-input" @change="updateOwner">
+                        <template #value="slotProps">
+                            <div class="country-item country-item-value" v-if="slotProps.value">
+                                <!-- <img src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png" /> -->
+                                <div>{{slotProps.value.firstName}} {{slotProps.value.lastName}}</div>
+                            </div>
+                            <span v-else>
+                                {{slotProps.placeholder}}
+                            </span>
+                        </template>
+                        <template #option="slotProps">
+                            <div class="country-item">
+                                <!-- <img src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png" /> -->
+                                <div>{{slotProps.option.firstName}} {{slotProps.option.lastName}}</div>
+                            </div>
+                        </template>
+                    </Dropdown>
                 </div>
                 <!-- <div class="col-5 align-self-center">
                     <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
@@ -86,31 +104,13 @@
             <div class="row">
                 <div class="col-12 mt-4 label-text">Lifecycle stage</div>
                 <div class="col-12">
-                    <Dropdown v-model="selectedLifeCycle" :options="lifeCycle" class="w-100 phone-input" optionLabel="stage" placeholder="Select Contact" />
-                    <!-- <MultiSelect v-model="selectedLifeCycle" :options="lifeCycle" optionLabel="stage" placeholder="Select Life cycle" :filter="true" class="multiselect-custom w-100">
-                            <template #value="slotProps">
-                                <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
-                                    <div>{{option.stage}}</div>
-                                </div>
-                                <template v-if="!slotProps.value || slotProps.value.length === 0">
-                                    Select Member
-                                </template>
-                            </template>
-                            <template #option="slotProps">
-                                <div class="country-item">
-                                    <div>{{slotProps.option.name}}</div>
-                                </div>
-                            </template>
-                        </MultiSelect> -->
+                    <Dropdown v-model="selectedLifeCycle" :options="lifeCycle" class="w-100 phone-input" optionLabel="name" placeholder="Select Contact" @change="updateLifeCycle"/>
                 </div>
-                <!-- <div class="col-5 align-self-center">
-                    <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
-                </div> -->
             </div>
             <div class="row">
                 <div class="col-12 label-text mt-4">Lead Status</div>
                 <div class="col-12 mt-2">
-                    <Dropdown v-model="selectedLeadStatus" :filter="true" :options="leadStatus" class="w-100 phone-input" optionLabel="status" placeholder="Select status" />
+                    <Dropdown v-model="selectedLeadStatus" :filter="false" :options="leadStatus" class="w-100 phone-input" optionLabel="name" placeholder="Select status" @change="updateLeadStatus" />
                 </div>
             </div>
             </div>
@@ -199,31 +199,39 @@
         </OverlayPanel>
 
         <OverlayPanel ref="logDropDown" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-            <div class="p-0 container-fluid">
-                <div class="row d-flex flex-column">
-                    <div class="py-2 px-3 hover-log" @click="toggleLogPane($event)">Log a call</div>
-                    <div class="py-2 px-3 hover-log" @click="toggleLogPane($event)">Log an email</div>
-                </div>
-            </div>
+                    <div class="container-fluid p-0">
+                        <div class="row hover-log" v-for="(item, index) in activityType" :key="index">
+                            <div class="py-2 px-3 " @click="toggleLogPane($event, item)">{{ item.value }}</div>
+                        </div>
+                    </div>
+        </OverlayPanel>
+        
+        <OverlayPanel ref="callDropDown" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                    <div class="container-fluid p-0">
+                        <div class="row">
+                            <div class="py-2 px-3 col-12 hover-log" @click="toggleCallSmsPane($event)">Call</div>
+                            <div class="py-2 px-3 col-12 hover-log" @click="toggleCallSmsPane($event)">SMS</div>
+                        </div>
+                    </div>
         </OverlayPanel>
 
         <!-- Log Pane -->
-        <Dialog :header="'Log ' + logVariable" v-model:visible="displayLogPane" :style="{width: '50vw'}" :position="position" :modal="true">
+        <Dialog :header="'Log ' + selectedLog.value" v-model:visible="displayLogPane" :style="{width: '50vw'}" :position="position" :modal="true">
             <!-- style="height: 480px" -->
            <div class="container-fluid">
                <div class="row">
-                   <div class="col-6">
+                   <div class="col-6 pl-0">
                        <div class="label-text">Contacted</div>
                        <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 mt-1 c-pointer">{{ selectedContactLog }} &nbsp; <i class="pi pi-sort-down"></i></div>
                        <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                             <div class="container p-0">
                                 <div class="row">
-                                    <div class="col-12 py-2 px-3 hover-cursor-cancel">{{ `${personDetails.firstName} ${personDetails.lastName}(${logVariable === 'email' ? personDetails.email : personDetails.phoneNumber})`}}</div>
+                                    <div class="col-12 py-2 px-3 hover-cursor-cancel">{{ `${personDetails.firstName} ${personDetails.lastName}(${selectedLog.value === 'email' ? personDetails.email : personDetails.phoneNumber})`}}</div>
                                 </div>
                             </div>
                         </OverlayPanel>
                    </div>
-                   <div class="col-6">
+                   <div class="col-6 pr-0">
                        <div class="label-text">Call Outcome</div>
                        <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleOutcome" aria:haspopup="true" aria-controls="overlay_panel">{{ Object.keys(selectedCallOutcome).length > 0 ? selectedCallOutcome.value : "Select an outcome &nbsp;" }} <i class="pi pi-sort-down"></i></div>
                        <OverlayPanel ref="outcomeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
@@ -235,7 +243,7 @@
                         </OverlayPanel>
                    </div>
                </div>
-               <div class="row mt-2">
+               <!-- <div class="row mt-2">
                    <div class="col-6">
                        <div class="label-text">Date</div>
                        <div class="mt-1 uniform-primary-color font-weight-700">
@@ -253,24 +261,35 @@
                             </div>
                         </OverlayPanel>
                    </div>
-               </div>
+               </div> -->
                <!-- <div class="row">
                    <div class="col-12">
                        <hr />
                    </div>
                </div> -->
                <div class="row mt-3">
-                   <div class="col-12">
+                   <div class="col-12 p-0">
                        <textarea name="" placeholder="Describe the call..." class="w-100 form-control" rows="6" v-model="callLogDesc"></textarea>
                    </div>
                </div>
-           </div>
-            <template #footer>
-                <div class="row d-flex justify-content-end">
-                    <div class="default-btn text-center">Cancel</div>
-                    <div class="primary-bg default-btn border-0 text-white text-center ml-3" @click="saveLog">Save</div>
+               <div class="row d-flex justify-content-start mt-3">
+                    <div class="primary-bg default-btn border-0 text-white text-center pointer-cursor" @click="saveLog">Save</div>
                 </div>
-            </template>
+           </div>
+        </Dialog>
+       
+        <!-- SMS Pane -->
+        <Dialog header="Send SMS" v-model:visible="displaySMSPane" :style="{width: '50vw'}" :position="position" :modal="true">
+           <div class="container-fluid">
+               <div class="row mt-3">
+                   <div class="col-12 p-0 mt-1">
+                       <textarea name="" placeholder="SMS here" class="w-100 form-control" rows="12" v-model="smsMessage"></textarea>
+                   </div>
+               </div>
+               <div class="row d-flex justify-content-start mt-3">
+                    <div class="primary-bg default-btn border-0 text-white text-center c-pointer" @click="sendSms">Send</div>
+                </div>
+           </div>
         </Dialog>
     <Toast />
 </template>
@@ -283,6 +302,9 @@ import OverlayPanel from 'primevue/overlaypanel';
 import axios from "@/gateway/backendapi";
 import lookupTable from "../../../../services/lookup/lookupservice"
 import Contacts from "./AllMembers.vue"
+import { useRoute } from "vue-router"
+import frmservice from "@/services/FRM/firsttimermanagement"
+import { useStore } from "vuex";
 // import MultiSelect from 'primevue/multiselect';
 // import SinchClient from 'sinch-rtc/sinch.min.js'
 // import { useConfirm } from "primevue/useConfirm";
@@ -296,64 +318,40 @@ export default {
     directives: {
         'tooltip': Tooltip
     },
-    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog"],
-    props: ["personDetails", "callLog"],
+    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog", "allcontact","updatelogtoview"],
+    props: ["personDetails", "callLog", "activityType"],
     setup (props, { emit }) {
         // const confirm = useConfirm()
         // const toast = useToast()
-        const selectedContact = ref("")
-        const contacts = ref([
-            {
-                name: 'Oladapo Daniel'
-            },
-            {
-                name: 'Godstar Oluwatosin'
-            },
-            {
-                name: 'Peter Ihesie'
-            }
-        ])
+        const route = useRoute()
+        const store = useStore()
+        const selectedContact = ref({})
+        const contacts = ref([])
         const lifeCycle = ref([
-            {
-                stage: 'FirstTimer'
-            },
-            {
-                stage: 'Believers Foundation Class'
-            },
-            {
-                stage: 'Join Cell Group'
-            },
-            {
-                stage: 'Water Baptism'
-            },
-            {
-                stage: 'Wofbi'
-            },
-            {
-                stage: 'Holy Spirit Baptism'
-            },
-            {
-                stage: 'Join Church Department'
-            }
+            // {
+            //     stage: 'FirstTimer'
+            // },
+            // {
+            //     stage: 'Believers Foundation Class'
+            // },
+            // {
+            //     stage: 'Join Cell Group'
+            // },
+            // {
+            //     stage: 'Water Baptism'
+            // },
+            // {
+            //     stage: 'Wofbi'
+            // },
+            // {
+            //     stage: 'Holy Spirit Baptism'
+            // },
+            // {
+            //     stage: 'Join Church Department'
+            // }
         ])
         const selectedLifeCycle = ref("")
-        const leadStatus = ref([
-            {
-                status: 'In Progress'
-            },
-            {
-                status: 'Unqualified'
-            },
-            {
-                status: 'Active'
-            },
-            {
-                status: 'Paused'
-            },
-            {
-                status: 'Completed'
-            },
-        ])
+        const leadStatus = ref(frmservice.leadStatus())
         // 'Busy', 'Connected', 'Left live message', 'Left voicemail', 'No answer', 'Wrong number'
         const outcomeList = ref([])
         const selectedLeadStatus = ref("")
@@ -364,14 +362,15 @@ export default {
         const phoneNumber = ref(8076543254)
         const email = ref('olad@gamil.com')
         const logDropDown = ref(false)
+        const callDropDown = ref(false)
         const position = ref('bottomright')
         const displayLogPane = ref(false)
+        const displaySMSPane = ref(false)
         const contactRef = ref(false)
         const outcomeRef = ref(false)
         const selectedCallOutcome = ref({})
         const date = ref("")
         const timeRef = ref(false)
-        const logVariable = ref("")
         const callLogDesc = ref("")
         const contactIcon = ref(true)
         const insightIcon = ref(false)
@@ -383,6 +382,9 @@ export default {
         const selectedJoinInterest = ref(null);
         const wantVisitArr = ref(["Yes", "No", "Maybe", "On Transit"]);
         const selectedVisitOption = ref(null);
+        const selectedLog = ref({})
+        const smsMessage = ref("")
+        const isoCode = ref("")
 
 
         const selectedContactLog = computed(() => {
@@ -450,20 +452,35 @@ export default {
               
             }
 
+        const toggleCallSms = (event) => {
+            callDropDown.value.toggle(event);
+        }
+
         const toggleLog = (event) => {
             logDropDown.value.toggle(event);
 
         }
 
-        const toggleLogPane = (e) => {
+        const toggleLogPane = (e, item) => {
             logDropDown.value.hide();
             displayLogPane.value = true;
             console.log(e)
-            if (e.target.innerText.toLowerCase() === "log a call") {
-                logVariable.value = "call"
+            selectedLog.value = item
+        }
+        
+        const toggleCallSmsPane = (e) => {
+            callDropDown.value.hide();
+            if (e.target.innerText.toLowerCase() === "call") {
+                call()
             }   else {
-                logVariable.value = "email"
+                console.log('sms')
+                toggleSMSPane()
             }
+        }
+
+        const toggleSMSPane = () => {
+            callDropDown.value.hide();
+            displaySMSPane.value = true;
         }
 
         const toggleContact = (event) => {
@@ -478,9 +495,56 @@ export default {
             timeRef.value.toggle(event);
         }
 
-        const saveLog = () => {
+        const saveLog = async() => {
             displayLogPane.value = false;
-            emit('calllogdesc', { desc: callLogDesc.value, type: logVariable.value })
+            // emit('calllogdesc', { desc: callLogDesc.value, type: selectedLog.value.value })
+
+            let body = {
+                outcome: selectedCallOutcome.value.id,
+                description: callLogDesc.value,
+                firsttimerID: route.params.personId,
+                type: selectedLog.value.id
+            }
+
+            try {
+                let data = await frmservice.createLog(body)
+                console.log(data)
+                emit('updatelogtoview')
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
+        const getIsoCode = () => {
+            if (store.getters.currentUser && store.getters.currentUser.isoCode) {
+            isoCode.value = store.getters.currentUser.isoCode;
+            } else {
+            axios
+                .get("/api/Membership/GetCurrentSignedInUser")
+                .then((res) => {
+                isoCode.value = res.data.isoCode;
+                })
+                .catch((err) => console.log(err));
+            }
+        }
+        getIsoCode()
+
+        const sendSms = async() => {
+            let body = {
+                message: smsMessage.value,
+                toOthers: props.personDetails.phoneNumber,
+                isoCode: isoCode.value,
+                gateWayToUse: "hostedsms",
+            }
+            console.log(body)
+            try {
+                let res = await frmservice.sendSms(route.params.personId, body)
+                console.log(res)
+            }
+            catch (err) {
+                console.log(err)
+            }
         }
 
         watchEffect(() => {
@@ -531,13 +595,82 @@ export default {
           try {
             const { data } = await axios.get('/api/People/GetPeopleBasicInfo');
             contacts.value = data;
+            emit('allcontact', data)
           } catch (error) {
             console.log(error);
           }
         };
         getMembers();
 
+        const updateOwner = async() => {
+            const payload = {
+                firstTimerID: route.params.personId,
+                ownerID: selectedContact.value.id
+            }
+            try {
+                let res = await frmservice.updateContactOwner(route.params.personId, payload)
+                console.log(res)
+                emit('updatelogtoview')
+            }
+            catch (err) {
+                console.log(err)
+            }
 
+        }
+        
+        const getLifeCycle = async() => {
+            try {
+                let res = await frmservice.getLifeCycle()
+                console.log(res)
+                lifeCycle.value = res.returnObject
+            }
+            catch (err) {
+                console.log(err)
+            }
+
+        }
+        getLifeCycle()
+
+        const updateLifeCycle = async() => {
+            const payload = {
+                firstTimerID: route.params.personId,
+                stageID: selectedLifeCycle.value.id
+            }
+            try {
+                let res = await frmservice.updateLifeCycle(route.params.personId, payload)
+                console.log(res)
+                emit('updatelogtoview')
+            }
+            catch (err) {
+                console.log(err)
+            }
+
+        }
+
+        watchEffect(() => {
+            if (props.personDetails && lifeCycle.value.length > 0) {
+                selectedLifeCycle.value = lifeCycle.value.find(i => i.id === props.personDetails.firstTimerCycleStageID)
+            }
+            
+            if (props.personDetails && contacts.value.length > 0) {
+                selectedContact.value = contacts.value.find(i => i.id === props.personDetails.contactOwnerID)
+            }
+
+            if (props.personDetails && leadStatus.value.length > 0) {
+                selectedLeadStatus.value = leadStatus.value.find(i => i.id === props.personDetails.leadStatus)
+            }
+        })
+
+        const updateLeadStatus = async() => {
+            try {
+                let res = await frmservice.updateLeadStatus(route.params.personId, selectedLeadStatus.value.id)
+                console.log(res)
+                emit('updatelogtoview')
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
 
 
         return {
@@ -576,7 +709,6 @@ export default {
             date,
             toggleTime,
             timeRef,
-            logVariable,
             outcomeList,
             selectedCallOutcome,
             chooseCallOutcome,
@@ -594,7 +726,18 @@ export default {
             joinInterestArr,
             selectedJoinInterest,
             wantVisitArr,
-            selectedVisitOption
+            selectedVisitOption,
+            updateOwner,
+            updateLifeCycle,
+            selectedLog,
+            updateLeadStatus,
+            callDropDown,
+            toggleCallSms,
+            toggleCallSmsPane,
+            displaySMSPane,
+            sendSms,
+            smsMessage,
+            isoCode
         }
             
     }

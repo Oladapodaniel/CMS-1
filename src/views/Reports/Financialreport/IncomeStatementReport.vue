@@ -14,23 +14,41 @@
       >
         <div class="centered-items">
           <h3 class="heading-text ml-2">Income Statement Report</h3>
-           <p class="ml-2">This is a detailed report of all the income and expenses of the ministry in a given period, it also gives the margin of the two.</p>
         </div>
 
-        <div class="centered-items pr-3">
+        <!-- <div class="centered-items pr-3">
           <button class="default-btn font-weight-normal"
           @click="() => (showExport = !showExport)">
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div>
+        </div> -->
+
+              <div
+          class="default-btn font-weight-normal c-pointer mr-4"
+          @click="() => (showExport = !showExport)"
+          style="width: fixed; position:relative">
+                   Export As &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                   <div
+                        class=" c-pointer"
+                        style="width: 6rem; z-index:1000; position:absolute"
+                        v-if="showExport">
+
+                         <Listbox
+                         @click="downloadFile"
+                         v-model="selectedFileType"
+                         :options="bookTypeList"
+                         optionLabel="name"/>
+                    </div>
+              </div>
+
+                <p class="ml-2">A detailed report of all incomes and expenses of the ministry in a given period.</p>
+
       </div>
 <!-- name="fade" -->
-    <transition
+    <!-- <transition
       name="move" mode="out-in">
      <div class="row my-4" v-if="showExport">
-        <!-- <div class="col-sm-2">Enter file name</div> -->
         <div class="col-sm-5">
-          <!-- <input type="text" class="form-control" /> -->
           <span class="p-float-label ml-n1">
             <InputText
               id="inputtext"
@@ -49,7 +67,6 @@
             placeholder="Select file type"
           />
         </div>
-        <!-- <div class="">Export</div> -->
         <div @click="downloadFile" class="col-sm-2 offset-sm-1">
           <div
 		class="
@@ -66,7 +83,7 @@
         </div>
       </div>
 
-    </transition>
+    </transition> -->
 
 
     </div>
@@ -78,7 +95,7 @@
         class="row d-flex flex-row justify-content-center align-items-center"
       >
         <div class="col-md-2">
-          <h4 class="small font-weight-bold ml-2">Date Range</h4>
+          <h4 class="small font-weight-bold ml-4">Date Range</h4>
         </div>
 
         <div class="col-md-7 d-sm-flex">
@@ -223,10 +240,12 @@ import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
 // import IncomeStatmentColumnChart from "../../../components/charts/ColumnChart2.vue";
 import NegativeChart from "../../../components/charts/NegativeColumnChart";
-import Dropdown from "primevue/dropdown";
-import InputText from "primevue/inputtext";
+// import Dropdown from "primevue/dropdown";
+// import InputText from "primevue/inputtext";
+import Listbox from 'primevue/listbox';
 import printJS from "print-js";
-import exportService from "../../../services/exportFile/exportservice";
+import exportService from "../../../services/exportFile/exportserviceforincomestatement.js";
+import groupResponse from '../../../services/groupArray/groupResponse.js'
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 
 export default {
@@ -235,8 +254,9 @@ export default {
     ByGenderChart,
     // IncomeStatmentColumnChart,
     NegativeChart,
-      Dropdown,
-    InputText,
+      // Dropdown,
+    // InputText,
+    Listbox,
     // PaginationButtons,
   },
   setup() {
@@ -253,10 +273,13 @@ export default {
     const incomeStatementData = ref([])
      const showExport = ref(false);
     const fileName = ref("");
-    const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    // const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
+    const fundType = ref([]);
+    const funds = ref([]);
 
 
 
@@ -273,6 +296,7 @@ export default {
           churchIncomes(incomeStatement.value, 'accountCategory');
           churchExpense(incomeStatement.value, 'accountCategory');
           pieChart(incomeStatement.value, 'accountCategory')
+          groupedFundType()
 
               /* function to call service and populate table */
           setTimeout(() => {
@@ -289,6 +313,20 @@ export default {
           console.log(err);
         });
     };
+
+        const groupedFundType = () => {
+      fundType.value = groupResponse.groupData(incomeStatement.value, 'fund')
+      console.log(fundType.value, "🎼🎼🎉🎉");
+        for (const prop in fundType.value) {
+          funds.value.push({name:prop,
+          value: fundType.value[prop].reduce((acc, cur) => {
+                  return acc + cur.amount
+                }, 0),
+          })
+      }
+      console.log(funds.value);
+    };
+    groupedFundType()
 
                 /* Code For Exporting File */
     const downloadFile = () => {
@@ -461,7 +499,10 @@ export default {
       fileName,
       bookTypeList,
       selectedFileType,
-      downloadFile
+      downloadFile,
+      fundType,
+      funds,
+      groupedFundType,
       // incomeAndExpenseChart,
       // groupedExpenseAndIncomeStatements
     };

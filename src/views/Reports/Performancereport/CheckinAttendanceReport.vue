@@ -2,12 +2,17 @@
     <div class="container-wide container-top mb-5">
         <div class="row d-flex justify-content-between">
             <div class="header">Attendance Report</div>
-            <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
+            <div class="default-btn font-weight-normal c-pointer"
+                @click="() => (showExport = !showExport)"
+                style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+                      <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                </div>
+            </div>
+            <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
         </div>
-        <div class="row my-4" v-if="showExport">
-            <!-- <div class="col-sm-2">Enter file name</div> -->
+        <!-- <div class="row my-4" v-if="showExport">
             <div class="col-sm-5">
-                <!-- <input type="text" class="form-control" /> -->
                 <span class="p-float-label">
                     <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
                     <label for="inputtext">Enter file name</label>
@@ -16,9 +21,8 @@
             <div class="col-sm-4">
                 <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
             </div>
-            <!-- <div class="">Export</div> -->
             <div @click="downLoadExcel" class="cursor-pointer col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center justify-content-center">Export</div></div>
-        </div>
+        </div> -->
         <div class="row mt-4 py-4 px-3" style="background: #ebeff4;  border-radius: 0.5rem;">
             <!-- <div class="col-sm-2">Date Range</div> -->
             <div class="col-sm-9">
@@ -72,7 +76,8 @@
 <script>
 import { ref } from "vue"
 import Dropdown from "primevue/dropdown";
-import InputText from 'primevue/inputtext';
+// import InputText from 'primevue/inputtext';
+import Listbox from 'primevue/listbox';
 import Calendar from 'primevue/calendar';
 import GroupReportTable from "./CheckinAttendanceReportTable.vue"
 import axios from "@/gateway/backendapi";
@@ -85,7 +90,8 @@ export default {
     components: {
         Dropdown,
         Calendar,
-        InputText,
+        Listbox,
+        // InputText,
         GroupReportTable
     },
     setup() {
@@ -99,7 +105,7 @@ export default {
         const attendanceReport = ref([])
         const groupedReport = ref([])
         const groupedReportByDate = ref([])
-        const bookTypeList = ref([ 'xlsx', 'csv', 'txt' ])
+        const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'} ])
         const selectedFileType = ref("")
         const fileName = ref("")
         const showExport = ref(false)
