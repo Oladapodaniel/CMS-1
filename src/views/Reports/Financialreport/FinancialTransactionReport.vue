@@ -21,6 +21,25 @@
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
         </div> -->
+
+         <div
+          class="default-btn font-weight-normal c-pointer mr-4"
+          @click="() => (showExport = !showExport)"
+          style="width: fixed; position:relative">
+                   Export As &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                   <div
+                        class=" c-pointer"
+                        style="width: 6rem; z-index:1000; position:absolute"
+                        v-if="showExport">
+
+                         <Listbox
+                         @click="downloadFile"
+                         v-model="selectedFileType"
+                         :options="bookTypeList"
+                         optionLabel="name"/>
+                    </div>
+              </div>
+
       </div>
     </div>
     <!--end of header area -->
@@ -120,11 +139,15 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
+import printJS from "print-js";
+import exportService from "../../../services/exportFile/exportservice";
+import Listbox from 'primevue/listbox';
 
 export default {
   components: {
     Calendar,
     ByGenderChart,
+    Listbox,
     // PaginationButtons,
   },
   setup() {
@@ -132,6 +155,13 @@ export default {
     const endDate = ref("");
     const accountTransaction = ref([]);
     // const firstTimerChart = ref([])
+      const showExport = ref(false);
+    const fileName = ref("");
+    // const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
+    const selectedFileType = ref("");
+    const fileHeaderToExport = ref([]);
+    const fileToExport = ref([]);
     const generateReport = () => {
       axios
         .get(`/api/Reports/financials/getAccountTransactionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
@@ -140,11 +170,35 @@ export default {
           console.log(res, "🎄🎄🎄");
           accountTransaction.value = res.data;
           console.log(accountTransaction.value, "✌️✌️");
+            /* function to call service and populate table */
+          setTimeout(() => {
+            fileHeaderToExport.value = exportService.tableHeaderToJson(
+              document.getElementsByTagName("th")
+            );
+            fileToExport.value = exportService.tableToJson(
+              document.getElementById("table")
+            );
+          }, 1000);
+          /* End function to call service and populate table */
         })
         .catch((err) => {
           console.log(err);
         });
     };
+
+
+       /* Code For Exporting File */
+    const downloadFile = () => {
+ console.log(fileHeaderToExport.value, "🎁🎁")
+
+  console.log(fileName.value, "🎁🎁")
+  alert(selectedFileType.value)
+  console.log(fileToExport.value, "🎁🎁")
+
+      exportService.downLoadExcel(
+        selectedFileType.value, document.getElementById("element-to-print"), fileName.value, fileHeaderToExport.value,  fileToExport.value,);
+    };
+    /* End Code For Exporting File */
 
      const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
@@ -162,6 +216,12 @@ export default {
       accountTransaction,
       generateReport,
       formatDate,
+      fileName,
+      downloadFile,
+      showExport,
+      bookTypeList,
+      printJS,
+      selectedFileType,
       // firstTimerChart
     };
   },

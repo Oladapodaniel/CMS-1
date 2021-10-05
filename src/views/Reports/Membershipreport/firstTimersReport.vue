@@ -13,25 +13,43 @@
         "
       >
         <div class="centered-items">
-          <h3 class="heading-text ml-2">First Timers Report</h3>
+          <h3 class="heading-text">First Timers Report</h3>
         </div>
 
-        <div  class="centered-items pr-3">
+        <!-- <div  class="centered-items pr-3">
           <button
             class="default-btn font-weight-normal"
-
-            @click="() => (showExport = !showExport)"
-          >
+            @click="() => (showExport = !showExport)">
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div>
-      </div>
+        </div> -->
+          <div
+          class="default-btn font-weight-normal c-pointer mr-4"
+          @click="() => (showExport = !showExport)"
+          style="width: fixed; position:relative">
+                   Export As &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                   <div
+                        class=" c-pointer"
+                        style="width: 6rem; z-index:1000; position:absolute"
+                        v-if="showExport">
 
-      <transition name="move" mode="out-in">
+                         <Listbox
+                         @click="downloadFile"
+                         v-model="selectedFileType"
+                         :options="bookTypeList"
+                         optionLabel="name"/>
+                    </div>
+              </div>
+
+
+      </div>
+      <!-- placeholder="Select file type" -->
+
+      <!-- <transition name="move" mode="out-in">
           <div class="row my-4" v-if="showExport">
-        <!-- <div class="col-sm-2">Enter file name</div> -->
+
         <div class="col-sm-5">
-          <!-- <input type="text" class="form-control" /> -->
+
           <span class="p-float-label ml-n3">
             <InputText
               id="inputtext"
@@ -50,7 +68,6 @@
             placeholder="Select file type"
           />
         </div>
-        <!-- <div class="">Export</div> -->
         <div @click="downloadFile" class="col-sm-2 offset-sm-1">
           <div
             class="
@@ -66,7 +83,7 @@
           </div>
         </div>
       </div>
-      </transition>
+      </transition> -->
 
     </div>
     <!--end of header area -->
@@ -76,7 +93,7 @@
         style="padding: 0.2rem 0 1.2rem 0"
         class="row d-flex flex-row justify-content-center align-items-center"
       >
-        <div class="col-md-2">
+        <div class="col-md-2 pl-4">
           <h4 class="small font-weight-bold ml-2">Date Range</h4>
         </div>
 
@@ -200,17 +217,19 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
-import Dropdown from "primevue/dropdown";
-import InputText from "primevue/inputtext";
+// import Dropdown from "primevue/dropdown";
+// import InputText from "primevue/inputtext";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
+import Listbox from 'primevue/listbox';
 
 export default {
   components: {
     Calendar,
     ByGenderChart,
-    Dropdown,
-    InputText,
+    // Dropdown,
+    Listbox,
+    // InputText,
     // PaginationButtons
   },
   setup() {
@@ -222,7 +241,8 @@ export default {
     const maritalChartInfo = ref([]);
     const showExport = ref(false);
     const fileName = ref("");
-    const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    // const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
@@ -281,13 +301,14 @@ export default {
 
     /* Code For Exporting File */
     const downloadFile = () => {
+ console.log(fileHeaderToExport.value, "🎁🎁")
+
+  console.log(fileName.value, "🎁🎁")
+  alert(selectedFileType.value)
+  console.log(fileToExport.value, "🎁🎁")
+
       exportService.downLoadExcel(
-        selectedFileType.value,
-        document.getElementById("element-to-print"),
-        fileName.value,
-        fileHeaderToExport.value,
-        fileToExport.value
-      );
+        selectedFileType.value, document.getElementById("element-to-print"), fileName.value, fileHeaderToExport.value,  fileToExport.value,);
     };
     /* End Code For Exporting File */
 
@@ -344,8 +365,15 @@ export default {
     /* outline: transparent !important; */
     max-height: 40px;
     background: #6c757d47 !important;
+    color:#000;
+    text-decoration: none;
     min-width: 121px;
 }
+
+.default-btn:hover {
+  text-decoration: none;
+}
+
 
 .generate-report {
   font-size: 1rem;
@@ -434,11 +462,11 @@ export default {
 }
 @keyframes move-in {
   0% {
-    transform: translateX(-100px);
+    transform: translateY(-100px);
     opacity: 0;
   }
   100% {
-    transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
   }
 
