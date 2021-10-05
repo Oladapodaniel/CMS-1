@@ -1,4 +1,4 @@
-<template> 
+<template>
     <div class="container-top container adjust-font">
         <div class="row">
             <div class="col-4 p-0 side-bar">
@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-6 mt-3">
                         <span class="p-input-icon-right">
-                            <InputText type="text" placeholder="Search activities" @input="searchActivities"/>
+                            <InputText type="text" placeholder="Search activities" v-model="searchActivitiesText"/>
                             <i class="pi pi-search uniform-primary-color" />
                         </span>
                     </div>
@@ -49,13 +49,13 @@
               
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
-                        <Activity :activities="groupedActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" :taskTime="taskTime" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @savetask2="saveTaskItem2" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp" @hovertask2="setHoverTaskProp2" @outhovertask2="setOutHoverTaskProp2" :loader="loader"/>
+                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" :taskTime="taskTime" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @savetask2="saveTaskItem2" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp" @hovertask2="setHoverTaskProp2" @outhovertask2="setOutHoverTaskProp2" :loader="loader"/>
                     </div>
                     <div class="col-12" v-if="showNotes" transition="bounce">
                         <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
                     </div>
                     <div class="col-12" v-if="showEmails" transition="bounce">
-                        <Emails @openemailmodal="openEmailModal"/>
+                        <Emails @openemailmodal="openEmailModal" :emailList="emailList"/>
                     </div>
                     <div class="col-12" v-if="showCalls" transition="bounce">
                         <Calls :personDetails="personDetails" :logList="logList" @individualcallicon="setCallLogIcon" @opencalllogpane="openCallLogPane" @hoverLog="setHoverLogProp" @outhoverLog="setOutHoverLogProp"/>
@@ -71,13 +71,11 @@
     <!-- Modal for Note -->
             
     <Dialog header="Create note" v-model:visible="displayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
-        <Editor v-model="note" editorStyle="height: 320px"/>
-        <template #footer>
-            <div class="row d-flex justify-content-end">
-                <div class="default-btn text-center">Cancel</div>
-                <div class="primary-bg default-btn border-0 text-white text-center ml-3" @click="saveNote">Save</div>
-            </div>
-        </template>
+        <!-- <Editor v-model="note" editorStyle="height: 320px"/> -->
+        <textarea v-model="note" rows="12" class="form-control mt-4" placeholder="Type your note..."></textarea>
+         <div class="d-flex justify-content-start mt-2">
+            <div class="primary-bg default-btn border-0 text-white text-center c-pointer" @click="saveNote">Save</div>
+         </div>
     </Dialog>
    
    <!-- Modal for email -->
@@ -90,7 +88,7 @@
                 </div>
                 <div class="col-12 mt-3 text-center">
                     <!-- Connect your email account to Churchplus to begin sending emails from your CRM. All your email conversations will appear in the timeline below.Learn more -->
-                    Send an email from your FRM to Micheal Jordan. All email and conversations will appear in the timeline below.
+                    Send an email from your FRM to {{ personDetails.firstName }} {{ personDetails.lastName }}. All email and conversations will appear in the activity and email tab.
                 </div>
                 <!-- <div class="col-4 mt-5">
                     <div class="mail-connect">
@@ -126,18 +124,18 @@
                     </span>
                 </div>
                 <div class="col-12 mt-4">
-                    <!-- <input type="text" class="form-control" v-model="emailSubject" placeholder="subject"/> -->
-                    <span class="p-float-label">
+                    <input type="text" class="form-control" v-model="emailSubject" placeholder="subject"/>
+                    <!-- <span class="p-float-label">
                         <InputText id="inputtext" class="w-100" style="border-radius: 0.25rem !important; border: 1px solid #ced4da !important;" type="text" />
                         <label for="inputtext">Enter your subject</label>
-                    </span>
+                    </span> -->
                 </div>
                 <div class="col-12 mt-3">
                     <Editor v-model="emailBody" editorStyle="height: 260px"/>
                 </div>
                 <div class="col-12 mt-2 d-flex justify-content-start">
                     <!-- <Button label="Send" icon="pi pi-check"  autofocus /> -->
-                    <div class="primary-bg default-btn border-0 text-white text-center" @click="sendEmail">Send</div>
+                    <div class="primary-bg default-btn border-0 text-white text-center c-pointer" @click="sendEmail">Send</div>
                 </div>
             </div>
         </div>
@@ -177,7 +175,7 @@
                             </div>
                             <OverlayPanel ref="reminderRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                 <div class="container-fluid p-0">
-                                    <div class="row hover-log" v-for="(item, index) in reminder" :key="index">
+                                    <div class="row hover-log" v-for="(item, index) in getReminder" :key="index">
                                         <div class="py-2 px-3 " @click="setReminder(item)">{{ item.name }}</div>
                                     </div>
                                 </div>
@@ -242,7 +240,7 @@
                         <div class="col-12">
                         <textarea class="form-control col-12 mt-3" rows="4" v-model="taskNote" placeholder="Notes..."></textarea>
                         <div class="d-flex justify-content-start">
-                            <div class="col-2 mt-3 pointer-cursor primary-bg default-btn border-0 text-white text-center" @click="saveTask">Save</div>
+                            <div class="col-2 mt-3 pointer-cursor primary-bg default-btn border-0 text-white text-center c-pointer" @click="saveTask">Save</div>
                         </div>
                         </div>
             
@@ -314,6 +312,7 @@ export default {
         const taskNote = ref("")
         const personDetails = ref({})
         const logList = ref([])
+        const emailList = ref([])
         const activities = ref([])
         const callLog = ref(false)
         const activityType = ref([])
@@ -324,7 +323,7 @@ export default {
         const dueDate = ref([])
         const dueDateRef = ref("")
         const selectedDueDate = ref({})
-        const reminder = ref([])
+        const reminder = ref(getReminder)
         const reminderRef = ref("")
         const selectedReminder = ref({})
         const allContacts = ref([])
@@ -332,6 +331,7 @@ export default {
         const contactRef = ref("")
         const loader = ref(false)
         const groupedActivities = ref([])
+        const searchActivitiesText = ref("")
 
         
 
@@ -378,12 +378,23 @@ export default {
         const openPosition = () => {
             displayPosition.value = true;
         };
-        const saveNote = () => {
+        const saveNote = async() => {
             displayPosition.value = false;
-            let noteContent = note.value.slice(3, -4)
-            noteList.value.unshift({ body: noteContent })
+            
+            let body = {
+            title: "string",
+            note: note.value,
+            firsttimerID: route.params.personId,
+            type: 91
+            }
+            try {
+                let res = await frmservice.saveNote(route.params.personId, body)
+                console.log(res)
+            }
+            catch (err) {
+                console.log(err)
+            }
 
-            activities.value.unshift({ body: noteContent, type: 'note' })
             note.value = ""
         };
         
@@ -495,17 +506,19 @@ export default {
         const setDueDate = (item) => {
             dueDateRef.value.hide();
             selectedDueDate.value = item
+            console.log(selectedDueDate.value)
         }
         
         const setReminder = (item) => {
+            console.log(item)
             reminderRef.value.hide();
             selectedReminder.value = item
         }
 
         const saveTask = async() => {
             taskDisplayPosition.value = false;
-            taskList.value.unshift({ body: theTask.value })
-            activities.value.unshift({ body: theTask.value, type: 'task' })
+            // taskList.value.unshift({ body: theTask.value })
+            // activities.value.unshift({ body: theTask.value, type: 'task' })
             
 
             let payload = {
@@ -634,16 +647,24 @@ export default {
         }
         getDueDate()
        
-       const getReminder = () => {
-            try {
-                let result = frmservice.reminder()
+       const getReminder = computed(() => {
+           if (Object.keys(selectedDueDate.value).length > 0) {
+            // try {
+                let result = frmservice.reminder(selectedDueDate.value.value)
                 console.log(result);
-                reminder.value = result
-            } catch (err) {
-                console.log(err)
-            }
-        }
-        getReminder()
+                return result
+                // reminder.value = result
+            // } catch (err) {
+            //     console.log(err)
+            // }
+           } else {
+               let result = frmservice.reminder()
+                console.log(result);
+                // reminder.value = result
+                return result
+           }
+        })
+        // getReminder()
 
         const setAllContacts = (payload) => {
             allContacts.value = payload
@@ -685,6 +706,7 @@ export default {
             console.log(type)
             noteList.value = type[91]
             taskList.value = type[87]
+            emailList.value = type[88]
             
             // Group by date
             const mappedActivities = activities.value.map(i => {
@@ -708,8 +730,19 @@ export default {
         }
 
         const searchActivities = computed(() => {
-            // if (groupedActivities.value.length === 0) return []
-            // return 
+            if (searchActivitiesText.value == "" ) return groupedActivities.value
+            let groupedArrResult = []
+            groupedActivities.value.forEach(i => {
+                 let searchedResult =  i.value.filter(j => {
+                    if (j.description) return j.description.toLowerCase().includes(searchActivitiesText.value.toLowerCase())
+                })
+                groupedArrResult.push({
+                    name: i.name,
+                    value: searchedResult
+                })
+            })
+            let resultFiltered = groupedArrResult.filter(i => i.value.length !== 0)
+            return resultFiltered
         })
 
         return {
@@ -798,6 +831,9 @@ export default {
             updateLogToView,
             loader,
             groupedActivities,
+            searchActivitiesText,
+            getReminder,
+            emailList,
             searchActivities
         }
     }
