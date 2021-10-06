@@ -339,11 +339,30 @@
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
               <button class="btn default-btn btnfb" @click="facebookLogin">Connect</button>
-              <div id="status"></div>response
+              <div id="status"></div>
             </div>
           </div>
         </div>
       </div>
+      <Dialog header="Header" v-model:visible="display" >
+           <div class="container">
+             <div class="row">
+               <div class="col-12">
+                 Congratulations
+               </div>
+               <div class="col-12">
+                   Your facebook account has been connected to churchplus.
+               </div>
+               <div class="col-12">
+                   Below are the pages you manage, select the one you will like to post to from churchplus.
+               </div>
+               <div class="col-12">
+                   {{ userPages }}
+               </div>
+
+             </div>
+           </div>
+      </Dialog>
       <!--facebook area ended  -->
       <!--instagram area  -->
       <div class="row mx-2 mx-md-0 my-4">
@@ -457,6 +476,7 @@ export default {
     const toast = useToast()
     const display = ref(false);
     const display1 = ref(false)
+    const userPages = ref([])
     const showDisplay =() =>{
       return display.value= true
     }
@@ -475,10 +495,18 @@ export default {
   //       'into this webpage.';
   //   }
   // }
-  
+  const showPageList = async(response) => {
+    FB.api(`https://graph.facebook.com/v12.0/${response.authResponse.userID}/accounts`, (res) => {
+       display.value = true;
+      console.log(res);
+      userPages.value = res
+    })
+   
+  }
     const facebookLogin = () => {
       FB.login(
         function(response) {
+          showPageList(response)
           console.log(response)
           
         },
@@ -715,7 +743,9 @@ export default {
       facebookLogin,
       // pageAccessToken,
       getPageAccessToken,
-      getSocialMediaContact
+      getSocialMediaContact,
+      showPageList,
+      userPages
     };
   },
 };
