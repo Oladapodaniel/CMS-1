@@ -476,11 +476,15 @@ export default {
   //   }
   // }
   
-    const facebookLogin = () => {               // Called when a person is finished with the Login Button.
-      FB.getLoginStatus(function(response) {   // See the onlogin handler
-        console.log(response);
-      });
-    }
+    const facebookLogin = () => {
+      FB.login(
+        function(response) {
+          console.log(response)
+          
+        },
+        { scope: "user_birthday" }
+      );
+    };
 
     // const testAPI = () => {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
     //   console.log('Welcome!  Fetching your information.... ');
