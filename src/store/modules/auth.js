@@ -46,7 +46,11 @@ export default {
     },
 
     removeSMSUnitCharge(state, payload) {
-      state.currentUser.smsBalance = state.currentUser.smsBalance - payload;
+      console.log();
+      if(state.currentUser && state.currentUser.smsBalance){
+        state.currentUser.smsBalance = state.currentUser.smsBalance - payload;
+      }
+      
     },
 
     addPurchasedUnits(state, payload) {

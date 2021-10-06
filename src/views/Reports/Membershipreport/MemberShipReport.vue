@@ -110,7 +110,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="" ></label>
                     <div class="mt-2" @click="genarateReport">
-                        <button class="btn default-btn border-0 generate-report "><div class="text-white">Generate </div></button>
+                        <button class=" default-btn generate-report c-pointer font-weight-normal ">Generate </button>
                     </div>
                 </div>
             </div>
@@ -191,7 +191,7 @@
             <!-- <div class="row "> -->
                 <section>
                     <!-- table header -->
-                    <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness  "
+                    <div id="element-to-print" class=" container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness  "
                     :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                         <table class="table remove-styles mt-0 table-hover table-header-area " id="table" >
                         <thead class="table-header-area-main" >
@@ -276,7 +276,7 @@ export default {
     const ageGroupChartResult = ref([]);
     const showExport = ref(false);
     const fileName = ref("")
-    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'} ])
+    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'}, {name: 'pdf'} ])
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);
@@ -389,7 +389,7 @@ export default {
     })
 
       const downloadFile = () => {
-        exportService.downLoadExcel(selectedFileType.value, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
+        exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
       }
 
     //  const downLoadExcel = () => {
@@ -615,13 +615,34 @@ export default {
 }
 
 
+.default-btn {
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    /* outline: transparent !important; */
+    max-height: 40px;
+    background: #6c757d47 !important;
+    color:#000;
+    text-decoration: none;
+    min-width: 121px;
+}
+
+.default-btn:hover {
+  text-decoration: none;
+}
+
+
 .generate-report {
   font-size: 1rem;
   color: #fff;
-  background-color: #136acd;
+  background-color: #136acd !important ;
   border: none;
   min-width: 7rem;
-  border: 0
 }
 
 .heading-text {

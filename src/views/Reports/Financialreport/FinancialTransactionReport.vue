@@ -95,7 +95,7 @@
     <section>
       <!-- table header -->
       <div v-if="accountTransaction.length > 0">
-            <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+            <div id="element-to-print" class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
         <table class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
@@ -161,7 +161,7 @@ export default {
       const showExport = ref(false);
     const fileName = ref("");
     // const bookTypeList = ref(["xlsx", "csv", "txt"]);
-    const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
+    const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "pdf" }]);
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
@@ -199,7 +199,7 @@ export default {
   console.log(fileToExport.value, "🎁🎁")
 
       exportService.downLoadExcel(
-        selectedFileType.value, document.getElementById("element-to-print"), fileName.value, fileHeaderToExport.value,  fileToExport.value,);
+        selectedFileType.value.name, document.getElementById("element-to-print"), fileName.value, fileHeaderToExport.value,  fileToExport.value,);
     };
     /* End Code For Exporting File */
 

@@ -118,15 +118,15 @@
       </div> -->
 
       <div class="container-fluid">
-        <div class="row mt-4">
+        <div class="row mt-4" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
           <div class="col-12">
             <div class="mb-3 text-center Display-1 heading-text">
               Birthday Report
             </div>
           </div>
           <!-- <div class="col-12 col-sm-12 col-md-6 col-lg-6"> -->
-          <div class="row table" :class=" birthdays &&  birthdays.length > 0 ? 'graph-area' : '' ">
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center">
+          <div class="row table"  :class=" birthdays &&  birthdays.length > 0 ? 'graph-area' : '' ">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center"> 
               <div class="col-12 font-weight-bold">Membership By Gender</div>
               <div class="col-12" v-if="genderSummary.length === 0">
                 No Data Available
@@ -140,7 +140,7 @@
                 />
               </div>
             </div>
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center" >
               <div class="col-12 font-weight-bold">
                 Membership By Marital Status
               </div>
@@ -181,6 +181,7 @@
       <!-- table header -->
       <div v-if="birthdays.length > 0">
         <div
+          id="element-to-print"
           class="
             container-fluid
             table-main
@@ -239,7 +240,7 @@ import BirthdayChart from "../../../components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import Listbox from 'primevue/listbox';
 import axios from "@/gateway/backendapi";
-import html2pdf from "html2pdf.js";
+// import html2pdf from "html2pdf.js";
 // import Dropdown from "primevue/dropdown";
 // import InputText from "primevue/inputtext";
 import printJS from "print-js";
@@ -263,6 +264,7 @@ export default {
     const genderResult = ref([]);
     const maritalStatusResult = ref([]);
     const showExport = ref(false);
+    const showReport = ref(false);
     const fileName = ref("");
     const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'} ])
     const selectedFileType = ref("");
@@ -294,7 +296,7 @@ export default {
     /* Code For Exporting File */
     const downloadFile = () => {
       exportService.downLoadExcel(
-        selectedFileType.value,
+        selectedFileType.value.name,
         document.getElementById("element-to-print"),
         fileName.value,
         fileHeaderToExport.value,
@@ -366,25 +368,30 @@ export default {
         birthdays.value = data.data;
         groupByGender(data.data, "gender");
         groupByMaritalStatus(data.data, "maritalStatus");
+        setTimeout(() => {
+                        fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
+                        fileToExport.value = exportService.tableToJson(document.getElementById("table"))
+                    }, 1000)
+                     showReport.value = true;
       } catch (err) {
         console.log(err);
       }
     };
 
-    const exportReport = () => {
-      var element = document.getElementById("element-to-print");
-      var opt = {
-        // margin:       1,
-        filename: `file.pdf`,
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-        pagebreak: { mode: ["avoid-all", "css", "legacy"] },
-      };
+    // const exportReport = () => {
+    //   var element = document.getElementById("element-to-print");
+    //   var opt = {
+    //     // margin:       1,
+    //     filename: `file.pdf`,
+    //     image: { type: "jpeg", quality: 0.98 },
+    //     html2canvas: { scale: 2 },
+    //     jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+    //     pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+    //   };
 
-      // New Promise-based usage:
-      html2pdf().set(opt).from(element).save();
-    };
+    //   // New Promise-based usage:
+    //   html2pdf().set(opt).from(element).save();
+    // };
 
     return {
       Calendar,
@@ -400,13 +407,14 @@ export default {
       groupByMaritalStatus,
       maritalStatusResult,
       maritalStatusSummary,
-      exportReport,
+      // exportReport,
       printJS,
       showExport,
       fileName,
       bookTypeList,
       selectedFileType,
       downloadFile,
+      showReport
     };
   },
 };
@@ -427,7 +435,12 @@ export default {
   background: #fff;
   min-width: 7.6rem;
 } */
-
+.show-report{
+    display: block;
+}
+.hide-report{
+    display: none;
+}
 .default-btn {
   font-weight: 600;
   white-space: initial;

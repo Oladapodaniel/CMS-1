@@ -57,7 +57,7 @@
             </div>
             <div class="offset-sm-1 col-sm-2">
                 <div style="height: 33%"></div>
-                <div class="cursor-pointer mt-2 default-btn primary-bg text-center border-0 text-white" @click="getAttendanceReport"><i class="pi pi-spin" v-show="loading"></i>Generate</div>
+                <div class="cursor-pointer mt-2 default-btn generate-report  text-center border-0 text-white" @click="getAttendanceReport"><i class="pi pi-spin" v-show="loading"></i>Generate</div>
             </div>
         </div>
 
@@ -330,5 +330,34 @@ export default {
 <style scoped>
 .header {
     font: normal normal 800 29px Nunito sans;
+}
+.default-btn {
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    /* outline: transparent !important; */
+    max-height: 40px;
+    background: #6c757d47 !important;
+    color:#000;
+    text-decoration: none;
+    min-width: 121px;
+}
+
+.default-btn:hover {
+  text-decoration: none;
+}
+
+
+.generate-report {
+  font-size: 1rem;
+  color: #fff;
+  background-color: #136acd !important ;
+  border: none;
+  min-width: 7rem;
 }
 </style>

@@ -184,6 +184,7 @@
       <!-- table header -->
       <div v-if="weddingAnniversary.length > 0">
         <div
+          id="element-to-print"
           class="
             mt-2
             container-fluid
@@ -314,7 +315,7 @@ export default {
     /* Code For Exporting File */
     const downloadFile = () => {
       exportService.downLoadExcel(
-        selectedFileType.value,
+        selectedFileType.value.name,
         document.getElementById("element-to-print"),
         fileName.value,
         fileHeaderToExport.value,
