@@ -1,4 +1,4 @@
-<template>
+<template>{{ selectedFileType }}
     <div class="container-wide container-top mb-5">
         <div class="row d-flex justify-content-between">
             <div class="header">Attendance Report</div>
@@ -6,7 +6,7 @@
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
                 <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
-                      <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                      <Listbox @click="downLoadExcel" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
                 </div>
             </div>
             <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
@@ -84,7 +84,7 @@ import axios from "@/gateway/backendapi";
 import ExcelExport from "../../../services/exportFile/exportToExcel"
 import { useToast } from 'primevue/usetoast';
 // import printJS from "print-js";
-// import html2pdf from "html2pdf.js"
+import html2pdf from "html2pdf.js"
 // import axio from "axios"
 export default {
     components: {
@@ -105,7 +105,7 @@ export default {
         const attendanceReport = ref([])
         const groupedReport = ref([])
         const groupedReportByDate = ref([])
-        const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'} ])
+        const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'}, {name: 'pdf'} ])
         const selectedFileType = ref("")
         const fileName = ref("")
         const showExport = ref(false)
@@ -230,7 +230,8 @@ export default {
         // getIPDetails()
 
         const downLoadExcel = () => {
-            if (selectedFileType.value === "pdf") {
+            console.log('reaching here')
+            if (selectedFileType.value.name === "pdf") {
                 // printJS({
                 // //   ignoreElements: ['ignore1', 'ignore2'],
                 //   maxWidth: 867,
@@ -251,19 +252,19 @@ export default {
                 //   gridStyle:
                 //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
                 // })
-                // var element = document.getElementById('element-to-print');
-                // var opt = {
-                //     // margin:       1,
-                //     filename:     `${fileName.value}.pdf`,
-                //     image:        { type: 'jpeg', quality: 0.98 },
-                //     html2canvas:  { scale: 2 },
-                //     jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
-                //     pagebreak: { mode: ['avoid-all'] }
-                // };
+                var element = document.getElementById('element-to-print');
+                var opt = {
+                    // margin:       1,
+                    filename:     `${fileName.value}.pdf`,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2 },
+                    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+                    pagebreak: { mode: ['avoid-all'] }
+                };
 
                     // New Promise-based usage:
-                    // html2pdf().set(opt).from(element).save();
-                // html2pdf(element);
+                    html2pdf().set(opt).from(element).save();
+                html2pdf(element);
 
                 // var doc = new jsPDF();  //create jsPDF object
                 // doc.fromHTML(document.getElementById("element-to-print"), // page element which you want to print as PDF
@@ -283,7 +284,7 @@ export default {
                 console.log(filterVal)
                 console.log(fileHeaderToExport.value)
                 
-                ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
+                ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value.name)
             }
         }
 
