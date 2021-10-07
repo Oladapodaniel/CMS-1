@@ -12,23 +12,6 @@
           <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
         </div>
         
-        <!-- <transition name="move" mode="out-in"> -->
-          <!-- <div class="row my-4 " v-if="showExport"> -->
-              <!-- <div class="col-sm-2">Enter file name</div> -->
-              <!-- <div class="col-sm-5"> -->
-                  <!-- <input type="text" class="form-control" /> -->
-                  <!-- <span class="p-float-label">
-                      <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
-                      <label for="inputtext">Enter file name</label>
-                  </span> -->
-              <!-- </div> -->
-              <!-- <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
-                  <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type"  />
-              </div> -->
-              <!-- <div class="">Export</div> -->
-              <!-- <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn d-flex align-items-center generate-report c-pointer justify-content-center">Download</div></div> -->
-          <!-- </div> -->
-        <!-- </transition> -->
            <!-- date area -->
         <div class="container-fluid my-2 py-5   bg-area">
             <div class="row justify-content-center pl-3 ">
@@ -49,7 +32,7 @@
                     <label for="icon"></label>
                     <div class="mt-2">
                         <button class=" default-btn  generate-report  c-pointer font-weight-bold">
-                            Generate
+                            Generate Report
                         </button>
                     </div>
                 </div>
@@ -182,18 +165,14 @@
 
 <script>
 import {computed,ref } from "vue";
-// import InputText from 'primevue/inputtext';
-// import PerformancePieChart from '../../../components/charts/PieChart.vue';
 import Calendar from "primevue/calendar";
 import axios from "@/gateway/backendapi";
 import PerformancePieChart from '../../../components/charts/PieChart.vue';
-// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
 // import Dropdown from "primevue/dropdown";
 import Listbox from 'primevue/listbox';
 import MultiSelect from 'primevue/multiselect';
 import dateFormatter from  "../../../services/dates/dateformatter";
-// import ExcelExport from "../../../services/exportFile/exportToExcel"
 import exportService from "../../../services/exportFile/exportservice"
 import printJS from "print-js";
 // import html2pdf from "html2pdf.js"
@@ -540,22 +519,20 @@ export default {
     display: none;
 }
 
-.default-btn {
+/* .default-btn {
     font-weight: 600;
     white-space: initial;
     font-size: 1rem;
     border-radius: 3rem;
-    /* border: 1px solid #002044; */
     padding: .5rem 1.25rem;
     width: auto;
 	border:none;
-    /* outline: transparent !important; */
     max-height: 40px;
     background: #6c757d47 !important;
     color:#000;
     text-decoration: none;
     min-width: 121px;
-}
+} */
 
 .default-btn:hover {
   text-decoration: none;

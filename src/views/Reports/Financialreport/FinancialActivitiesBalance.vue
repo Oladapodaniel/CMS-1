@@ -15,7 +15,7 @@
              <div class="row">
                 <div style="background: #ebeff4;  border-radius: 0.5rem;" class="row mx-2 w-100 py-5" >
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div><label for="" class="font-weight-bold">SELECT ACCOUNT</label></div>
+                    <div><label for="" class="font-weight-bold">Select Account</label></div>
                     <div>
                         <Dropdown
                           v-model="selectedAccount"
@@ -28,7 +28,7 @@
 
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div class=""><label for="" class=" ml-2 font-weight-bold">START DATE</label></div>
+                    <div class=""><label for="icon" class=" ml-2 font-weight-bold">Start Date</label></div>
                     <div>
                         <div>
                             <Calendar id="icon" v-model="startDate" class="calendar1" :showIcon="true" />
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div><label for="" class="font-weight-bold">END DATE</label></div>
+                    <div><label for="icon" class="font-weight-bold">End Date</label></div>
                      <div>
                             <Calendar id="icon" v-model="endDate" :showIcon="true" />
                         </div>
@@ -44,7 +44,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="" ></label>
                     <div class="mt-2" @click="generateReport">
-                        <button class=" default-btn generate-report "><div class="text-white">Generate </div></button>
+                        <button class=" default-btn generate-report "><div class="text-white">Generate Report </div></button>
                     </div>
                 </div>
              </div> 
@@ -53,9 +53,9 @@
        
              <section :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
       <!-- table header -->
-        <div>
+        <!-- <div>
               <div class=" heading-text mt-5">Account Activity Report</div>
-        </div>
+        </div> -->
       <div id="element-to-print" class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " >
         <table class="table remove-styles mt-0  table-hover table-header-area" id="table">
           <thead class="table-header-area-main">
@@ -75,9 +75,9 @@
               <td>{{ AccountList.accountName }}</td>
               <td>{{ AccountList.refNumber }}</td>
               <td>{{ AccountList.description }}</td>
-              <td>{{AccountList.debit.toLocaleString()}}</td>
-              <td>{{ AccountList.credit.toLocaleString() }}</td>
-              <td>{{ AccountList.balance.toLocaleString() }}</td>
+              <td>{{AccountList.debit.toFixed(2).toLocaleString()}}</td>
+              <td>{{AccountList.credit.toFixed(2).toLocaleString() }}</td>
+              <td>{{parseFloat(AccountList.balance).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</td>
             </tr>
             <tr class="answer-row">
               <td class="answer">Total</td>
@@ -239,20 +239,20 @@
 }
 
 .default-btn {
-    font-weight: 600;
+    /* font-weight: 600;
     white-space: initial;
     font-size: 1rem;
-    border-radius: 3rem;
+    border-radius: 3rem; */
     /* border: 1px solid #002044; */
-    padding: .5rem 1.25rem;
+    /* padding: .5rem 1.25rem;
     width: auto;
-	border:none;
+	border:none; */
     /* outline: transparent !important; */
-    max-height: 40px;
+    /* max-height: 40px;
     background: #6c757d47 !important;
     color:#000;
     text-decoration: none;
-    min-width: 121px;
+    min-width: 121px; */
 }
 
 .default-btn:hover {

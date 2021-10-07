@@ -5,15 +5,15 @@
         </div>
         <div class="row" style=" background: #f5f8fa;">
             <div class="col-12 col-sm-4  c-pointer " @click="togglePeople">
-                <div class="p-3"> Membership </div> 
+                <div class="p-3 header4"> Membership </div> 
                 <div :class="{ 'baseline' : showPeople, 'hide-base' : !showPeople }"></div>
             </div>
             <div class="col-12 col-sm-4 c-pointer" @click="togglePerformance">
-                <div class="p-3"> Attendance </div> 
+                <div class="p-3 header4"> Attendance </div> 
                 <div :class="{ 'baseline' : showPerformance, 'hide-base' : !showPerformance }"></div>
             </div>
             <div class="col-12 col-sm-4 c-pointer" @click="toggleFinancial">
-                <div class="p-3"> Financial </div> 
+                <div class="p-3 header4 "> Financial </div> 
                 <div :class="{ 'baseline' : showFinancial, 'hide-base' : !showFinancial }"></div>
             </div>
             <!-- <div class="col-12 col-sm-6 col-md-2 col-lg-2 c-pointer" @click="toggleMobile">
@@ -155,14 +155,20 @@ export default {
 
 <style scoped>
 
+.header4{
+    font-size: 20px;
+    font-weight: 700;
+    color: #136acd;
+}
 .baseline {
     transition: all 150ms ease-in-out;
-    background-color: #33475b;
+    background-color: #136acd;
+    /* color: #136acd" */
     border-radius: 24px;
     bottom: -2.5px;
     height: 6px;
     left: 0px;
-    width: 80%;
+    width: 50%;
     opacity: 1;
 }
 
@@ -173,7 +179,7 @@ export default {
     bottom: -2.5px;
     height: 6px;
     left: 0px;
-    width: 80%;
+    width: 50%;
     opacity: 0;
 }
     @media screen and (max-width: 767px ){
