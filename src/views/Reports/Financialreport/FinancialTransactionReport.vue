@@ -75,63 +75,64 @@
       </div>
     </div>
     <!--end of date area -->
-
-    <section>
-      <!-- chart area -->
-      <div class="chart">
-        <div style="width: 45%" class="ml-md-4 chart1">
-          <ByGenderChart
-            domId="chart"
-            title="By Gender"
-            distance="5"
-            :titleMargin="10"
-            :summary="firstTimerChart"
-          />
+    <div id="element-to-print">
+      <section>
+        <!-- chart area -->
+        <div  class="chart">
+          <div style="width: 45%" class="ml-md-4 chart1">
+            <ByGenderChart
+              domId="chart"
+              title="By Gender"
+              distance="5"
+              :titleMargin="10"
+              :summary="firstTimerChart"
+            />
+          </div>
         </div>
-      </div>
-      <!--end of chart area -->
-    </section>
+        <!--end of chart area -->
+      </section>
 
-    <section>
-      <!-- table header -->
-      <div v-if="accountTransaction.length > 0">
-            <div id="element-to-print" class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
-        <table class="table remove-styles mt-0 table-hover table-header-area">
-          <thead class="table-header-area-main">
-            <tr
-             class="small-text text-capitalize text-nowrap"
-              style="border-bottom: 0"
-            >
-              <th scope="col">Fund</th>
-              <th scope="col">Account Name</th>
-              <th scope="col">Reference Number</th>
-              <th scope="col">Description</th>
-              <th scope="col">Debit</th>
-              <th scope="col">Credit</th>
-              <th scope="col">Date</th>
-            </tr>
-          </thead>
-          <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(transaction, index) in accountTransaction"
-            :key="index">
-              <td>{{ transaction.fund }}</td>
-              <td>{{ transaction.accountName }}</td>
-              <td>{{ transaction.refNumber }}</td>
-              <td>{{ transaction.description }}</td>
-              <td>{{ transaction.debit }}</td>
-              <td>{{ transaction.credit }}</td>
-              <td>{{ formatDate(transaction.date) }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-          <PaginationButtons />
-        </div> -->
-      </div>
-      </div>
+      <section>
+        <!-- table header -->
+        <div v-if="accountTransaction.length > 0">
+              <div  class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+          <table class="table remove-styles mt-0 table-hover table-header-area">
+            <thead class="table-header-area-main">
+              <tr
+              class="small-text text-capitalize text-nowrap"
+                style="border-bottom: 0"
+              >
+                <th scope="col">Fund</th>
+                <th scope="col">Account Name</th>
+                <th scope="col">Reference Number</th>
+                <th scope="col">Description</th>
+                <th scope="col">Debit</th>
+                <th scope="col">Credit</th>
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody class="font-weight-normal text-nowrap">
+              <tr v-for="(transaction, index) in accountTransaction"
+              :key="index">
+                <td>{{ transaction.fund }}</td>
+                <td>{{ transaction.accountName }}</td>
+                <td>{{ transaction.refNumber }}</td>
+                <td>{{ transaction.description }}</td>
+                <td>{{ transaction.debit }}</td>
+                <td>{{ transaction.credit }}</td>
+                <td>{{ formatDate(transaction.date) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
+            <PaginationButtons />
+          </div> -->
+        </div>
+        </div>
 
-      <!--end table header -->
-    </section>
+        <!--end table header -->
+      </section>
+    </div>
   </div>
 </template>
 

@@ -105,130 +105,131 @@
     <!--end of header area -->
 
     <!-- date area -->
-    <section>
-      <!-- <div class="chart">
-        <div style="width: 45%" class="ml-md-4 chart1">
-          <ByGenderChart
-            domId="chart"
-            title="By Gender"
-            distance="5"
-            :titleMargin="10"
-          />
-        </div>
-      </div> -->
-
-      <div class="container-fluid">
-        <div class="row mt-4" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-          <div class="col-12">
-            <div class="mb-3 text-center Display-1 heading-text">
-              Birthday Report
-            </div>
+    <div id="element-to-print">
+      <section>
+        <!-- <div class="chart">
+          <div style="width: 45%" class="ml-md-4 chart1">
+            <ByGenderChart
+              domId="chart"
+              title="By Gender"
+              distance="5"
+              :titleMargin="10"
+            />
           </div>
-          <!-- <div class="col-12 col-sm-12 col-md-6 col-lg-6"> -->
-          <div class="row table"  :class=" birthdays &&  birthdays.length > 0 ? 'graph-area' : '' ">
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center"> 
-              <div class="col-12 font-weight-bold">Membership By Gender</div>
-              <div class="col-12" v-if="genderSummary.length === 0">
-                No Data Available
-              </div>
-              <div class="col-12" style="height: 30vh">
-                <BirthdayChart
-                  domId="chart1"
-                  distance="5"
-                  :titleMargin="10"
-                  :summary="genderSummary"
-                />
-              </div>
-            </div>
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center" >
-              <div class="col-12 font-weight-bold">
-                Membership By Marital Status
-              </div>
-              <div class="col-12" v-if="maritalStatusSummary.length === 0">
-                No Data Available
-              </div>
-              <div class="col-12" style="height: 40vh">
-                <BirthdayChart
-                  domId="chart2"
-                  distance="5"
-                  :titleMargin="10"
-                  :summary="maritalStatusSummary"
-                />
-              </div>
-            </div>
-          </div>
-          <!-- </div> -->
-          <!-- <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border p-3 mt-3 mt-sm-3 mt-md-0 mt-lg-0 text-center">
-                        <div class="col-12  font-weight-bold">Membership By Marital Status</div>
-                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                        <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                            <BirthdayChart
-                                domId="chart2"
-                                distance="5"
-                                :titleMargin="10"
-                                :summary="maritalStatusSummary"
-                            />
-                        </div>
-                    </div>
-                </div> -->
-        </div>
-      </div>
-    </section>
-    <!--end of date area -->
-
-    <section>
-      <!-- table header -->
-      <div v-if="birthdays.length > 0">
-        <div
-          id="element-to-print"
-          class="
-            container-fluid
-            table-main
-            px-0
-            remove-styles2 remove-border
-            mt-5
-            scroll-table
-          "
-        >
-          <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
-            <thead class="table-header-area-main">
-              <tr
-                class="small-text text-capitalize text-nowrap"
-                style="border-bottom: 0"
-              >
-                <th scope="col">Name</th>
-                <th scope="col">Birthday</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Email</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Marital Status</th>
-                <th scope="col">Age Group</th>
-                <th scope="col">Membership</th>
-                <th scope="col">Home Address</th>
-              </tr>
-            </thead>
-            <tbody class="font-weight-normal text-nowrap">
-              <tr v-for="(item, index) in birthdays" :key="index">
-                <td>{{ item.name }}</td>
-                <td>{{ item.birthDay }}</td>
-                <td>{{ item.mobilePhone }}</td>
-                <td>{{ item.email }}</td>
-                <td>{{ item.gender }}</td>
-                <td>{{ item.maritalStatus }}</td>
-                <td>{{ item.ageGroup }}</td>
-                <td>{{ item.membership }}</td>
-                <td>{{ item.homeAddress }}</td>
-              </tr>
-            </tbody>
-          </table>
-          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-          <PaginationButtons />
         </div> -->
+
+        <div  class="container-fluid">
+          <div class="row mt-4" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+            <div class="col-12">
+              <div class="mb-3 text-center Display-1 heading-text">
+                Birthday Report
+              </div>
+            </div>
+            <!-- <div class="col-12 col-sm-12 col-md-6 col-lg-6"> -->
+            <div class="row table"  :class=" birthdays &&  birthdays.length > 0 ? 'graph-area' : '' ">
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center"> 
+                <div class="col-12 font-weight-bold">Membership By Gender</div>
+                <div class="col-12" v-if="genderSummary.length === 0">
+                  No Data Available
+                </div>
+                <div class="col-12" style="height: 30vh">
+                  <BirthdayChart
+                    domId="chart1"
+                    distance="5"
+                    :titleMargin="10"
+                    :summary="genderSummary"
+                  />
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center" >
+                <div class="col-12 font-weight-bold">
+                  Membership By Marital Status
+                </div>
+                <div class="col-12" v-if="maritalStatusSummary.length === 0">
+                  No Data Available
+                </div>
+                <div class="col-12" style="height: 40vh">
+                  <BirthdayChart
+                    domId="chart2"
+                    distance="5"
+                    :titleMargin="10"
+                    :summary="maritalStatusSummary"
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- </div> -->
+            <!-- <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                      <div class="col-12 border p-3 mt-3 mt-sm-3 mt-md-0 mt-lg-0 text-center">
+                          <div class="col-12  font-weight-bold">Membership By Marital Status</div>
+                          <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                          <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                              <BirthdayChart
+                                  domId="chart2"
+                                  distance="5"
+                                  :titleMargin="10"
+                                  :summary="maritalStatusSummary"
+                              />
+                          </div>
+                      </div>
+                  </div> -->
+          </div>
         </div>
-      </div>
-      <!--end table header -->
-    </section>
+      </section>
+      <!--end of date area -->
+
+      <section>
+        <!-- table header -->
+        <div v-if="birthdays.length > 0">
+          <div
+            class="
+              container-fluid
+              table-main
+              px-0
+              remove-styles2 remove-border
+              mt-5
+              scroll-table
+            "
+          >
+            <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
+              <thead class="table-header-area-main">
+                <tr
+                  class="small-text text-capitalize text-nowrap"
+                  style="border-bottom: 0"
+                >
+                  <th scope="col">Name</th>
+                  <th scope="col">Birthday</th>
+                  <th scope="col">Phone</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Gender</th>
+                  <th scope="col">Marital Status</th>
+                  <th scope="col">Age Group</th>
+                  <th scope="col">Membership</th>
+                  <th scope="col">Home Address</th>
+                </tr>
+              </thead>
+              <tbody class="font-weight-normal text-nowrap">
+                <tr v-for="(item, index) in birthdays" :key="index">
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.birthDay }}</td>
+                  <td>{{ item.mobilePhone }}</td>
+                  <td>{{ item.email }}</td>
+                  <td>{{ item.gender }}</td>
+                  <td>{{ item.maritalStatus }}</td>
+                  <td>{{ item.ageGroup }}</td>
+                  <td>{{ item.membership }}</td>
+                  <td>{{ item.homeAddress }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- <div class="table-foot d-flex justify-content-end mt-n3">
+            <PaginationButtons />
+          </div> -->
+          </div>
+        </div>
+        <!--end table header -->
+      </section>
+    </div>
   </div>
 </template>
 

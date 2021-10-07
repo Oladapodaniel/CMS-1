@@ -44,7 +44,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="" ></label>
                     <div class="mt-2" @click="generateReport">
-                        <button class="btn default-btn generate-report "><div class="text-white">Generate </div></button>
+                        <button class=" default-btn generate-report "><div class="text-white">Generate </div></button>
                     </div>
                 </div>
              </div> 
@@ -75,9 +75,9 @@
               <td>{{ AccountList.accountName }}</td>
               <td>{{ AccountList.refNumber }}</td>
               <td>{{ AccountList.description }}</td>
-              <td>{{AccountList.debit}}</td>
-              <td>{{ AccountList.credit }}</td>
-              <td>{{ AccountList.balance }}</td>
+              <td>{{AccountList.debit.toLocaleString()}}</td>
+              <td>{{ AccountList.credit.toLocaleString() }}</td>
+              <td>{{ AccountList.balance.toLocaleString() }}</td>
             </tr>
             <tr class="answer-row">
               <td class="answer">Total</td>
@@ -279,17 +279,18 @@
 }
 .answer{
   font-weight: bolder;
-  color: #fff;
+  color: rgb(0, 0, 0);
 }
 .answer-row{
-  background-color: #136acd;
+  background-color: #d5d5d5;
   border-radius: 30px !important;
   border-bottom-left-radius:  50px !important;
   border-bottom-right-radius: 50px !important;
+  font-weight: bold;
 }
 
 .answer-row:hover{
-  background-color: #136acd;
+  background-color: #d1d1d1;
 }
 
     .country-item-value {

@@ -70,7 +70,7 @@
         </div>
       </div>
     </div>
-    <section :class="{'hideClass' : !toggleReport, 'showClass':toggleReport}"> 
+    <section id="element-to-print" :class="{'hideClass' : !toggleReport, 'showClass':toggleReport}"> 
         <!-- chart area -->
           <div class="row">
                 <div class="col-12 ">
@@ -138,7 +138,7 @@
                 </div> -->
             </div>
       <!-- table header -->
-      <div id="element-to-print" class="container-fluid table-main px-0 remove-styles2 remove-border my-5" >
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border my-5" >
         <table class="table remove-styles mt-0 table-responsive table-hover table-header-area" id="table">
           <thead class="table-header-area-main">
             <tr

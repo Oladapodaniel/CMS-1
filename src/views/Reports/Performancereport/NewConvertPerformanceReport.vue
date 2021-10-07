@@ -56,7 +56,8 @@
             </div>
         </div>
     <!--end of date area -->
-        <div class="container-fluid ">
+      <div id="element-to-print">
+        <div  class="container-fluid ">
             <div class="row w-100">
                 <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                     <div class="mt-5 display-1 font-weight-bold text-center heading-text">
@@ -134,7 +135,7 @@
             <!-- <div class="row "> -->
         <section>
             <!-- table header -->
-            <div id="element-to-print" class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness "
+            <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness "
             :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                 <table class="table remove-styles mt-0 table-hover table-header-area" id="table">
                 <thead class="table-header-area-main">
@@ -173,6 +174,7 @@
             </div>
             <!--end table header -->
         </section>
+      </div>
             <!-- </div> -->
         <!-- </div> -->
     </div>
