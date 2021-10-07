@@ -2,12 +2,21 @@
   <div class="container-fluid px-5 mt-5">
      <div class="row d-flex justify-content-between px-3">
             <h3 class="heading-text ml-1">Basic Income And Revenue Report</h3>
+<<<<<<< HEAD
             <div @click="() => showExport = !showExport" class="cursor-pointer default-btn  d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
+=======
+            <div class="default-btn  font-weight-normal c-pointer"
+                @click="() => (showExport = !showExport)"
+                style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+                      <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                </div>
+          </div>
+            <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
+>>>>>>> a534212218f750233c566bc05fc4119e5737870c
       </div>
-      <div class="row my-4" v-if="showExport">
-          <!-- <div class="col-sm-2">Enter file name</div> -->
+      <!-- <div class="row my-4" v-if="showExport">
           <div class="col-sm-5">
-              <!-- <input type="text" class="form-control" /> -->
               <span class="p-float-label">
                   <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
                   <label for="inputtext">Enter file name</label>
@@ -17,7 +26,7 @@
               <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
           </div>
           <div @click="downloadFile" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center justify-content-center c-pointer exportButton">Export</div></div>
-      </div>
+      </div> -->
     <!-- header area -->
     <div class="container">
       <div
@@ -65,7 +74,7 @@
         </div>
       </div>
     </div>
-    <section :class="{'hideClass' : !toggleReport, 'showClass':toggleReport}"> 
+    <section id="element-to-print" :class="{'hideClass' : !toggleReport, 'showClass':toggleReport}"> 
         <!-- chart area -->
           <div class="row">
                 <div class="col-12 ">
@@ -175,8 +184,9 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import ByMaritalStatusChart from "@/components/charts/PieChart";
 import ColumnChart2 from "@/components/charts/ColumnChart2";
-import InputText from 'primevue/inputtext';
-import Dropdown from "primevue/dropdown";
+// import InputText from 'primevue/inputtext';
+// import Dropdown from "primevue/dropdown";
+import Listbox from 'primevue/listbox';
 import exportService from "../../../services/exportFile/exportservice"
 import axios from "@/gateway/backendapi";
 import axioz from "axios";
@@ -189,8 +199,14 @@ export default {
     Calendar,
     ByGenderChart,
     PaginationButtons,
+<<<<<<< HEAD
     InputText,
     Dropdown
+=======
+    // InputText,
+    // Dropdown,
+    Listbox
+>>>>>>> a534212218f750233c566bc05fc4119e5737870c
   },
   setup() {
     const startDate = ref(new Date());
@@ -223,7 +239,7 @@ export default {
      const pieChartData = ref([]);
      const fileName = ref("");
      const selectedFileType = ref("");
-     const bookTypeList = ref([ 'xlsx', 'csv', 'txt' ])
+    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'},{name: 'pdf'} ])
      const fileHeaderToExport = ref([]);
      const fileToExport = ref([]);
      const getIncomeDetails = ref([]);
@@ -272,7 +288,7 @@ export default {
           showReport.value = true;
     }
     const downloadFile = () => {
-      exportService.downLoadExcel(selectedFileType.value, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
+      exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
     }
 
     // incomeEndPoint();
@@ -339,11 +355,35 @@ export default {
 * {
   box-sizing: border-box;
 }
+<<<<<<< HEAD
+=======
+.default-btn {
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    /* outline: transparent !important; */
+    max-height: 40px;
+    background: #6c757d47 !important;
+    color:#000;
+    text-decoration: none;
+    min-width: 121px;
+}
+>>>>>>> a534212218f750233c566bc05fc4119e5737870c
+
+.default-btn:hover {
+  text-decoration: none;
+}
+
 
 .generate-report {
   font-size: 1rem;
   color: #fff;
-  background-color: #136acd;
+  background-color: #136acd !important ;
   border: none;
   min-width: 7rem;
 }

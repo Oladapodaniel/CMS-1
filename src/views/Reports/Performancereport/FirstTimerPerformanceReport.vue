@@ -2,37 +2,27 @@
     <div class=" container container-top container-wide mb-4  ">
         <div class="row d-flex justify-content-between px-3">
             <div class="heading-text">First Timer Performance Report</div>
-            <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
+            <div class="default-btn border-secondary font-weight-normal c-pointer"
+                @click="() => (showExport = !showExport)"
+                style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+                      <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                </div>
+            </div>
+            <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
         </div>
-        <transition name="move" mode="out-in">
-          <div class="row my-4 " v-if="showExport">
-              <!-- <div class="col-sm-2">Enter file name</div> -->
-              <div class="col-sm-5  ">
-                  <!-- <input type="text" class="form-control" /> -->
-                  <span class="p-float-label">
-                      <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
-                      <label for="inputtext">Enter file name</label>
-                  </span>
-              </div>
-              <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
-                  <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type"  />
-              </div>
-              <!-- <div class="">Export</div> -->
-              <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn d-flex align-items-center generate-report c-pointer justify-content-center">Download</div></div>
-          </div>
-        </transition>
            <!-- date area -->
         <div class="container-fluid my-2 py-5   bg-area">
-            <div class="row justify-content-center pl-3 ">
+            <div class="row d-flex justify-content-center  ">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0  "> 
                     <div><label for="icon" class="font-weight-bold">Start Date</label></div>
                     <div>
-                        <Calendar id="icon" v-model="startDate" :showIcon="true" />
+                        <Calendar  id="icon" v-model="startDate" :showIcon="true" />
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
                     <div><label for="icon" class="font-weight-bold">End Date</label></div>
-                    <div>
+                    <div class="col-12">
                         <Calendar id="icon" v-model="endDate" :showIcon="true" />
                     </div>
                 </div>
@@ -41,20 +31,21 @@
                     <label for="icon"></label>
                     <div class="mt-2">
                         <button class=" default-btn generate-report   c-pointer font-weight-bold">
-                            Generate
+                            Generate Report
                         </button>
                     </div>
                 </div>
             </div>
         </div>
     <!--end of date area -->
-        <div class="container-fluid ">
+      <div id="element-to-print">
+        <div  class="container-fluid ">
             <div class="row w-100" >
-                <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                <!-- <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                     <div class="mt-5 display-1 font-weight-bold text-center heading-text">
                        First Timers Analysis Report 
                     </div>
-                </div>
+                </div> -->
                 <!-- <div class="col-12 w-100 text-center ">
                     <div class="col-12   text-center">
                         <div class="col-12 font-weight-bold">Firsttimer By Event Date</div>
@@ -80,7 +71,6 @@
                     <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                         <div class="col-12  text-center">
                             <div class="col-12  font-weight-bold">Gender Distribution</div>
-                            <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
                             <div class="col-12 " >
                                 <PerformancePieChart
                                 domId="chart2"
@@ -94,7 +84,6 @@
                     <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                         <div class="col-12  text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0 ">
                             <div class="col-12  font-weight-bold ">Marital Status</div>
-                            <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
                             <div class="col-12 " >
                             <PerformancePieChart
                                domId="chart3"
@@ -105,20 +94,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="col-12 col-sm-12  col-md-4 col-lg-4">
-                        <div class="col-12 text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0 ">
-                            <div class="col-12  font-weight-bold ">Current Status</div>
-                            <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                            <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                            <PerformancePieChart
-                               domId="chart4"
-                                distance="5"
-                                :titleMargin="10"
-                                :summary="pieChart"
-                            />
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>
@@ -165,6 +140,7 @@
             </div>
             <!--end table header -->
         </section>
+      </div>
             <!-- </div> -->
         <!-- </div> -->
     </div>
@@ -172,58 +148,29 @@
 
 <script>
 import {computed,ref } from "vue";
-// import PerformancePieChart from '../../../components/charts/PieChart.vue';
 import Calendar from "primevue/calendar";
-import Dropdown from "primevue/dropdown";
-import InputText from 'primevue/inputtext';
+// import Dropdown from "primevue/dropdown";
+import Listbox from 'primevue/listbox';
 import axios from "@/gateway/backendapi";
 import PerformancePieChart from '../../../components/charts/PieChart.vue';
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
 import MultiSelect from 'primevue/multiselect';
 import dateFormatter from  "../../../services/dates/dateformatter";
-// import ExcelExport from "../../../services/exportFile/exportToExcel"
 import printJS from "print-js";
-// import html2pdf from "html2pdf.js"
 import exportService from "../../../services/exportFile/exportservice"
-// import Piechart from "../../../components/charts/PieChart2.vue"
 export default {
     components: {
         MultiSelect,
-        InputText,
+        Listbox,
         PerformancePieChart,
         PerformanceColumnChart,
-        Dropdown, 
+        // Dropdown, 
         Calendar, 
         // PaginationButtons 
         },
     setup() {
-    //     const membership = ref([
-    //   { name: "FIRST-TIMER" },
-    //   { name: "NEW-CONVERT" },
-    //   { name: "FULL MEMBER" },
-    // ]);
-    //     const gender = ref([
-    //   { name: "MALE" },
-    //   { name: "FEMALE" },
-    // ]);
-    //     const maritalStatus = ref([
-    //   { name: "SINGLE" },
-    //   { name: "MARRIED" },
-    //   { name: "ENGAGED" },
-    //   { name: "SINGLE PARENT" },
-    //   { name: "DIVORCED" },
-    //   { name: "SEPERATED" },
-    //   { name: "WIDOW" },
-    //   { name: "WIDOWER" },
-    // ]);
-
-    // const selectedMember = ref();
-    // const selectedGender = ref();
-    // const selectedMaritalStatus = ref();
     const showReport = ref(false);
-    const pieChart = ref([{ name: "First Timer ", color: "#002044", data: [ 0, 3, 13, 14, 0, 15, 20, 20 ] }]);
-    // const series = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 24, 25, 26, 27, 28, 29, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52 ]);
     const startDate = ref(new Date());
     const endDate = ref(new Date());
     const firstTimerInChurch = ref([]);
@@ -235,7 +182,7 @@ export default {
     const mainAttendanceData = ref([]);
     const showExport = ref(false);
     const fileName = ref("")
-    const bookTypeList = ref([ 'xlsx', 'csv', 'txt' ])
+    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'},{name: 'pdf'} ])
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);
@@ -363,121 +310,12 @@ export default {
     }
 
     const downloadFile = () => {
-        exportService.downLoadExcel(selectedFileType.value, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
+        exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
       }
-
-    //  const downLoadExcel = () => {
-    //         if (selectedFileType.value === "pdf") {
-    //             // printJS({
-    //             // //   ignoreElements: ['ignore1', 'ignore2'],
-    //             //   maxWidth: 867,
-    //             //   header: 'DONATION TRANSACTIONS',
-    //             //   printable: [{
-    //             //         DATE: '543',
-    //             //         EVENT: '5242',
-    //             //         DONATION: '4242',
-    //             //         AMOUNT: 23432,
-    //             //         DONOR: '234234234'
-    //             //         }],
-    //             //   properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
-    //             //   type: 'json',
-    //             //   headerStyle:
-    //             //     'font-family: Nunito Sans, Calibri; text-align: center;',
-    //             //   gridHeaderStyle:
-    //             //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
-    //             //   gridStyle:
-    //             //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
-    //             // })
-    //             var element = document.getElementById('element-to-print');
-    //             var opt = {
-    //                 // margin:       1,
-    //                 filename:     `${fileName.value}.pdf`,
-    //                 // image:        { type: 'jpeg', quality: 0.98 },
-    //                 // html2canvas:  { scale: 2 },
-    //                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
-    //                 pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-    //             };
-
-    //                 // New Promise-based usage:
-    //                 html2pdf().set(opt).from(element).save();
-    //             // html2pdf(element);
-    //         } else {
-    //             const filterVal = fileHeaderToExport.value.map((i, index) => index)
-    //             const list = fileToExport.value
-    //             const header = fileHeaderToExport.value
-    //             console.log(filterVal)
-    //             console.log(fileHeaderToExport.value)
-                
-    //             ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
-    //         }
-    //     }
-
-    //   const tableHeaderToJson = () => {
-    //         // let _htmlToJSON = function(){
-    //             // let _tr = _table.getElementsByTagName("tr")[index];
-    //             let _th = document.getElementsByTagName("th");
-    //             let _arr = [].map.call( _th, function( th ) {
-    //                 return th.innerHTML;
-    //             }).join( ',' );
-    //             let _data = _arr.split(",");
-    //             console.log(_data)
-    //             console.log("html to JSON", _data);
-    //             // emit('data-header-to-export', _data)          
-    //         // };
-    //         fileHeaderToExport.value = _data
-    //             // _htmlToJSON();
-    //   }
-
-    //   const tableToJson = () => {
-    //         let _table = document.getElementById("table");
-    //         let _trLength = _table.getElementsByTagName("tr").length;
-    //         let _jsonData = [];
-    //         let _obj = {};
-
-    //         let _htmlToJSON = function(index){
-    //             let _tr = _table.getElementsByTagName("tr")[index];
-    //             let _td = _tr.getElementsByTagName("td");
-    //             let _arr = [].map.call( _td, function( td ) {
-    //                 return td.innerHTML;
-    //             }).join( ',' );
-    //             let _data = _arr.split(",");
-    //             // console.log(_data)
-                
-    //             _obj = Object.assign({}, _data)
-                
-    //             _jsonData.push(_obj);
-                
-    //         };
-    //         for(var i = 1; i < _trLength; i++){
-    //             _htmlToJSON(i);
-    //         }
-    //         fileToExport.value = _jsonData
-    //         console.log("html to JSON", _jsonData);
-    //         console.log(fileToExport.value,'my alldata')
-    //         // emit('data-to-export', _jsonData)
-    //     }
-        
 
     const formatDate = (date) => {
       return dateFormatter.normalDate(date);
     };
-
-    
-    // const getMemberClassification = async () => {
-    //   try {
-    //     axios
-    //       .get('/api/Reports/people/getAllContactsReport')
-    //       .then((res) => {
-    //         // tenantCurrency.value = res.data;
-    //         console.log(res.data,'myall');
-    //       })
-    //       .catch((err) => console.log(err));
-    //     // donationSummary.value = data;
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // };
-    // getMemberClassification();
 
      return {
         //  allMembersInChurch,
@@ -498,7 +336,6 @@ export default {
         endDate,
         genarateReport,
         showReport,
-        pieChart,
         showExport,
         fileHeaderToExport,
         fileToExport,
@@ -536,24 +373,31 @@ export default {
 }
 
 .default-btn {
-  font-weight: 800;
-  /* font-size: 1rem; */
-  /* white-space: initial; */
-  /* border-radius: 3rem; */
-  border: 1px solid #136acd;
-  /* padding: 0.5rem 1.25rem; */
-  /* color: #136acd; */
-  /* width: auto; */
-  outline: transparent !important;
-  /* max-height: 2.5rem; */
-  background: #fff;
-  /* min-width: 7.6rem; */
+    /* font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem; */
+    /* border: 1px solid #002044; */
+    /* padding: .5rem 1.25rem;
+    width: auto;
+	border:none; */
+    /* outline: transparent !important; */
+    /* max-height: 40px;
+    background: #6c757d47 !important;
+    color:#000;
+    text-decoration: none;
+    min-width: 121px; */
 }
+
+.default-btn:hover {
+  text-decoration: none;
+}
+
 
 .generate-report {
   font-size: 1rem;
   color: #fff;
-  background-color: #136acd;
+  background-color: #136acd !important ;
   border: none;
   min-width: 7rem;
 }

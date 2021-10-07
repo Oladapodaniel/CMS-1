@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-5">
         <div class="col-md-12">
-          <h2 class="first">First Timer Settings</h2>
+          <h2 class="first">First Timer lifeCycle Settings</h2>
         </div>
       </div>
 
@@ -13,7 +13,7 @@
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-12">
-                  <h4 class="mt-2 mb-2 ml-5 first1">How Did You Hear About Us</h4>
+                  <h4 class="mt-2 mb-2 ml-5 first1">Add Your First Timer  lifeCycle </h4>
                 </div>
                 <Toast/>
                 <ConfirmDialog/>
@@ -26,8 +26,8 @@
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="How Did You Hear About Us"
-                        v-model="classificationTypes"
+                        placeholder="Add Your First Timer Cycle"
+                        v-model="firstTimerTypes"
                       />
                     </div>
                     <div class="col-md-3 d-flex justify-content-end">
@@ -48,7 +48,7 @@
             </div>
           </div>
 
-          <div class="row py-2" v-for="(classification, index) in classifications" :key="index">
+          <div class="row py-2" v-for="(classification, index) in firstTimerData" :key="index">
             <div class="col-md-12">
               <div class="row">
                 <div
@@ -78,7 +78,7 @@
                 >
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Name</span>
-                    <input type="text" class="form-control" v-model="classificationName">
+                    <input type="text" class="form-control" v-model="firstTimerName">
                   </label>
                 </div>
                 <div
@@ -86,7 +86,7 @@
                 >
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5" @click="updateFirstTimer(classification.id, index)">Save</button>
+                      <button class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5" @click="updateFirstTimer(classification, index)">Save</button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-end">
                       <button class="btn secondary-btn py-1 px-3" @click="discard">Discard</button>
@@ -126,21 +126,22 @@ export default {
   },
   data() {
     return {
-      classifications: [ ],
+      firstTimerData: [ ],
       vissibleTab: "",
-      classificationName: "",
-      classificationTypes: "",
+      firstTimerName: "",
+      firstTimerTypes: "",
       tenantId: "",
       loading: false
     }
   },
 
   methods: {
-    async getClassifications() {
+    async getFirstTimerCyles() {
       try {
         this.loading = true
-        const { data } = await axios.get("/api/Membership/howYouHeardAboutUs");
-        this.classifications = data;
+        const {  data } = await axios.get("/firstimercycle");
+        this.firstTimerData = data.returnObject;
+        console.log(data);
         this.loading = false
       } catch (error) {
         console.log(error);
@@ -149,24 +150,27 @@ export default {
      //First Timer save
     async saveFirstTimer(){
       try{
-        await axios.post('/api/Membership/howYouHeardAboutUs/' + this.classificationTypes);
-        this.getClassifications()
-        this.classificationTypes = ""
-         this.$toast.add({severity:'success', summary: '', detail:' How Did you Hear About Us Save Successfully', life: 3000});
+        let createFirsttimer = {
+          name: this.firstTimerTypes,
+          tenantID: this.tenantId
+        } 
+        await axios.post('/firsttimercycle/create', createFirsttimer);
+        this.getFirstTimerCyles()
+        this.firstTimerTypes = ""
+         this.$toast.add({severity:'success', summary: '', detail:'First Timer Save Successfully', life: 3000});
       }catch(error){
         finish()
         console.log(error)
       }
     },
     //Update FirstTimer
-    async updateFirstTimer(id, index){
-      console.log(id, "TARGET");
+    async updateFirstTimer(item, index){
       try{
-        await axios.put('/api/Membership/howYouHeardAboutUs', { name: this.classificationName, tenantID: this.tenantId, id:id});
-        this.classifications[index].name = this.classificationName;
-      
+        console.log(item, "item")
+        await axios.put(`/firsttimercycle/${item.id}/edit`, {...item, name : this.firstTimerName});
+        this.firstTimerData[index].name = this.firstTimerName
         this.discard()
-        this.$toast.add({severity:'success', summary: '', detail:'How Did you Hear About Us Updated Successfully', life: 3000});
+        this.$toast.add({severity:'success', summary: '', detail:'First Timer Updated Successfully', life: 3000});
       }catch (error){
         finish()
         console.log(error)
@@ -174,9 +178,11 @@ export default {
     },
     //Delete FirstTimers
     async deleteFirstTimer(id){
+      console.log(id);
       try {
-        await axios.delete('/api/Membership/howYouHeardAboutUs/'+id);
-        this.classifications = this.classifications.filter(i => i.id !== id);
+        let data = await axios.delete(`/firsttimercycle/${id}/delete`);
+        console.log(data)
+        this.firstTimerData = this.firstTimerData.filter(i => i.id !== id);
          this.$toast.add({severity:'success', summary: '', detail:'Delete Successfully', life: 3000});
       } catch (error){
         finish()
@@ -204,7 +210,7 @@ export default {
 
     openClassification(index) {
       this.vissibleTab = `tab_${index}`;
-      this.classificationName = this.classifications[index].name;
+      this.firstTimerName = this.firstTimerData[index].name;
     },
 
     discard() {
@@ -213,13 +219,14 @@ export default {
   },
 
   created() {
-    this.getClassifications();
+    this.getFirstTimerCyles();
      membershipService.getSignedInUser()
       .then(res => {
         this.tenantId = res.tenantId;
       })
   }
 };
+
 </script>
 
 <style scoped>

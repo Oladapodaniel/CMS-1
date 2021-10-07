@@ -16,7 +16,7 @@
 </button> -->
 
       <!-- Modal -->
-      <div
+      <!-- <div
         class="modal fade"
         id="exampleModal"
         tabindex="-1"
@@ -52,19 +52,19 @@
                 </div>
               </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer"> -->
               <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-              <button type="button" class="btn default-btn btnfb">
+              <!-- <button type="button" class="btn default-btn btnfb">
                 Connect
               </button>
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!--  End Modal -->
 
-      <div class="row mx-2 mx-md-0">
+      <!-- <div class="row mx-2 mx-md-0">
         <div class="col-md-9 bordersocials py-3 box box-shadow">
           <div class="row">
             <div class="col-md-8">
@@ -96,48 +96,48 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <!--second Button-->
       <!--end facebook area  -->
-      <Dialog
+      <!-- <Dialog
         header="Create a post"
         class="dialogFacebook heading-text text-center"
         v-model:visible="display1"
         style="width: 100%; max-width: 400px"
-      >
+      > -->
         <!--facebook id-->
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-4"></div>
-            <div class="form-group form-check col-md-6 ml-3">
+            <div class="form-group form-check col-md-6 ml-3"> -->
               <!-- <label class="form-check-label">
                 <input class="form-check-input" type="checkbox" /> Remember me
               </label> -->
-            </div>
+            <!-- </div>
             <div class="col-md-2"></div>
           </div>
           <div class="row">
             <div class="col-md-4"></div>
-            <div class="col-md-6">
+            <div class="col-md-6"> -->
               <!-- <router-link to="/tenant/social/post"
                 class="btn default-btn btnfb text-center"
               
               >
                 Create Post
               </router-link> -->
-              <button class="btn default-btn btnfb text-center"> <router-link to="/tenant/social/post" class="linkFacebook">Post</router-link></button>
+              <!-- <button class="btn default-btn btnfb text-center"> <router-link to="/tenant/social/post" class="linkFacebook">Post</router-link></button>
             </div>
             <div class="col-md-2"></div>
-          </div>
+          </div> -->
         <!--facebook id-->
-      </Dialog>
+      <!-- </Dialog> -->
       <!--second Button-->
       <!--end facebook area  -->
-      <Dialog
+      <!-- <Dialog
         header="Enter your facebook information"
         class="dialogFacebook heading-text"
         v-model:visible="display"
         style="width: 100%; max-width: 700px"
-      >
+      > -->
         <!--facebook id-->
         
           <!-- <div class="row justify-content-center">
@@ -151,7 +151,7 @@
               </h5>
               <h6>Share Your Post to Facebook</h6>
             </div> -->
-            <div class="row mb-3" >
+            <!-- <div class="row mb-3" >
             <div class="col-6 link-text">
               <p class="mt-3">Click the button below to watch how to get your page Id and Access Token</p>
               <p class="mt-4 text-center"><button class="btn default-btn btntwhatapp">Watch</button></p>
@@ -161,10 +161,10 @@
               <p class="mt-3">Click the button below to Download video to get your page Id and Access Token</p>
               <p class="mt-4 text-center"><a href=""> <button class="btn default-btn btntmobileapp">Download</button> </a></p>
             </div>
-          </div>
+          </div> -->
             <!-- <div class="col-md-0"></div>
           </div> -->
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-4 link-text">Page Id:</div>
             <div class="col-8 form-group">
               <input
@@ -192,23 +192,23 @@
           </div>
           <div class="row">
             <div class="col-md-4"></div>
-            <div class="form-group form-check col-md-6 ml-3">
+            <div class="form-group form-check col-md-6 ml-3"> -->
               <!-- <label class="form-check-label">
                 <input class="form-check-input" type="checkbox" /> Remember me
               </label> -->
-            </div>
+            <!-- </div>
             <div class="col-md-2"></div>
           </div>
           <div class="row">
             <div class="col-md-4"></div>
-            <div class="col-md-6">
+            <div class="col-md-6"> -->
               <!-- <router-link to="/tenant/social/post"
                 class="btn default-btn btnfb text-center"
               
               >
                 Create Post
               </router-link> -->
-              <button class="btn default-btn btnfb text-center" @click="getPageAccessToken" >Submit</button>
+              <!-- <button class="btn default-btn btnfb text-center" @click="getPageAccessToken" >Submit</button>
             </div>
             <div class="col-md-2"></div>
           </div>
@@ -220,13 +220,12 @@
             <div class="col-md-5">
              <router-link to> <button @click="getSocialMediaContact" class="btnnon"> Need help contact customer care</button></router-link>
             </div>
-          </div>
+          </div> -->
         <!--facebook id-->
-      </Dialog>
       <!--twitter area  -->
 
       <!-- Modal -->
-      <div
+      <!-- <div
         class="modal fade"
         id="exampleModal1"
         tabindex="-1"
@@ -262,15 +261,15 @@
                 </div>
               </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer"> -->
               <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-              <button type="button" class="btn default-btn btntwi">
+              <!-- <button type="button" class="btn default-btn btntwi">
                 Connect
               </button>
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!--  End Modal -->
       <!-- <div class="row mx-2 mx-md-0 my-4">
@@ -311,8 +310,60 @@
       </div> -->
       <!--twitter area ended  -->
 
+      <!--facebook-->
+      <div class="row mx-2 mx-md-0 my-4">
+        <div class="col-md-9 bordersocials py-3 box box-shadow">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="row">
+                <div class="col-2">
+                  <i
+                    class="
+                      fa
+                      pifb
+                      fa-facebook
+                      d-flex
+                      justify-content-center
+                      ml-4 ml-md-0
+                    "
+                  ></i>
+                </div>
+                <div class="col-10 d-flex align-items-center">
+                  <p class="link-text mb-0 pl-2 pl-md-0">
+                    Connect your Facebook account to Churchplus
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
+              <button class="btn default-btn btnfb" @click="facebookLogin">Connect</button>
+              <div id="status"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Dialog header="Connected Successfully" v-model:visible="display" :modal="true" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" >
+           <div class="container">
+             <div class="row">
+               <div class="col-12">
+                 Congratulations
+               </div>
+               <div class="col-12">
+                   Your facebook account has been connected to churchplus.
+               </div>
+               <div class="col-12">
+                   Below are the pages you manage, select the one you will like to post.
+               </div>
+               <div class="col-12">
+                   {{ userPages }}
+               </div>
+
+             </div>
+           </div>
+      </Dialog>
+      <!--facebook area ended  -->
       <!--instagram area  -->
-      <!-- <div class="row mx-2 mx-md-0 my-4">
+      <div class="row mx-2 mx-md-0 my-4">
         <div class="col-md-9 bordersocials py-3 box box-shadow">
           <div class="row">
             <div class="col-md-8">
@@ -341,11 +392,11 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
       <!--instergram area ended  -->
 
       <!--what'sApp area  -->
-      <!-- <div class="row mx-2 mx-md-0 my-4">
+      <div class="row mx-2 mx-md-0 my-4">
         <div class="col-md-9 bordersocials py-3 box box-shadow">
           <div class="row">
             <div class="col-md-8">
@@ -374,7 +425,7 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
       <!--what'sApp area ended  -->
       <Toast/>
 
@@ -423,6 +474,7 @@ export default {
     const toast = useToast()
     const display = ref(false);
     const display1 = ref(false)
+    const userPages = ref([])
     const showDisplay =() =>{
       return display.value= true
     }
@@ -430,6 +482,46 @@ export default {
       return display1.value = true
 
     }
+  //   //Login facebook New
+  //    const statusChangeCallback =(response) => {  // Called with the results from FB.getLoginStatus().
+  //   console.log('statusChangeCallback');
+  //   console.log(response);                   // The current login status of the person.
+  //   if (response.status === 'connected') {   // Logged into your webpage and Facebook.
+  //     testAPI();  
+  //   } else {                                 // Not logged into your webpage or we are unable to tell.
+  //     document.getElementById('status').innerHTML = 'Please log ' +
+  //       'into this webpage.';
+  //   }
+  // }
+  const showPageList = async(response) => {
+    FB.api(`https://graph.facebook.com/v12.0/${response.authResponse.userID}/accounts`, (res) => {
+       display.value = true;
+      console.log(res);
+      userPages.value = res
+    })
+   
+  }
+    const facebookLogin = () => {
+      FB.login(
+        function(response) {
+          showPageList(response)
+          console.log(response)
+          
+        },
+        { scope: "user_birthday" }
+      );
+    };
+
+    // const testAPI = () => {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+    //   console.log('Welcome!  Fetching your information.... ');
+    //   FB.api('/me', function(response) {
+    //     console.log('Successful login for: ' + response.name);
+    //     document.getElementById('status').innerHTML =
+    //       'Thanks for logging in, ' + response.name + '!';
+    //   });
+    // }
+
+    //Login facebook New
 
     // const facebookLogin2 = () => {
     //   var provider = new firebase.auth.FacebookAuthProvider();
@@ -646,9 +738,12 @@ export default {
       display1,
       showDisplay,
       showDisplay1,
+      facebookLogin,
       // pageAccessToken,
       getPageAccessToken,
-      getSocialMediaContact
+      getSocialMediaContact,
+      showPageList,
+      userPages
     };
   },
 };

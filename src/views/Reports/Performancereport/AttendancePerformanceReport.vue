@@ -1,22 +1,38 @@
 <template>
 <div class="container container-wide mt-5 mb-4">
+  <!-- <div class="row d-flex justify-content-between px-3">
+            <div class="heading-text">Attendance Report</div> -->
+            <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
+        </div>
+        <div class="row my-4" v-if="showExport">
+            <div class="col-sm-5">
+                <span class="p-float-label">
+                    <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
+                    <label for="inputtext">Enter file name</label>
+                </span>
+            </div>
+            <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
+                <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
+            </div>
+            <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn border-secondary d-flex align-items-center c-pointer justify-content-center">Download</div></div>
+        </div> -->
      <div>
             <h3 class="font-weight-bold mt-5 mb-2">Church Activities Attendance Report</h3>
             <span class="mt-5 mb-3">This reports gives an indepth view of the growth and attendance pattern of the ministry.</span>
-             
+
         </div>
         <div class="row">
   <div style="background: #ebeff4;" class="row mx-2 w-100 py-5" >
                 <div class="col-12 col-md-6 col-lg-3">
                     <div><label for="" class="font-weight-bold">SELECT EVENT</label></div>
-                    
+
                     <div>
                         <Dropdown v-model="selectedEvents" :options="allEvents" optionLabel="text" class="w-100" placeholder="Select Member" :filter="false" filterPlaceholder="Find Car"/>
                     </div>
 
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div class=""><label for="" class=" ml-2 font-weight-bold mt-3">START DATE</label></div>
+                    <div class=""><label for="" class=" ml-2 font-weight-bold">START DATE</label></div>
                     <div>
                         <div>
                             <Calendar id="icon" v-model="startDate" class="calendar1 w-100" :showIcon="true" />
@@ -24,7 +40,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div><label for="" class="font-weight-bold mt-3">END DATE</label></div>
+                    <div><label for="" class="font-weight-bold">END DATE</label></div>
                      <div>
                             <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" />
                         </div>
@@ -35,11 +51,11 @@
                         <button @click="getActivityReport()" class="btn default-btn primary-bg "><div class="text-white">Generate Report</div></button>
                     </div>
                 </div>
-             </div> 
+             </div>
              </div>
              <div>
                  <h3 class="font-weight-bold mt-5 ml-2"  v-show="activityReport > 0">SERVICE PERFORMANCE ANALYSIS REPORT </h3>
-                 
+
                  <div class=" borderInner mb-2">
                      <h5 class="ml-3 mt-4"></h5>
                          <div class="" v-show="activityReport.length > 0">
@@ -51,7 +67,7 @@
                             :data ="attendanceChart"
                             :series = "series"
                             :seriesText="`Attendance analysis`"
-                           
+
                         />
                         </div>
                  </div>
@@ -71,7 +87,7 @@
                         :series="attendanceData"
                       />
                     </div>
-                    
+
                     <div class=" borderInner mb-2">
                      <h5 class="ml-3 mt-4"></h5>
                          <div class="" v-show="activityReport.length > 0">
@@ -83,7 +99,7 @@
                             :data ="summaryChart"
                             :series = "series"
                             :seriesText="`Attendance analysis`"
-                           
+
                         />
                         </div>
                  </div>
@@ -106,9 +122,9 @@
              </div>
              <section>
                  <!-- table header -->
-       
+
       <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-2" >
-        <table class="table remove-styles mt-0 table-hover table-header-area">
+        <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
               class="small-text text-capitalize text-nowrap"
@@ -142,7 +158,7 @@
       <!--end table header -->
       </section>
              </div>
-     
+
 
 </template>
 
@@ -156,20 +172,30 @@ import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import ReportAreaChart from "@/components/charts/AreaChart.vue";
 import axios from "@/gateway/backendapi";
+// import InputText from "primevue/inputtext"
 import dateFormatter from "../../../services/dates/dateformatter.js"
+import exportService from "../../../services/exportFile/exportservice"
+import printJS from "print-js";
     export default {
         components:{
           Dropdown,
             Calendar,
+            // InputText,
             PerformanceColumnChart,
             ReportAreaChart
 
-        }, 
+        },
 
         setup() {
      const formatDate = (date) => {
       return dateFormatter.monthDayYear(date);
     };
+    const fileName = ref("")
+     const selectedFileType = ref("");
+    const fileHeaderToExport = ref([])
+    const fileToExport = ref([]);
+    const bookTypeList = ref([ 'xlsx', 'csv', 'txt' ])
+    const showExport = ref(false);
     const allEvents = ref({});
     const selectedEvents =ref()
     const series = ref([])
@@ -189,6 +215,9 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
     const categoryData = ref([])
     const attendanceGroup = ref({})
     const grousService = ref([])
+     const downloadFile = () => {
+        exportService.downLoadExcel(selectedFileType.value, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
+      }
 
     const getAllEvents = ()=>{
             axios.get('/api/Reports/events/getEvents')
@@ -210,8 +239,12 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
              groupCategory()
              groupName()
              categoryData.value = []
-             getActivityServices()  
-          }) 
+             getActivityServices()
+             setTimeout(() => {
+                        fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
+                        fileToExport.value = exportService.tableToJson(document.getElementById("table"))
+                    }, 1000)
+          })
          .catch((err)=> console.log(err))
      };
 
@@ -236,26 +269,26 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
            activityReport.value.forEach(i => {
             let attendanceIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let attendanceValue = Object.values(i)[attendanceIndex]
-            attendanceData.value.unshift(attendanceValue)     
+            attendanceData.value.unshift(attendanceValue)
          });
-         
+
          mainAttendanceData.value.push({
              name: 'Attendance',
              color: '#f94144',
              data: attendanceData.value
          })
          return mainAttendanceData.value
-          
+
      })
      const getActivityServices = () => {
            activityReport.value.forEach(i => {
             let serviceIndex = Object.keys(i).findIndex(i => i === 'date')
             let serviceValue = Object.values(i)[serviceIndex]
-            series.value.unshift(dateFormatter.monthDayYear(serviceValue)) 
+            series.value.unshift(dateFormatter.monthDayYear(serviceValue))
            })
            console.log(series.value)
            console.log(attendanceData.value)
-           
+
      }
 
     const summaryChart = computed(() => {
@@ -263,8 +296,8 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
             attendanceGroup.value.Babies.forEach(i => {
             let babiesIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let babiesValue = Object.values(i)[babiesIndex]
-            babiesData.value.unshift(babiesValue)  
-            console.log(babiesData.value)   
+            babiesData.value.unshift(babiesValue)
+            console.log(babiesData.value)
         })
 
          categoryData.value.push({
@@ -272,12 +305,12 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
                 color: '#3f37c9',
                 data: babiesData.value
             })
-           
+
            attendanceGroup.value.FeMale.forEach(i => {
             let womenIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let womenValue = Object.values(i)[womenIndex]
-            womenData.value.unshift(womenValue)  
-            console.log(womenData)   
+            womenData.value.unshift(womenValue)
+            console.log(womenData)
         })
          categoryData.value.push({
                 name: 'Women',
@@ -287,8 +320,8 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
             attendanceGroup.value.Male.forEach(i => {
             let maleIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let maleValue = Object.values(i)[maleIndex]
-            maleData.value.unshift(maleValue)  
-            console.log(maleData)   
+            maleData.value.unshift(maleValue)
+            console.log(maleData)
         })
          categoryData.value.push({
                 name: 'male',
@@ -298,8 +331,8 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
             attendanceGroup.value.Boy.forEach(i => {
             let boyIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let boyValue = Object.values(i)[boyIndex]
-            boyData.value.unshift(boyValue)  
-            console.log(boyData)   
+            boyData.value.unshift(boyValue)
+            console.log(boyData)
         })
          categoryData.value.push({
                 name: 'Boy',
@@ -309,8 +342,8 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
             attendanceGroup.value.Girl.forEach(i => {
             let girlIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let girlValue = Object.values(i)[girlIndex]
-            girlData.value.unshift(girlValue)  
-            console.log(girlData)   
+            girlData.value.unshift(girlValue)
+            console.log(girlData)
         })
          categoryData.value.push({
                 name: 'Girl',
@@ -320,8 +353,8 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
              attendanceGroup.value.Children.forEach(i => {
             let ChildrenIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let ChildrenValue = Object.values(i)[ChildrenIndex]
-            ChildrenData.value.unshift(ChildrenValue)  
-            console.log(ChildrenData)   
+            ChildrenData.value.unshift(ChildrenValue)
+            console.log(ChildrenData)
         })
          categoryData.value.push({
                 name: 'Children',
@@ -331,8 +364,8 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
              attendanceGroup.value.Teenagers.forEach(i => {
             let TeenagersIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let TeenagersValue = Object.values(i)[TeenagersIndex]
-           TeenagersData.value.unshift(TeenagersValue)  
-            console.log(TeenagersData)   
+           TeenagersData.value.unshift(TeenagersValue)
+            console.log(TeenagersData)
         })
          categoryData.value.push({
                 name: 'Teenagers',
@@ -342,8 +375,8 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
             attendanceGroup.value.singles.forEach(i => {
             let SinglesIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let SinglesValue = Object.values(i)[SinglesIndex]
-           SinglesData.value.unshift(SinglesValue)  
-            console.log(SinglesData)   
+           SinglesData.value.unshift(SinglesValue)
+            console.log(SinglesData)
         })
          categoryData.value.push({
                 name: 'Singles',
@@ -353,10 +386,11 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
             console.log(categoryData.value);
 
         return categoryData.value
-        
+
       })
 
         return{
+
             formatDate,
             startDate,
             endDate,
@@ -379,13 +413,21 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
             babiesData,
             summaryChart,
             attendanceGroup,
-            grousService
+            grousService,
+            showExport,
+              printJS,
+              downloadFile,
+          bookTypeList,
+          selectedFileType,
+          fileHeaderToExport,
+          fileToExport,
+          fileName
         }
-        
+
     }
-        
+
     }
-    
+
 </script>
 
 <style scoped>
@@ -395,7 +437,7 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
 .table {
   width: 100% !important;
   box-shadow: 0 0.063rem 0.25rem #02172e45;
-  border: 0.063rem solid #dde2e6; 
+  border: 0.063rem solid #dde2e6;
   border-radius: 30px;
   text-align: left;
   margin-bottom: auto !important;
@@ -459,10 +501,10 @@ border-top-right-radius: 0 !important;
 }
 
 .multiselect-custom {
-    
+
         padding-top: .1rem;
         padding-bottom: .1rem;
-    
+
 }
 
     .country-item-value {

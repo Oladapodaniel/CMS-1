@@ -21,6 +21,25 @@
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
         </div> -->
+
+         <div
+          class="default-btn font-weight-normal c-pointer mr-4"
+          @click="() => (showExport = !showExport)"
+          style="width: fixed; position:relative">
+                   Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                   <div
+                        class=" c-pointer"
+                        style="width: 6rem; z-index:1000; position:absolute"
+                        v-if="showExport">
+
+                         <Listbox
+                         @click="downloadFile"
+                         v-model="selectedFileType"
+                         :options="bookTypeList"
+                         optionLabel="name"/>
+                    </div>
+              </div>
+
       </div>
     </div>
     <!--end of header area -->
@@ -31,7 +50,7 @@
         class="row d-flex flex-row justify-content-center align-items-center"
       >
         <div class="col-md-2">
-          <h4 class="small font-weight-bold ml-2">Date Range</h4>
+          <h4 class="small font-weight-bold ml-4">Date Range</h4>
         </div>
 
         <div class="col-md-7 d-sm-flex">
@@ -45,7 +64,7 @@
           </div>
         </div>
 
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
+        <div class="col-md-3 d-sm-flex justify-content-end align-items-center pr-5">
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
             @click="generateReport"
@@ -56,60 +75,64 @@
       </div>
     </div>
     <!--end of date area -->
-
-    <section>
-      <!-- chart area -->
-      <div class="chart">
-        <div style="width: 45%" class="ml-md-4 chart1">
-          <ByGenderChart
-            domId="chart"
-            title="By Gender"
-            distance="5"
-            :titleMargin="10"
-            :summary="firstTimerChart"
-          />
+    <div id="element-to-print">
+      <section>
+        <!-- chart area -->
+        <div  class="chart">
+          <div style="width: 45%" class="ml-md-4 chart1">
+            <ByGenderChart
+              domId="chart"
+              title="By Gender"
+              distance="5"
+              :titleMargin="10"
+              :summary="firstTimerChart"
+            />
+          </div>
         </div>
-      </div>
-      <!--end of chart area -->
-    </section>
+        <!--end of chart area -->
+      </section>
 
-    <section>
-      <!-- table header -->
-      <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
-        <table class="table remove-styles mt-0 table-hover table-header-area">
-          <thead class="table-header-area-main">
-            <tr
-             class="small-text text-capitalize text-nowrap"
-              style="border-bottom: 0"
-            >
-              <th scope="col">Fund</th>
-              <th scope="col">Account Name</th>
-              <th scope="col">Reference Number</th>
-              <th scope="col">Description</th>
-              <th scope="col">Debit</th>
-              <th scope="col">Credit</th>
-              <th scope="col">Date</th>
-            </tr>
-          </thead>
-          <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(transaction, index) in accountTransaction"
-            :key="index">
-              <td>{{ transaction.fund }}</td>
-              <td>{{ transaction.accountName }}</td>
-              <td>{{ transaction.refNumber }}</td>
-              <td>{{ transaction.description }}</td>
-              <td>{{ transaction.debit }}</td>
-              <td>{{ transaction.credit }}</td>
-              <td>{{ formatDate(transaction.date) }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-          <PaginationButtons />
-        </div> -->
-      </div>
-      <!--end table header -->
-    </section>
+      <section>
+        <!-- table header -->
+        <div v-if="accountTransaction.length > 0">
+              <div  class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+          <table class="table remove-styles mt-0 table-hover table-header-area">
+            <thead class="table-header-area-main">
+              <tr
+              class="small-text text-capitalize text-nowrap"
+                style="border-bottom: 0"
+              >
+                <th scope="col">Fund</th>
+                <th scope="col">Account Name</th>
+                <th scope="col">Reference Number</th>
+                <th scope="col">Description</th>
+                <th scope="col">Debit</th>
+                <th scope="col">Credit</th>
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody class="font-weight-normal text-nowrap">
+              <tr v-for="(transaction, index) in accountTransaction"
+              :key="index">
+                <td>{{ transaction.fund }}</td>
+                <td>{{ transaction.accountName }}</td>
+                <td>{{ transaction.refNumber }}</td>
+                <td>{{ transaction.description }}</td>
+                <td>{{ transaction.debit }}</td>
+                <td>{{ transaction.credit }}</td>
+                <td>{{ formatDate(transaction.date) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
+            <PaginationButtons />
+          </div> -->
+        </div>
+        </div>
+
+        <!--end table header -->
+      </section>
+    </div>
   </div>
 </template>
 
@@ -120,11 +143,15 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
+import printJS from "print-js";
+import exportService from "../../../services/exportFile/exportservice";
+import Listbox from 'primevue/listbox';
 
 export default {
   components: {
     Calendar,
     ByGenderChart,
+    Listbox,
     // PaginationButtons,
   },
   setup() {
@@ -132,6 +159,13 @@ export default {
     const endDate = ref("");
     const accountTransaction = ref([]);
     // const firstTimerChart = ref([])
+      const showExport = ref(false);
+    const fileName = ref("");
+    // const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "pdf" }]);
+    const selectedFileType = ref("");
+    const fileHeaderToExport = ref([]);
+    const fileToExport = ref([]);
     const generateReport = () => {
       axios
         .get(`/api/Reports/financials/getAccountTransactionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
@@ -140,11 +174,35 @@ export default {
           console.log(res, "🎄🎄🎄");
           accountTransaction.value = res.data;
           console.log(accountTransaction.value, "✌️✌️");
+            /* function to call service and populate table */
+          setTimeout(() => {
+            fileHeaderToExport.value = exportService.tableHeaderToJson(
+              document.getElementsByTagName("th")
+            );
+            fileToExport.value = exportService.tableToJson(
+              document.getElementById("table")
+            );
+          }, 1000);
+          /* End function to call service and populate table */
         })
         .catch((err) => {
           console.log(err);
         });
     };
+
+
+       /* Code For Exporting File */
+    const downloadFile = () => {
+ console.log(fileHeaderToExport.value, "🎁🎁")
+
+  console.log(fileName.value, "🎁🎁")
+  alert(selectedFileType.value)
+  console.log(fileToExport.value, "🎁🎁")
+
+      exportService.downLoadExcel(
+        selectedFileType.value.name, document.getElementById("element-to-print"), fileName.value, fileHeaderToExport.value,  fileToExport.value,);
+    };
+    /* End Code For Exporting File */
 
      const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
@@ -162,6 +220,12 @@ export default {
       accountTransaction,
       generateReport,
       formatDate,
+      fileName,
+      downloadFile,
+      showExport,
+      bookTypeList,
+      printJS,
+      selectedFileType,
       // firstTimerChart
     };
   },
@@ -169,7 +233,7 @@ export default {
 </script>
 
 <style scoped>
-.default-btn {
+/* .default-btn {
   font-weight: 800;
   font-size: 1rem;
   white-space: initial;
@@ -182,12 +246,29 @@ export default {
   max-height: 2.5rem;
   background: #fff;
   min-width: 7.6rem;
+} */
+
+
+.default-btn {
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    /* outline: transparent !important; */
+    max-height: 40px;
+    background: #6c757d47 !important;
+    min-width: 121px;
 }
+
 
 .generate-report {
   font-size: 1rem;
   color: #fff;
-  background-color: #136acd;
+  background-color: #136acd !important;
   border: none;
   min-width: 7rem;
 }

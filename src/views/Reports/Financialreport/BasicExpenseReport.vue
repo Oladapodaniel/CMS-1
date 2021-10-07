@@ -17,18 +17,35 @@
            <p class="ml-2">This reports provides a detailed list of all the church expenses in a simplied display.</p>
         </div>
 
-        <div class="centered-items pr-3">
+        <!-- <div class="centered-items pr-3">
           <button class="default-btn font-weight-normal"
           @click="() => (showExport = !showExport)">
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div>
+        </div> -->
+
+           <!-- <div
+          class="default-btn font-weight-normal c-pointer mr-4"
+          @click="() => (showExport = !showExport)"
+          style="width: fixed; position:relative">
+                   Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                   <div
+                        class=" c-pointer"
+                        style="width: 6rem; z-index:1000; position:absolute"
+                        v-if="showExport">
+
+                         <Listbox
+                         @click="downloadFile"
+                         v-model="selectedFileType"
+                         :options="bookTypeList"
+                         optionLabel="name"/>
+                    </div>
+              </div> -->
+
       </div>
-      <transition name="move" mode="out-in">
+      <!-- <transition name="move" mode="out-in">
                <div class="row my-4" v-if="showExport">
-        <!-- <div class="col-sm-2">Enter file name</div> -->
         <div class="col-sm-5">
-          <!-- <input type="text" class="form-control" /> -->
           <span class="p-float-label ml-n3">
             <InputText
               id="inputtext"
@@ -46,9 +63,9 @@
             :options="bookTypeList"
             placeholder="Select file type"
           />
-        </div>
+        </div> -->
         <!-- <div class="">Export</div> -->
-        <div @click="downloadFile" class="col-sm-2 offset-sm-1">
+        <!-- <div @click="downloadFile" class="col-sm-2 offset-sm-1">
           <div
             class="
               default-btn
@@ -63,7 +80,7 @@
           </div>
         </div>
       </div>
-      </transition>
+      </transition> -->
 
     </div>
     <!--end of header area -->
@@ -74,7 +91,7 @@
         class="row d-flex flex-row justify-content-center align-items-center"
       >
         <div class="col-md-2">
-          <h4 class="small font-weight-bold ml-2">Date Range</h4>
+          <h4 class="small font-weight-bold ml-4">Date Range</h4>
         </div>
 
         <div class="col-md-7 d-sm-flex">
@@ -99,68 +116,93 @@
       </div>
     </div>
     <!--end of date area -->
+    <div id="element-to-print">
+      <section>
+        <!-- chart area -->
+        <div  class="chart row d-flex justify-content-center"
+        :class=" accountTransaction &&  accountTransaction.length > 0 ? 'graph-area' : '' ">
+        <div class="chart1 col-12 col-md-6 ">
+            <ByGenderChart
+              domId="chart"
+              title="Funds"
+              distance="5"
+              :titleMargin="10"
+              :summary="mappedExpenses"
+            />
+          </div>
+        </div>
+        <!--end of chart area -->
+      </section>
 
-    <section>
-      <!-- chart area -->
-      <div class="chart row"
-       :class=" accountTransaction &&  accountTransaction.length > 0 ? 'graph-area' : '' ">
-       <div class="chart1 col-12 col-md-6">
-          <ByGenderChart
-            domId="chart"
-            title="Funds"
-            distance="5"
-            :titleMargin="10"
-            :summary="groupedAccountName"
-          />
+      <section>
+        <!-- table header -->
+      <div v-if="accountTransaction.length > 0">
+          <div  class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+          <table id="table" class="table remove-styles mt-0 table-header-area">
+            <thead class="table-header-area-main">
+              <tr
+              class="small-text text-capitalize text-nowrap"
+                style="border-bottom: 0"
+              >
+                <th scope="col">Fund</th>
+                <th scope="col">Account Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody class="font-weight-normal text-nowrap">
+              <tr style="position: relative" v-for="(fund, index) in funds"
+              :key="index">
+                <!-- <td>{{ index === 0 ? transaction.fund : " " }}</td> -->
+                <!-- :colspan="funds.length - 1" -->
+                <td>{{fund.name}}
+                  <tr style="position: absolute;bottom:0">
+                    <td class="answer">SubTotal</td>
+                  </tr>
+                </td>
+                <td>
+                  <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
+                    {{item.accountName}}
+                  </tr>
+                </td>
+                <td>
+                  <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
+                    {{item.description}}
+                    </tr>
+                </td>
+                <td>
+                  <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
+                    {{item.amount}}
+                  </tr>
+                  <tr  class="mt-2 answer">
+                    {{total(fund.value).toLocaleString()}}
+                  </tr>
+                </td>
+                <td>
+                  <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
+                    {{ formatDate(item.date) }}
+                  </tr>
+                </td>
+              </tr>
+              <tr class="answer-row">
+                <td class="answer">Total</td>
+                <td></td>
+                <td></td>
+                <td  class="answer"> {{fundSum.toLocaleString() }}</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
+            <PaginationButtons />
+          </div> -->
         </div>
       </div>
-      <!--end of chart area -->
-    </section>
-
-    <section>
-      <!-- table header -->
-    <div v-if="accountTransaction.length > 0">
-        <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
-        <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
-          <thead class="table-header-area-main">
-            <tr
-             class="small-text text-capitalize text-nowrap"
-              style="border-bottom: 0"
-            >
-              <th scope="col">Fund</th>
-              <th scope="col">Account Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Date</th>
-            </tr>
-          </thead>
-          <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(transaction, index) in accountTransaction"
-            :key="index">
-              <td>{{ transaction.fund }}</td>
-              <td>{{ transaction.accountName }}</td>
-              <td>{{ transaction.description }}</td>
-              <td>{{ transaction.amount }}</td>
-              <td>{{ formatDate(transaction.date) }}</td>
-            </tr>
-            <tr class="answer-row">
-              <td class="answer">Total</td>
-              <td></td>
-              <td></td>
-              <td class="answer">{{amountTotal.toLocaleString()}}</td>
-              <!-- <td class="answer">{{amountTotal}}</td> -->
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-          <PaginationButtons />
-        </div> -->
-      </div>
+        <!-- <button @click="amountTotal">click me</button> -->
+        <!--end table header -->
+      </section>
     </div>
-      <!-- <button @click="amountTotal">click me</button> -->
-      <!--end table header -->
-    </section>
   </div>
 </template>
 
@@ -171,10 +213,12 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
-import Dropdown from "primevue/dropdown";
-import InputText from "primevue/inputtext";
+// import Dropdown from "primevue/dropdown";
+// import InputText from "primevue/inputtext";
+// import Listbox from 'primevue/listbox';
 import printJS from "print-js";
-import exportService from "../../../services/exportFile/exportservice";
+import exportService from "../../../services/exportFile/exportserviceforbasicexpense.js";
+import groupResponse from '../../../services/groupArray/groupResponse.js'
 // import numbers_formatter from "../../../services/numbers/numbers_formatter.js"
 // import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
 
@@ -182,8 +226,9 @@ export default {
   components: {
     Calendar,
     ByGenderChart,
-    Dropdown,
-    InputText,
+    // Listbox,
+    // Dropdown,
+    // InputText,
     // PerformanceColumnChart,
     // PaginationButtons,
   },
@@ -192,10 +237,12 @@ export default {
     const endDate = ref("");
     const accountTransaction = ref([]);
     const acccountType = ref();
-    const groupedAccountName = ref([])
+    const groupedAccountName = ref([]);
+    const fundType = ref([]);
+    const funds = ref([]);
     const showExport = ref(false);
     const fileName = ref("");
-    const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "pdf" }]);
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
@@ -206,14 +253,15 @@ export default {
 
           console.log(res, "🎄🎄🎄");
           accountTransaction.value = res.data;
-          console.log(accountTransaction.value[0], "✌️✌️");
+          groupedFundType()
+          groupChart( accountTransaction.value,'accountName');
 
-          groupChart( accountTransaction.value, 'accountName');
            /* function to call service and populate table */
           setTimeout(() => {
             fileHeaderToExport.value = exportService.tableHeaderToJson(
               document.getElementsByTagName("th")
             );
+            console.log(document.getElementById("table"));
             fileToExport.value = exportService.tableToJson(
               document.getElementById("table")
             );
@@ -228,8 +276,9 @@ export default {
 
          /* Code For Exporting File */
     const downloadFile = () => {
+     console.log();
       exportService.downLoadExcel(
-        selectedFileType.value,
+        selectedFileType.value.name,
         document.getElementById("element-to-print"),
         fileName.value,
         fileHeaderToExport.value,
@@ -258,25 +307,48 @@ export default {
                 }, 0),
                 })
             }
-
             console.log(groupedAccountName.value)
         };
 
-    const amountTotal = computed (() => {
-    if(accountTransaction.value.length === 0) return []
-     return  accountTransaction.value.reduce((acc, cur) => {
+        const mappedExpenses = computed(() => {
+          if (groupedAccountName.value.length === 0) return []
+          return groupedAccountName.value.map(i => i)
+        })
+
+
+
+    const groupedFundType = () => {
+      fundType.value = groupResponse.groupData(accountTransaction.value, 'fund')
+      console.log(fundType.value, "🎼🎼🎉🎉");
+        for (const prop in fundType.value) {
+          funds.value.push({
+          name:prop,
+          value: fundType.value[prop]
+          })
+      }
+      console.log(funds.value);
+    };
+
+    const total = (arr) => {
+      console.log(arr, "kgkfuvygu");
+          if(!arr || arr.length === 0) return 0
+          return arr.reduce((acc, cur) => {
         return acc + cur.amount
       }, 0)
-    });
+    }
+
+    const fundSum = computed(() => {
+      if (accountTransaction.value.length === 0) return 0
+      return accountTransaction.value.reduce((a, b) => {
+          return a + b.amount
+        }, 0)
+    })
 
 
      const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
     };
 
-    // onMounted(() => {
-    //   firstTimerChart.value = [{name: "Dapo", value: 77}]
-    // })
 
 
     return {
@@ -287,15 +359,20 @@ export default {
       generateReport,
       formatDate,
      acccountType,
-      amountTotal,
+     groupedFundType,
       groupChart,
       groupedAccountName,
+      fundType,
+      funds,
        printJS,
       showExport,
       fileName,
       bookTypeList,
       selectedFileType,
-      downloadFile
+      downloadFile,
+      total,
+      fundSum,
+      mappedExpenses
     };
   },
 };
