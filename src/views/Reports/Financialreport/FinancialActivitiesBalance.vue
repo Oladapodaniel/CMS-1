@@ -1,10 +1,19 @@
 <template>
-<div class="container container-wide mt-5 overflow-hidden  mb-4">
-     <div>
-            <h3 class="font-weight-bold mt-5">Accounting Activity and Balance Report </h3>
+<div class="container container-top container-wide mt-5   mb-4">
+        <div class="row d-flex justify-content-between px-3">
+            <div class="heading-text">Accounting Activity and Balance Report </div>
+            <div class="default-btn border-secondary font-weight-normal c-pointer"
+                @click="() => (showExport = !showExport)"
+                style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+                      <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                </div>
+            </div>
+            <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
         </div>
-        <div class="row">
-  <div style="background: #ebeff4;  border-radius: 0.5rem;" class="row mx-2 w-100 py-5" >
+        <div class="container-fluid my-2 py-5  ">
+             <div class="row">
+                <div style="background: #ebeff4;  border-radius: 0.5rem;" class="row mx-2 w-100 py-5" >
                 <div class="col-12 col-md-6 col-lg-3">
                     <div><label for="" class="font-weight-bold">SELECT ACCOUNT</label></div>
                     <div>
@@ -35,18 +44,20 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="" ></label>
                     <div class="mt-2" @click="generateReport">
-                        <button class="btn default-btn primary-bg "><div class="text-white">Generate Report</div></button>
+                        <button class=" default-btn generate-report "><div class="text-white">Generate </div></button>
                     </div>
                 </div>
              </div> 
              </div>
-             <section>
-      <!-- table header -->
-       <div>
-            <h3 class="font-weight-bold mt-5">ACCOUNT ACTIVITY REPORT</h3>
         </div>
-      <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " >
-        <table class="table remove-styles mt-0  table-hover table-header-area">
+       
+             <section :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+      <!-- table header -->
+        <div>
+              <div class=" heading-text mt-5">Account Activity Report</div>
+        </div>
+      <div id="element-to-print" class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " >
+        <table class="table remove-styles mt-0  table-hover table-header-area" id="table">
           <thead class="table-header-area-main">
             <tr class="small-text text-capitalize text-nowrap" style="border-bottom: 0" >
               <th scope="col">Date</th>
@@ -64,9 +75,9 @@
               <td>{{ AccountList.accountName }}</td>
               <td>{{ AccountList.refNumber }}</td>
               <td>{{ AccountList.description }}</td>
-              <td>{{AccountList.debit}}</td>
-              <td>{{ AccountList.credit }}</td>
-              <td>{{ AccountList.balance }}</td>
+              <td>{{AccountList.debit.toLocaleString()}}</td>
+              <td>{{ AccountList.credit.toLocaleString() }}</td>
+              <td>{{ AccountList.balance.toLocaleString() }}</td>
             </tr>
             <tr class="answer-row">
               <td class="answer">Total</td>
@@ -91,15 +102,20 @@
 
 
 <script>
-import { computed, ref } from "vue";
-import Dropdown from "primevue/dropdown";
-import axios from "@/gateway/backendapi";
-import Calendar from "primevue/calendar";
-import MultiSelect from 'primevue/multiselect';
- import dateFormatter from  "../../../services/dates/dateformatter";
+  import { computed, ref } from "vue";
+  import Dropdown from "primevue/dropdown";
+  import axios from "@/gateway/backendapi";
+  import Calendar from "primevue/calendar";
+  import MultiSelect from 'primevue/multiselect';
+  import dateFormatter from  "../../../services/dates/dateformatter";
+  import printJS from "print-js";
+  import Listbox from 'primevue/listbox';
+  // import html2pdf from "html2pdf.js"
+  import exportService from "../../../services/exportFile/exportservice";
+
     export default {
         components:{
-            Dropdown, MultiSelect,Calendar
+            Dropdown, MultiSelect,Calendar,Listbox
 
         }, 
 
@@ -111,6 +127,17 @@ import MultiSelect from 'primevue/multiselect';
     const selectedAccount = ref({});
     const accountInChurch = ref([]);
     const acountID = ref([]);
+    const showReport = ref(false);
+    const showExport = ref(false);
+    const fileName = ref("")
+    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'},{name: 'pdf'} ])
+    const selectedFileType = ref("");
+    const fileHeaderToExport = ref([])
+    const fileToExport = ref([]);
+
+     const downloadFile = () => {
+        exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
+      }
 
 
         const generateReport = () => {
@@ -121,6 +148,12 @@ import MultiSelect from 'primevue/multiselect';
             // offeringChart(res.data,'contributionName')
           //   maritalStatusChart(res.data,'maritalStatus')
           //   eventDateChart(res.data,'activityDate')
+           setTimeout(() => {
+                        fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
+                        fileToExport.value = exportService.tableToJson(document.getElementById("table"))
+                    }, 1000)
+
+                     showReport.value = true;
           })
           .catch((err) => {
             console.log(err);
@@ -165,6 +198,15 @@ import MultiSelect from 'primevue/multiselect';
             selectedAccount,
             generateReport,
             accountInChurch,
+            downloadFile,
+             showReport,
+            showExport,
+            fileHeaderToExport,
+            fileToExport,
+            selectedFileType,
+            bookTypeList,
+            fileName,
+            printJS,
             // offeringInChurch,
             acountID
             
@@ -180,6 +222,51 @@ import MultiSelect from 'primevue/multiselect';
 * {
   box-sizing: border-box;
 }
+
+.show-report{
+    display: block;
+}
+.hide-report{
+    display: none;
+}
+
+.responsiveness{
+  max-width: 100%;
+  overflow-y: scroll;
+}
+.heading-text {
+  font: normal normal 800 1.5rem Nunito sans;
+}
+
+.default-btn {
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    /* outline: transparent !important; */
+    max-height: 40px;
+    background: #6c757d47 !important;
+    color:#000;
+    text-decoration: none;
+    min-width: 121px;
+}
+
+.default-btn:hover {
+  text-decoration: none;
+}
+
+
+.generate-report {
+  font-size: 1rem;
+  color: #fff;
+  background-color: #136acd !important ;
+  border: none;
+  min-width: 7rem;
+}
 .p-multiselect {
     width: 18rem;
 }
@@ -192,17 +279,18 @@ import MultiSelect from 'primevue/multiselect';
 }
 .answer{
   font-weight: bolder;
-  color: #fff;
+  color: rgb(0, 0, 0);
 }
 .answer-row{
-  background-color: #136acd;
+  background-color: #d5d5d5;
   border-radius: 30px !important;
   border-bottom-left-radius:  50px !important;
   border-bottom-right-radius: 50px !important;
+  font-weight: bold;
 }
 
 .answer-row:hover{
-  background-color: #136acd;
+  background-color: #d1d1d1;
 }
 
     .country-item-value {

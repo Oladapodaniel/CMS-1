@@ -900,10 +900,10 @@ export default {
               life: 6000,
             });
 
-            store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
+            store.dispatch("removeSMSUnitCharge", res.data.unitsUsed);
             console.log(pageCount, "Page count ");
 
-            console.log(res);
+            console.log(res , ' My reall name');
             // Save the res to store in other to get it in the view sent sms page
             let sentObj = {
                 message: res.data.message,

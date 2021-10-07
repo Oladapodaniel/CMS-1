@@ -120,123 +120,124 @@
       </div>
     </div>
     <!--end of date area -->
-
-    <section>
-      <!-- chart area -->
-      <div
-        class="chart row"
-        :class="
-          weddingAnniversary && weddingAnniversary.length > 0
-            ? 'graph-area'
-            : ''
-        "
-      >
-        <div class="chart1 col-12 col-md-6">
-          <ByGenderChart
-            domId="chart"
-            title="Gender"
-            distance="5"
-            :titleMargin="10"
-            :summary="membershipByGender"
-          />
-        </div>
-        <div class="chart1 col-12 col-md-6">
-          <ByGenderChart
-            domId="chart2"
-            title="Marital Status"
-            distance="5"
-            :titleMargin="10"
-            :summary="membershipMaritalStatus"
-          />
-        </div>
-      </div>
-      <div
-        class="chart row my-1"
-        :class="
-          weddingAnniversary && weddingAnniversary.length > 0
-            ? 'graph-area'
-            : ''
-        "
-      >
-        <div class="chart1 col-12 col-md-6">
-          <ByGenderChart
-            domId="chart3"
-            title="Membership Status"
-            distance="5"
-            :titleMargin="10"
-            :summary="membershipDistribution"
-          />
-        </div>
-        <div class="chart1 col-12 col-md-6">
-          <ByGenderChart
-            domId="chart4"
-            title="Age Group"
-            distance="5"
-            :titleMargin="10"
-            :summary="membershipAgeGroup"
-          />
-        </div>
-      </div>
-      <!--end of chart area -->
-    </section>
-
-    <section>
-      <!-- table header -->
-      <div v-if="weddingAnniversary.length > 0">
+    <div id="element-to-print">
+      <section >
+        <!-- chart area -->
         <div
-          class="
-            mt-2
-            container-fluid
-            table-main
-            px-0
-            remove-styles2 remove-border
-            responsiveness
+          class="chart row"
+          :class="
+            weddingAnniversary && weddingAnniversary.length > 0
+              ? 'graph-area'
+              : ''
           "
         >
-          <table
-            id="table"
-            class="table remove-styles mt-0 table-hover table-header-area"
-          >
-            <thead class="table-header-area-main">
-              <tr
-                class="small-text text-capitalize text-nowrap"
-                style="border-bottom: 0"
-              >
-                <th scope="col">Name</th>
-                <th scope="col">Wedding Day</th>
-                <th scope="col">Mobile Phone</th>
-                <th scope="col">Email</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Marital Status</th>
-                <th scope="col">Age Group</th>
-                <th scope="col">Membership</th>
-                <th scope="col">Home Address</th>
-              </tr>
-            </thead>
-            <tbody class="font-weight-normal text-nowrap">
-              <tr
-                v-for="(anniversary, index) in weddingAnniversary"
-                :key="index"
-              >
-                <td>{{ anniversary.name }}</td>
-                <td>{{ formatDate(anniversary.weddingDay) }}</td>
-                <td>{{ anniversary.mobilePhone }}</td>
-                <td>{{ anniversary.email }}</td>
-                <td>{{ anniversary.gender }}</td>
-                <td>{{ anniversary.maritalStatus }}</td>
-                <td>{{ anniversary.ageGroup }}</td>
-                <td>{{ anniversary.membership }}</td>
-                <td>{{ anniversary.homeAddress }}</td>
-              </tr>
-            </tbody>
-          </table>
-          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-          <PaginationButtons />
-        </div> -->
+          <div class="chart1 col-12 col-md-6">
+            <ByGenderChart
+              domId="chart"
+              title="Gender"
+              distance="5"
+              :titleMargin="10"
+              :summary="membershipByGender"
+            />
+          </div>
+          <div class="chart1 col-12 col-md-6">
+            <ByGenderChart
+              domId="chart2"
+              title="Marital Status"
+              distance="5"
+              :titleMargin="10"
+              :summary="membershipMaritalStatus"
+            />
+          </div>
         </div>
-      </div>
-      <!--end table header -->
-    </section>
+        <div
+          class="chart row my-1"
+          :class="
+            weddingAnniversary && weddingAnniversary.length > 0
+              ? 'graph-area'
+              : ''
+          "
+        >
+          <div class="chart1 col-12 col-md-6">
+            <ByGenderChart
+              domId="chart3"
+              title="Membership Status"
+              distance="5"
+              :titleMargin="10"
+              :summary="membershipDistribution"
+            />
+          </div>
+          <div class="chart1 col-12 col-md-6">
+            <ByGenderChart
+              domId="chart4"
+              title="Age Group"
+              distance="5"
+              :titleMargin="10"
+              :summary="membershipAgeGroup"
+            />
+          </div>
+        </div>
+        <!--end of chart area -->
+      </section>
+
+      <section>
+        <!-- table header -->
+        <div v-if="weddingAnniversary.length > 0">
+          <div
+            class="
+              mt-2
+              container-fluid
+              table-main
+              px-0
+              remove-styles2 remove-border
+              responsiveness
+            "
+          >
+            <table
+              id="table"
+              class="table remove-styles mt-0 table-hover table-header-area"
+            >
+              <thead class="table-header-area-main">
+                <tr
+                  class="small-text text-capitalize text-nowrap"
+                  style="border-bottom: 0"
+                >
+                  <th scope="col">Name</th>
+                  <th scope="col">Wedding Day</th>
+                  <th scope="col">Mobile Phone</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Gender</th>
+                  <th scope="col">Marital Status</th>
+                  <th scope="col">Age Group</th>
+                  <th scope="col">Membership</th>
+                  <th scope="col">Home Address</th>
+                </tr>
+              </thead>
+              <tbody class="font-weight-normal text-nowrap">
+                <tr
+                  v-for="(anniversary, index) in weddingAnniversary"
+                  :key="index"
+                >
+                  <td>{{ anniversary.name }}</td>
+                  <td>{{ formatDate(anniversary.weddingDay) }}</td>
+                  <td>{{ anniversary.mobilePhone }}</td>
+                  <td>{{ anniversary.email }}</td>
+                  <td>{{ anniversary.gender }}</td>
+                  <td>{{ anniversary.maritalStatus }}</td>
+                  <td>{{ anniversary.ageGroup }}</td>
+                  <td>{{ anniversary.membership }}</td>
+                  <td>{{ anniversary.homeAddress }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- <div class="table-foot d-flex justify-content-end mt-n3">
+            <PaginationButtons />
+          </div> -->
+          </div>
+        </div>
+        <!--end table header -->
+      </section>
+    </div>
   </div>
 </template>
 
@@ -314,7 +315,7 @@ export default {
     /* Code For Exporting File */
     const downloadFile = () => {
       exportService.downLoadExcel(
-        selectedFileType.value,
+        selectedFileType.value.name,
         document.getElementById("element-to-print"),
         fileName.value,
         fileHeaderToExport.value,

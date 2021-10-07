@@ -56,7 +56,8 @@
             </div>
         </div>
     <!--end of date area -->
-        <div class="container-fluid ">
+      <div id="element-to-print">
+        <div  class="container-fluid ">
             <div class="row w-100">
                 <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                     <div class="mt-5 display-1 font-weight-bold text-center heading-text">
@@ -173,6 +174,7 @@
             </div>
             <!--end table header -->
         </section>
+      </div>
             <!-- </div> -->
         <!-- </div> -->
     </div>
@@ -370,7 +372,7 @@ export default {
 
     }
     const downloadFile = () => {
-        exportService.downLoadExcel(selectedFileType.value, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
+        exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
       }
     // const downLoadExcel = () => {
     //         if (selectedFileType.value === "pdf") {
@@ -539,24 +541,31 @@ export default {
 }
 
 .default-btn {
-  font-weight: 800;
-  /* font-size: 1rem; */
-  /* white-space: initial; */
-  /* border-radius: 3rem; */
-  border: 1px solid #136acd;
-  /* padding: 0.5rem 1.25rem; */
-  /* color: #136acd; */
-  /* width: auto; */
-  outline: transparent !important;
-  /* max-height: 2.5rem; */
-  background: #fff;
-  /* min-width: 7.6rem; */
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    /* outline: transparent !important; */
+    max-height: 40px;
+    background: #6c757d47 !important;
+    color:#000;
+    text-decoration: none;
+    min-width: 121px;
 }
+
+.default-btn:hover {
+  text-decoration: none;
+}
+
 
 .generate-report {
   font-size: 1rem;
   color: #fff;
-  background-color: #136acd;
+  background-color: #136acd !important ;
   border: none;
   min-width: 7rem;
 }

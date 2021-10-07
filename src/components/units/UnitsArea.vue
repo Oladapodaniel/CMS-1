@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row d-sm-flex align-items-center units-div mt-3">
             <div class="col-sm-12">
-                <h4 class="font-weight-bold mb-0 center-flexed">{{ balance }}</h4>
+                <h4 class="font-weight-bold mb-0 center-flexed">{{ balance.toFixed(2) }}</h4>
                 <p class="font-weight-bold mb-0 center-flexed">
                 SMS Units
                 </p>

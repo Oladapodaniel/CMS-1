@@ -110,128 +110,132 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="" ></label>
                     <div class="mt-2" @click="genarateReport">
-                        <button class="btn default-btn border-0 generate-report "><div class="text-white">Generate </div></button>
+                        <button class=" default-btn generate-report c-pointer font-weight-normal ">Generate </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="container-fluid  ">
-            <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                <div class="col-12 ">
-                    <div class="mt-5 pb-2 text-center Display-1 heading-text">
-                        Congregation Members Report
-                    </div>
-                </div>
-                <div class="col-12 table d-flex flex-wrap">
-                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="col-12 mt-sm-3 mt-md-0 mt-lg-2  text-center">
-                        <div class="col-12 font-weight-bold">Membership By Gender</div>
-                        <!-- <div class="col-12" >No Data Available</div> -->
-                        <div class="col-12">
-                            <MembershipPieChart
-                                domId="chart1"
-                                distance="5"
-                                :titleMargin="10"
-                                :summary="mappedGender"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12  mt-3 mt-sm-3 mt-md-0 mt-lg-2 text-center">
-                        <div class="col-12  font-weight-bold">Membership By Marital Status</div>
-                        <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
-                        <div class="col-12 " >
-                            <MembershipPieChart
-                                domId="chart2"
-                                distance="5"
-                                :titleMargin="10"
-                                :summary="mappedMaritalStatus"
-                            />
-                        </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-            <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-              <div class="col-12 table d-flex flex-wrap">
-                  <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2 " >
-                        <div class="col-12  font-weight-bold ">Membership By Members</div>
-                        <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
-                        <div class="col-12 ">
-                            <MembershipPieChart
-                                domId="chart3"
-                                distance="5"
-                                :titleMargin="10"
-                                :summary="mappedMember"
-                            />
-                        </div>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-12  col-md-6 col-lg-6" >
-                    <div class="col-12   text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2  ">
-                        <div class="col-12 w-100  font-weight-bold" >Membership By Age Group</div>
-                        <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
-                        <div class="col-12 ">
-                            <MembershipPieChart
-                                domId="char4"
-                                distance="5"
-                                :titleMargin="10"
-                                :summary="mappedAgeGroup"
+        <div id="element-to-print">
 
-                            />
-                        </div>
+        
+          <div  class="container-fluid  ">
+              <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                  <div class="col-12 ">
+                      <div class="mt-5 pb-2 text-center Display-1 heading-text">
+                          Congregation Members Report
+                      </div>
+                  </div>
+                  <div class="col-12 table d-flex flex-wrap">
+                      <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                      <div class="col-12 mt-sm-3 mt-md-0 mt-lg-2  text-center">
+                          <div class="col-12 font-weight-bold">Membership By Gender</div>
+                          <!-- <div class="col-12" >No Data Available</div> -->
+                          <div class="col-12">
+                              <MembershipPieChart
+                                  domId="chart1"
+                                  distance="5"
+                                  :titleMargin="10"
+                                  :summary="mappedGender"
+                              />
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                      <div class="col-12  mt-3 mt-sm-3 mt-md-0 mt-lg-2 text-center">
+                          <div class="col-12  font-weight-bold">Membership By Marital Status</div>
+                          <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                          <div class="col-12 " >
+                              <MembershipPieChart
+                                  domId="chart2"
+                                  distance="5"
+                                  :titleMargin="10"
+                                  :summary="mappedMaritalStatus"
+                              />
+                          </div>
+                      </div>
+                  </div>
+                  </div>
+              </div>
+              <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                <div class="col-12 table d-flex flex-wrap">
+                    <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                      <div class="col-12 text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2 " >
+                          <div class="col-12  font-weight-bold ">Membership By Members</div>
+                          <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                          <div class="col-12 ">
+                              <MembershipPieChart
+                                  domId="chart3"
+                                  distance="5"
+                                  :titleMargin="10"
+                                  :summary="mappedMember"
+                              />
+                          </div>
+                      </div>
                     </div>
+                    <div class="col-12 col-sm-12  col-md-6 col-lg-6" >
+                      <div class="col-12   text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2  ">
+                          <div class="col-12 w-100  font-weight-bold" >Membership By Age Group</div>
+                          <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                          <div class="col-12 ">
+                              <MembershipPieChart
+                                  domId="char4"
+                                  distance="5"
+                                  :titleMargin="10"
+                                  :summary="mappedAgeGroup"
+
+                              />
+                          </div>
+                      </div>
+                  </div>
                 </div>
               </div>
-            </div>
+          </div>
+          <!-- <div > -->
+              <!-- <div class="row "> -->
+                  <section>
+                      <!-- table header -->
+                      <div  class=" container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness  "
+                      :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
+                          <table class="table remove-styles mt-0 table-hover table-header-area " id="table" >
+                          <thead class="table-header-area-main" >
+                              <tr
+                              class="small-text text-capitalize text-nowrap"
+                              style="border-bottom: 0"
+                              >
+                              <!-- <th scope="col">Church Activity</th> -->
+                              <th scope="col">Membership</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">Phone</th>
+                              <th scope="col">Email</th>
+                              <th scope="col">Home Address</th>
+                              <th scope="col">Gender</th>
+                              <th scope="col">Marital Status</th>
+                              <th scope="col">Age Group</th>
+                              <th scope="col">Birthday</th>
+                              </tr>
+                          </thead>
+                          <tbody class="font-weight-normal text-nowrap">
+                              <tr v-for="(member, index) in membersInChurch" :key="index">
+                              <!-- <td>{{member.churchActivity}}</td> -->
+                              <td>{{member.membership}}</td>
+                              <td>{{member.name}}</td>
+                              <td>{{member.mobilePhone}}</td>
+                              <td>{{member.email}}</td>
+                              <td>{{member.homeAddress}}</td>
+                              <td>{{member.gender}}</td>
+                              <td>{{member.maritalStatus}}</td>
+                              <td>{{member.ageGroup}}</td>
+                              <td>{{member.birthDay}}</td>
+                              </tr>
+                          </tbody>
+                          </table>
+                          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
+                          <PaginationButtons />
+                          </div> -->
+                      </div>
+                      <!--end table header -->
+                  </section>
         </div>
-        <!-- <div > -->
-            <!-- <div class="row "> -->
-                <section>
-                    <!-- table header -->
-                    <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness  "
-                    :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
-                        <table class="table remove-styles mt-0 table-hover table-header-area " id="table" >
-                        <thead class="table-header-area-main" >
-                            <tr
-                            class="small-text text-capitalize text-nowrap"
-                            style="border-bottom: 0"
-                            >
-                            <!-- <th scope="col">Church Activity</th> -->
-                            <th scope="col">Membership</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Home Address</th>
-                            <th scope="col">Gender</th>
-                            <th scope="col">Marital Status</th>
-                            <th scope="col">Age Group</th>
-                            <th scope="col">Birthday</th>
-                            </tr>
-                        </thead>
-                        <tbody class="font-weight-normal text-nowrap">
-                            <tr v-for="(member, index) in membersInChurch" :key="index">
-                            <!-- <td>{{member.churchActivity}}</td> -->
-                            <td>{{member.membership}}</td>
-                            <td>{{member.name}}</td>
-                            <td>{{member.mobilePhone}}</td>
-                            <td>{{member.email}}</td>
-                            <td>{{member.homeAddress}}</td>
-                            <td>{{member.gender}}</td>
-                            <td>{{member.maritalStatus}}</td>
-                            <td>{{member.ageGroup}}</td>
-                            <td>{{member.birthDay}}</td>
-                            </tr>
-                        </tbody>
-                        </table>
-                        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-                        <PaginationButtons />
-                        </div> -->
-                    </div>
-                    <!--end table header -->
-                </section>
             <!-- </div> -->
         <!-- </div> -->
     </div>
@@ -276,7 +280,7 @@ export default {
     const ageGroupChartResult = ref([]);
     const showExport = ref(false);
     const fileName = ref("")
-    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'} ])
+    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'}, {name: 'pdf'} ])
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);
@@ -389,7 +393,7 @@ export default {
     })
 
       const downloadFile = () => {
-        exportService.downLoadExcel(selectedFileType.value, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
+        exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
       }
 
     //  const downLoadExcel = () => {
@@ -615,13 +619,34 @@ export default {
 }
 
 
+.default-btn {
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    /* outline: transparent !important; */
+    max-height: 40px;
+    background: #6c757d47 !important;
+    color:#000;
+    text-decoration: none;
+    min-width: 121px;
+}
+
+.default-btn:hover {
+  text-decoration: none;
+}
+
+
 .generate-report {
   font-size: 1rem;
   color: #fff;
-  background-color: #136acd;
+  background-color: #136acd !important ;
   border: none;
   min-width: 7rem;
-  border: 0
 }
 
 .heading-text {

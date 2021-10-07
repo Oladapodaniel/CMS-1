@@ -116,92 +116,93 @@
       </div>
     </div>
     <!--end of date area -->
+    <div id="element-to-print">
+      <section>
+        <!-- chart area -->
+        <div  class="chart row d-flex justify-content-center"
+        :class=" accountTransaction &&  accountTransaction.length > 0 ? 'graph-area' : '' ">
+        <div class="chart1 col-12 col-md-6 ">
+            <ByGenderChart
+              domId="chart"
+              title="Funds"
+              distance="5"
+              :titleMargin="10"
+              :summary="mappedExpenses"
+            />
+          </div>
+        </div>
+        <!--end of chart area -->
+      </section>
 
-    <section>
-      <!-- chart area -->
-      <div class="chart row d-flex justify-content-center"
-       :class=" accountTransaction &&  accountTransaction.length > 0 ? 'graph-area' : '' ">
-       <div class="chart1 col-12 col-md-6 ">
-          <ByGenderChart
-            domId="chart"
-            title="Funds"
-            distance="5"
-            :titleMargin="10"
-            :summary="mappedExpenses"
-          />
+      <section>
+        <!-- table header -->
+      <div v-if="accountTransaction.length > 0">
+          <div  class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+          <table id="table" class="table remove-styles mt-0 table-header-area">
+            <thead class="table-header-area-main">
+              <tr
+              class="small-text text-capitalize text-nowrap"
+                style="border-bottom: 0"
+              >
+                <th scope="col">Fund</th>
+                <th scope="col">Account Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody class="font-weight-normal text-nowrap">
+              <tr style="position: relative" v-for="(fund, index) in funds"
+              :key="index">
+                <!-- <td>{{ index === 0 ? transaction.fund : " " }}</td> -->
+                <!-- :colspan="funds.length - 1" -->
+                <td>{{fund.name}}
+                  <tr style="position: absolute;bottom:0">
+                    <td class="answer">SubTotal</td>
+                  </tr>
+                </td>
+                <td>
+                  <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
+                    {{item.accountName}}
+                  </tr>
+                </td>
+                <td>
+                  <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
+                    {{item.description}}
+                    </tr>
+                </td>
+                <td>
+                  <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
+                    {{item.amount}}
+                  </tr>
+                  <tr  class="mt-2 answer">
+                    {{total(fund.value).toLocaleString()}}
+                  </tr>
+                </td>
+                <td>
+                  <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
+                    {{ formatDate(item.date) }}
+                  </tr>
+                </td>
+              </tr>
+              <tr class="answer-row">
+                <td class="answer">Total</td>
+                <td></td>
+                <td></td>
+                <td  class="answer"> {{fundSum.toLocaleString() }}</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
+            <PaginationButtons />
+          </div> -->
         </div>
       </div>
-      <!--end of chart area -->
-    </section>
-
-    <section>
-      <!-- table header -->
-    <div v-if="accountTransaction.length > 0">
-        <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
-        <table id="table" class="table remove-styles mt-0 table-header-area">
-          <thead class="table-header-area-main">
-            <tr
-             class="small-text text-capitalize text-nowrap"
-              style="border-bottom: 0"
-            >
-              <th scope="col">Fund</th>
-              <th scope="col">Account Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Date</th>
-            </tr>
-          </thead>
-          <tbody class="font-weight-normal text-nowrap">
-            <tr style="position: relative" v-for="(fund, index) in funds"
-            :key="index">
-              <!-- <td>{{ index === 0 ? transaction.fund : " " }}</td> -->
-              <!-- :colspan="funds.length - 1" -->
-              <td>{{fund.name}}
-                <tr style="position: absolute;bottom:0">
-                   <td class="answer">SubTotal</td>
-                </tr>
-              </td>
-              <td>
-                <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
-                  {{item.accountName}}
-                </tr>
-              </td>
-              <td>
-                <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
-                  {{item.description}}
-                  </tr>
-              </td>
-              <td>
-                <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
-                  {{item.amount}}
-                </tr>
-                <tr  class="mt-2 answer">
-                  {{total(fund.value).toLocaleString()}}
-                </tr>
-              </td>
-              <td>
-                <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
-                  {{ formatDate(item.date) }}
-                </tr>
-              </td>
-            </tr>
-            <tr class="answer-row">
-              <td class="answer">Total</td>
-              <td></td>
-              <td></td>
-              <td  class="answer"> {{fundSum.toLocaleString() }}</td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-          <PaginationButtons />
-        </div> -->
-      </div>
+        <!-- <button @click="amountTotal">click me</button> -->
+        <!--end table header -->
+      </section>
     </div>
-      <!-- <button @click="amountTotal">click me</button> -->
-      <!--end table header -->
-    </section>
   </div>
 </template>
 
@@ -241,7 +242,7 @@ export default {
     const funds = ref([]);
     const showExport = ref(false);
     const fileName = ref("");
-    const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
+    const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "pdf" }]);
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
@@ -277,7 +278,7 @@ export default {
     const downloadFile = () => {
      console.log();
       exportService.downLoadExcel(
-        selectedFileType.value,
+        selectedFileType.value.name,
         document.getElementById("element-to-print"),
         fileName.value,
         fileHeaderToExport.value,
