@@ -2,7 +2,7 @@
   <div class="container-fluid px-5 mt-5">
      <div class="row d-flex justify-content-between px-3">
             <h3 class="heading-text ml-1">Basic Income And Revenue Report</h3>
-            <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
+            <div @click="() => showExport = !showExport" class="cursor-pointer default-btn  d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
       </div>
       <div class="row my-4" v-if="showExport">
           <!-- <div class="col-sm-2">Enter file name</div> -->
@@ -179,6 +179,7 @@ import InputText from 'primevue/inputtext';
 import Dropdown from "primevue/dropdown";
 import exportService from "../../../services/exportFile/exportservice"
 import axios from "@/gateway/backendapi";
+import axioz from "axios";
 import dateFormatter from  "../../../services/dates/dateformatter";
 
 export default {
@@ -189,7 +190,7 @@ export default {
     ByGenderChart,
     PaginationButtons,
     InputText,
-    Dropdown,
+    Dropdown
   },
   setup() {
     const startDate = ref(new Date());
@@ -301,6 +302,10 @@ export default {
       }
       return color;
     }
+
+    axioz.post(`/v1/users/login`, { headers: { 'Authorization': 'Basic base64(admin: secret)'} }, { 'new_password': "new_password" }).then(res => {
+      console.log(res ,'whatsapp login');
+    })
    
     return {
       summary,
@@ -333,20 +338,6 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
-}
-.default-btn {
-  font-weight: 800;
-  font-size: 1rem;
-  white-space: initial;
-  border-radius: 3rem;
-  border: 1px solid #136acd;
-  padding: 0.5rem 1.25rem;
-  /* color: #136acd; */
-  width: auto;
-  outline: transparent !important;
-  max-height: 2.5rem;
-  background: #fff;
-  min-width: 7.6rem;
 }
 
 .generate-report {
