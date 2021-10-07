@@ -222,8 +222,6 @@
             </div>
           </div> -->
         <!--facebook id-->
-        <Dialog>
-      </Dialog>
       <!--twitter area  -->
 
       <!-- Modal -->
@@ -344,7 +342,7 @@
           </div>
         </div>
       </div>
-      <Dialog header="Header" v-model:visible="display" >
+      <Dialog header="Connected Successfully" v-model:visible="display" :modal="true" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" >
            <div class="container">
              <div class="row">
                <div class="col-12">
@@ -354,7 +352,7 @@
                    Your facebook account has been connected to churchplus.
                </div>
                <div class="col-12">
-                   Below are the pages you manage, select the one you will like to post to from churchplus.
+                   Below are the pages you manage, select the one you will like to post.
                </div>
                <div class="col-12">
                    {{ userPages }}
