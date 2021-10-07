@@ -182,7 +182,7 @@
 
             <!-- Card for Call and Email Logs -->
 
-            <div class="col-12 mt-4" v-if="item.type === 88">
+            <div class="col-12 mt-4" v-if="item.type === 88 || item.type === 94">
                 <div class="col-12 card-bg p-4">
                     <div class="row d-flex justify-content-between">
                         <div>
@@ -269,24 +269,26 @@
             </div>
             
             <!-- Log for contactowner, lifecycle, leadstatus -->
-            <div class="col-12 mt-4" v-if="item.type === 90 || item.type === 92 || item.type === 93">
-                <div class="col-12 card-bg p-4">
-                    <div class="row d-flex justify-content-between">
+            <transition name="fade">
+                <div class="col-12 mt-4 parent-card" v-if="item.type === 90 || item.type === 92 || item.type === 93">
+                    <div class="col-12 card-bg p-4">
+                        <div class="row d-flex justify-content-between">
+                            
+                                <div class="col-6 align-self-center"><span class="font-weight-700">{{ item.type === 90 ? "Lifecycle changed" : item.type === 92 ? "Lead status changed" : "Contact's owner changed" }}</span><span class="font-weight-700 uniform-primary-color"></span></div>
                         
-                            <div class="col-6 align-self-center"><span class="font-weight-700">{{ item.type === 90 ? "Lifecycle changed" : item.type === 92 ? "Lead status changed" : "Contact's owner changed" }}</span><span class="font-weight-700 uniform-primary-color"></span></div>
+                            
+                                <div class="col-6 text-right"><span class="ml-2 small-text">{{ formatDate(item.date) }} {{ item.time }}</span>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12 enlargen-font">
+                                {{ item.description }}
+                            </div>
+                        </div>
                     
-                        
-                            <div class="col-6 text-right"><span class="ml-2 small-text">{{ formatDate(item.date) }} {{ item.time }}</span>
-                        </div>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-12 enlargen-font">
-                            {{ item.description }}
-                        </div>
-                    </div>
-                
                 </div>
-            </div>
+            </transition>
 
         </div>
         </div>
@@ -537,5 +539,9 @@ export default {
 .date-style {
     color: rgb(51, 71, 91);
     font-size: 19px
+}
+
+.parent-card {
+    background:#459ceead
 }
 </style>
