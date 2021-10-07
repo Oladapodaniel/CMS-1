@@ -27,19 +27,19 @@ import html2pdf from "html2pdf.js"
             //   gridStyle:
             //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
             // })
-            var element = document.getElementById('element-to-print'); //fix
+            // var element = document.getElementById('element-to-print'); //fix
             var opt = {
                 // margin:       1,
                 filename:     `${fileName}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
+                // image:        { type: 'jpeg', quality: 0.98 },
+                // html2canvas:  { scale: 2 },
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
                 pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
             };
 
                 // New Promise-based usage:
                 html2pdf().set(opt).from(element).save();
-            html2pdf(element);
+            // html2pdf(element);
         } else {
             const filterVal = fileHeaderToExport.map((i, index) => index)
             const list = fileToExport
@@ -47,7 +47,7 @@ import html2pdf from "html2pdf.js"
             console.log(filterVal)
             console.log(fileHeaderToExport)
 
-            ExcelExport.exportFile(filterVal, list, header, fileName, selectedFileType)
+            ExcelExport.exportFile(filterVal, list, header, fileName.name, selectedFileType.name)
         }
     }
 

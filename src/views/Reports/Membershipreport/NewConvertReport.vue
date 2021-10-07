@@ -17,18 +17,35 @@
           <p class="ml-2">This reports provides a detailed report of new converts in your ministry.</p>
         </div>
 
-        <div class="centered-items pr-3">
+        <!-- <div class="centered-items pr-3">
           <button class="default-btn font-weight-normal"
           @click="() => (showExport = !showExport)">
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div>
+        </div> -->
+
+          <div
+          class="default-btn font-weight-normal c-pointer mr-4"
+          @click="() => (showExport = !showExport)"
+          style="width: fixed; position:relative">
+                   Export As &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                   <div
+                        class=" c-pointer"
+                        style="width: 6rem; z-index:1000; position:absolute"
+                        v-if="showExport">
+
+                         <Listbox
+                         @click="downloadFile"
+                         v-model="selectedFileType"
+                         :options="bookTypeList"
+                         optionLabel="name"/>
+                    </div>
+              </div>
+
       </div>
-      <transition name="move" mode="out-in">
+      <!-- <transition name="move" mode="out-in">
          <div class="row my-4" v-if="showExport">
-        <!-- <div class="col-sm-2">Enter file name</div> -->
         <div class="col-sm-5">
-          <!-- <input type="text" class="form-control" /> -->
           <span class="p-float-label ml-n3">
             <InputText
               id="inputtext"
@@ -46,9 +63,9 @@
             :options="bookTypeList"
             placeholder="Select file type"
           />
-        </div>
+        </div> -->
         <!-- <div class="">Export</div> -->
-        <div @click="downloadFile" class="col-sm-2 offset-sm-1">
+        <!-- <div @click="downloadFile" class="col-sm-2 offset-sm-1">
           <div
             class="
               default-btn
@@ -63,7 +80,7 @@
           </div>
         </div>
       </div>
-      </transition>
+      </transition> -->
     </div>
     <!--end of header area -->
 
@@ -74,7 +91,7 @@
         class="row d-flex flex-row justify-content-center align-items-center"
       >
         <div class="col-md-2">
-          <h4 class="small font-weight-bold ml-2">Date Range</h4>
+          <h4 class="small font-weight-bold ml-4">Date Range</h4>
         </div>
 
         <div class="col-md-7 d-sm-flex">
@@ -174,8 +191,9 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
-import Dropdown from "primevue/dropdown";
-import InputText from "primevue/inputtext";
+// import Dropdown from "primevue/dropdown";
+// import InputText from "primevue/inputtext";
+import Listbox from 'primevue/listbox';
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
 
@@ -183,8 +201,9 @@ export default {
   components: {
     Calendar,
     ByGenderChart,
-      Dropdown,
-    InputText,
+    Listbox,
+    //   Dropdown,
+    // InputText,
     // PaginationButtons,
   },
   setup() {
@@ -193,7 +212,8 @@ export default {
     const newConvertsInChurch = ref([]);
     const showExport = ref(false);
     const fileName = ref("");
-    const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    // const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);

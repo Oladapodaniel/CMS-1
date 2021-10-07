@@ -16,21 +16,38 @@
           <h3 class="heading-text ml-2">Wedding Anniversary Report</h3>
         </div>
 
-        <div class="centered-items pr-3">
+        <!-- <div class="centered-items pr-3">
           <button
             class="default-btn font-weight-normal"
             @click="() => (showExport = !showExport)"
           >
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div>
+        </div> -->
+
+         <div
+          class="default-btn font-weight-normal c-pointer mr-4"
+          @click="() => (showExport = !showExport)"
+          style="width: fixed; position:relative">
+                   Export As &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                   <div
+                        class=" c-pointer"
+                        style="width: 6rem; z-index:1000; position:absolute"
+                        v-if="showExport">
+
+                         <Listbox
+                         @click="downloadFile"
+                         v-model="selectedFileType"
+                         :options="bookTypeList"
+                         optionLabel="name"/>
+                    </div>
+              </div>
+
       </div>
 
-      <transition name="move" mode="out-in">
+      <!-- <transition name="move" mode="out-in">
         <div class="row my-4" v-if="showExport">
-          <!-- <div class="col-sm-2">Enter file name</div> -->
           <div class="col-sm-5">
-            <!-- <input type="text" class="form-control" /> -->
             <span class="p-float-label ml-n3">
               <InputText
                 id="inputtext"
@@ -48,9 +65,9 @@
               :options="bookTypeList"
               placeholder="Select file type"
             />
-          </div>
+          </div> -->
           <!-- <div class="">Export</div> -->
-          <div @click="downloadFile" class="col-sm-2 offset-sm-1">
+          <!-- <div @click="downloadFile" class="col-sm-2 offset-sm-1">
             <div
               class="
                 default-btn
@@ -65,7 +82,7 @@
             </div>
           </div>
         </div>
-      </transition>
+      </transition> -->
     </div>
     <!--end of header area -->
 
@@ -76,7 +93,7 @@
         class="row d-flex flex-row justify-content-center align-items-center"
       >
         <div class="col-md-2">
-          <h4 class="small font-weight-bold ml-2">Date Range</h4>
+          <h4 class="small font-weight-bold ml-4">Date Range</h4>
         </div>
 
         <div class="col-md-7 d-sm-flex">
@@ -103,123 +120,124 @@
       </div>
     </div>
     <!--end of date area -->
-
-    <section>
-      <!-- chart area -->
-      <div
-        class="chart row"
-        :class="
-          weddingAnniversary && weddingAnniversary.length > 0
-            ? 'graph-area'
-            : ''
-        "
-      >
-        <div class="chart1 col-12 col-md-6">
-          <ByGenderChart
-            domId="chart"
-            title="Gender"
-            distance="5"
-            :titleMargin="10"
-            :summary="membershipByGender"
-          />
-        </div>
-        <div class="chart1 col-12 col-md-6">
-          <ByGenderChart
-            domId="chart2"
-            title="Marital Status"
-            distance="5"
-            :titleMargin="10"
-            :summary="membershipMaritalStatus"
-          />
-        </div>
-      </div>
-      <div
-        class="chart row my-1"
-        :class="
-          weddingAnniversary && weddingAnniversary.length > 0
-            ? 'graph-area'
-            : ''
-        "
-      >
-        <div class="chart1 col-12 col-md-6">
-          <ByGenderChart
-            domId="chart3"
-            title="Membership Status"
-            distance="5"
-            :titleMargin="10"
-            :summary="membershipDistribution"
-          />
-        </div>
-        <div class="chart1 col-12 col-md-6">
-          <ByGenderChart
-            domId="chart4"
-            title="Age Group"
-            distance="5"
-            :titleMargin="10"
-            :summary="membershipAgeGroup"
-          />
-        </div>
-      </div>
-      <!--end of chart area -->
-    </section>
-
-    <section>
-      <!-- table header -->
-      <div v-if="weddingAnniversary.length > 0">
+    <div id="element-to-print">
+      <section >
+        <!-- chart area -->
         <div
-          class="
-            mt-2
-            container-fluid
-            table-main
-            px-0
-            remove-styles2 remove-border
-            responsiveness
+          class="chart row"
+          :class="
+            weddingAnniversary && weddingAnniversary.length > 0
+              ? 'graph-area'
+              : ''
           "
         >
-          <table
-            id="table"
-            class="table remove-styles mt-0 table-hover table-header-area"
-          >
-            <thead class="table-header-area-main">
-              <tr
-                class="small-text text-capitalize text-nowrap"
-                style="border-bottom: 0"
-              >
-                <th scope="col">Name</th>
-                <th scope="col">Wedding Day</th>
-                <th scope="col">Mobile Phone</th>
-                <th scope="col">Email</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Marital Status</th>
-                <th scope="col">Age Group</th>
-                <th scope="col">Membership</th>
-                <th scope="col">Home Address</th>
-              </tr>
-            </thead>
-            <tbody class="font-weight-normal text-nowrap">
-              <tr
-                v-for="(anniversary, index) in weddingAnniversary"
-                :key="index"
-              >
-                <td>{{ anniversary.name }}</td>
-                <td>{{ formatDate(anniversary.weddingDay) }}</td>
-                <td>{{ anniversary.mobilePhone }}</td>
-                <td>{{ anniversary.email }}</td>
-                <td>{{ anniversary.gender }}</td>
-                <td>{{ anniversary.maritalStatus }}</td>
-                <td>{{ anniversary.ageGroup }}</td>
-                <td>{{ anniversary.membership }}</td>
-                <td>{{ anniversary.homeAddress }}</td>
-              </tr>
-            </tbody>
-          </table>
-          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-          <PaginationButtons />
-        </div> -->
+          <div class="chart1 col-12 col-md-6">
+            <ByGenderChart
+              domId="chart"
+              title="Gender"
+              distance="5"
+              :titleMargin="10"
+              :summary="membershipByGender"
+            />
+          </div>
+          <div class="chart1 col-12 col-md-6">
+            <ByGenderChart
+              domId="chart2"
+              title="Marital Status"
+              distance="5"
+              :titleMargin="10"
+              :summary="membershipMaritalStatus"
+            />
+          </div>
         </div>
-      </div>
-      <!--end table header -->
-    </section>
+        <div
+          class="chart row my-1"
+          :class="
+            weddingAnniversary && weddingAnniversary.length > 0
+              ? 'graph-area'
+              : ''
+          "
+        >
+          <div class="chart1 col-12 col-md-6">
+            <ByGenderChart
+              domId="chart3"
+              title="Membership Status"
+              distance="5"
+              :titleMargin="10"
+              :summary="membershipDistribution"
+            />
+          </div>
+          <div class="chart1 col-12 col-md-6">
+            <ByGenderChart
+              domId="chart4"
+              title="Age Group"
+              distance="5"
+              :titleMargin="10"
+              :summary="membershipAgeGroup"
+            />
+          </div>
+        </div>
+        <!--end of chart area -->
+      </section>
+
+      <section>
+        <!-- table header -->
+        <div v-if="weddingAnniversary.length > 0">
+          <div
+            class="
+              mt-2
+              container-fluid
+              table-main
+              px-0
+              remove-styles2 remove-border
+              responsiveness
+            "
+          >
+            <table
+              id="table"
+              class="table remove-styles mt-0 table-hover table-header-area"
+            >
+              <thead class="table-header-area-main">
+                <tr
+                  class="small-text text-capitalize text-nowrap"
+                  style="border-bottom: 0"
+                >
+                  <th scope="col">Name</th>
+                  <th scope="col">Wedding Day</th>
+                  <th scope="col">Mobile Phone</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Gender</th>
+                  <th scope="col">Marital Status</th>
+                  <th scope="col">Age Group</th>
+                  <th scope="col">Membership</th>
+                  <th scope="col">Home Address</th>
+                </tr>
+              </thead>
+              <tbody class="font-weight-normal text-nowrap">
+                <tr
+                  v-for="(anniversary, index) in weddingAnniversary"
+                  :key="index"
+                >
+                  <td>{{ anniversary.name }}</td>
+                  <td>{{ formatDate(anniversary.weddingDay) }}</td>
+                  <td>{{ anniversary.mobilePhone }}</td>
+                  <td>{{ anniversary.email }}</td>
+                  <td>{{ anniversary.gender }}</td>
+                  <td>{{ anniversary.maritalStatus }}</td>
+                  <td>{{ anniversary.ageGroup }}</td>
+                  <td>{{ anniversary.membership }}</td>
+                  <td>{{ anniversary.homeAddress }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- <div class="table-foot d-flex justify-content-end mt-n3">
+            <PaginationButtons />
+          </div> -->
+          </div>
+        </div>
+        <!--end table header -->
+      </section>
+    </div>
   </div>
 </template>
 
@@ -230,8 +248,9 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
-import Dropdown from "primevue/dropdown";
-import InputText from "primevue/inputtext";
+// import Dropdown from "primevue/dropdown";
+// import InputText from "primevue/inputtext";
+import Listbox from 'primevue/listbox';
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
 
@@ -239,8 +258,9 @@ export default {
   components: {
     Calendar,
     ByGenderChart,
-    Dropdown,
-    InputText,
+    Listbox
+    // Dropdown,
+    // InputText,
     // PaginationButtons,
   },
   setup() {
@@ -253,7 +273,8 @@ export default {
     const membershipAgeGroup = ref([]);
     const showExport = ref(false);
     const fileName = ref("");
-    const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    // const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
@@ -294,7 +315,7 @@ export default {
     /* Code For Exporting File */
     const downloadFile = () => {
       exportService.downLoadExcel(
-        selectedFileType.value,
+        selectedFileType.value.name,
         document.getElementById("element-to-print"),
         fileName.value,
         fileHeaderToExport.value,
