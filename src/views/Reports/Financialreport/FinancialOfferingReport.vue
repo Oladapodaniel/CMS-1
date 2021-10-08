@@ -29,16 +29,16 @@
            This reports provides a detailed list of all the offerings and contribution reports, you can also generate report for individual contributions 
         </div>
         <div class="container-fluid ">
-                <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
-                    <div class="p-field col-12 col-md-6 col-lg-3 font-weight-bold  mt-0">
+                <div class="row py-5  " style="background: #ebeff4;  border-radius: 0.5rem;">
+                    <div class="p-field  col-12 col-md-6 col-lg-3 font-weight-bold  mt-0">
                         <div><label for="icon">Start Date</label></div>
                         <Calendar id="icon" v-model="startDate" :showIcon="true" />
                     </div>
-                    <div class="p-field col-12 col-md-12 col-lg-3 font-weight-bold mt-2 mt-sm-2 mt-md-0 mt-lg-0">
+                    <div class="p-field border col-12 col-md-12 col-lg-3 font-weight-bold mt-2 mt-sm-2 mt-md-0 mt-lg-0">
                         <div><label for="icon">End Date</label></div>
                         <Calendar id="endDate" v-model="endDate" :showIcon="true" />
                     </div>
-                    <div class="col-8 col-sm-7 col-md-5 col-lg-3 mt-2 mt-sm-2 mt-md-0 mt-lg-0 ">
+                    <div class="col-8  col-sm-7 col-md-5 col-lg-3 mt-2 mt-sm-2 mt-md-0 mt-lg-0 ">
                         <div><label for="" class="font-weight-bold ">Select Member</label></div>
                         <div class="dropdown ">
                            <!-- <button id="dropdownMenuButton" class="btn border-secondary default-btn" data-toggle="dropdown">{{ userSearchString ? userSearchString: 'Search Member' }}</button>  -->
@@ -81,23 +81,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-2 mt-2">
+                    <div class="col-12 col-md-6 col-lg-3 mt-2">
                         <div><label for="" ></label></div>
                         <div @click="genarateReport">
-                            <button class="btn default-btn generate-report  "><div class="text-white">Generate</div></button>
+                            <button class=" col-11 w-100 default-btn generate-report  "><div class="text-white">Generate Report</div></button>
                         </div>
                     </div> 
                 </div>
         </div>
         <div id="element-to-print">
           <div class="container-fluid  ">
-              <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+              <!-- <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                   <div class="col-12 ">
                       <div class="mt-5 display-1 pb-2 font-weight-bold text-center heading-text" >
                         Offering And Givings Report
                       </div>
                   </div>
-              </div>
+              </div> -->
               <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                 <!-- <div class="col-12 container-fluid d-flex mt-2 flex-wrap"> -->
                     <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-12"> -->
@@ -491,20 +491,20 @@ export default {
 }
 
 .default-btn {
-    font-weight: 600;
+    /* font-weight: 600;
     white-space: initial;
     font-size: 1rem;
     border-radius: 3rem;
-    /* border: 1px solid #002044; */
+    border: 1px solid #002044;
     padding: .5rem 1.25rem;
     width: auto;
 	border:none;
-    /* outline: transparent !important; */
+    outline: transparent !important;
     max-height: 40px;
     background: #6c757d47 !important;
     color:#000;
     text-decoration: none;
-    min-width: 121px;
+    min-width: 121px; */
 }
 
 .default-btn:hover {
