@@ -103,7 +103,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="EndDate" :showIcon="true" />
+                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
                   </div>
               </div>
             <div class="col-md-4 col-sm-12 pr-md-0">
