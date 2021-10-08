@@ -49,7 +49,7 @@
               
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
-                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" :taskTime="taskTime" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @savetask2="saveTaskItem2" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp" @hovertask2="setHoverTaskProp2" @outhovertask2="setOutHoverTaskProp2" :loader="loader"/>
+                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @savetask2="saveTaskItem2" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp" @hovertask2="setHoverTaskProp2" @outhovertask2="setOutHoverTaskProp2" :loader="loader" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :allContacts="allContacts"/>
                     </div>
                     <div class="col-12" v-if="showNotes" transition="bounce">
                         <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
