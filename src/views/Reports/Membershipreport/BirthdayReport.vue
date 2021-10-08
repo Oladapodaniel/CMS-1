@@ -70,38 +70,35 @@
       </transition> -->
     </div>
 
-    <div class="container-fluid my-3 px-0 bg-area">
-      <div
-        style="padding: 0.2rem 0 1.2rem 0"
-        class="row d-flex flex-row justify-content-center align-items-center"
-      >
-        <div class="col-md-2">
-          <h4 class="small font-weight-bold ml-2">Date Range</h4>
-        </div>
-
-        <div class="col-md-7 d-sm-flex">
-          <div class="p-field p-col-12 p-md-4 mt-1">
-            <!-- <label for="icon">Start Date</label> -->
-            <Calendar id="icon" v-model="startDate" :showIcon="true" />
-          </div>
-          <div class="p-field p-col-12 p-md-4 my-1">
-            <!-- <label for="icon">End Date</label> -->
-            <Calendar id="endDate" v-model="endDate" :showIcon="true" />
-          </div>
-        </div>
-
-        <div
-          class="col-md-2 d-sm-flex justify-content-end align-items-center pr-5"
-        >
-          <button
-            class="default-btn generate-report c-pointer font-weight-normal"
-            @click="getBirthdayReport"
-          >
-            Generate
-          </button>
+       <div class="container-fluid bg-area my-3">
+        <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3 ">
+              <div class="col-md-4 col-sm-12 px-md-0">
+                  <div class="p-field p-col-12 pt-md-2 pb-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+                    </div>
+                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                  </div>
+              </div>
+              <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+                    </div>
+                    <Calendar class="w-100" id="icon" v-model="EndDate" :showIcon="true" />
+                  </div>
+              </div>
+            <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <button
+                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
+                            @click="generateReport">
+                            Generate Report
+                    </button>
+                  </div>
+              </div>
         </div>
       </div>
-    </div>
     <!--end of header area -->
 
     <!-- date area -->
@@ -127,7 +124,7 @@
             </div>
             <!-- <div class="col-12 col-sm-12 col-md-6 col-lg-6"> -->
             <div class="row table"  :class=" birthdays &&  birthdays.length > 0 ? 'graph-area' : '' ">
-              <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center"> 
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center">
                 <div class="col-12 font-weight-bold">Membership By Gender</div>
                 <div class="col-12" v-if="genderSummary.length === 0">
                   No Data Available
@@ -447,13 +444,13 @@ export default {
   white-space: initial;
   font-size: 1rem;
   border-radius: 3rem;
-  /* border: 1px solid #002044; */
+  border: 1px solid #002044;
   padding: 0.5rem 1.25rem;
   width: auto;
-  border: none;
+  /* border: none; */
   /* outline: transparent !important; */
   max-height: 40px;
-  background: #6c757d47 !important;
+  /* background: #6c757d47 !important; */
   min-width: 121px;
 }
 
