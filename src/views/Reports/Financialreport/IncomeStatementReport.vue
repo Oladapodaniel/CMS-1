@@ -13,7 +13,7 @@
         "
       >
         <div class="centered-items">
-          <h3 class="heading-text ml-2">Income Statement Report</h3>
+          <h3 class="heading-text ml-n1">Income Statement Report</h3>
         </div>
 
         <!-- <div class="centered-items pr-3">
@@ -23,8 +23,8 @@
           </button>
         </div> -->
 
-              <div
-          class="default-btn font-weight-normal c-pointer mr-4"
+              <!-- <div
+          class="default-btn font-weight-normal c-pointer"
           @click="() => (showExport = !showExport)"
           style="width: fixed; position:relative">
                    Export As &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
@@ -39,11 +39,12 @@
                          :options="bookTypeList"
                          optionLabel="name"/>
                     </div>
+              </div> -->
+      </div>
+       <div>
+                   <p class="ml-n3">A detailed report of all incomes and expenses of the ministry in a given period.</p>
               </div>
 
-                <p class="ml-2">A detailed report of all incomes and expenses of the ministry in a given period.</p>
-
-      </div>
 <!-- name="fade" -->
     <!-- <transition
       name="move" mode="out-in">
@@ -89,36 +90,35 @@
     </div>
     <!--end of header area -->
     <!-- date area -->
-    <div class="container-fluid my-3 px-0 bg-area">
-      <div
-        style="padding: 0.2rem 0 1.2rem 0"
-        class="row d-flex flex-row justify-content-center align-items-center"
-      >
-        <div class="col-md-2">
-          <h4 class="small font-weight-bold ml-4">Date Range</h4>
-        </div>
-
-        <div class="col-md-7 d-sm-flex">
-          <div class="p-field p-col-12 p-md-4 mt-1">
-            <!-- <label for="icon">Start Date</label> -->
-            <Calendar id="icon" v-model="startDate" :showIcon="true" />
-          </div>
-          <div class="p-field p-col-12 p-md-4 my-1">
-            <!-- <label for="icon">End Date</label> -->
-            <Calendar id="endDate" v-model="endDate" :showIcon="true" />
-          </div>
-        </div>
-
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center pr-5">
-          <button
-            class="default-btn generate-report c-pointer font-weight-normal"
-            @click="generateReport"
-          >
-            Generate
-          </button>
+   <div class="container-fluid bg-area my-3">
+        <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3 ">
+              <div class="col-md-4 col-sm-12 px-md-0">
+                  <div class="p-field p-col-12 pt-md-2 pb-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+                    </div>
+                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                  </div>
+              </div>
+              <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+                    </div>
+                    <Calendar class="w-100" id="icon" v-model="EndDate" :showIcon="true" />
+                  </div>
+              </div>
+            <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <button
+                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
+                            @click="generateReport">
+                            Generate Report
+                    </button>
+                  </div>
+              </div>
         </div>
       </div>
-    </div>
     <!--end of date area -->
 
     <section>
@@ -161,63 +161,70 @@
       <!-- table header -->
 	<div v-if="groupedIncomeItemToDisplay.length > 0">
          <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
-        <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
+        <table id="table" class="table remove-styles mt-0  table-header-area">
           <thead class="table-header-area-main">
             <tr
              class="small-text text-capitalize text-nowrap"
               style="border-bottom: 0"
             >
               <th scope="col">Fund</th>
-              <th scope="col">Account Name</th>
               <th scope="col">Account Category</th>
+              <th scope="col">Account Name</th>
               <th scope="col">Description</th>
               <th scope="col">Amount</th>
               <th scope="col">Date</th>
             </tr>
           </thead>
 
-          <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(groupedIncome, index) in groupedIncomeItemToDisplay"
+           <tbody class="font-weight-normal text-nowrap border-bottom">
+            <tr class="border-bottom" style="position: relative" v-for="(fund, index) in funds"
             :key="index">
-              <td>{{ groupedIncome ? groupedIncome.fund : ""}}</td>
-              <td>{{ groupedIncome ? groupedIncome.accountName : "" }}</td>
-              <td>{{ groupedIncome ? groupedIncome.accountCategory : "" }}</td>
-              <td>{{ groupedIncome ? groupedIncome.description : "" }}</td>
-              <td>{{ groupedIncome ? groupedIncome.amount : "" }}</td>
-              <td>{{ formatDate(groupedIncome ? groupedIncome.date : "") }}</td>
+              <!-- <td>{{ index === 0 ? transaction.fund : " " }}</td> -->
+              <!-- :colspan="funds.length - 1" -->
+              <td>{{fund.name}}
+                <tr style="position: absolute;bottom:0">
+                   <td class="answer">SubTotal</td>
+                </tr>
+              </td>
+              <td border-bottom >
+                <tr v-for="(item, index) in groupAccountCategoery(fund.value)" :key="index" class="mt-2">
+                  {{item.name}}
+                </tr>
+              </td>
+              <td border-bottom>
+                <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
+                  {{item.accountName}}
+                </tr>
+              </td>
+              <td border-bottom>
+                <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
+                  {{item.description}}
+                  </tr>
+              </td>
+              <td border-bottom>
+                <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
+                  {{item.amount}}
+                </tr>
+                <tr  class="mt-2 answer">
+                  {{Math.abs(total(fund.value).toLocaleString()).toFixed(2)}}
+                </tr>
+              </td>
+              <td border-bottom>
+                <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
+                  {{ formatDate(item.date) }}
+                </tr>
+              </td>
             </tr>
             <tr class="answer-row">
-              <td class="answer">Total Income</td>
+              <td class="answer">Total</td>
               <td></td>
-              <td ></td>
               <td></td>
-              <td class="answer">
-                {{ totalIncome.toLocaleString()}}
-              </td>
+              <td></td>
+              <td class="answer"> {{Math.abs(fundSum).toFixed(2).toLocaleString()}}</td>
               <td></td>
             </tr>
-
-             <tr v-for="(groupedExpense, index) in groupedExpenseItemToDisplay"
-            :key="index">
-              <td>{{ groupedExpense ? groupedExpense.fund : ""}}</td>
-              <td>{{ groupedExpense ? groupedExpense.accountName : "" }}</td>
-              <td>{{ groupedExpense ? groupedExpense.accountCategory : "" }}</td>
-              <td>{{ groupedExpense ? groupedExpense.description : "" }}</td>
-              <td>{{ groupedExpense ? groupedExpense.amount : "" }}</td>
-              <td>{{ formatDate(groupedExpense ? groupedExpense.date : "") }}</td>
-            </tr>
-            <tr class="answer-row">
-              <td class="answer">Total Expense</td>
-              <td></td>
-              <td ></td>
-              <td></td>
-              <td class="answer">
-                {{ totalExpense.toLocaleString()}}
-              </td>
-              <td></td>
-            </tr>
-
           </tbody>
+
         </table>
         <!-- <div class="table-foot d-flex justify-content-end mt-n3">
           <PaginationButtons />
@@ -242,7 +249,7 @@ import dateFormatter from  "../../../services/dates/dateformatter";
 import NegativeChart from "../../../components/charts/NegativeColumnChart";
 // import Dropdown from "primevue/dropdown";
 // import InputText from "primevue/inputtext";
-import Listbox from 'primevue/listbox';
+// import Listbox from 'primevue/listbox';
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforincomestatement.js";
 import groupResponse from '../../../services/groupArray/groupResponse.js'
@@ -256,7 +263,7 @@ export default {
     NegativeChart,
       // Dropdown,
     // InputText,
-    Listbox,
+    // Listbox,
     // PaginationButtons,
   },
   setup() {
@@ -273,16 +280,12 @@ export default {
     const incomeStatementData = ref([])
      const showExport = ref(false);
     const fileName = ref("");
-    // const bookTypeList = ref(["xlsx", "csv", "txt"]);
     const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const fundType = ref([]);
     const funds = ref([]);
-
-
-
 
     const generateReport = () => {
       axios
@@ -297,6 +300,7 @@ export default {
           churchExpense(incomeStatement.value, 'accountCategory');
           pieChart(incomeStatement.value, 'accountCategory')
           groupedFundType()
+          groupAccountCategoery()
 
               /* function to call service and populate table */
           setTimeout(() => {
@@ -316,17 +320,34 @@ export default {
 
         const groupedFundType = () => {
       fundType.value = groupResponse.groupData(incomeStatement.value, 'fund')
-      console.log(fundType.value, "🎼🎼🎉🎉");
         for (const prop in fundType.value) {
           funds.value.push({name:prop,
-          value: fundType.value[prop].reduce((acc, cur) => {
-                  return acc + cur.amount
-                }, 0),
+          value: fundType.value[prop]
+          // .reduce((acc, cur) => {
+          //         return acc + cur.amount
+          //       }, 0),
           })
       }
-      console.log(funds.value);
+      console.log(funds.value,"🎼🎼🎉🎉");
     };
     groupedFundType()
+
+
+
+    const groupAccountCategoery = (arr) => {
+      if (!arr || arr.length === 0) return
+      const category = [];
+       const categoryType = groupResponse.groupData(arr, 'accountCategory')
+        for (const prop in categoryType) {
+          category.push({
+            name:prop,
+            value:categoryType[prop]
+          })
+        }
+        console.log(category, "🎵🎵");
+        return category
+    }
+    groupAccountCategoery()
 
                 /* Code For Exporting File */
     const downloadFile = () => {
@@ -368,17 +389,6 @@ export default {
 
          const incomeStatementDetail = computed(() => {
          if (groupofIcomeAndExpense.value.length === 0) return []
-        //    incomeStatementData.value = []
-        //     allIncomeAndExpenses.value = []
-        //     mappedIncomeAndExpense.value = []
-        //    groupofIcomeAndExpense.value.forEach(i => {
-        //     let incomeExpenseIndex = Object.keys(i).findIndex(i => i === 'amount')
-        //     let incomeExpenseValue = Object.values(i)[incomeExpenseIndex]
-        //     incomeStatementData.value.push(incomeExpenseValue)
-        //     console.log(groupofIcomeAndExpense.value)
-        //     mappedIncomeAndExpense.value.push(i.amount)
-        //     console.log(mappedIncomeAndExpense.value,"🎄🎄🎄")
-        //  });
          allIncomeAndExpenses.value.push({
              name: 'Income',
             //  color: '#002044',
@@ -423,13 +433,7 @@ export default {
             // console.log(groupedIncomeItemToDisplay.value, "💐💐")
         };
 
-        const totalIncome = computed (() => {
-                if(groupedIncomeItemToDisplay.value.length === 0) return []
-                return groupedIncomeItemToDisplay.value.reduce((acc, cur) => {
-                  return acc + cur.amount
-                }, 0)
-        })
-        // console.log(totalIncome.value, "🥁🥁")
+
 
 
     const churchExpense = (array, key) => {
@@ -465,16 +469,31 @@ export default {
         // console.log(totalExpense.value, "🥁🥁")
 
 
+     const total = (arr) => {
+      console.log(arr, "kgkfuvygu");
+          if(!arr || arr.length === 0) return 0
+          return arr.reduce((acc, cur) => {
+        return acc + cur.amount
+      }, 0)
+    }
+
+    const fundSum = computed(() => {
+      if (incomeStatement.value.length === 0) return 0
+      return incomeStatement.value.reduce((a, b) => {
+          return a + b.amount
+        }, 0)
+    })
+
      const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
     };
 
-    // onMounted(() => {
-    //   firstTimerChart.value = [{name: "Dapo", value: 77}]
-    // })
 
 
     return {
+      groupAccountCategoery,
+      total,
+      fundSum,
       Calendar,
       startDate,
       endDate,
@@ -486,7 +505,6 @@ export default {
       churchIncomes,
       churchExpense,
       totalExpense,
-      totalIncome,
       groupedIncomeItemToDisplay,
       groupedExpenseItemToDisplay,
       chartForIcomeAndExpense,
@@ -531,13 +549,13 @@ export default {
     white-space: initial;
     font-size: 1rem;
     border-radius: 3rem;
-    /* border: 1px solid #002044; */
+    border: 1px solid #002044;
     padding: .5rem 1.25rem;
     width: auto;
-	border:none;
+	/* border:none; */
     /* outline: transparent !important; */
     max-height: 40px;
-    background: #6c757d47 !important;
+    /* background: #6c757d47 !important; */
     min-width: 121px;
 }
 
