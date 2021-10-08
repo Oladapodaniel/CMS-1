@@ -87,12 +87,12 @@
         
           <div  class="container-fluid  ">
               <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                  <div class="col-12 ">
+                  <!-- <div class="col-12 ">
                       <div class="mt-5 pb-2 text-center Display-1 heading-text">
                           Congregation Members Report
                       </div>
-                  </div>
-                  <div class="col-12 table d-flex flex-wrap">
+                  </div> -->
+                  <div class="col-12 mt-4 round-border d-flex flex-wrap">
                       <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                       <div class="col-12 mt-sm-3 mt-md-0 mt-lg-2  text-center">
                           <div class="col-12 font-weight-bold">Membership By Gender</div>
@@ -159,7 +159,7 @@
               <!-- <div class="row "> -->
                   <section>
                       <!-- table header -->
-                      <div  class=" container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness  "
+                      <div  class=" mt-4 container-fluid table-main px-0 remove-styles2 remove-border responsiveness  "
                       :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                           <table class="table remove-styles mt-0 table-hover table-header-area " id="table" >
                           <thead class="table-header-area-main" >
@@ -174,9 +174,9 @@
                               <th scope="col">Email</th>
                               <th scope="col">Home Address</th>
                               <th scope="col">Gender</th>
-                              <th scope="col">Marital Status</th>
+                              <!-- <th scope="col">Marital Status</th>
                               <th scope="col">Age Group</th>
-                              <th scope="col">Birthday</th>
+                              <th scope="col">Birthday</th> -->
                               </tr>
                           </thead>
                           <tbody class="font-weight-normal text-nowrap">
@@ -188,9 +188,9 @@
                               <td>{{member.email}}</td>
                               <td>{{member.homeAddress}}</td>
                               <td>{{member.gender}}</td>
-                              <td>{{member.maritalStatus}}</td>
+                              <!-- <td>{{member.maritalStatus}}</td>
                               <td>{{member.ageGroup}}</td>
-                              <td>{{member.birthDay}}</td>
+                              <td>{{member.birthDay}}</td> -->
                               </tr>
                           </tbody>
                           </table>
@@ -632,6 +632,11 @@ export default {
   text-align: left;
   margin-bottom: auto !important;
   padding-bottom: 0.5rem;
+}
+.round-border{
+   border-radius: 0.5rem;
+   box-shadow: 0 0.063rem 0.25rem #02172e45;
+   border: 0.063rem solid #dde2e6;
 }
 
 .table-header-area {

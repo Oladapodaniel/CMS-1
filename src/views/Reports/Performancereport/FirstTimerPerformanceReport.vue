@@ -2,7 +2,7 @@
     <div class=" container container-top container-wide mb-4  ">
         <div class="row d-flex justify-content-between px-3">
             <div class="heading-text">First Timer Performance Report</div>
-            <div class="default-btn border-secondary font-weight-normal c-pointer"
+            <div class="default-btn mb-2 border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
                 <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
@@ -13,16 +13,16 @@
         </div>
            <!-- date area -->
         <div class="container-fluid my-2 py-5   bg-area">
-            <div class="row d-flex justify-content-center  ">
+            <div class="row d-flex justify-content-center pl-3  ">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0  "> 
-                    <div><label for="icon" class="font-weight-bold">Start Date</label></div>
-                    <div>
+                    <div class=""><label for="icon" class="font-weight-bold">Start Date</label></div>
+                    <div class="">
                         <Calendar  id="icon" v-model="startDate" :showIcon="true" />
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
-                    <div><label for="icon" class="font-weight-bold">End Date</label></div>
-                    <div class="col-12">
+                    <div class=""><label for="icon" class="font-weight-bold">End Date</label></div>
+                    <div class="">
                         <Calendar id="icon" v-model="endDate" :showIcon="true" />
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                 </div> -->
              </div>
             <div class="  row " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                <div class="col-12 container-fluid table d-flex flex-wrap">
+                <div class="col-12 container-fluid round-border mt-3 d-flex flex-wrap">
                     <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                         <div class="col-12  text-center">
                             <div class="col-12  font-weight-bold">Gender Distribution</div>
@@ -101,7 +101,7 @@
             <!-- <div class="row "> -->
         <section>
             <!-- table header -->
-            <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " 
+            <div class="mt-4 container-fluid table-main px-0 remove-styles2 remove-border responsiveness " 
             :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                 <table class="table remove-styles mt-0  table-hover table-header-area  " id="table">
                 <thead class="table-header-area-main">
@@ -115,8 +115,8 @@
                     <th scope="col">Email</th>
                     <th scope="col">Home Address</th>
                     <th scope="col">Gender</th>
-                    <th scope="col">Marital Status</th>
-                    <th scope="col">Activity Date</th>
+                    <!-- <th scope="col">Marital Status</th> -->
+                    <!-- <th scope="col">Activity Date</th> -->
                     <!-- <th scope="col">Current Status</th> -->
                     </tr>
                 </thead>
@@ -128,8 +128,8 @@
                     <td>{{ firstTimer.email }}</td>
                     <td>{{ firstTimer.homeAddress }}</td>
                     <td>{{ firstTimer.gender }}</td>
-                    <td>{{ firstTimer.maritalStatus }}</td>
-                    <td>{{ formatDate(firstTimer.activityDate) }}</td>
+                    <!-- <td>{{ firstTimer.maritalStatus }}</td> -->
+                    <!-- <td>{{ formatDate(firstTimer.activityDate) }}</td> -->
                     <!-- <td>{{ firstTimer.status }}</td> -->
                     </tr>
                 </tbody>
@@ -369,7 +369,7 @@ export default {
 
 .responsiveness{
   max-width: 100%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 
 .default-btn {
@@ -421,6 +421,11 @@ export default {
   margin-bottom: auto !important;
   padding-bottom: 0.5rem;
 }
+.round-border{
+   border-radius: 0.5rem;
+   box-shadow: 0 0.063rem 0.25rem #02172e45;
+   border: 0.063rem solid #dde2e6;
+}
 
 .table-header-area {
   border-top-left-radius: 0;
@@ -453,7 +458,7 @@ padding-right: 0;
 padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
-overflow-x: scroll;
+/* overflow-x: scroll; */
 }
 .move-enter-active {
   animation: move-in .8s;
