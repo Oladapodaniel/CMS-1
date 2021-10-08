@@ -118,92 +118,93 @@
         </div>
       </div>
     <!--end of date area -->
-
-    <section>
-      <!-- chart area -->
-      <div
-        class="chart row"
-        :class="
-          firstTimerInChurch && firstTimerInChurch.length > 0
-            ? 'graph-area'
-            : ''
-        "
-      >
-        <div class="chart1 col-12 col-md-6">
-          <ByGenderChart
-            domId="chart"
-            title="By Gender"
-            distance="5"
-            :titleMargin="10"
-            :summary="data"
-          />
-        </div>
-        <div class="chart1 col-12 col-md-6">
-          <ByGenderChart
-            domId="chartid"
-            title="Marital Status"
-            distance="5"
-            :titleMargin="10"
-            :summary="maritalChartInfo"
-          />
-        </div>
-      </div>
-      <!--end of chart area -->
-    </section>
-
-    <section>
-      <!-- table header -->
-     <div v-if="firstTimerInChurch.length > 0">
+    <div id="element-to-print">
+      <section>
+        <!-- chart area -->
         <div
-        class="
-          container-fluid
-          table-main
-          px-0
-          remove-styles2 remove-border
-          responsiveness
-        "
-      >
-        <table
-          id="table"
-          class="table remove-styles mt-0 table-hover table-header-area"
+          class="chart row"
+          :class="
+            firstTimerInChurch && firstTimerInChurch.length > 0
+              ? 'graph-area'
+              : ''
+          "
         >
-          <thead class="table-header-area-main">
-            <tr
-              class="small-text text-capitalize text-nowrap"
-              style="border-bottom: 0"
-            >
-              <th scope="col">Church Activity</th>
-              <th scope="col">Name</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Email</th>
-              <th scope="col">Home Address</th>
-              <th scope="col">Gender</th>
-              <th scope="col">Marital Status</th>
-              <th scope="col">Activity Date</th>
-              <th scope="col">Current Status</th>
-            </tr>
-          </thead>
-          <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(firstTimer, index) in firstTimerInChurch" :key="index">
-              <td>{{ firstTimer.event }}</td>
-              <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
-              <td>{{ firstTimer.mobilePhone }}</td>
-              <td>{{ firstTimer.email }}</td>
-              <td>{{ firstTimer.homeAddress }}</td>
-              <td>{{ firstTimer.gender }}</td>
-              <td>{{ firstTimer.maritalStatus }}</td>
-              <td>{{ formatDate(firstTimer.activityDate) }}</td>
-              <td>{{ firstTimer.status }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-          <PaginationButtons />
-        </div> -->
+          <div class="chart1 col-12 col-md-6">
+            <ByGenderChart
+              domId="chart"
+              title="By Gender"
+              distance="5"
+              :titleMargin="10"
+              :summary="data"
+            />
+          </div>
+          <div class="chart1 col-12 col-md-6">
+            <ByGenderChart
+              domId="chartid"
+              title="Marital Status"
+              distance="5"
+              :titleMargin="10"
+              :summary="maritalChartInfo"
+            />
+          </div>
+        </div>
+        <!--end of chart area -->
+      </section>
+
+      <section>
+        <!-- table header -->
+      <div v-if="firstTimerInChurch.length > 0">
+          <div
+          class="
+            container-fluid
+            table-main
+            px-0
+            remove-styles2 remove-border
+            responsiveness
+          "
+        >
+          <table
+            id="table"
+            class="table remove-styles mt-0 table-hover table-header-area"
+          >
+            <thead class="table-header-area-main">
+              <tr
+                class="small-text text-capitalize text-nowrap"
+                style="border-bottom: 0"
+              >
+                <th scope="col">Church Activity</th>
+                <th scope="col">Name</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Home Address</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Marital Status</th>
+                <th scope="col">Activity Date</th>
+                <th scope="col">Current Status</th>
+              </tr>
+            </thead>
+            <tbody class="font-weight-normal text-nowrap">
+              <tr v-for="(firstTimer, index) in firstTimerInChurch" :key="index">
+                <td>{{ firstTimer.event }}</td>
+                <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
+                <td>{{ firstTimer.mobilePhone }}</td>
+                <td>{{ firstTimer.email }}</td>
+                <td>{{ firstTimer.homeAddress }}</td>
+                <td>{{ firstTimer.gender }}</td>
+                <td>{{ firstTimer.maritalStatus }}</td>
+                <td>{{ formatDate(firstTimer.activityDate) }}</td>
+                <td>{{ firstTimer.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
+            <PaginationButtons />
+          </div> -->
+        </div>
       </div>
-     </div>
-      <!--end table header -->
-    </section>
+        <!--end table header -->
+      </section>
+    </div>
   </div>
 </template>
 

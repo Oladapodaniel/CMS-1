@@ -1,63 +1,51 @@
-<template>
+<template>{{ selectedFileType }}
     <div class="container-wide container-top mb-5">
         <div class="row d-flex justify-content-between">
             <div class="header">Attendance Report</div>
-            <div class="default-btn font-weight-normal c-pointer"
+            <div class="default-btn border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
                 <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
-                      <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                      <Listbox @click="downLoadExcel" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
                 </div>
             </div>
             <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
         </div>
-        <!-- <div class="row my-4" v-if="showExport">
-            <div class="col-sm-5">
-                <span class="p-float-label">
-                    <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
-                    <label for="inputtext">Enter file name</label>
-                </span>
-            </div>
-            <div class="col-sm-4">
-                <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
-            </div>
-            <div @click="downLoadExcel" class="cursor-pointer col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center justify-content-center">Export</div></div>
-        </div> -->
         <div class="row mt-4 py-4 px-3" style="background: #ebeff4;  border-radius: 0.5rem;">
             <!-- <div class="col-sm-2">Date Range</div> -->
             <div class="col-sm-9">
                 <div class="row">
-                <div class="col-sm-6">
-                    <div class="font-weight-600">Select Event</div>
-                    <div class="mt-2">
-                        <Dropdown placeholder="Select event" style="width: 100%" :options="events" optionLabel="text" v-model="selectedEvent"/>
-                        <!-- <Dropdown placeholder="Select group" style="width: 100%" :options="groups" optionLabel="name" v-model="selectedGroups"/> -->
+                    <div class="col-sm-6">
+                        <div class="font-weight-600">Select Event</div>
+                        <div class="mt-2">
+                            <Dropdown placeholder="Select event" style="width: 100%" :options="events" optionLabel="text" v-model="selectedEvent"/>
+                            <!-- <Dropdown placeholder="Select group" style="width: 100%" :options="groups" optionLabel="name" v-model="selectedGroups"/> -->
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="font-weight-600">Select Group</div>
-                    <div class="mt-2">
-                        <!-- <Dropdown placeholder="Select event" style="width: 100%" :options="events" optionLabel="text" v-model="selectedEvent"/> -->
-                        <Dropdown placeholder="Select group" style="width: 100%" :options="groups" optionLabel="name" v-model="selectedGroups"/>
+                    <div class="col-sm-6">
+                        <div class="font-weight-600">Select Group</div>
+                        <div class="mt-2">
+                            <!-- <Dropdown placeholder="Select event" style="width: 100%" :options="events" optionLabel="text" v-model="selectedEvent"/> -->
+                            <Dropdown placeholder="Select group" style="width: 100%" :options="groups" optionLabel="name" v-model="selectedGroups"/>
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-6 mt-4">
-                    <div class="font-weight-600">Start Date</div>
-                    <div class="mt-2">
-                        <Calendar id="icon" class="w-100" v-model="startDate" :showIcon="true" />
+                    <div class="col-sm-6 mt-4">
+                        <div class="font-weight-600">Start Date</div>
+                        <div class="mt-2">
+                            <Calendar id="icon" class="w-100" v-model="startDate" :showIcon="true" />
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-6 mt-4">
-                    <div class="font-weight-600">End Date</div>
-                    <div class="mt-2">
-                        <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" />
+                    <div class="col-sm-6 mt-4">
+                        <div class="font-weight-600">End Date</div>
+                        <div class="mt-2">
+                            <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" />
+                        </div>
                     </div>
-                </div>
                 </div>
             </div>
-            <div class="offset-sm-1 col-sm-2">
+            <div class=" col-sm-2 col-md-3 ">
                 <div style="height: 33%"></div>
-                <div class="cursor-pointer mt-2 default-btn primary-bg text-center border-0 text-white" @click="getAttendanceReport"><i class="pi pi-spin" v-show="loading"></i>Generate</div>
+                <div class="default-btn mt-2 generate-report text-center col-md-10 col-lg-10 col-10 c-pointer font-weight-bold" @click="getAttendanceReport"><i class="pi pi-spin" v-show="loading"></i>Generate Report</div>
             </div>
         </div>
 
@@ -84,7 +72,7 @@ import axios from "@/gateway/backendapi";
 import ExcelExport from "../../../services/exportFile/exportToExcel"
 import { useToast } from 'primevue/usetoast';
 // import printJS from "print-js";
-// import html2pdf from "html2pdf.js"
+import html2pdf from "html2pdf.js"
 // import axio from "axios"
 export default {
     components: {
@@ -105,7 +93,7 @@ export default {
         const attendanceReport = ref([])
         const groupedReport = ref([])
         const groupedReportByDate = ref([])
-        const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'} ])
+        const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'}, {name: 'pdf'} ])
         const selectedFileType = ref("")
         const fileName = ref("")
         const showExport = ref(false)
@@ -230,7 +218,8 @@ export default {
         // getIPDetails()
 
         const downLoadExcel = () => {
-            if (selectedFileType.value === "pdf") {
+            console.log('reaching here')
+            if (selectedFileType.value.name === "pdf") {
                 // printJS({
                 // //   ignoreElements: ['ignore1', 'ignore2'],
                 //   maxWidth: 867,
@@ -251,19 +240,19 @@ export default {
                 //   gridStyle:
                 //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
                 // })
-                // var element = document.getElementById('element-to-print');
-                // var opt = {
-                //     // margin:       1,
-                //     filename:     `${fileName.value}.pdf`,
-                //     image:        { type: 'jpeg', quality: 0.98 },
-                //     html2canvas:  { scale: 2 },
-                //     jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
-                //     pagebreak: { mode: ['avoid-all'] }
-                // };
+                var element = document.getElementById('element-to-print');
+                var opt = {
+                    // margin:       1,
+                    filename:     `${fileName.value}.pdf`,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2 },
+                    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+                    pagebreak: { mode: ['avoid-all'] }
+                };
 
                     // New Promise-based usage:
-                    // html2pdf().set(opt).from(element).save();
-                // html2pdf(element);
+                    html2pdf().set(opt).from(element).save();
+                html2pdf(element);
 
                 // var doc = new jsPDF();  //create jsPDF object
                 // doc.fromHTML(document.getElementById("element-to-print"), // page element which you want to print as PDF
@@ -283,7 +272,7 @@ export default {
                 console.log(filterVal)
                 console.log(fileHeaderToExport.value)
                 
-                ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
+                ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value.name)
             }
         }
 
@@ -329,5 +318,32 @@ export default {
 <style scoped>
 .header {
     font: normal normal 800 29px Nunito sans;
+}
+/* .default-btn {
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    max-height: 40px;
+    background: #6c757d47 !important;
+    color:#000;
+    text-decoration: none;
+    min-width: 121px;
+} */
+
+.default-btn:hover {
+  text-decoration: none;
+}
+
+
+.generate-report {
+   font-size: 1rem;
+  color: #fff;
+  background-color: #136acd !important ;
+  border: none;
+  min-width: 7rem;
 }
 </style>

@@ -89,83 +89,85 @@
                     </div> 
                 </div>
         </div>
-        <div class="container-fluid  ">
-            <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                <div class="col-12 ">
-                    <div class="mt-5 display-1 pb-2 font-weight-bold text-center heading-text" >
-                      Offering And Givings Report
-                    </div>
-                </div>
-            </div>
-            <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-              <!-- <div class="col-12 container-fluid d-flex mt-2 flex-wrap"> -->
-                  <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-12"> -->
-                      <!-- <div class="col-12   text-center" > -->
-                          <!-- <div class="col-12 text-center" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">No Data Available</div> -->
-                          <div class="col-12 p-0 " >
-                              <OfferingColumnChart
-                                  domId="chart1"
-                                  title="Offering Report"
+        <div id="element-to-print">
+          <div class="container-fluid  ">
+              <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                  <div class="col-12 ">
+                      <div class="mt-5 display-1 pb-2 font-weight-bold text-center heading-text" >
+                        Offering And Givings Report
+                      </div>
+                  </div>
+              </div>
+              <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                <!-- <div class="col-12 container-fluid d-flex mt-2 flex-wrap"> -->
+                    <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-12"> -->
+                        <!-- <div class="col-12   text-center" > -->
+                            <!-- <div class="col-12 text-center" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">No Data Available</div> -->
+                            <div class="col-12 p-0 " >
+                                <OfferingColumnChart
+                                    domId="chart1"
+                                    title="Offering Report"
+                                    distance="5"
+                                    :titleMargin="10"
+                                    :data="offeringDetail"
+                                    subtitle="Offering And Giving Data"
+                                    :series="mappedOfferingCol"
+                                    yAxisText = "Offering"
+                                    
+                                />
+                            </div>
+                        <!-- </div> -->
+                    <!-- <div class="col-12 "> -->
+                      <!-- <div class="col-12  text-center" > -->
+                          <!-- <div class="col-12  font-weight-bold">Membership By Marital Status</div> -->
+                          <!-- <div class="col-12 text-center" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                            <div class="col-12 table " >
+                              <OfferingPieChart
+                                domId="chart3"
                                   distance="5"
                                   :titleMargin="10"
-                                  :data="offeringDetail"
-                                  subtitle="Offering And Giving Data"
-                                  :series="mappedOfferingCol"
-                                  yAxisText = "Offering"
-                                  
+                                  :summary="mappedOffering"
                               />
-                          </div>
+                            </div>
                       <!-- </div> -->
-                  <!-- <div class="col-12 "> -->
-                    <!-- <div class="col-12  text-center" > -->
-                        <!-- <div class="col-12  font-weight-bold">Membership By Marital Status</div> -->
-                        <!-- <div class="col-12 text-center" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
-                          <div class="col-12 table " >
-                            <OfferingPieChart
-                              domId="chart3"
-                                distance="5"
-                                :titleMargin="10"
-                                :summary="mappedOffering"
-                            />
-                          </div>
-                    <!-- </div> -->
+                  <!-- </div> -->
                 <!-- </div> -->
-              <!-- </div> -->
-            </div>
-        </div>
-           <section>
-                    <!-- table header -->
-                <div class=" container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness "
-                :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
-                        <table class="table remove-styles mt-0  table-hover table-header-area " id="table">
-                          <thead class="table-header-area-main">
-                            <tr class="small-text text-capitalize text-nowrap" style="border-bottom: 0">
-                                <!-- <th class="">Group Name</th> -->
-                                <th scope="col">Offering name</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Event name</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Contact name</th>
-                                <th scope="col">Channel</th>
-                            </tr>
-                          </thead>
-                          <tbody class="font-weight-normal text-nowrap">
-                              <tr v-for="(OfferingList, index) in offeringInChurch" :key="index">
-                              <td>{{ OfferingList.contributionName }}</td>
-                              <td>{{ OfferingList.amount }}</td>
-                              <td>{{ OfferingList.eventName }}</td>
-                              <td>{{ formatDate(OfferingList.date) }}</td>
-                              <td>{{ OfferingList.contactName }}</td>
-                              <td>{{ OfferingList.channel }}</td>
+              </div>
+          </div>
+            <section>
+                      <!-- table header -->
+                  <div class=" container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness "
+                  :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
+                          <table class="table remove-styles mt-0  table-hover table-header-area " id="table">
+                            <thead class="table-header-area-main">
+                              <tr class="small-text text-capitalize text-nowrap" style="border-bottom: 0">
+                                  <!-- <th class="">Group Name</th> -->
+                                  <th scope="col">Offering name</th>
+                                  <th scope="col">Amount</th>
+                                  <th scope="col">Event name</th>
+                                  <th scope="col">Date</th>
+                                  <th scope="col">Contact name</th>
+                                  <th scope="col">Channel</th>
                               </tr>
-                          </tbody>
-                        </table>
-                        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-                        <PaginationButtons />
-                        </div> -->
-                </div>
-                    <!--end table header -->
-            </section>
+                            </thead>
+                            <tbody class="font-weight-normal text-nowrap">
+                                <tr v-for="(OfferingList, index) in offeringInChurch" :key="index">
+                                <td>{{ OfferingList.contributionName }}</td>
+                                <td>{{ OfferingList.amount }}</td>
+                                <td>{{ OfferingList.eventName }}</td>
+                                <td>{{ formatDate(OfferingList.date) }}</td>
+                                <td>{{ OfferingList.contactName }}</td>
+                                <td>{{ OfferingList.channel }}</td>
+                                </tr>
+                            </tbody>
+                          </table>
+                          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
+                          <PaginationButtons />
+                          </div> -->
+                  </div>
+                      <!--end table header -->
+              </section>
+        </div>
     </div>
 </template>
 
@@ -217,7 +219,7 @@ export default {
         const mappedOfferingCol = ref([])
         const showExport = ref(false);
         const fileName = ref("")
-        const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'} ])
+        const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'},{name: 'pdf'} ])
         const selectedFileType = ref("");
         const fileHeaderToExport = ref([])
         const fileToExport = ref([]);
@@ -294,7 +296,7 @@ export default {
 
     }
      const downloadFile = () => {
-        exportService.downLoadExcel(selectedFileType.value, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
+        exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
       }
     // const downLoadExcel = () => {
     //         if (selectedFileType.value === "pdf") {
@@ -489,24 +491,31 @@ export default {
 }
 
 .default-btn {
-  font-weight: 800;
-  /* font-size: 1rem; */
-  /* white-space: initial; */
-  /* border-radius: 3rem; */
-  border: 1px solid #136acd;
-  /* padding: 0.5rem 1.25rem; */
-  /* color: #136acd; */
-  /* width: auto; */
-  outline: transparent !important;
-  /* max-height: 2.5rem; */
-  background: #fff;
-  /* min-width: 7.6rem; */
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    /* outline: transparent !important; */
+    max-height: 40px;
+    background: #6c757d47 !important;
+    color:#000;
+    text-decoration: none;
+    min-width: 121px;
 }
+
+.default-btn:hover {
+  text-decoration: none;
+}
+
 
 .generate-report {
   font-size: 1rem;
   color: #fff;
-  background-color: #136acd;
+  background-color: #136acd !important ;
   border: none;
   min-width: 7rem;
 }

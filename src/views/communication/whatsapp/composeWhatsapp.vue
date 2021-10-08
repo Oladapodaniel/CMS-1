@@ -4,7 +4,7 @@
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
         <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
-          <h4 class="font-weight-bold">Compose SMS</h4>
+          <h4 class="font-weight-bold">Compose Whatsapp Message</h4>
           <Toast />
 
           <Dialog
@@ -701,16 +701,16 @@
 
 <script>
 import { computed, onMounted, ref } from "vue";
-import composeService from "../../services/communication/composer";
-import composerObj from "../../services/communication/composer";
+import composeService from "../../../services/communication/composer";
+import composerObj from "../../../services/communication/composer";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
-import store from "../../store/store";
+import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
-import stopProgressBar from "../../services/progressbar/progress";
-import communicationService from "../../services/communication/communicationservice";
-import dateFormatter from "../../services/dates/dateformatter";
+import stopProgressBar from "../../../services/progressbar/progress";
+import communicationService from "../../../services/communication/communicationservice";
+import dateFormatter from "../../../services/dates/dateformatter";
 import moment from 'moment'
 
 export default {
@@ -900,10 +900,10 @@ export default {
               life: 6000,
             });
 
-            store.dispatch("removeSMSUnitCharge", res.data.unitsUsed);
+            store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
             console.log(pageCount, "Page count ");
 
-            console.log(res , ' My reall name');
+            console.log(res);
             // Save the res to store in other to get it in the view sent sms page
             let sentObj = {
                 message: res.data.message,

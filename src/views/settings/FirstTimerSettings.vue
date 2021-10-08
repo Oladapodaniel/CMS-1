@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-5">
         <div class="col-md-12">
-          <h2 class="first">First Timer Cycle Settings</h2>
+          <h2 class="first">First Timer lifeCycle Settings</h2>
         </div>
       </div>
 
@@ -13,7 +13,7 @@
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-12">
-                  <h4 class="mt-2 mb-2 ml-5 first1">Add Your First Timer Cycle </h4>
+                  <h4 class="mt-2 mb-2 ml-5 first1">Add Your First Timer  lifeCycle </h4>
                 </div>
                 <Toast/>
                 <ConfirmDialog/>
