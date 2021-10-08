@@ -532,12 +532,30 @@ export default {
 
         const sendSms = async() => {
             let body = {
+                subject: "",
                 message: smsMessage.value,
                 toOthers: props.personDetails.phoneNumber,
                 isoCode: isoCode.value,
                 gateWayToUse: "hostedsms",
+                ispersonalized: true,
+                category: "string",
+                contacts: [],
+                emailAddress: "",
+                emailDisplayName: "",
+                groupedContacts: [],
             }
             console.log(body)
+            // let b = {
+            //     subject: "string",
+            //     message: "string",
+                
+                
+            //     toContacts: "string",
+            //     toOthers: "string",
+            //     isoCode: "string",
+            //     
+            //     gateWayToUse: "string",
+            //     }
             try {
                 let res = await frmservice.sendSms(route.params.personId, body)
                 console.log(res)

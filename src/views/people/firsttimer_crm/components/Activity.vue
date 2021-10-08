@@ -80,76 +80,71 @@
                             <div class="col-12">
                                 <hr />
                             </div>
-                            <div class="col-8 label-text mt-3">Due date</div>
-                            <div class="col-4 label-text mt-3">Reminder</div>
-                            <div class="col-4 mt-2">
-                                <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
+                            <div class="col-6 label-text mt-3">Due date</div>
+                            <div class="col-6 label-text mt-3">Reminder</div>
+                            <div class="col-6 mt-2">
+                                <div @click="toggleDueDate" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
                                     In 3 business days&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
-                                <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                    <div v-for="(item, index) in taskTime" :key="index">
-                                        <div class="px-3 py-1">{{ item.name }}</div>
+                                <OverlayPanel ref="dueDateOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                    <div class="container-fluid p-0">
+                                        <div class="row hover-log" v-for="(item, index) in dueDate" :key="index">
+                                            <div class="py-2 px-3">{{ item.name }}</div>
+                                        </div>
                                     </div>
                                 </OverlayPanel>
                             </div>
-                            <div class="col-4 mt-2">
-                                <input type="date" class="form-control"/>
-                            </div>
-                            <div class="col-4 mt-2">
-                                <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
+                            <div class="col-6 mt-2">
+                                <div @click="toggleReminder" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
                                     No reminder&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
-                                <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                    <div v-for="(item, index) in taskTime" :key="index">
-                                        <div class="px-3 py-1">{{ item.name }}</div>
+                                <OverlayPanel ref="reminderOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                    <div class="container-fluid p-0">
+                                        <div class="row hover-log" v-for="(item, index) in getReminder" :key="index">
+                                            <div class="py-2 px-3 ">{{ item.name }}</div>
+                                        </div>
                                     </div>
                                 </OverlayPanel>
                             </div>
                             <div class="col-12 mt-3">
                                 <hr />
                             </div>
-                            <div class="col-2 label-text">Type</div>
-                            <div class="col-2 label-text">Priority</div>
-                            <div class="col-2 label-text">Queue</div>
-                            <div class="col-3 label-text">Assigned to</div>
-                            <div class="col-2 label-text"></div>
-                            <div class="col-2 mt-2">
-                                <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
+                            <div class="col-4 label-text">Type</div>
+                            <div class="col-4 label-text">Priority</div>
+                            <div class="col-4 label-text">Assigned to</div>
+                            <div class="col-4 mt-2">
+                                <div @click="toggleTodo" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
                                     Todo&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
-                                <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                    <div v-for="(item, index) in taskTime" :key="index">
-                                        <div class="px-3 py-1">{{ item.name }}</div>
-                                    </div>
-                                </OverlayPanel>
-                            </div>
-                            <div class="col-2 mt-2">
-                                <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
-                                    None&nbsp; <i class="pi pi-sort-down"></i>
-                                </div>
-                                <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                    <div v-for="(item, index) in taskTime" :key="index">
-                                        <div class="px-3 py-1">{{ item.name }}</div>
-                                    </div>
-                                </OverlayPanel>
-                            </div>
-                            <div class="col-2 mt-2">
-                                <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
-                                    None&nbsp; <i class="pi pi-sort-down"></i>
-                                </div>
-                                <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                    <div v-for="(item, index) in taskTime" :key="index">
-                                        <div class="px-3 py-1">{{ item.name }}</div>
+                                <OverlayPanel ref="todoOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                    <div class="container-fluid p-0">
+                                        <div class="row hover-log" v-for="(item, index) in activityType" :key="index">
+                                            <div class="py-2 px-3">{{ item.value }}</div>
+                                        </div>
                                     </div>
                                 </OverlayPanel>
                             </div>
                             <div class="col-4 mt-2">
-                                <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
+                                <div @click="togglePriority" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
+                                    None&nbsp; <i class="pi pi-sort-down"></i>
+                                </div>
+                                <OverlayPanel ref="priorityOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                    <div class="container-fluid p-0">
+                                        <div class="row hover-log" v-for="(item, index) in taskPriority" :key="index">
+                                            <div class="py-2 px-3">{{ item.name }}</div>
+                                        </div>
+                                    </div>
+                                </OverlayPanel>
+                            </div>
+                            <div class="col-4 mt-2">
+                                <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
                                     Oladapo Daniel&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
-                                <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                    <div v-for="(item, index) in taskTime" :key="index">
-                                        <div class="px-3 py-1">{{ item.name }}</div>
+                                <OverlayPanel ref="contactOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="make-scrollable">
+                                    <div class="container-fluid p-0">
+                                        <div class="row hover-log" v-for="(item, index) in allContacts" :key="index">
+                                            <div class="py-2 px-3" @click="chooseContact(item)">{{ item.firstName }} {{ item.lastName }}</div>
+                                        </div>
                                     </div>
                                 </OverlayPanel>
                             </div>
@@ -171,9 +166,32 @@
                     </div>
                 </div>
             <transition name="fade">
-                <div class="row mt-4" v-if="taskIcon">
-                    <div class="col font-weight-700">Add Comment</div>
-                    <div class="col text-right font-weight-700">1 Association</div>
+                <div class="container" v-if="taskIcon">
+                    <div class="row mt-4">
+                        <div class="col font-weight-700">Add Comment</div>
+                        <div class="col text-right font-weight-700">1 Association</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div class="row comment-bg border py-3">
+                                <div class="col-3">
+                                    <img src="../../../../assets/user.svg" />
+                                </div>
+                                <div class="col-8">
+                                    <div class="row">
+                                        <div class="col-6">nam</div>
+                                        <div class="col-6">time</div>
+                                        <div class="col-12">body</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12 px-0">
+                            <textarea class="form-control comment-bg" rows="7" placeholder="Write a comment."></textarea>
+                        </div>
+                    </div>
                 </div>
             </transition>
             </div>
@@ -182,7 +200,7 @@
 
             <!-- Card for Call and Email Logs -->
 
-            <div class="col-12 mt-4" v-if="item.type === 88">
+            <div class="col-12 mt-4" v-if="item.type === 88 || item.type === 94">
                 <div class="col-12 card-bg p-4">
                     <div class="row d-flex justify-content-between">
                         <div>
@@ -269,24 +287,26 @@
             </div>
             
             <!-- Log for contactowner, lifecycle, leadstatus -->
-            <div class="col-12 mt-4" v-if="item.type === 90 || item.type === 92 || item.type === 93">
-                <div class="col-12 card-bg p-4">
-                    <div class="row d-flex justify-content-between">
+            <transition name="fade">
+                <div class="col-12 mt-4" v-if="item.type === 90 || item.type === 92 || item.type === 93">
+                    <div class="col-12 card-bg p-4 " :class="{ 'lifecycle-card' : item.type === 90 }">
+                        <div class="row d-flex justify-content-between">
+                            
+                                <div class="col-6 align-self-center"><span class="font-weight-700">{{ item.type === 90 ? "Lifecycle changed" : item.type === 92 ? "Lead status changed" : "Contact's owner changed" }}</span><span class="font-weight-700 uniform-primary-color"></span></div>
                         
-                            <div class="col-6 align-self-center"><span class="font-weight-700">{{ item.type === 90 ? "Lifecycle changed" : item.type === 92 ? "Lead status changed" : "Contact's owner changed" }}</span><span class="font-weight-700 uniform-primary-color"></span></div>
+                            
+                                <div class="col-6 text-right"><span class="ml-2 small-text">{{ formatDate(item.date) }} {{ item.time }}</span>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12 enlargen-font">
+                                {{ item.description }}
+                            </div>
+                        </div>
                     
-                        
-                            <div class="col-6 text-right"><span class="ml-2 small-text">{{ formatDate(item.date) }} {{ item.time }}</span>
-                        </div>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-12 enlargen-font">
-                            {{ item.description }}
-                        </div>
-                    </div>
-                
                 </div>
-            </div>
+            </transition>
 
         </div>
         </div>
@@ -307,7 +327,7 @@ export default {
     components: {
         Dropdown
     },
-    props: ['addNotes', 'addTask', 'taskTime', 'activities', 'loader'],
+    props: ['addNotes', 'addTask', 'dueDate', 'activities', 'loader', 'getReminder', 'activityType', 'taskPriority', 'allContacts'],
     emits: ['individualtoggle', 'individualtoggletask', 'individualcallicon', 'edittask', 'edittask2', 'savetask', 'savetask2', 'hovertask', 'outhovertask', 'hovertask2', 'outhovertask2'],
     setup(props, { emit }) {
         const noteIcon = ref(false)
@@ -318,7 +338,11 @@ export default {
         const hoverTask = ref(false)
         const theTask2 = ref("")
         const hoverTask2 = ref(false)
-        const op = ref()
+        const dueDateOp = ref()
+        const reminderOp = ref()
+        const todoOp = ref()
+        const priorityOp = ref()
+        const contactOp = ref()
 
         const toggleNoteIcon = (index) => {
             emit('individualtoggle', index)
@@ -377,9 +401,25 @@ export default {
         const cancelTaskEdit2 = () => {
             editTask2.value = false
         }
-
-         const toggle = (event) => {
-            op.value.toggle(event);
+         
+        const toggleDueDate = (event) => {
+            dueDateOp.value.toggle(event);
+        };
+        
+        const toggleReminder = (event) => {
+            reminderOp.value.toggle(event);
+        };
+        
+        const toggleTodo = (event) => {
+            todoOp.value.toggle(event);
+        };
+        
+        const togglePriority = (event) => {
+            priorityOp.value.toggle(event);
+        };
+        
+        const toggleContact = (event) => {
+            contactOp.value.toggle(event);
         };
 
         const toggleLogIcon = (index) => {
@@ -420,11 +460,19 @@ export default {
             hoverTask2,
             outHoverBorderTask2,
             cancelTaskEdit2,
-            toggle,
-            op,
             toggleLogIcon,
             formatDate,
-            condenseEmailText
+            condenseEmailText,
+            dueDateOp,
+            reminderOp,
+            todoOp,
+            priorityOp,
+            contactOp,
+            toggleDueDate,
+            toggleReminder,
+            toggleTodo,
+            togglePriority,
+            toggleContact
 
 
         }
@@ -440,7 +488,7 @@ export default {
 .card-bg {
     background-color: rgb(255, 255, 255);
     box-shadow: rgb(45 62 80 / 12%) 0px 1px 5px 0px;
-    border-radius: 3px;
+    border-radius: 8px;
 }
 
 .roll-note-icon {
@@ -537,5 +585,25 @@ export default {
 .date-style {
     color: rgb(51, 71, 91);
     font-size: 19px
+}
+
+.lifecycle-card {
+    border-right: 4px solid #0a75cc;
+    border-left: 4px solid #0a75cc;
+}
+
+.comment-bg {
+    background: #fef8f0;
+}
+
+.hover-log:hover {
+    background: rgba(202, 202, 202, 0.356);
+    cursor: pointer
+}
+
+.make-scrollable {
+    height: 800px;
+    overflow: scroll;
+    margin-top: 100px
 }
 </style>
