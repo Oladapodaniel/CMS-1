@@ -2,6 +2,9 @@
   <div class="container-fluid px-5 mt-5">
      <div class="row d-flex justify-content-between px-3">
             <h3 class="heading-text ml-1">Basic Income And Revenue Report</h3>
+<<<<<<< HEAD
+            <div @click="() => showExport = !showExport" class="cursor-pointer default-btn  d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
+=======
             <div class="default-btn  font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
@@ -10,6 +13,7 @@
                 </div>
           </div>
             <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
+>>>>>>> a534212218f750233c566bc05fc4119e5737870c
       </div>
       <!-- <div class="row my-4" v-if="showExport">
           <div class="col-sm-5">
@@ -185,6 +189,7 @@ import ColumnChart2 from "@/components/charts/ColumnChart2";
 import Listbox from 'primevue/listbox';
 import exportService from "../../../services/exportFile/exportservice"
 import axios from "@/gateway/backendapi";
+import axioz from "axios";
 import dateFormatter from  "../../../services/dates/dateformatter";
 
 export default {
@@ -194,9 +199,14 @@ export default {
     Calendar,
     ByGenderChart,
     PaginationButtons,
+<<<<<<< HEAD
+    InputText,
+    Dropdown
+=======
     // InputText,
     // Dropdown,
     Listbox
+>>>>>>> a534212218f750233c566bc05fc4119e5737870c
   },
   setup() {
     const startDate = ref(new Date());
@@ -308,6 +318,10 @@ export default {
       }
       return color;
     }
+
+    axioz.post(`/v1/users/login`, { headers: { 'Authorization': 'Basic base64(admin: secret)'} }, { 'new_password': "new_password" }).then(res => {
+      console.log(res ,'whatsapp login');
+    })
    
     return {
       summary,
@@ -341,6 +355,8 @@ export default {
 * {
   box-sizing: border-box;
 }
+<<<<<<< HEAD
+=======
 .default-btn {
     font-weight: 600;
     white-space: initial;
@@ -357,6 +373,7 @@ export default {
     text-decoration: none;
     min-width: 121px;
 }
+>>>>>>> a534212218f750233c566bc05fc4119e5737870c
 
 .default-btn:hover {
   text-decoration: none;
