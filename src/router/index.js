@@ -824,6 +824,25 @@ const routes = [
                     }
                 ]
             },
+            // whatsapp
+            {
+                path: 'whatsapp',
+                name: 'Whatsapp',
+                meta: {
+                    title: 'Churchplus - Whatsapp Communication',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "scheduled" */ '@/components/whatsapp/whatsapp'),
+                    children: [{
+                        path: '',
+                        name: 'Compose',
+                        meta: {
+                            title: 'Churchplus - Whatsapp Compose',
+                        },
+                        component: () =>
+                            import ( /* webpackChunkName: "inbox" */ '@/views/communication/whatsapp/composeWhatsapp')
+                    }]
+            },
             {
                 path: 'peoplegroups',
                 name: 'Groups',

@@ -2,7 +2,7 @@
     <div class=" container container-top container-wide mb-4  ">
         <div class="row d-flex justify-content-between px-3">
             <div class="heading-text">First Timer Performance Report</div>
-            <div class="default-btn border-secondary font-weight-normal c-pointer"
+            <div class="default-btn mb-2 border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
                 <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
@@ -11,32 +11,18 @@
             </div>
             <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
         </div>
-        <!-- <transition name="move" mode="out-in">
-          <div class="row my-4 " v-if="showExport">
-              <div class="col-sm-5  ">
-                  <span class="p-float-label">
-                      <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
-                      <label for="inputtext">Enter file name</label>
-                  </span>
-              </div>
-              <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
-                  <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type"  />
-              </div>
-              <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn d-flex align-items-center generate-report c-pointer justify-content-center">Download</div></div>
-          </div>
-        </transition> -->
            <!-- date area -->
         <div class="container-fluid my-2 py-5   bg-area">
-            <div class="row justify-content-center pl-3 ">
+            <div class="row d-flex justify-content-center pl-3  ">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0  "> 
-                    <div><label for="icon" class="font-weight-bold">Start Date</label></div>
-                    <div>
-                        <Calendar id="icon" v-model="startDate" :showIcon="true" />
+                    <div class=""><label for="icon" class="font-weight-bold">Start Date</label></div>
+                    <div class="">
+                        <Calendar  id="icon" v-model="startDate" :showIcon="true" />
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
-                    <div><label for="icon" class="font-weight-bold">End Date</label></div>
-                    <div>
+                    <div class=""><label for="icon" class="font-weight-bold">End Date</label></div>
+                    <div class="">
                         <Calendar id="icon" v-model="endDate" :showIcon="true" />
                     </div>
                 </div>
@@ -45,7 +31,7 @@
                     <label for="icon"></label>
                     <div class="mt-2">
                         <button class=" default-btn generate-report   c-pointer font-weight-bold">
-                            Generate
+                            Generate Report
                         </button>
                     </div>
                 </div>
@@ -55,11 +41,11 @@
       <div id="element-to-print">
         <div  class="container-fluid ">
             <div class="row w-100" >
-                <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                <!-- <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                     <div class="mt-5 display-1 font-weight-bold text-center heading-text">
                        First Timers Analysis Report 
                     </div>
-                </div>
+                </div> -->
                 <!-- <div class="col-12 w-100 text-center ">
                     <div class="col-12   text-center">
                         <div class="col-12 font-weight-bold">Firsttimer By Event Date</div>
@@ -81,11 +67,10 @@
                 </div> -->
              </div>
             <div class="  row " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                <div class="col-12 container-fluid table d-flex flex-wrap">
+                <div class="col-12 container-fluid round-border mt-3 d-flex flex-wrap">
                     <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                         <div class="col-12  text-center">
                             <div class="col-12  font-weight-bold">Gender Distribution</div>
-                            <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
                             <div class="col-12 " >
                                 <PerformancePieChart
                                 domId="chart2"
@@ -99,7 +84,6 @@
                     <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                         <div class="col-12  text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0 ">
                             <div class="col-12  font-weight-bold ">Marital Status</div>
-                            <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
                             <div class="col-12 " >
                             <PerformancePieChart
                                domId="chart3"
@@ -110,20 +94,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="col-12 col-sm-12  col-md-4 col-lg-4">
-                        <div class="col-12 text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0 ">
-                            <div class="col-12  font-weight-bold ">Current Status</div>
-                            <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                            <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                            <PerformancePieChart
-                               domId="chart4"
-                                distance="5"
-                                :titleMargin="10"
-                                :summary="pieChart"
-                            />
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>
@@ -131,7 +101,7 @@
             <!-- <div class="row "> -->
         <section>
             <!-- table header -->
-            <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " 
+            <div class="mt-4 container-fluid table-main px-0 remove-styles2 remove-border responsiveness " 
             :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                 <table class="table remove-styles mt-0  table-hover table-header-area  " id="table">
                 <thead class="table-header-area-main">
@@ -145,8 +115,8 @@
                     <th scope="col">Email</th>
                     <th scope="col">Home Address</th>
                     <th scope="col">Gender</th>
-                    <th scope="col">Marital Status</th>
-                    <th scope="col">Activity Date</th>
+                    <!-- <th scope="col">Marital Status</th> -->
+                    <!-- <th scope="col">Activity Date</th> -->
                     <!-- <th scope="col">Current Status</th> -->
                     </tr>
                 </thead>
@@ -158,8 +128,8 @@
                     <td>{{ firstTimer.email }}</td>
                     <td>{{ firstTimer.homeAddress }}</td>
                     <td>{{ firstTimer.gender }}</td>
-                    <td>{{ firstTimer.maritalStatus }}</td>
-                    <td>{{ formatDate(firstTimer.activityDate) }}</td>
+                    <!-- <td>{{ firstTimer.maritalStatus }}</td> -->
+                    <!-- <td>{{ formatDate(firstTimer.activityDate) }}</td> -->
                     <!-- <td>{{ firstTimer.status }}</td> -->
                     </tr>
                 </tbody>
@@ -178,26 +148,20 @@
 
 <script>
 import {computed,ref } from "vue";
-// import PerformancePieChart from '../../../components/charts/PieChart.vue';
 import Calendar from "primevue/calendar";
 // import Dropdown from "primevue/dropdown";
 import Listbox from 'primevue/listbox';
-// import InputText from 'primevue/inputtext';
 import axios from "@/gateway/backendapi";
 import PerformancePieChart from '../../../components/charts/PieChart.vue';
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
 import MultiSelect from 'primevue/multiselect';
 import dateFormatter from  "../../../services/dates/dateformatter";
-// import ExcelExport from "../../../services/exportFile/exportToExcel"
 import printJS from "print-js";
-// import html2pdf from "html2pdf.js"
 import exportService from "../../../services/exportFile/exportservice"
-// import Piechart from "../../../components/charts/PieChart2.vue"
 export default {
     components: {
         MultiSelect,
-        // InputText,
         Listbox,
         PerformancePieChart,
         PerformanceColumnChart,
@@ -206,32 +170,7 @@ export default {
         // PaginationButtons 
         },
     setup() {
-    //     const membership = ref([
-    //   { name: "FIRST-TIMER" },
-    //   { name: "NEW-CONVERT" },
-    //   { name: "FULL MEMBER" },
-    // ]);
-    //     const gender = ref([
-    //   { name: "MALE" },
-    //   { name: "FEMALE" },
-    // ]);
-    //     const maritalStatus = ref([
-    //   { name: "SINGLE" },
-    //   { name: "MARRIED" },
-    //   { name: "ENGAGED" },
-    //   { name: "SINGLE PARENT" },
-    //   { name: "DIVORCED" },
-    //   { name: "SEPERATED" },
-    //   { name: "WIDOW" },
-    //   { name: "WIDOWER" },
-    // ]);
-
-    // const selectedMember = ref();
-    // const selectedGender = ref();
-    // const selectedMaritalStatus = ref();
     const showReport = ref(false);
-    const pieChart = ref([{ name: "First Timer ", color: "#002044", data: [ 0, 3, 13, 14, 0, 15, 20, 20 ] }]);
-    // const series = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 24, 25, 26, 27, 28, 29, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52 ]);
     const startDate = ref(new Date());
     const endDate = ref(new Date());
     const firstTimerInChurch = ref([]);
@@ -378,23 +317,6 @@ export default {
       return dateFormatter.normalDate(date);
     };
 
-    
-    // const getMemberClassification = async () => {
-    //   try {
-    //     axios
-    //       .get('/api/Reports/people/getAllContactsReport')
-    //       .then((res) => {
-    //         // tenantCurrency.value = res.data;
-    //         console.log(res.data,'myall');
-    //       })
-    //       .catch((err) => console.log(err));
-    //     // donationSummary.value = data;
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // };
-    // getMemberClassification();
-
      return {
         //  allMembersInChurch,
         attendanceChart,
@@ -414,7 +336,6 @@ export default {
         endDate,
         genarateReport,
         showReport,
-        pieChart,
         showExport,
         fileHeaderToExport,
         fileToExport,
@@ -448,24 +369,24 @@ export default {
 
 .responsiveness{
   max-width: 100%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 
 .default-btn {
-    font-weight: 600;
+    /* font-weight: 600;
     white-space: initial;
     font-size: 1rem;
-    border-radius: 3rem;
+    border-radius: 3rem; */
     /* border: 1px solid #002044; */
-    padding: .5rem 1.25rem;
+    /* padding: .5rem 1.25rem;
     width: auto;
-	border:none;
+	border:none; */
     /* outline: transparent !important; */
-    max-height: 40px;
+    /* max-height: 40px;
     background: #6c757d47 !important;
     color:#000;
     text-decoration: none;
-    min-width: 121px;
+    min-width: 121px; */
 }
 
 .default-btn:hover {
@@ -500,6 +421,11 @@ export default {
   margin-bottom: auto !important;
   padding-bottom: 0.5rem;
 }
+.round-border{
+   border-radius: 0.5rem;
+   box-shadow: 0 0.063rem 0.25rem #02172e45;
+   border: 0.063rem solid #dde2e6;
+}
 
 .table-header-area {
   border-top-left-radius: 0;
@@ -532,7 +458,7 @@ padding-right: 0;
 padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
-overflow-x: scroll;
+/* overflow-x: scroll; */
 }
 .move-enter-active {
   animation: move-in .8s;

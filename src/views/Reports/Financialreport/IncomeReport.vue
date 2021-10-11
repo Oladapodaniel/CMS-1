@@ -185,6 +185,7 @@ import ColumnChart2 from "@/components/charts/ColumnChart2";
 import Listbox from 'primevue/listbox';
 import exportService from "../../../services/exportFile/exportservice"
 import axios from "@/gateway/backendapi";
+import axioz from "axios";
 import dateFormatter from  "../../../services/dates/dateformatter";
 
 export default {
@@ -308,6 +309,10 @@ export default {
       }
       return color;
     }
+
+    axioz.post(`/v1/users/login`, { headers: { 'Authorization': 'Basic base64(admin: secret)'} }, { 'new_password': "new_password" }).then(res => {
+      console.log(res ,'whatsapp login');
+    })
    
     return {
       summary,
@@ -340,22 +345,6 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
-}
-.default-btn {
-    font-weight: 600;
-    white-space: initial;
-    font-size: 1rem;
-    border-radius: 3rem;
-    /* border: 1px solid #002044; */
-    padding: .5rem 1.25rem;
-    width: auto;
-	border:none;
-    /* outline: transparent !important; */
-    max-height: 40px;
-    background: #6c757d47 !important;
-    color:#000;
-    text-decoration: none;
-    min-width: 121px;
 }
 
 .default-btn:hover {

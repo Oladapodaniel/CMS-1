@@ -5,14 +5,14 @@
             <div class="row  border-0 table report d-flex justify-content-between p-2 p-md-4">
                 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
-                    <h4 class="ju header4">Attendance</h4>
+                    <h4 class="ju header4">Attendance Report</h4>
                     <p class="ju paragraph1">Accurate information and keeping proper records make your ministry effective </p>
 
 
                 </div>
                 <div class="col-md-5 col-12 mt-4">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                        <router-link to="/tenant/reports/attendancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Attendance Report</h4></router-link>
+                        <router-link to="/tenant/reports/attendancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Group Category Attendance </h4></router-link>
                          <router-link to="/tenant/reports/attendancereport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
@@ -26,7 +26,7 @@
                     <div class="col-md-5 col-12">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
                         <router-link to="/tenant/reports/attendanceperformancereport" class="linked">
-                       <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Attendance Performance Report</h4>
+                       <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Church Activity Attendance</h4>
                         </router-link>
                         <router-link to="/tenant/reports/attendancereport" class="linked">
                          <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span>
@@ -44,14 +44,14 @@
             <div class="row  border-0 table report d-flex justify-content-between p-2 p-md-4">
                 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
-                    <h4 class="ju header4">Performance</h4>
+                    <h4 class="ju header4">Performance Report</h4>
                     <p class="ju paragraph1">Accurate information and keeping proper records make your ministry effective </p>
 
 
                 </div>
                 <div class="col-md-5 col-12 border-bottom">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                       <router-link to="/tenant/reports/firsttimerperformancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">First Timer Report</h4></router-link>
+                       <router-link to="/tenant/reports/firsttimerperformancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">First Timer Performance</h4></router-link>
                          <router-link to="/tenant/reports/firsttimerperformancereport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
@@ -62,7 +62,7 @@
                 </div>
                 <div class="col-md-5 col-12 mt-4">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                       <router-link to="/tenant/reports/newconvertperformancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">New Convert Report</h4></router-link>
+                       <router-link to="/tenant/reports/newconvertperformancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">New Convert Performance</h4></router-link>
                          <router-link to="/tenant/reports/newconvertperformancereport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
@@ -81,7 +81,7 @@
             <div class="row  border-0 table report d-flex justify-content-between p-2 p-md-4">
                 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
-                    <h4 class="ju header4">Summary Attendance Report</h4>
+                    <h4 class="ju header4">Summary Report</h4>
                     <p class="ju paragraph1">This reports provides a detailed Summary Attendance of your ministry</p>
 
 
