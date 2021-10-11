@@ -50,7 +50,7 @@
              </div> 
              </div>
              <div>
-                 <h3 class="font-weight-bold mt-5 ml-2"  v-show="analysisReport.length > 0">SERVICE PERFORMANCE ANALYSIS REPORT </h3>
+                 <h3 class="font-weight-bold mt-5 ml-2"  v-show="analysisReport.length > 0"></h3>
                  
                  <div class=" borderInner mb-2">
                      <h5 class="ml-3 mt-4"></h5>
@@ -119,14 +119,14 @@
              <section>
        <!-- table header -->
        
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-2" >
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-2" v-show="analysisReport.length > 0" >
         <table class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
               class="small-text text-capitalize text-nowrap"
               style="border-bottom: 0"
             >
-              <th scope="col">Event Name</th>
+              <!-- <th scope="col">Event Name</th> -->
               <th scope="col">Date</th>
               <th scope="col">Description</th>
               <th scope="col">Topic</th>
@@ -138,7 +138,7 @@
           </thead>
           <tbody class="font-weight-normal text-nowrap">
             <tr v-for="(analysisTable, index) in analysisReport" :key="index" >
-              <td>{{index === 0 ? analysisTable.eventName : ""}}</td>
+              <!-- <td>{{index === 0 ? analysisTable.eventName : ""}}</td> -->
               <td>{{formatDate(analysisTable.date)}}</td>
               <td>{{analysisTable.description}}</td>
               <td>{{analysisTable.topic}}</td>

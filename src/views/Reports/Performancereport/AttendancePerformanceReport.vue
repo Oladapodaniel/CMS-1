@@ -123,7 +123,7 @@
              <section>
                  <!-- table header -->
 
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-2" >
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-2" v-show="activityReport.length > 0">
         <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
@@ -523,8 +523,9 @@ border-top-right-radius: 0 !important;
     }
     .lineGrap{
       border:  0px #e9e9e9 solid!important;
-      border-radius: 20px;
+      border-radius: 2px;
        box-shadow: 0px 1px 4px #02172E45;
+       font-weight: bold;
     }
     .borderInner{
         width: 100%;
