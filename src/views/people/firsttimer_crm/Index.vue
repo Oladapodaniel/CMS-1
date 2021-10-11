@@ -414,7 +414,7 @@ export default {
         
         const setIconPropTask = (payload) => {
             // taskList.value[payload].taskIcon = !taskList.value[payload].taskIcon
-            activities.value[payload].taskIcon = !activities.value[payload].taskIcon
+            searchActivities.value[payload.parentIndex].value[payload.mainIndex].taskIcon = !searchActivities.value[payload.parentIndex].value[payload.mainIndex].taskIcon
         }
 
         const sendEmail = async () => {

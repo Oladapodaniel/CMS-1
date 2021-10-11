@@ -324,12 +324,16 @@
         </div>
         <div class="inputs">
           <div class="submit-div">
-            <button class="action-btn cancel-btn btn" @click.prevent="onCancel">
+            <button class="action-btn ml-3 cancel-btn btn" @click.prevent="onCancel">
               Cancel
             </button>
 
+            <button class="action-btn ml-3 cancel-btn btn" @click.prevent="onCancel">
+              Save
+            </button>
+
             <button
-              class="submit-btn ml-5 outline-none"
+              class="submit-btn ml-3 outline-none"
               :class="{ 'btn-loading': loading }"
               :disabled="loading"
             >
@@ -337,7 +341,7 @@
                 class="fas fa-circle-notch fa-spin mr-2 text-white"
                 v-if="loading"
               ></i>
-              <span class="text-white">Save</span>
+              <span class="text-white">Save and add another</span>
               <span></span>
             </button>
           </div>
@@ -1282,7 +1286,7 @@ export default {
   }
 
 .submit-div {
-  margin-left: 18em;
+  margin-left: 23em;
 }
 
 .inputs {

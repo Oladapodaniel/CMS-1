@@ -20,7 +20,7 @@
             <div class="row mt-4">
                 <div class="col-12 date-style">{{ item.name }}</div>
             </div>
-            <div class="row" v-for="(item, index) in item.value" :key="index">
+            <div class="row" v-for="(item, indx) in item.value" :key="indx">
             <!-- <div class="col-12 activity-date" v-if="addNotes.length > 0 && addTask.length > 0">July 12</div> -->
                 <div class="col-12 mt-4" v-if="item.type === 91">
                 <!-- Card for Notes -->
@@ -51,7 +51,7 @@
                 <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.taskIcon, 'unroll-note-icon' : !item.taskIcon}" @click="toggleTaskIcon(index)"></i>&nbsp;&nbsp;{{ item.typeText }} {{ item.person ? 'task' : 'logged' }}</span>  {{ item.person ? `assigned to ${item.person}` : '' }}</div>
+                        <div class="col align-self-center"><span class="font-weight-700 c-pointer"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.taskIcon, 'unroll-note-icon' : !item.taskIcon}" @click="toggleTaskIcon(index, indx)"></i>&nbsp;&nbsp;{{ item.typeText }} {{ item.person ? 'task' : 'logged' }}</span>  {{ item.person ? `assigned to ${item.person}` : '' }}</div>
                         
                     </div>
                     <div>
@@ -166,31 +166,34 @@
                     </div>
                 </div>
             <transition name="fade">
-                <div class="container" v-if="taskIcon">
-                    <div class="row mt-4">
-                        <div class="col font-weight-700">Add Comment</div>
-                        <div class="col text-right font-weight-700">1 Association</div>
+                <div class="container" v-if="item.taskIcon">
+                    <div class="row mt-4" v-show="!displayComment">
+                        <div class="col font-weight-700 c-pointer" @click="toggleDisplayComment">Add Comment</div>
+                        <div class="col text-right font-weight-700 c-pointer">1 Association</div>
                     </div>
-                    <div class="row mt-2">
+                    <div class="row" v-if="displayComment">
                         <div class="col-12">
-                            <div class="row comment-bg border py-3">
-                                <div class="col-3">
-                                    <img src="../../../../assets/user.svg" />
+                            <div class="row comment-bg border py-3 mt-2" v-for="(comment, index) in item.loggedTask.comments" :key="index">
+                                <div class="col-2">
+                                    <img src="../../../../assets/checkin-assets/Icon-ionic-ios-person.svg"  class="user-img"/>
                                 </div>
-                                <div class="col-8">
+                                <div class="col-10">
                                     <div class="row">
-                                        <div class="col-6">nam</div>
-                                        <div class="col-6">time</div>
-                                        <div class="col-12">body</div>
+                                        <div class="col-6"><strong>Emmanuel Jeffrey</strong> left a comment</div>
+                                        <div class="col-6 small-text">Oct 7, 2021 at 5:25 PM GMT+1</div>
+                                        <div class="col-12 mt-2">{{ comment.message }}</div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-12 px-0">
-                            <textarea class="form-control comment-bg" rows="7" placeholder="Write a comment."></textarea>
+                        <div class="col-12 px-0 mt-3">
+                            <textarea class="form-control comment-bg" rows="7" placeholder="Write a comment..."></textarea>
                         </div>
+                        <div class="p-2 col-2 mt-3 save-btn btn-btn c-pointer" @click="postComment">Post</div>
+                        <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3 c-pointer">Cancel</div>
                     </div>
                 </div>
             </transition>
@@ -343,13 +346,19 @@ export default {
         const todoOp = ref()
         const priorityOp = ref()
         const contactOp = ref()
+        const comments = ref([{},{},{}])
+        const displayComment = ref(false)
 
         const toggleNoteIcon = (index) => {
             emit('individualtoggle', index)
         }
         
-        const toggleTaskIcon = (index) => {
-            emit("individualtoggletask", index)
+        const toggleTaskIcon = (index, indx) => {
+            let indexes = {
+                parentIndex: index,
+                mainIndex: indx
+            }
+            emit("individualtoggletask", indexes)
         }
         
         const toggleEditTask = (index) => {
@@ -440,6 +449,14 @@ export default {
             }
         }
 
+        const toggleDisplayComment = () => {
+            displayComment.value = true
+        }
+
+        const postComment = () => {
+            comments.value.push({})
+        }
+
         return {
             noteIcon,
             toggleNoteIcon,
@@ -472,7 +489,11 @@ export default {
             toggleReminder,
             toggleTodo,
             togglePriority,
-            toggleContact
+            toggleContact,
+            comments,
+            displayComment,
+            toggleDisplayComment,
+            postComment
 
 
         }
@@ -605,5 +626,12 @@ export default {
     height: 800px;
     overflow: scroll;
     margin-top: 100px
+}
+
+.user-img {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    background: #eee;
 }
 </style>

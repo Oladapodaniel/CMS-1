@@ -1898,53 +1898,73 @@ export default {
         .setAttribute("data-dismiss", "modal");
     },
     createNewEvent() {
-      
       if (this.eventCreate) {
-        this.newEvents.push({
-          name: this.eventCreate,
-          id: "00000000-0000-0000-0000-000000000000",
-        });
-
         this.selectedEventCategoryName = this.eventCreate;
-        this.selectedEventCategoryId = "00000000-0000-0000-0000-000000000000";
-
           axios.post(`/api/EventCategory?name=${this.eventCreate}`)
               .then(res => {
                 console.log(res)
+                if (!res.data) {
+                this.$toast.add({
+                  severity:'info', 
+                  summary: 'Already exist', 
+                  detail: 'Event name already exist, please create the event category with a new name.', 
+                  life: 4000
+                });
+              } else {
+                let data = res.data.find(i => i.name === this.eventCreate)
+                this.newEvents.push({
+                  name: this.eventCreate,
+                  id: data.id,
+                });
+                console.log(data)
+                this.selectedEventCategoryId = data.id
+                this.eventCreate = "";
                 this.$toast.add({
                   severity:'success', 
                   summary: 'Confirmed', 
                   detail: 'Event category saved successfully', 
                   life: 4000
                 });
+              }
               })
 
-        this.eventCreate = "";
+        
         this.showCategory = false;
         document
           .querySelector("#closeEvent")
           .setAttribute("data-dismiss", "modal");
       } else if (this.eventText) {
-        this.newEvents.push({
-          name: this.eventText,
-          id: "00000000-0000-0000-0000-000000000000",
-        });
+        
 
         this.selectedEventCategoryName = this.eventText;
-        this.selectedEventCategoryId = "00000000-0000-0000-0000-000000000000";
 
         axios.post(`/api/EventCategory?name=${this.eventText}`)
             .then(res => {
               console.log(res)
-              this.$toast.add({
-                severity:'success', 
-                summary: 'Confirmed', 
-                detail: 'Event category saved successfully', 
-                life: 4000
-              });
+              if (!res.data) {
+                this.$toast.add({
+                  severity:'info', 
+                  summary: 'Already exist', 
+                  detail: 'Event name already exist, please create the event category with a new name.', 
+                  life: 4000
+                });
+              } else {
+                let data = res.data.find(i => i.name === this.eventText)
+                this.newEvents.push({
+                  name: this.eventText,
+                  id: data.id,
+                });
+                console.log(data)
+                this.selectedEventCategoryId = data.id
+                this.eventText = "";
+                this.$toast.add({
+                  severity:'success', 
+                  summary: 'Confirmed', 
+                  detail: 'Event category saved successfully', 
+                  life: 4000
+                });
+              }    
             })
-
-      this.eventText = "";
       this.showCategory = false;
       }
       console.log(this.eventText, this.eventCreate)
