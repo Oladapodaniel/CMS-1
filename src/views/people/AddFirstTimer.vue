@@ -324,25 +324,24 @@
         </div>
         <div class="inputs">
           <div class="submit-div">
-            <button class="action-btn ml-3 cancel-btn btn" @click.prevent="onCancel">
+            <!-- <button class="action-btn ml-3 cancel-btn btn" @click.prevent="onCancel">
               Cancel
-            </button>
-
-            <button class="action-btn ml-3 cancel-btn btn" @click.prevent="onCancel">
-              Save
-            </button>
+            </button> -->
 
             <button
-              class="submit-btn ml-3 outline-none"
+              class="default-btn outline-none"
               :class="{ 'btn-loading': loading }"
               :disabled="loading"
             >
               <i
-                class="fas fa-circle-notch fa-spin mr-2 text-white"
+                class="fas fa-circle-notch fa-spin mr-2"
                 v-if="loading"
               ></i>
-              <span class="text-white">Save and add another</span>
+              <span>Save and add another</span>
               <span></span>
+            </button>
+            <button class="ml-3 submit-btn text-white btn" @click.prevent="saveAndRoute">
+              Save
             </button>
           </div>
         </div>
@@ -664,6 +663,7 @@ export default {
     const validateEmail = ref("")
     const firstTimerPhone = ref("")
     const firstTimerEmail = ref("")
+    const routeToFRM = ref(false)
 
 
     const filterEventCategory = computed(() => {
@@ -819,7 +819,13 @@ export default {
 
           if (response.status === 200 || response.status === 201) {
             loading.value = false;
-            router.push("/tenant/firsttimerslist");
+            // if(!routeToFRM.value) {
+            //   router.push("/tenant/firsttimerslist");
+            // } else {
+            //   router.push(`/tenant/firsttimermanagement/${res.data.personId}`)
+            //   routeToFRM.value = false
+            // }
+
             console.log(firstTimersObj);
             toast.add({
               severity: "success",
@@ -853,14 +859,22 @@ export default {
           showError.value = true;
           console.log(err.response);
         }
+        console.log('toedit')
       } else {
+        console.log('tocreate')
         axios
           .post("/api/people/firsttimer", firstTimersObj.value)
           .then((res) => {
             finish()
             console.log(res.data);
             loading.value = false;
-            router.push("/tenant/firsttimerslist");
+            
+            if(!routeToFRM.value) {
+              router.push("/tenant/firsttimerslist");
+            } else {
+              router.push(`/tenant/firsttimermanagement/${res.data.personId}`)
+              routeToFRM.value = false
+            }
 
             toast.add({
               severity: "success",
@@ -891,6 +905,11 @@ export default {
           });
       }
     };
+
+    const saveAndRoute = () => {
+      routeToFRM.value = true
+      onSubmit()
+    }
 
     const onCancel = () => {
       router.back();
@@ -1255,7 +1274,9 @@ export default {
       validatePhone,
       validateEmail,
       firstTimerPhone,
-      firstTimerEmail
+      firstTimerEmail,
+      routeToFRM,
+      saveAndRoute
     };
   },
 };
@@ -1286,7 +1307,7 @@ export default {
   }
 
 .submit-div {
-  margin-left: 23em;
+  margin-left: 19em;
 }
 
 .inputs {

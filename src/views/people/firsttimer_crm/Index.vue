@@ -49,7 +49,7 @@
               
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
-                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @savetask2="saveTaskItem2" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp" @hovertask2="setHoverTaskProp2" @outhovertask2="setOutHoverTaskProp2" :loader="loader" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :allContacts="allContacts"/>
+                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp"  :loader="loader" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :allContacts="allContacts" :personDetails="personDetails" @commentindex="pushToComment" @removecommetfromview="removeCommentFromView" @editcommentinview="editCommentInView"/>
                     </div>
                     <div class="col-12" v-if="showNotes" transition="bounce">
                         <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
@@ -590,9 +590,9 @@ export default {
             activities.value[payload].editTask = false
         }
 
-        const saveTaskItem2 = (payload) => {
-            activities.value[payload].editTask2 = false
-        }
+        // const saveTaskItem2 = (payload) => {
+        //     activities.value[payload].editTask2 = false
+        // }
 
         const setHoverTaskProp = (payload) => {
             activities.value[payload].hoverTask = true
@@ -602,13 +602,13 @@ export default {
             activities.value[payload].hoverTask = false
         }
 
-        const setHoverTaskProp2 = (payload) => {
-            activities.value[payload].hoverTask2 = true
-        }
+        // const setHoverTaskProp2 = (payload) => {
+        //     activities.value[payload].hoverTask2 = true
+        // }
 
-        const setOutHoverTaskProp2 = (payload) => {
-            activities.value[payload].hoverTask2 = false
-        }
+        // const setOutHoverTaskProp2 = (payload) => {
+        //     activities.value[payload].hoverTask2 = false
+        // }
 
         const setHoverLogProp = (payload) => {
             logList.value[payload].hoverLog = true
@@ -745,6 +745,19 @@ export default {
             return resultFiltered
         })
 
+        const pushToComment = (payload) => {
+            console.log(searchActivities.value)
+            searchActivities.value[payload.parentIndex].value[payload.mainIndex].loggedTask.comments.push(payload.body)
+        }
+
+        const removeCommentFromView = (payload) => {
+            searchActivities.value[payload.parentIndex].value[payload.mainIndex].loggedTask.comments.splice(payload.index, 1)
+        }
+
+        const editCommentInView = (payload) => {
+            searchActivities.value[payload.parentIndex].value[payload.mainIndex].loggedTask.comments.splice(payload.index, 1, payload.body)
+        }
+
         return {
             toggleActivity,
             toggleNotes,
@@ -794,11 +807,8 @@ export default {
             setEditTaskProp,
             setEditTaskProp2,
             saveTaskItem,
-            saveTaskItem2,
             setHoverTaskProp,
             setOutHoverTaskProp,
-            setHoverTaskProp2,
-            setOutHoverTaskProp2,
             setHoverLogProp,
             setOutHoverLogProp,
             todoTask,
@@ -834,7 +844,10 @@ export default {
             searchActivitiesText,
             getReminder,
             emailList,
-            searchActivities
+            searchActivities,
+            pushToComment,
+            removeCommentFromView,
+            editCommentInView
         }
     }
 }
