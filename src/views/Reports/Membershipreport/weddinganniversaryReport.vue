@@ -102,14 +102,14 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="EndDate" :showIcon="true" />
+                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
                   </div>
               </div>
             <div class="col-md-4 col-sm-12 pr-md-0">
                   <div class="p-field p-col-12 pt-md-2">
                     <button
                             class="default-btn generate-report c-pointer font-weight-normal mt-4"
-                            @click="generateReport">
+                            @click="generateWeddingAnniversaryReport">
                             Generate Report
                     </button>
                   </div>
@@ -147,7 +147,7 @@
             />
           </div>
         </div>
-        <div
+        <!-- <div
           class="chart row my-1"
           :class="
             weddingAnniversary && weddingAnniversary.length > 0
@@ -173,7 +173,7 @@
               :summary="membershipAgeGroup"
             />
           </div>
-        </div>
+        </div> -->
         <!--end of chart area -->
       </section>
 
@@ -196,8 +196,8 @@
             >
               <thead class="table-header-area-main">
                 <tr
-                  class="small-text text-capitalize text-nowrap"
-                  style="border-bottom: 0"
+                  class="small-text text-capitalize text-nowrap font-weight-bold"
+                  style="border-bottom: 0; font-size:medium"
                 >
                   <th scope="col">Name</th>
                   <th scope="col">Wedding Day</th>
@@ -205,12 +205,12 @@
                   <th scope="col">Email</th>
                   <th scope="col">Gender</th>
                   <th scope="col">Marital Status</th>
-                  <th scope="col">Age Group</th>
+                  <!-- <th scope="col">Age Group</th>
                   <th scope="col">Membership</th>
-                  <th scope="col">Home Address</th>
+                  <th scope="col">Home Address</th> -->
                 </tr>
               </thead>
-              <tbody class="font-weight-normal text-nowrap">
+              <tbody class="font-weight-bold text-nowrap"  style="font-size: small">
                 <tr
                   v-for="(anniversary, index) in weddingAnniversary"
                   :key="index"
@@ -221,15 +221,15 @@
                   <td>{{ anniversary.email }}</td>
                   <td>{{ anniversary.gender }}</td>
                   <td>{{ anniversary.maritalStatus }}</td>
-                  <td>{{ anniversary.ageGroup }}</td>
+                  <!-- <td>{{ anniversary.ageGroup }}</td>
                   <td>{{ anniversary.membership }}</td>
-                  <td>{{ anniversary.homeAddress }}</td>
+                  <td>{{ anniversary.homeAddress }}</td> -->
                 </tr>
               </tbody>
             </table>
-            <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-            <PaginationButtons />
-          </div> -->
+            <div class="table-foot d-flex justify-content-end mt-3">
+            <!-- <PaginationButtons /> -->
+          </div>
           </div>
         </div>
         <!--end table header -->
@@ -499,7 +499,8 @@ export default {
 
 .responsiveness {
   max-width: 100%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
+  overflow-x: scroll;
 }
 
 .move-enter-active {
