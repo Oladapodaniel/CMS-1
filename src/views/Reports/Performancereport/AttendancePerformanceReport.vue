@@ -72,7 +72,7 @@
                         </div>
                  </div>
                  <div
-                      class="area-chart mt-5"
+                      class="area-chart mt-5 lineGrap"
                       v-show="
                         activityReport.length > 0
                       "
@@ -88,7 +88,7 @@
                       />
                     </div>
 
-                    <div class=" borderInner mb-2">
+                    <div class=" borderInner mt-5">
                      <h5 class="ml-3 mt-4"></h5>
                          <div class="" v-show="activityReport.length > 0">
                         <PerformanceColumnChart
@@ -123,7 +123,7 @@
              <section>
                  <!-- table header -->
 
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-2" >
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-2" v-show="activityReport.length > 0">
         <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
@@ -520,6 +520,12 @@ border-top-right-radius: 0 !important;
     border-color:  #b0b2b5!important;
     border-radius: 15px!important;
 
+    }
+    .lineGrap{
+      border:  0px #e9e9e9 solid!important;
+      border-radius: 2px;
+       box-shadow: 0px 1px 4px #02172E45;
+       font-weight: bold;
     }
     .borderInner{
         width: 100%;
