@@ -169,37 +169,40 @@
           >
             <thead class="table-header-area-main">
               <tr
-                class="small-text text-capitalize text-nowrap"
-                style="border-bottom: 0"
+                class="small-text text-capitalize text-nowrap font-weight-bold"
+                style="border-bottom: 0; font-size:medium"
               >
-                <th scope="col">Church Activity</th>
+                <!-- <th scope="col">Church Activity</th> -->
                 <th scope="col">Name</th>
                 <th scope="col">Phone</th>
                 <th scope="col">Email</th>
                 <th scope="col">Home Address</th>
                 <th scope="col">Gender</th>
-                <th scope="col">Marital Status</th>
-                <th scope="col">Activity Date</th>
                 <th scope="col">Current Status</th>
+                <!-- <th scope="col">Marital Status</th> -->
+                <!-- <th scope="col">Activity Date</th> -->
+
               </tr>
             </thead>
-            <tbody class="font-weight-normal text-nowrap">
+            <tbody class="font-weight-bold text-nowrap"  style="
+    font-size: small">
               <tr v-for="(firstTimer, index) in firstTimerInChurch" :key="index">
-                <td>{{ firstTimer.event }}</td>
+                <!-- <td>{{ firstTimer.event }}</td> -->
                 <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
                 <td>{{ firstTimer.mobilePhone }}</td>
                 <td>{{ firstTimer.email }}</td>
                 <td>{{ firstTimer.homeAddress }}</td>
                 <td>{{ firstTimer.gender }}</td>
-                <td>{{ firstTimer.maritalStatus }}</td>
-                <td>{{ formatDate(firstTimer.activityDate) }}</td>
                 <td>{{ firstTimer.status }}</td>
+                <!-- <td>{{ firstTimer.maritalStatus }}</td> -->
+                <!-- <td>{{ formatDate(firstTimer.activityDate) }}</td> -->
               </tr>
             </tbody>
           </table>
-          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-            <PaginationButtons />
-          </div> -->
+          <div class="table-foot d-flex justify-content-end mt-3">
+            <!-- mt-n3" -->
+            <!-- <PaginationButtons /> -->
+          </div>
         </div>
       </div>
         <!--end table header -->
@@ -215,8 +218,6 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter";
-// import Dropdown from "primevue/dropdown";
-// import InputText from "primevue/inputtext";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
 import Listbox from 'primevue/listbox';
@@ -225,9 +226,7 @@ export default {
   components: {
     Calendar,
     ByGenderChart,
-    // Dropdown,
     Listbox,
-    // InputText,
     // PaginationButtons
   },
   setup() {
@@ -239,7 +238,6 @@ export default {
     const maritalChartInfo = ref([]);
     const showExport = ref(false);
     const fileName = ref("");
-    // const bookTypeList = ref(["xlsx", "csv", "txt"]);
     const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
@@ -277,8 +275,8 @@ export default {
       return [
         getSumOfItems(arr, "gender", "Male"),
         getSumOfItems(arr, "gender", "Female"),
-        getSumOfItems(arr, "gender", null),
-        getSumOfItems(arr, "gender", "Other"),
+        // getSumOfItems(arr, "gender", null),
+        // getSumOfItems(arr, "gender", "Other"),
       ];
     };
 
@@ -286,7 +284,7 @@ export default {
       return [
         getSumOfItems(arr, "maritalStatus", "Married"),
         getSumOfItems(arr, "maritalStatus", "Single"),
-        getSumOfItems(arr, "maritalStatus", null),
+        // getSumOfItems(arr, "maritalStatus", null),
       ];
     };
 
@@ -449,10 +447,11 @@ export default {
 
 .responsiveness {
   max-width: 100%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
+  overflow-x: scroll;
 }
 
-.move-enter-active {
+/* .move-enter-active {
   animation: move-in .8s;
 }
 .move-leave-active {
@@ -468,5 +467,5 @@ export default {
     opacity: 1;
   }
 
-}
+} */
 </style>

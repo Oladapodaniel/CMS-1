@@ -164,8 +164,8 @@
         <table id="table" class="table remove-styles mt-0  table-header-area">
           <thead class="table-header-area-main">
             <tr
-             class="small-text text-capitalize text-nowrap"
-              style="border-bottom: 0"
+             class="small-text text-capitalize text-nowrap font-weight-bold"
+              style="border-bottom: 0; font-size:medium"
             >
               <th scope="col">Fund</th>
               <th scope="col">Account Category</th>
@@ -176,11 +176,64 @@
             </tr>
           </thead>
 
-           <tbody class="font-weight-normal text-nowrap border-bottom">
+          <tbody class="font-weight-bold text-nowrap"  style="
+    font-size: small" v-for="(row, index) in tableRows" :key="index">
+            <tr>
+              <td>{{ row }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr v-for="(account, indx) in tableData[row].expenses" :key="indx">
+              <td></td>
+              <td>{{ indx === 0 ? account.accountCategory : '' }}</td>
+              <td>{{ account.accountName }}</td>
+              <td>{{ account.description }}</td>
+              <td>({{ Math.abs(account.amount).toLocaleString()}}.00)</td>
+              <td>{{ formatDate(account.date) }}</td>
+            </tr>
+            <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
+              <td class="answer">Sub-Total</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="answer">NGN{{ sum(tableData[row].expenses).toLocaleString() }}.00</td>
+              <td></td>
+            </tr>
+            <tr v-for="(account, indx) in tableData[row].incomes" :key="indx">
+              <td></td>
+              <td>{{ indx === 0 ? account.accountCategory : '' }}</td>
+              <td>{{ account.accountName }}</td>
+              <td>{{ account.description }}</td>
+              <td>{{ Math.abs(account.amount).toLocaleString() }}.00</td>
+              <td>{{ formatDate(account.date) }}   </td>
+            </tr>
+            <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
+              <td class="answer">Sub-Total</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="answer">NGN{{ sum(tableData[row].incomes).toLocaleString() }}.00</td>
+              <td></td>
+            </tr>
+          </tbody>
+          <tbody class="font-weight-bold text-nowrap" style="
+    font-size: small">
+           <tr class="answer-row">
+              <td class="answer">Total</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="answer">NGN{{ diffBtwIncomeAndExpenses  }}.00</td>
+              <td></td>
+            </tr>
+          </tbody>
+
+           <!-- <tbody class="font-weight-normal text-nowrap border-bottom">
             <tr class="border-bottom" style="position: relative" v-for="(fund, index) in funds"
             :key="index">
-              <!-- <td>{{ index === 0 ? transaction.fund : " " }}</td> -->
-              <!-- :colspan="funds.length - 1" -->
               <td>{{fund.name}}
                 <tr style="position: absolute;bottom:0">
                    <td class="answer">SubTotal</td>
@@ -223,7 +276,7 @@
               <td class="answer"> {{Math.abs(fundSum).toFixed(2).toLocaleString()}}</td>
               <td></td>
             </tr>
-          </tbody>
+          </tbody> -->
 
         </table>
         <!-- <div class="table-foot d-flex justify-content-end mt-n3">
@@ -254,6 +307,7 @@ import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforincomestatement.js";
 import groupResponse from '../../../services/groupArray/groupResponse.js'
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
+import incomeExpenseHelper from "./Helper/Incomeexpenses-helper.js";
 
 export default {
   components: {
@@ -285,15 +339,48 @@ export default {
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const fundType = ref([]);
-    const funds = ref([]);
+      const funds = ref([]);
+
+      const tableData = ref({});
+      const tableRows = computed(() => {
+        if (!tableData.value) return [ ]
+        return Object.keys(tableData.value);
+      })
+
+      const sum = arr => {
+        if (!arr || arr.length <= 0) return 0;
+        const amounts = arr.map(account => account.amount);
+        return Math.abs(amounts.reduce((a, b) => a + b))
+      }
+
+         const getSumOfIncomes = type => {
+        let total = 0;
+         for (let fund in tableData.value) {
+           if (fund === 'null') break;
+           const amount = sum(tableData.value[fund][type]);
+           total += amount;
+         }
+      }
+
+      const diffBtwIncomeAndExpenses = computed(() => {
+          if(!tableData.value) return 0
+          const incomeTotal = getSumOfIncomes('incomes');
+          const expenseTotal = getSumOfIncomes('expenses');
+
+          return incomeTotal - expenseTotal
+      })
+
 
     const generateReport = () => {
       axios
         .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
           console.log(res, "🎄🎄🎄");
+          tableData.value = incomeExpenseHelper.formatAccounts(res.data)
           incomeStatement.value = res.data.filter(i => i !== null)
           console.log(incomeStatement.value);
+          console.log(tableData.value, "TABLE DATA");
+          console.log(tableRows.value, "TABLE ROWS");
           let response = res.data
            chartForIcomeAndExpense.value = response ;
           churchIncomes(incomeStatement.value, 'accountCategory');
@@ -323,9 +410,6 @@ export default {
         for (const prop in fundType.value) {
           funds.value.push({name:prop,
           value: fundType.value[prop]
-          // .reduce((acc, cur) => {
-          //         return acc + cur.amount
-          //       }, 0),
           })
       }
       console.log(funds.value,"🎼🎼🎉🎉");
@@ -521,6 +605,10 @@ export default {
       fundType,
       funds,
       groupedFundType,
+      tableRows,
+      tableData,
+      sum,
+      diffBtwIncomeAndExpenses,
       // incomeAndExpenseChart,
       // groupedExpenseAndIncomeStatements
     };
@@ -639,13 +727,15 @@ border-top-right-radius: 0 !important;
 
 .responsiveness{
   max-width: 100%;
-  overflow-y: scroll;
+  overflow-x: scroll;
+  /* overflow-y: scroll; */
 }
 
 .answer{
   font-weight: bolder;
-   color: #000;
-
+  font-size:medium;
+   /* color: #000; */
+   color: #136acd;
 }
 
 .answer-row{

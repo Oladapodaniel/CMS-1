@@ -1,4 +1,4 @@
-<template>
+<template>{{fund}} {{funds.value}}
   <div class="container-fluid px-5">
     <!-- header area -->
     <div class="container">
@@ -140,8 +140,8 @@
           <table id="table" class="table remove-styles mt-0 table-header-area">
             <thead class="table-header-area-main">
               <tr
-              class="small-text text-capitalize text-nowrap"
-                style="border-bottom: 0"
+              class="small-text text-capitalize text-nowrap font-weight-bold"
+                style="border-bottom: 0; font-size:medium"
               >
                 <th scope="col">Fund</th>
                 <th scope="col">Account Name</th>
@@ -150,11 +150,46 @@
                 <th scope="col">Date</th>
               </tr>
             </thead>
-            <tbody class="font-weight-normal text-nowrap">
+            <tbody class="font-weight-bold text-nowrap"  style="
+                          font-size: small" v-for="(fund, index) in funds"
+              :key="index">
+                <tr v-if="fund.name !== 'null'">
+                  <td>{{ fund.name }}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr v-for="(account, indxx) in fund.name !== 'null' ? fund.value : []"
+              :key="indxx">
+                  <td></td>
+                  <td>{{ account.accountName }}</td>
+                  <td>{{ account.description }}</td>
+                  <td>{{ Math.abs(account.amount).toLocaleString() }}.00</td>
+                  <td>{{ formatDate(account.date) }}</td>
+                  </tr>
+                <tr class="answer-row" v-if="fund.name !== 'null'">
+                  <td  class="answer">Sub-Total</td>
+                  <td></td>
+                  <td></td>
+                  <td class="answer">NGN{{ total(fund.value).toLocaleString() }}.00</td>
+                  <td></td>
+                </tr>
+            </tbody>
+             <tbody class="font-weight-bold text-nowrap" style="
+                           font-size: small">
+           <tr class="answer-row">
+              <td class="answer">Total Expenses</td>
+              <td></td>
+              <td></td>
+              <td class="answer">NGN{{ fundSum.toLocaleString()}}.00</td>
+              <td></td>
+            </tr>
+          </tbody>
+
+            <!-- <tbody class="font-weight-normal text-nowrap">
               <tr style="position: relative" v-for="(fund, index) in funds"
               :key="index">
-                <!-- <td>{{ index === 0 ? transaction.fund : " " }}</td> -->
-                <!-- :colspan="funds.length - 1" -->
                 <td>{{fund.name}}
                   <tr style="position: absolute;bottom:0">
                     <td class="answer">SubTotal</td>
@@ -191,7 +226,7 @@
                 <td  class="answer"> {{fundSum.toLocaleString() }}</td>
                 <td></td>
               </tr>
-            </tbody>
+            </tbody> -->
           </table>
           <!-- <div class="table-foot d-flex justify-content-end mt-n3">
             <PaginationButtons />
@@ -488,7 +523,8 @@ border-top-right-radius: 0 !important;
 
 .responsiveness{
   max-width: 100%;
-  overflow-y: scroll;
+  overflow-x: scroll;
+  /* overflow-y: scroll; */
 }
 
 .graph-area{
@@ -502,7 +538,9 @@ border-top-right-radius: 0 !important;
 
 .answer{
   font-weight: bolder;
-   color: #000;
+  font-size:medium;
+   /* color: #000; */
+   color: #136acd;
 }
 
 .answer-row{
@@ -510,7 +548,7 @@ border-top-right-radius: 0 !important;
 }
 
 .answer-row:hover{
-  background-color: none;
+  background-color:none;
 }
 
 .move-enter-active {

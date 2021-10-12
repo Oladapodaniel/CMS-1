@@ -92,7 +92,7 @@
                   <div class="p-field p-col-12 pt-md-2">
                     <button
                             class="default-btn generate-report c-pointer font-weight-normal mt-4"
-                            @click="generateReport">
+                            @click="getBirthdayReport">
                             Generate Report
                     </button>
                   </div>
@@ -117,11 +117,11 @@
 
         <div  class="container-fluid">
           <div class="row mt-4" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-            <div class="col-12">
+            <!-- <div class="col-12">
               <div class="mb-3 text-center Display-1 heading-text">
                 Birthday Report
               </div>
-            </div>
+            </div> -->
             <!-- <div class="col-12 col-sm-12 col-md-6 col-lg-6"> -->
             <div class="row table"  :class=" birthdays &&  birthdays.length > 0 ? 'graph-area' : '' ">
               <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center">
@@ -129,7 +129,7 @@
                 <div class="col-12" v-if="genderSummary.length === 0">
                   No Data Available
                 </div>
-                <div class="col-12" style="height: 30vh">
+                <div class="col-12" style="height: 40vh">
                   <BirthdayChart
                     domId="chart1"
                     distance="5"
@@ -191,8 +191,8 @@
             <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
               <thead class="table-header-area-main">
                 <tr
-                  class="small-text text-capitalize text-nowrap"
-                  style="border-bottom: 0"
+                  class="small-text text-capitalize text-nowrap font-weight-bold"
+                  style="border-bottom: 0; font-size:medium"
                 >
                   <th scope="col">Name</th>
                   <th scope="col">Birthday</th>
@@ -200,12 +200,12 @@
                   <th scope="col">Email</th>
                   <th scope="col">Gender</th>
                   <th scope="col">Marital Status</th>
-                  <th scope="col">Age Group</th>
-                  <th scope="col">Membership</th>
-                  <th scope="col">Home Address</th>
+                  <!-- <th scope="col">Age Group</th> -->
+                  <!-- <th scope="col">Membership</th> -->
+                  <!-- <th scope="col">Home Address</th> -->
                 </tr>
               </thead>
-              <tbody class="font-weight-normal text-nowrap">
+              <tbody class="font-weight-bold text-nowrap" style="font-size: small">
                 <tr v-for="(item, index) in birthdays" :key="index">
                   <td>{{ item.name }}</td>
                   <td>{{ item.birthDay }}</td>
@@ -213,15 +213,15 @@
                   <td>{{ item.email }}</td>
                   <td>{{ item.gender }}</td>
                   <td>{{ item.maritalStatus }}</td>
-                  <td>{{ item.ageGroup }}</td>
-                  <td>{{ item.membership }}</td>
-                  <td>{{ item.homeAddress }}</td>
+                  <!-- <td>{{ item.ageGroup }}</td> -->
+                  <!-- <td>{{ item.membership }}</td> -->
+                  <!-- <td>{{ item.homeAddress }}</td> -->
                 </tr>
               </tbody>
             </table>
-            <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-            <PaginationButtons />
-          </div> -->
+            <div class="table-foot d-flex justify-content-end mt-3">
+            <!-- <PaginationButtons /> -->
+          </div>
           </div>
         </div>
         <!--end table header -->
@@ -494,7 +494,7 @@ export default {
   width: 100% !important;
   box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
   border: 0.063rem solid #dde2e6 !important;
-  border-radius: 30px !important;
+  /* border-radius: 30px !important; */
   text-align: left !important;
   margin-bottom: auto !important;
   padding-bottom: 0.5rem !important;
