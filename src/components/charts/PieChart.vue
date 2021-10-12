@@ -73,9 +73,9 @@ var highchartsOptions = {
             // colors: pieColors,
             colors: ["#136acd", "#dde2e6", '#67a9cf', '#708eb1', '#61915e', '#1f06ffc0', "#078292de", "#660792de", '#927d07c2'],
             dataLabels: {
-                enabled: false,
+                enabled: true,
                 format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
-                distance: -40,
+                // distance: -40,
                 filter: {
                     property: 'percentage',
                     operator: '>',

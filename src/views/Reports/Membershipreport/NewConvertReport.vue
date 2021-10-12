@@ -100,14 +100,14 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="EndDate" :showIcon="true" />
+                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
                   </div>
               </div>
             <div class="col-md-4 col-sm-12 pr-md-0">
                   <div class="p-field p-col-12 pt-md-2">
                     <button
                             class="default-btn generate-report c-pointer font-weight-normal mt-4"
-                            @click="generateReport">
+                            @click="allMembersInChurch">
                             Generate Report
                     </button>
                   </div>
@@ -138,10 +138,10 @@
         <table id="table" class="table remove-styles mt-0  table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
-             class="small-text text-capitalize text-nowrap"
-              style="border-bottom: 0"
+             class="small-text text-capitalize text-nowrap font-weight-bold"
+              style="border-bottom: 0; font-size:medium"
             >
-              <th scope="col">Title</th>
+              <!-- <th scope="col">Title</th> -->
               <th scope="col">Name</th>
               <th scope="col">Email</th>
               <th scope="col">Phone</th>
@@ -155,10 +155,11 @@
               <th scope="col">Contact Status</th>
             </tr>
           </thead>
-          <tbody class="font-weight-normal text-nowrap">
+          <tbody class="font-weight-bold text-nowrap"
+          style="font-size: small">
             <tr v-for="(newConvert, index) in newConvertsInChurch"
             :key="index">
-              <td>{{ newConvert.title }}</td>
+              <!-- <td>{{ newConvert.title }}</td> -->
               <td>{{ newConvert.firstName }} {{ newConvert.lastName }}</td>
               <td>{{ newConvert.email }}</td>
               <td>{{ newConvert.mobilePhone }}</td>
@@ -173,9 +174,9 @@
             </tr>
           </tbody>
         </table>
-        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-          <PaginationButtons />
-        </div> -->
+        <div class="table-foot d-flex justify-content-end mt-3">
+          <!-- <PaginationButtons /> -->
+        </div>
       </div>
      </div>
       <!--end table header -->
@@ -344,7 +345,7 @@ console.log(newConvertsInChurch.value, "✌️✌️");
     width: 100% !important;
     box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
     border: 0.063rem solid #dde2e6 !important;
-    border-radius: 30px !important;
+    /* border-radius: 30px !important; */
     text-align: left !important;
     margin-bottom: auto !important;
     padding-bottom: 0.5rem !important;
@@ -380,7 +381,8 @@ border-top-right-radius: 0 !important;
 
 .responsiveness{
   max-width: 100%;
-  overflow-y: scroll;
+  overflow-x: scroll;
+  /* overflow-y: scroll; */
 }
 
 

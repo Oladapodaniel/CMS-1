@@ -1,21 +1,5 @@
 <template>
 <div class="container container-wide mt-5 mb-4">
-  <!-- <div class="row d-flex justify-content-between px-3">
-            <div class="heading-text">Attendance Report</div> -->
-            <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
-        </div>
-        <div class="row my-4" v-if="showExport">
-            <div class="col-sm-5">
-                <span class="p-float-label">
-                    <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
-                    <label for="inputtext">Enter file name</label>
-                </span>
-            </div>
-            <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
-                <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
-            </div>
-            <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn border-secondary d-flex align-items-center c-pointer justify-content-center">Download</div></div>
-        </div> -->
      <div>
             <h3 class="font-weight-bold mt-5 mb-2">Church Activities Attendance Report</h3>
             <span class="mt-5 mb-3">This reports gives an indepth view of the growth and attendance pattern of the ministry.</span>
@@ -27,7 +11,22 @@
                     <div><label for="" class="font-weight-bold">SELECT EVENT</label></div>
 
                     <div>
-                        <Dropdown v-model="selectedEvents" :options="allEvents" optionLabel="text" class="w-100" placeholder="Select Member" :filter="false" filterPlaceholder="Find Car"/>
+                        <!-- <Dropdown v-model="selectedEvents" :options="allEvents" optionLabel="text" class="w-100" placeholder="Select Member" :filter="false" filterPlaceholder="Find Car"/> -->
+                        <MultiSelect v-model="selectedEvents" :options="allEvents" optionLabel="text" placeholder="Select Events" :filter="true" class="multiselect-custom w-100">
+                            <template #value="slotProps">
+                                <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
+                                    <div>{{option.text}}</div>
+                                </div>
+                                <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                    All Events
+                                </template>
+                            </template>
+                            <template #option="slotProps">
+                                <div class="country-item">
+                                    <div>{{slotProps.option.text}}</div>
+                                </div>
+                            </template>
+                        </MultiSelect>
                     </div>
 
                 </div>
@@ -72,7 +71,7 @@
                         </div>
                  </div>
                  <div
-                      class="area-chart mt-5"
+                      class="area-chart mt-5 lineGrap"
                       v-show="
                         activityReport.length > 0
                       "
@@ -88,7 +87,7 @@
                       />
                     </div>
 
-                    <div class=" borderInner mb-2">
+                    <div class=" borderInner mt-5">
                      <h5 class="ml-3 mt-4"></h5>
                          <div class="" v-show="activityReport.length > 0">
                         <PerformanceColumnChart
@@ -123,7 +122,7 @@
              <section>
                  <!-- table header -->
 
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-2" >
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-2" v-show="activityReport.length > 0">
         <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
@@ -166,9 +165,10 @@
 <script>
 import { computed, ref } from 'vue';
 import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
-import groupData from '../../../services/groupArray/groupResponse'
+import groupData from '../../../services/groupArray/groupResponse';
+import MultiSelect from 'primevue/multiselect';
 
-import Dropdown from "primevue/dropdown";
+// import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import ReportAreaChart from "@/components/charts/AreaChart.vue";
 import axios from "@/gateway/backendapi";
@@ -178,7 +178,8 @@ import exportService from "../../../services/exportFile/exportservice"
 import printJS from "print-js";
     export default {
         components:{
-          Dropdown,
+          // Dropdown,
+          MultiSelect,
             Calendar,
             // InputText,
             PerformanceColumnChart,
@@ -229,7 +230,8 @@ import printJS from "print-js";
     }
      getAllEvents()
      const getActivityReport = ()=>{
-         axios.get(`/api/Reports/events/getActivityAttendanceReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&activityId=${selectedEvents.value.id}`)
+       const eventId = selectedEvents.value.length === 1 ? selectedEvents.value[0].id : ''
+         axios.get(`/api/Reports/events/getActivityAttendanceReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&activityId=${eventId}`)
          .then((res)=>{
              activityReport.value = res.data;
              console.log(activityReport.value);
@@ -520,6 +522,12 @@ border-top-right-radius: 0 !important;
     border-color:  #b0b2b5!important;
     border-radius: 15px!important;
 
+    }
+    .lineGrap{
+      border:  0px #e9e9e9 solid!important;
+      border-radius: 2px;
+       box-shadow: 0px 1px 4px #02172E45;
+       font-weight: bold;
     }
     .borderInner{
         width: 100%;
