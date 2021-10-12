@@ -450,13 +450,45 @@
         <div class="col-md-2">
           <span class="font-weight-600 small-text">Sender: </span>
         </div>
-        <div class="col-md-10 px-0">
-          <input
+        <div class="col-md-10 pl-0">
+          <!-- <input
             type="text"
             class="input p-0 mx-0 grey-rounded-border pl-2"
             style="border-radius: 4px"
             v-model="subject"
-          />
+          /> -->
+          <div class="dropdown">
+            <button
+              class="btn btn-default dropdown-toggle small-text pl-md-0"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              @click="openSenderDropDown"
+            >
+            <!-- @click="closeDropdownIfOpen" -->
+              {{ Object.keys(selectedSender).length > 0 ? selectedSender.mask : "Select Sender Id" }}
+            </button>
+            <div
+              class="dropdown-menu w-100 pb-0"
+              aria-labelledby="dropdownMenuButton"
+            >
+            <div class="px-2">
+            <input type="text" class="form-control" placeholder="Search sender id" ref="senderRef" v-model="searchSenderText">
+            </div>
+              <a v-for="(item, index) in searchSenderIDs" :key="index"
+                class="dropdown-item c-pointer small-text py-2" @click="setIdToSubject(item)"
+                >{{ item.mask }}
+                </a
+              >
+              <a
+                class="dropdown-item c-pointer text-primary font-weight-700 text-center border-top py-2" data-toggle="modal" data-target="#senderIdModal"
+                ><i class="pi pi-plus-circle"></i>&nbsp;Create new sender id
+                </a
+              >
+            </div>
+          </div>
         </div>
       </div>
 
@@ -695,6 +727,40 @@
           </div>
         </div>
       </div>
+      <!-- Create sender id modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="senderIdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Create sender id</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-12">Enter sender id</div>
+                    <div class="col-12 mt-2">
+                      <input type="text" class="form-control" placeholder="Enter sender id" v-model="senderIdText" @input="validateSenderId" ref="senderIdRef"/>
+                      <div class="invalid-feedback text-danger pl-2">
+                        <ul>
+                          <li>Should not contain any special characters</li>
+                          <li>Should not be less than 5 characters and more than 11 characters</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn default-btn " data-dismiss="modal">Close</button>
+                <button type="button" class="btn default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="saveSenderId">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
   </div>
 </template>
@@ -734,6 +800,13 @@ export default {
     const executionDate = ref("");
     const contactUpload = ref(false)
     const multipleContact = ref({})
+    const senderRef = ref(null)
+    const senderIdText = ref("")
+    const tenantId = ref("")
+    const senderIDs = ref([])
+    const selectedSender = ref({})
+    const searchSenderText = ref("")
+    const senderIdRef = ref()
 
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
@@ -1130,12 +1203,16 @@ export default {
     if (store.getters.currentUser && store.getters.currentUser.isoCode) {
       isoCode.value = store.getters.currentUser.isoCode;
       userCountry.value = store.getters.currentUser.country;
+      tenantId.value = store.getters.tenantId
+      console.log(store.getters.currentUser)
     } else {
       axios
         .get("/api/Membership/GetCurrentSignedInUser")
         .then((res) => {
           isoCode.value = res.data.isoCode;
           userCountry.value = res.data.country;
+          tenantId.value = store.getters.tenantId
+          console.log(store.getters.currentUser)
         })
         .catch((err) => console.log(err));
     }
@@ -1258,6 +1335,97 @@ export default {
       multipleContact.value = e.target.files[0]
     }
 
+    const openSenderDropDown = () => {
+      // senderRef.value.focus
+    }
+
+    const getSenderId = async() => {
+      try {
+        let { data } = await axios.get(`/api/Messaging/RetrieveTenantSenderIDs`)
+        console.log(data)
+        senderIDs.value = data.returnObject
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    getSenderId()
+
+    const saveSenderId = async() => {
+      let payload = {
+        tenantID: tenantId.value,
+        mask: senderIdText.value
+      }
+      try {
+        let { data } = await axios.post(`/api/Messaging/RequestSenderID`, payload)
+        console.log(data)
+        if(data.status === 0) {
+          toast.add({
+            severity: "warn",
+            summary: "Pending",
+            detail: "Sender id is pending for approval, when it is approved, you will see it among the sender id list",
+            life: 5000
+          });
+        } else if (data.status === 1) {
+          toast.add({
+            severity: "warn",
+            summary: "Processing",
+            detail: "Sender id is processing for approval, when it is approved, you will see it among the sender id list",
+            life: 5000
+          });
+        } else if (data.status === 2) {
+          toast.add({
+            severity: "success",
+            summary: "Approved",
+            detail: "Sender id is approved!",
+            life: 6000
+          });
+        } else {
+          toast.add({
+              severity: "warn",
+              summary: "Not Approved",
+              detail: "Sender id is not approved, create another one.",
+              life: 4000
+          })
+        }
+        senderIdText.value = ""
+        senderIdRef.value.classList.remove('is-invalid')
+        senderIdRef.value.classList.remove('is-valid')
+        getSenderId()
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+
+    const searchSenderIDs = computed(() => {
+      if (!searchSenderText.value) return senderIDs.value
+      return senderIDs.value.filter(i => {
+        return i.mask.toLowerCase().includes(searchSenderText.value.toLowerCase())
+      })
+    })
+
+    const setIdToSubject = (item) => {
+      console.log(item)
+      subject.value = item.id
+      selectedSender.value = item
+    }
+
+    const validateSenderId = (e) => {
+      var regExp = /^[a-zA-Z0-9]{5,11}$/;
+      var testString = e.target.value;
+                  
+      if(regExp.test(testString)){
+        /* do something if letters are found in your string */
+        senderIdRef.value.classList.add('is-valid')
+        senderIdRef.value.classList.remove('is-invalid')
+      } else {
+        /* do something if letters are not found in your string */
+        senderIdRef.value.classList.add('is-invalid')
+        senderIdRef.value.classList.remove('is-valid')
+      }
+    }
+    
     return {
       editorData,
       editorConfig,
@@ -1315,7 +1483,19 @@ export default {
       contactUpload,
       uploadFile,
       multipleContact,
-      sendSMSToUploadedContacts
+      sendSMSToUploadedContacts,
+      openSenderDropDown,
+      senderRef,
+      senderIdText,
+      saveSenderId,
+      tenantId,
+      senderIDs,
+      setIdToSubject,
+      selectedSender,
+      searchSenderText,
+      validateSenderId,
+      senderIdRef,
+      searchSenderIDs
     };
   },
 };
