@@ -2,7 +2,7 @@
     <div class="col-sm-12 p-0 scroll-table">
                 <table class="table table-hover" style="border-radius: 0" id="table">
                     <thead>
-                        <tr class="table-row-bg">
+                        <tr class="table-row-bg font-weight-bold">
                             <th class="">Name</th>
                             <th class="">Gender</th>
                             <th class="">Phone</th>
@@ -12,14 +12,14 @@
                             <th class=" rotate-text">Percentages</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="small-text font-weight-bold text-nowrap">
                         <tr v-for="(item, index) in groupedReport" :key="index">
                             <td>{{ item.value[0].name }}</td>
                             <td>{{ item.value[0].gender }}</td>
                             <td>{{ item.value[0].phone }}</td>
                             <td v-for="(itemm, index) in groupedReportByDate" :key='index'>{{ itemm.value.find(i => i.personId === item.value[0].personId) ? itemm.value.find(i => i.personId === item.value[0].personId).attendance : "" }}</td>
-                            <td> {{ attendance(item.value[0].personId, 1) }}</td>
-                            <td>{{ attendance(item.value[0].personId, 2) }}</td>
+                            <td class="text-success"> {{ attendance(item.value[0].personId, 1) }}</td>
+                            <td class="text-danger">{{ attendance(item.value[0].personId, 2) }}</td>
                             <td>{{ attendance(item.value[0].personId, 3) }}</td>
                         </tr>
                     </tbody>
@@ -187,5 +187,10 @@ text-orientation: mixed;
 
 .scroll-table {
     overflow-x: scroll;
+}
+
+.table thead th:nth-child(1), .table thead th:nth-child(2), .table thead th:nth-child(3) {
+    vertical-align: middle;
+    border-bottom: 2px solid #dee2e6;
 }
 </style>

@@ -1,4 +1,4 @@
-<template>{{ selectedFileType }}
+<template>
     <div class="container-wide container-top mb-5">
         <div class="row d-flex justify-content-between">
             <div class="header">Attendance Report</div>
