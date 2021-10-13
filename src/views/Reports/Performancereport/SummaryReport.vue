@@ -8,8 +8,8 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div><label for="" class="font-weight-bold">SELECT EVENT</label></div>
                     <div>
-                        <Dropdown v-model="selectedSummary" :options="allEvents" optionLabel="text" class="w-100" placeholder="All Events" :filter="false" filterPlaceholder="Find Car"/>
-                        <!-- <MultiSelect v-model="selectedSummary" :options="allEvents" optionLabel="text" placeholder="Select Summary" :filter="true" class="multiselect-custom w-100">
+                        <!-- <Dropdown v-model="selectedSummary" :options="allEvents" optionLabel="text" class="w-100" placeholder="All Events" :filter="false" filterPlaceholder="Find Car"/> -->
+                        <MultiSelect v-model="selectedSummary" :options="allEvents" optionLabel="text" placeholder="Select Events" :filter="true" class="multiselect-custom w-100">
                             <template #value="slotProps">
                                 <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
                                     <div>{{option.text}}</div>
@@ -23,7 +23,7 @@
                                     <div>{{slotProps.option.text}}</div>
                                 </div>
                             </template>
-                        </MultiSelect> -->
+                        </MultiSelect>
                     </div>
 
                 </div>
@@ -31,14 +31,14 @@
                     <div class=""><label for="" class=" ml-2 font-weight-bold">START DATE</label></div>
                     <div>
                         <div>
-                            <Calendar id="icon" v-model="startDate" class="calendar1" :showIcon="true" />
+                            <Calendar id="icon" v-model="startDate" class="calendar1 w-100" :showIcon="true" />
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div><label for="" class="font-weight-bold">END DATE</label></div>
+                    <div><label for="" class="font-weight-bold w-100">END DATE</label></div>
                      <div>
-                            <Calendar id="icon" v-model="endDate" :showIcon="true" />
+                            <Calendar id="icon" v-model="endDate" class="w-100" :showIcon="true" />
                         </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
@@ -126,7 +126,7 @@
               class="small-text text-capitalize text-nowrap"
               style="border-bottom: 0"
             >
-              <!-- <th scope="col">Event Name</th> -->
+              <th scope="col">Event Name</th>
               <th scope="col">Date</th>
               <th scope="col">Description</th>
               <th scope="col">Topic</th>
@@ -138,7 +138,8 @@
           </thead>
           <tbody class="font-weight-normal text-nowrap">
             <tr v-for="(analysisTable, index) in analysisReport" :key="index" >
-              <!-- <td>{{index === 0 ? analysisTable.eventName : ""}}</td> -->
+              <!-- <td>{{index === 0 ? analysisTable.text : ""}}</td> -->
+              <td>{{(selectedSummary.length > 1 || (selectedSummary.length == 1 && index ==0)) ? analysisTable.eventName: ''}}</td>
               <td>{{formatDate(analysisTable.date)}}</td>
               <td>{{analysisTable.description}}</td>
               <td>{{analysisTable.topic}}</td>
@@ -187,16 +188,17 @@ import { ref, computed } from 'vue';
 // import ByGenderChart from "@/components/charts/PieChart.vue";
 import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
 
-import Dropdown from "primevue/dropdown";
+// import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter.js"
 import {useToast} from 'primevue/usetoast'
-// import MultiSelect from 'primevue/multiselect'
+import MultiSelect from 'primevue/multiselect'
 
     export default {
         components:{
-            Dropdown,
+            // Dropdown,
+            MultiSelect,
             Calendar,
             PerformanceColumnChart,
 
@@ -239,7 +241,8 @@ import {useToast} from 'primevue/usetoast'
     }
      getAllEvents()
      const getAnalysisReport = ()=>{
-         axios.get(`/api/Reports/events/getActivityAnalysisReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&eventId=${selectedSummary.value.id}`)
+         const activityId = selectedSummary.value.length === 1 ? selectedSummary.value[0].id : ''
+         axios.get(`/api/Reports/events/getActivityAnalysisReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&eventId=${activityId}`)
          .then((res)=>{
              analysisReport.value = res.data;
              console.log(analysisReport.value);
