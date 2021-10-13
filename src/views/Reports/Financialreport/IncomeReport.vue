@@ -2,10 +2,7 @@
   <div class="container-fluid px-5 mt-5">
      <div class="row d-flex justify-content-between px-3">
             <h3 class="heading-text ml-1">Basic Income And Revenue Report</h3>
-<<<<<<< HEAD
                   <!-- {{groupedAccountName}} -->
-=======
->>>>>>> aa7496af7a18e6d79a4eb9dce1039be431b540f9
             <div class="default-btn  font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
@@ -249,7 +246,7 @@ export default {
      const getIncomeDetails = ref([]);
      const showExport = ref(false);
      const formatDate = (activityDate) => {
-        return dateFormatter.normalDate(activityDate);
+        return dateFormatter.monthDayYear(activityDate);
       };
      const groupedAccountName = ref({});
 
