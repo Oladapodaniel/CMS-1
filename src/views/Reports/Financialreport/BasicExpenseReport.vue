@@ -228,9 +228,9 @@
               </tr>
             </tbody> -->
           </table>
-          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-            <PaginationButtons />
-          </div> -->
+          <div class="table-foot d-flex justify-content-end mt-3">
+            <!-- <PaginationButtons /> -->
+          </div>
         </div>
       </div>
         <!-- <button @click="amountTotal">click me</button> -->

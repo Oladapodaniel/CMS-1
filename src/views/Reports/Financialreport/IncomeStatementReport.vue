@@ -1,4 +1,5 @@
-<template>
+<template>{{allIncomeAndExpenses}}
+{{groupofIcomeAndExpenses}}
   <div class="container-fluid px-5">
     <!-- header area -->
     <div class="container">
@@ -123,38 +124,39 @@
 
     <section>
       <!-- chart area -->
-      <div class="chart row"
+      <div class="chart  row d-flex"
       :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
-        <div class="chart1 col-12 col-md-12">
-          <ByGenderChart
+        <div class="chart1 col-12 col-md-6">
+          <IncomeStatementChart
             domId="chart"
             title="Income Statement Report"
-            distance="5"
+            distance ="5"
             :titleMargin="10"
-            :summary="groupofIcomeAndExpense"
+            :summary="allIncomeAndExpenses"
           />
       </div>
-        </div>
-        <div class="chart row">
-          <div class="col-12 col-md-12">
-        <NegativeChart :data="incomeStatementDetail"/>
-        </div>
-        </div>
+
+      <div class="chart1 col-12 col-md-6">
+        <IncomeStatmentColumnChart
+          domId="chart1"
+          title="Income Statement Report"
+          distance="5"
+          :titleMargin="10"
+          :data="incomeStatementDetail"
+          subtitle="c"
+          :series="['Income', 'Expense']"
+          yAxisText = "Amount"
+            />
+      </div>
+
         <!-- <div class="chart row">
-          <div class="chart1 col-12 col-md-12">
-         <IncomeStatmentColumnChart
-            domId="chart1"
-            title="Income Statement Report"
-            distance="5"
-            :titleMargin="10"
-            :data="incomeStatementDetail"
-            subtitle="c"
-            :series="['Income', 'Expense']"
-            yAxisText = "Amount"
-             />
-        </div>
+            <div class="col-12 col-md-6">
+               <NegativeChart :data="incomeStatementDetail"/>
+            </div>
         </div> -->
-      <!--end of chart area -->
+
+        </div>
+      <!--end of chart area-->
     </section>
 
     <section>
@@ -226,62 +228,14 @@
               <td></td>
               <td></td>
               <td></td>
-              <td class="answer">NGN{{ diffBtwIncomeAndExpenses  }}.00</td>
+              <td class="answer">NGN{{ diffBtwIncomeAndExpenses.toLocaleString()  }}.00</td>
               <td></td>
             </tr>
           </tbody>
-
-           <!-- <tbody class="font-weight-normal text-nowrap border-bottom">
-            <tr class="border-bottom" style="position: relative" v-for="(fund, index) in funds"
-            :key="index">
-              <td>{{fund.name}}
-                <tr style="position: absolute;bottom:0">
-                   <td class="answer">SubTotal</td>
-                </tr>
-              </td>
-              <td border-bottom >
-                <tr v-for="(item, index) in groupAccountCategoery(fund.value)" :key="index" class="mt-2">
-                  {{item.name}}
-                </tr>
-              </td>
-              <td border-bottom>
-                <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
-                  {{item.accountName}}
-                </tr>
-              </td>
-              <td border-bottom>
-                <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
-                  {{item.description}}
-                  </tr>
-              </td>
-              <td border-bottom>
-                <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
-                  {{item.amount}}
-                </tr>
-                <tr  class="mt-2 answer">
-                  {{Math.abs(total(fund.value).toLocaleString()).toFixed(2)}}
-                </tr>
-              </td>
-              <td border-bottom>
-                <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
-                  {{ formatDate(item.date) }}
-                </tr>
-              </td>
-            </tr>
-            <tr class="answer-row">
-              <td class="answer">Total</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td class="answer"> {{Math.abs(fundSum).toFixed(2).toLocaleString()}}</td>
-              <td></td>
-            </tr>
-          </tbody> -->
-
         </table>
-        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-          <PaginationButtons />
-        </div> -->
+        <div class="table-foot d-flex justify-content-end mt-3">
+          <!-- <PaginationButtons /> -->
+        </div>
       </div>
 
 	</div>
@@ -295,14 +249,11 @@
 
 import { ref, computed} from "vue";
 import Calendar from "primevue/calendar";
-import ByGenderChart from "@/components/charts/PieChart.vue";
+import IncomeStatementChart from "@/components/charts/ReportPieChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
-// import IncomeStatmentColumnChart from "../../../components/charts/ColumnChart2.vue";
-import NegativeChart from "../../../components/charts/NegativeColumnChart";
-// import Dropdown from "primevue/dropdown";
-// import InputText from "primevue/inputtext";
-// import Listbox from 'primevue/listbox';
+// import IncomeStatmentColumnChart from "../../../components/charts/ReportColumnChart.vue";
+// import NegativeChart from "../../../components/charts/NegativeColumnChart";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforincomestatement.js";
 import groupResponse from '../../../services/groupArray/groupResponse.js'
@@ -312,9 +263,9 @@ import incomeExpenseHelper from "./Helper/Incomeexpenses-helper.js";
 export default {
   components: {
     Calendar,
-    ByGenderChart,
+    IncomeStatementChart,
     // IncomeStatmentColumnChart,
-    NegativeChart,
+    // NegativeChart,
       // Dropdown,
     // InputText,
     // Listbox,
@@ -360,6 +311,7 @@ export default {
            const amount = sum(tableData.value[fund][type]);
            total += amount;
          }
+         return total;
       }
 
       const diffBtwIncomeAndExpenses = computed(() => {
@@ -470,7 +422,6 @@ export default {
             console.log(groupofIcomeAndExpense.value)
         };
 
-
          const incomeStatementDetail = computed(() => {
          if (groupofIcomeAndExpense.value.length === 0) return []
          allIncomeAndExpenses.value.push({
@@ -488,6 +439,7 @@ export default {
          return allIncomeAndExpenses.value
      })
 /*End of Chart Area */
+
     let groupedIncomeItemToDisplay = ref([])
     const churchIncomes = (array, key) => {
             let result = array.reduce((result, currentValue) => {
@@ -544,22 +496,7 @@ export default {
             // console.log(groupedExpenseItemToDisplay.value, "💐💐")
         };
 
-        const totalExpense = computed (() => {
-                if(groupedExpenseItemToDisplay.value.length === 0) return []
-                return groupedExpenseItemToDisplay.value.reduce((acc, cur) => {
-                  return acc + cur.amount
-                }, 0)
-        })
-        // console.log(totalExpense.value, "🥁🥁")
 
-
-     const total = (arr) => {
-      console.log(arr, "kgkfuvygu");
-          if(!arr || arr.length === 0) return 0
-          return arr.reduce((acc, cur) => {
-        return acc + cur.amount
-      }, 0)
-    }
 
     const fundSum = computed(() => {
       if (incomeStatement.value.length === 0) return 0
@@ -576,7 +513,6 @@ export default {
 
     return {
       groupAccountCategoery,
-      total,
       fundSum,
       Calendar,
       startDate,
@@ -588,7 +524,6 @@ export default {
       groupedExpenseStatements,
       churchIncomes,
       churchExpense,
-      totalExpense,
       groupedIncomeItemToDisplay,
       groupedExpenseItemToDisplay,
       chartForIcomeAndExpense,
