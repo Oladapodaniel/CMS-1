@@ -142,7 +142,7 @@
                     <!-- <th scope="col">Current Status</th> -->
                     </tr>
                 </thead>
-                <tbody class="font-weight-bold text-nowrap" style="font-size:">
+                <tbody class="font-weight-bold text-nowrap" style="font-size: small">
                     <tr v-for="(NewConvert, index) in newConvertInChurch" :key="index">
                     <!-- <td>{{ firstTimer.event }}</td> -->
                     <td>{{ NewConvert.lastName }} {{ NewConvert.firstName }}</td>
@@ -172,7 +172,7 @@
 import {computed,ref } from "vue";
 import Calendar from "primevue/calendar";
 import axios from "@/gateway/backendapi";
-import PerformancePieChart from '../../../components/charts/PieChart.vue';
+import PerformancePieChart from '../../../components/charts/ReportPieChart.vue';
 import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
 // import Dropdown from "primevue/dropdown";
 import Listbox from 'primevue/listbox';
@@ -255,6 +255,7 @@ export default {
     const genderChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
+       genderChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
@@ -263,7 +264,6 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
-        // genderChartResult.value = []
         genderChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -280,6 +280,7 @@ export default {
        const maritalStatusChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
+        maritalStatusChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(
@@ -291,7 +292,6 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
-        // maritalStatusChartResult.value = []
         maritalStatusChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -307,6 +307,7 @@ export default {
     const eventDateChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
+      eventDateChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(
@@ -318,7 +319,6 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
-        eventDateChartResult.value = []
         eventDateChartResult.value.push({
           name: prop,
         //   value: result[prop].length

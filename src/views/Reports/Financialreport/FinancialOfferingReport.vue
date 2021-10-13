@@ -81,7 +81,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-3 mt-2">
+                    <div class="col-6 col-md-6 col-lg-3 mt-2">
                         <div><label for="" ></label></div>
                         <div @click="genarateReport">
                             <button class=" col-11 w-100 default-btn generate-report  "><div class="text-white">Generate Report</div></button>
@@ -99,29 +99,11 @@
                   </div>
               </div> -->
               <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                <!-- <div class="col-12 container-fluid d-flex mt-2 flex-wrap"> -->
+                <div class="col-12 round-border container-fluid d-flex mt-3 flex-wrap">
                     <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-12"> -->
                         <!-- <div class="col-12   text-center" > -->
                             <!-- <div class="col-12 text-center" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">No Data Available</div> -->
-                            <div class="col-12 p-0 " >
-                                <OfferingColumnChart
-                                    domId="chart1"
-                                    title="Offering Report"
-                                    distance="5"
-                                    :titleMargin="10"
-                                    :data="offeringDetail"
-                                    subtitle="Offering And Giving Data"
-                                    :series="mappedOfferingCol"
-                                    yAxisText = "Offering"
-                                    
-                                />
-                            </div>
-                        <!-- </div> -->
-                    <!-- <div class="col-12 "> -->
-                      <!-- <div class="col-12  text-center" > -->
-                          <!-- <div class="col-12  font-weight-bold">Membership By Marital Status</div> -->
-                          <!-- <div class="col-12 text-center" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
-                            <div class="col-12 table " >
+                            <div class="col-12 col-md-6 mt-3 col-lg-6  " >
                               <OfferingPieChart
                                 domId="chart3"
                                   distance="5"
@@ -129,14 +111,33 @@
                                   :summary="mappedOffering"
                               />
                             </div>
+                        <!-- </div> -->
+                    <!-- <div class="col-12 "> -->
+                      <!-- <div class="col-12  text-center" > -->
+                          <!-- <div class="col-12  font-weight-bold">Membership By Marital Status</div> -->
+                          <!-- <div class="col-12 text-center" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                            <div class="col-12 col-md-6 col-lg-6  " >
+                                  <OfferingColumnChart
+                                      domId="chart1"
+                                      title="Offering Report"
+                                      distance="5"
+                                      :titleMargin="10"
+                                      :data="offeringDetail"
+                                      subtitle="Offering And Giving Data"
+                                      :series="mappedOfferingCol"
+                                      yAxisText = "Offering"
+                                      
+                                  />
+                              </div>
+                         
                       <!-- </div> -->
                   <!-- </div> -->
-                <!-- </div> -->
+                </div>
               </div>
           </div>
             <section>
                       <!-- table header -->
-                  <div class=" container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness "
+                  <div class=" mt-3 container-fluid table-main px-0 remove-styles2 remove-border responsiveness "
                   :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                           <table class="table remove-styles mt-0  table-hover table-header-area " id="table">
                             <thead class="table-header-area-main">
@@ -179,8 +180,8 @@
 //  import MultiSelect from 'primevue/multiselect';
  import axios from "@/gateway/backendapi";
 //  import PaginationButtons from "../../../components/pagination/PaginationButtons";
- import OfferingPieChart from '../../../components/charts/PieChart.vue';
- import OfferingColumnChart from "../../../components/charts/ColumnChart2.vue";
+ import OfferingPieChart from '../../../components/charts/ReportPieChart.vue';
+ import OfferingColumnChart from "../../../components/charts/ReportColumnChart.vue";
  import membershipService from "../../../services/membership/membershipservice";
  import dateFormatter from  "../../../services/dates/dateformatter";
 //  import ExcelExport from "../../../services/exportFile/exportToExcel"
@@ -236,7 +237,7 @@ export default {
             let offeringIndex = Object.keys(i).findIndex(i => i === 'amount')
             let offeringValue = Object.values(i)[offeringIndex]
             offeringData.value.push(offeringValue)  
-            console.log(offeringInChurch.value)  
+            // console.log(offeringInChurch.value)  
             mappedOfferingCol.value.push(i.contributionName) 
          });
          mainOfferingData.value.push({
@@ -244,12 +245,13 @@ export default {
              color: '#002044',
              data: offeringData.value
          })
-         console.log(mainOfferingData.value)
+        //  console.log(mainOfferingData.value)
          return mainOfferingData.value  
      })
      const offeringChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
+      offeringChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
@@ -262,25 +264,21 @@ export default {
           name: prop,
           value: result[prop].length
         })
+         
       }
-      console.log(offeringChartResult.value,'giddy')
+      // console.log(offeringChartResult.value,'giddy')
     };
     const mappedOffering = computed(() => {
       if (offeringChartResult.value.length === 0 ) return []
       return offeringChartResult.value.map(i => i)
     })
-    // const mappedOfferingCol = computed(() => {
-    //   if (offeringChartResult.value.length === 0) return []
-    //   console.log(offeringChartResult.value.map(i => i.name))
-    //   return offeringChartResult.value.map(i => i.name)
-    // })
 
      const genarateReport = () => {
         axios.get(`/api/Reports/financials/getContactAllContributionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&personID=${offeringReportItem.value}`)
         .then((res) => {
           console.log(res, "🎄🎄🎄");
           offeringInChurch.value = res.data;
-          console.log(offeringInChurch.value, "✌️✌️");
+          // console.log(offeringInChurch.value, "✌️✌️");
           offeringChart(res.data,'contributionName')
         //   maritalStatusChart(res.data,'maritalStatus')
         //   eventDateChart(res.data,'activityDate')
@@ -289,10 +287,13 @@ export default {
                         fileToExport.value = exportService.tableToJson(document.getElementById("table"))
                     }, 1000)
                     showReport.value = true;
+                    
         })
         .catch((err) => {
           console.log(err);
+          
         });
+        
 
     }
      const downloadFile = () => {
@@ -318,7 +319,7 @@ export default {
         const addExistingMember = (member) => {
           userSearchString.value = member.name;
           offeringReportItem.value = member.id
-          console.log(userSearchString.value, member)
+          // console.log(userSearchString.value, member)
         }
         const showAddMemberForm = () => {
           display.value = true;
@@ -382,9 +383,14 @@ export default {
 .hide-report{
     display: none;
 }
+.round-border{
+   border-radius: 0.5rem;
+   box-shadow: 0 0.063rem 0.25rem #02172e45;
+   border: 0.063rem solid #dde2e6;
+}
 .responsiveness{
   max-width: 100%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 .table-main {
     width: 100% !important;
@@ -481,7 +487,7 @@ padding-right: 0;
 padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
-overflow-x: scroll;
+/* overflow-x: scroll; */
 }
 .move-enter-active {
   animation: move-in .8s;
