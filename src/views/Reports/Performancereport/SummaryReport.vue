@@ -6,7 +6,7 @@
         <div class="row">
   <div style="background: #ebeff4;" class="row mx-2 w-100 py-5" >
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div><label for="" class="font-weight-bold">SELECT EVENT</label></div>
+                    <div><label for="" class="font-weight-bold">Select Event</label></div>
                     <div>
                         <!-- <Dropdown v-model="selectedSummary" :options="allEvents" optionLabel="text" class="w-100" placeholder="All Events" :filter="false" filterPlaceholder="Find Car"/> -->
                         <MultiSelect v-model="selectedSummary" :options="allEvents" optionLabel="text" placeholder="Select Events" :filter="true" class="multiselect-custom w-100">
@@ -28,7 +28,7 @@
 
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div class=""><label for="" class=" ml-2 font-weight-bold">START DATE</label></div>
+                    <div class=""><label for="" class=" ml-2 font-weight-bold">Start Date</label></div>
                     <div>
                         <div>
                             <Calendar id="icon" v-model="startDate" class="calendar1 w-100" :showIcon="true" />
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div><label for="" class="font-weight-bold w-100">END DATE</label></div>
+                    <div><label for="" class="font-weight-bold w-100">End Date</label></div>
                      <div>
                             <Calendar id="icon" v-model="endDate" class="w-100" :showIcon="true" />
                         </div>
@@ -53,8 +53,8 @@
                  <h3 class="font-weight-bold mt-5 ml-2"  v-show="analysisReport.length > 0"></h3>
                  
                  <div class=" borderInner mb-2">
-                     <h5 class="ml-3 mt-4"></h5>
-                        <div class="" v-show="analysisReport.length > 0">
+                     <h5 class="ml-3 mt-5"></h5>
+                        <div class="round-border" v-show="analysisReport.length > 0">
                         <PerformanceColumnChart
                             domId="chart"
                             title="Service Performance Chart"
@@ -68,8 +68,8 @@
                         </div>
                  </div>
                   <div class="borderInner mb-2">
-                     <h5 class="ml-3 mt-4"></h5>
-                     <div class=""  v-show="analysisReport.length > 0">
+                     <h5 class="ml-3 mt-5"></h5>
+                     <div class="round-border"  v-show="analysisReport.length > 0">
                         <PerformanceColumnChart
                             domId="chart1"
                             title=" Attendance Analysis Chart"
@@ -84,8 +84,8 @@
 
                  </div>
                    <div class="borderInner mb-2">
-                     <h5 class="ml-3 mt-4"></h5>
-                     <div class="" v-show="analysisReport.length > 0">
+                     <h5 class="ml-3 mt-5"></h5>
+                     <div class="round-border" v-show="analysisReport.length > 0">
                         <PerformanceColumnChart
                             domId="chart2"
                             title="First Timers Analysis Chart"
@@ -100,8 +100,8 @@
 
                  </div>
                  <div class="borderInner mb-2">
-                     <h5 class="ml-3 mt-4"></h5>
-                     <div class="" v-show="analysisReport.length > 0">
+                     <h5 class="ml-3 mt-5"></h5>
+                     <div class="round-border" v-show="analysisReport.length > 0">
                         <PerformanceColumnChart
                             domId="chart3"
                             title="New Converts Analysis Chart"
@@ -119,7 +119,7 @@
              <section>
        <!-- table header -->
        
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-2" v-show="analysisReport.length > 0" >
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-5" v-show="analysisReport.length > 0" >
         <table class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
@@ -186,7 +186,7 @@
 <script>
 import { ref, computed } from 'vue';
 // import ByGenderChart from "@/components/charts/PieChart.vue";
-import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
+import PerformanceColumnChart from "../../../components/charts/ReportColumnChart.vue";
 
 // import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
@@ -508,6 +508,11 @@ border-top-right-radius: 0 !important;
     border-radius: 15px!important;
 
     }
+    .round-border{
+   border-radius: 0.5rem;
+   box-shadow: 0 0.063rem 0.25rem #02172e45;
+   border: 0.063rem solid #dde2e6;
+}
     .borderInner{
         width: 100%;
         /* height: 700px; */
