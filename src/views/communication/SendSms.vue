@@ -469,7 +469,7 @@
               aria-labelledby="dropdownMenuButton"
             >
             <div class="px-2">
-            <input type="text" class="form-control" placeholder="Search sender id" ref="senderRef" v-model="searchSenderText">
+            <!-- <input type="text" class="form-control" placeholder="Search sender id" ref="senderRef" v-model="searchSenderText"> -->
             </div>
               <a v-for="(item, index) in searchSenderIDs" :key="index"
                 class="dropdown-item c-pointer small-text py-2" @click="setIdToSubject(item)"
@@ -619,14 +619,14 @@
                         </div>
 
                         <div class="row d-flex justify-content-between">
-                          <div class="col-md-6 offset-3 px-1">
+                          <div class="col-md-8 offset-2 px-1">
                             <div class="container">
                               <div class="row">
                                 <div class="col-md-12">
                                   <label
                                     for=""
                                     class="small-text font-weight-600 py-2"
-                                    >NEW** BULK SMS - 100% SMS DELIVERY</label
+                                    >NEW** HYBRID BULK SMS - 100% SMS DELIVERY</label
                                   >
                                 </div>
                                 <div
@@ -649,10 +649,10 @@
                                     >100% delivery to all valid phone
                                     numbers.</span
                                   >
+                                  <span>Sender ID Customization - YES</span>
                                   <span>Not Affected by DND.</span>
                                   <span
-                                    >Dedicated phone number: No sender
-                                    customization.</span
+                                    >Failed SMS are Retried with Other Options.</span
                                   >
                                 </div>
                               </div>
