@@ -472,7 +472,7 @@
             <!-- <input type="text" class="form-control" placeholder="Search sender id" ref="senderRef" v-model="searchSenderText"> -->
             </div>
               <a v-for="(item, index) in searchSenderIDs" :key="index"
-                class="dropdown-item c-pointer small-text py-2" @click="setIdToSubject(item)"
+                class="dropdown-item c-pointer small-text font-weight-700 py-2" @click="setIdToSubject(item)"
                 >{{ item.mask }}
                 </a
               >
