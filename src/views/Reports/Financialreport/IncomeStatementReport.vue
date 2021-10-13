@@ -1,5 +1,5 @@
 <template>{{allIncomeAndExpenses}}
-{{groupofIcomeAndExpenses}}
+{{groupofIcomeAndExpense}}
   <div class="container-fluid px-5">
     <!-- header area -->
     <div class="container">
@@ -132,9 +132,20 @@
             title="Income Statement Report"
             distance ="5"
             :titleMargin="10"
-            :summary="allIncomeAndExpenses"
+            :summary="[ { name: 'Test', y: 50 }, { name: 'DEST', y: 50 }, ]"
           />
       </div>
+      <!-- <div class="chart  row d-flex"
+      :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
+        <div class="chart1 col-12 col-md-6">
+          <IncomeStatementChart
+            domId="chart"
+            title="Income Statement Report"
+            distance ="5"
+            :titleMargin="10"
+            :summary="allIncomeAndExpenses"
+          />
+      </div> -->
 
       <div class="chart1 col-12 col-md-6">
         <IncomeStatmentColumnChart
@@ -422,12 +433,13 @@ export default {
             console.log(groupofIcomeAndExpense.value)
         };
 
+// Negative Column Chart Area
          const incomeStatementDetail = computed(() => {
          if (groupofIcomeAndExpense.value.length === 0) return []
          allIncomeAndExpenses.value.push({
              name: 'Income',
             //  color: '#002044',
-             data: [groupofIcomeAndExpense.value[0].value]
+             data: [Math.abs(groupofIcomeAndExpense.value[0].value)]
          })
 
          allIncomeAndExpenses.value.push({
@@ -438,6 +450,7 @@ export default {
          console.log(allIncomeAndExpenses.value)
          return allIncomeAndExpenses.value
      })
+     // Negative Column Chart Area
 /*End of Chart Area */
 
     let groupedIncomeItemToDisplay = ref([])
