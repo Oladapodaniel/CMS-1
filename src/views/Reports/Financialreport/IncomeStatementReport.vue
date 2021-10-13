@@ -124,7 +124,7 @@
 
     <section>
       <!-- chart area -->
-      <div class="chart  row d-flex"
+      <!-- <div class="chart  row d-flex"
       :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
         <div class="chart1 col-12 col-md-6">
           <IncomeStatementChart
@@ -134,8 +134,8 @@
             :titleMargin="10"
             :summary="[ { name: 'Test', y: 50 }, { name: 'DEST', y: 50 }, ]"
           />
-      </div>
-      <!-- <div class="chart  row d-flex"
+      </div> -->
+      <div class="chart  row d-flex"
       :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
         <div class="chart1 col-12 col-md-6">
           <IncomeStatementChart
@@ -145,7 +145,7 @@
             :titleMargin="10"
             :summary="allIncomeAndExpenses"
           />
-      </div> -->
+      </div>
 
       <div class="chart1 col-12 col-md-6">
         <IncomeStatmentColumnChart
@@ -160,11 +160,11 @@
             />
       </div>
 
-        <!-- <div class="chart row">
+        <div class="chart row">
             <div class="col-12 col-md-6">
                <NegativeChart :data="incomeStatementDetail"/>
             </div>
-        </div> -->
+        </div>
 
         </div>
       <!--end of chart area-->
@@ -263,8 +263,8 @@ import Calendar from "primevue/calendar";
 import IncomeStatementChart from "@/components/charts/ReportPieChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
-// import IncomeStatmentColumnChart from "../../../components/charts/ReportColumnChart.vue";
-// import NegativeChart from "../../../components/charts/NegativeColumnChart";
+import IncomeStatmentColumnChart from "../../../components/charts/ReportColumnChart.vue";
+import NegativeChart from "../../../components/charts/NegativeColumnChart";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforincomestatement.js";
 import groupResponse from '../../../services/groupArray/groupResponse.js'
@@ -275,8 +275,8 @@ export default {
   components: {
     Calendar,
     IncomeStatementChart,
-    // IncomeStatmentColumnChart,
-    // NegativeChart,
+    IncomeStatmentColumnChart,
+    NegativeChart,
       // Dropdown,
     // InputText,
     // Listbox,
