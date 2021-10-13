@@ -73,13 +73,13 @@
     </div>
     <section id="element-to-print" :class="{'hideClass' : !toggleReport, 'showClass':toggleReport}"> 
         <!-- chart area -->
-          <div class="row">
+          <div class="row chart-div">
                 <div class="col-12 ">
                     <div class="my-5 text-center  serviceAttendance">
                        <!-- <span class="heading-text">INCOME STATEMENT</span> <span class="statement">-[Statement of Activities]</span>  -->
                     </div>
                 </div>
-                <div class="col-12 col-sm-12  col-md-12 col-lg-12">
+                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                     <div class="col-12 text-center" style="">
                         <!-- <div class="col-12  font-weight-bold pt-3">Membership By Marital Status</div> -->
                         <!-- <div class="col-12">No Data Available</div> -->
@@ -95,11 +95,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 ">
                     <div class="col-12 text-center">
                         <!-- <div class="col-12 font-weight-bold pt-3">Membership By Marital Status</div> -->
                         <!-- <div class="col-12">No Data Available</div> -->
-                        <div class="col-12 chart-div " style="">
+                        <div class="col-12" style="">
                          <ByMaritalStatusChart
                             domId="chart1"
                             title=""
@@ -187,8 +187,8 @@ import { ref, onMounted, computed} from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
-import ByMaritalStatusChart from "@/components/charts/PieChart";
-import ColumnChart2 from "@/components/charts/ColumnChart2";
+import ByMaritalStatusChart from "@/components/charts/ReportPieChart";
+import ColumnChart2 from "@/components/charts/ReportColumnChart";
 // import InputText from 'primevue/inputtext';
 // import Dropdown from "primevue/dropdown";
 import Listbox from 'primevue/listbox';
@@ -450,8 +450,8 @@ export default {
 }
 
  .chart-div{
-         border: 1px solid #DDE2E6;
-        border-radius: 30px;
+        border: 1px solid #DDE2E6;
+        border-radius: 10px;
         margin: 0 0 24px 0;
         box-shadow: 0px 1px 4px #02172E45;
         border: 1px solid #DDE2E6;
