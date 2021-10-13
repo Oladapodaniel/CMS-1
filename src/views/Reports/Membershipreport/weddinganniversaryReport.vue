@@ -26,10 +26,10 @@
         </div> -->
 
          <div
-          class="default-btn font-weight-normal c-pointer mr-4"
+          class="default-btn font-weight-normal c-pointer "
           @click="() => (showExport = !showExport)"
           style="width: fixed; position:relative">
-                   Export As &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                   Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
                    <div
                         class=" c-pointer"
                         style="width: 6rem; z-index:1000; position:absolute"
@@ -87,38 +87,35 @@
     <!--end of header area -->
 
     <!-- date area -->
-    <div class="container-fluid my-3 px-0 bg-area">
-      <div
-        style="padding: 0.2rem 0 1.2rem 0"
-        class="row d-flex flex-row justify-content-center align-items-center"
-      >
-        <div class="col-md-2">
-          <h4 class="small font-weight-bold ml-4">Date Range</h4>
-        </div>
-
-        <div class="col-md-7 d-sm-flex">
-          <div class="p-field p-col-12 p-md-4 mt-1">
-            <!-- <label for="icon">Start Date</label> -->
-            <Calendar id="icon" v-model="startDate" :showIcon="true" />
-          </div>
-          <div class="p-field p-col-12 p-md-4 my-1">
-            <!-- <label for="icon">End Date</label> -->
-            <Calendar id="endDate" v-model="endDate" :showIcon="true" />
-          </div>
-        </div>
-
-        <div
-          class="col-md-3 d-sm-flex justify-content-end align-items-center pr-5"
-        >
-          <button
-            class="default-btn generate-report c-pointer font-weight-normal"
-            @click="generateWeddingAnniversaryReport"
-          >
-            Generate
-          </button>
+        <div class="container-fluid bg-area my-3">
+        <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3 ">
+              <div class="col-md-4 col-sm-12 px-md-0">
+                  <div class="p-field p-col-12 pt-md-2 pb-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+                    </div>
+                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                  </div>
+              </div>
+              <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+                    </div>
+                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                  </div>
+              </div>
+            <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <button
+                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
+                            @click="generateWeddingAnniversaryReport">
+                            Generate Report
+                    </button>
+                  </div>
+              </div>
         </div>
       </div>
-    </div>
     <!--end of date area -->
     <div id="element-to-print">
       <section >
@@ -150,7 +147,7 @@
             />
           </div>
         </div>
-        <div
+        <!-- <div
           class="chart row my-1"
           :class="
             weddingAnniversary && weddingAnniversary.length > 0
@@ -176,7 +173,7 @@
               :summary="membershipAgeGroup"
             />
           </div>
-        </div>
+        </div> -->
         <!--end of chart area -->
       </section>
 
@@ -199,8 +196,8 @@
             >
               <thead class="table-header-area-main">
                 <tr
-                  class="small-text text-capitalize text-nowrap"
-                  style="border-bottom: 0"
+                  class="small-text text-capitalize text-nowrap font-weight-bold"
+                  style="border-bottom: 0; font-size:medium"
                 >
                   <th scope="col">Name</th>
                   <th scope="col">Wedding Day</th>
@@ -208,12 +205,12 @@
                   <th scope="col">Email</th>
                   <th scope="col">Gender</th>
                   <th scope="col">Marital Status</th>
-                  <th scope="col">Age Group</th>
+                  <!-- <th scope="col">Age Group</th>
                   <th scope="col">Membership</th>
-                  <th scope="col">Home Address</th>
+                  <th scope="col">Home Address</th> -->
                 </tr>
               </thead>
-              <tbody class="font-weight-normal text-nowrap">
+              <tbody class="font-weight-bold text-nowrap"  style="font-size: small">
                 <tr
                   v-for="(anniversary, index) in weddingAnniversary"
                   :key="index"
@@ -224,15 +221,15 @@
                   <td>{{ anniversary.email }}</td>
                   <td>{{ anniversary.gender }}</td>
                   <td>{{ anniversary.maritalStatus }}</td>
-                  <td>{{ anniversary.ageGroup }}</td>
+                  <!-- <td>{{ anniversary.ageGroup }}</td>
                   <td>{{ anniversary.membership }}</td>
-                  <td>{{ anniversary.homeAddress }}</td>
+                  <td>{{ anniversary.homeAddress }}</td> -->
                 </tr>
               </tbody>
             </table>
-            <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-            <PaginationButtons />
-          </div> -->
+            <div class="table-foot d-flex justify-content-end mt-3">
+            <!-- <PaginationButtons /> -->
+          </div>
           </div>
         </div>
         <!--end table header -->
@@ -411,13 +408,13 @@ export default {
     white-space: initial;
     font-size: 1rem;
     border-radius: 3rem;
-    /* border: 1px solid #002044; */
+    border: 1px solid #002044;
     padding: .5rem 1.25rem;
     width: auto;
-	border:none;
+	/* border:none; */
     /* outline: transparent !important; */
     max-height: 40px;
-    background: #6c757d47 !important;
+    /* background: #6c757d47 !important; */
     min-width: 121px;
 }
 
@@ -502,7 +499,8 @@ export default {
 
 .responsiveness {
   max-width: 100%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
+  overflow-x: scroll;
 }
 
 .move-enter-active {

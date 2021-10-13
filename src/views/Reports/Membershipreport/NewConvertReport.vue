@@ -25,7 +25,7 @@
         </div> -->
 
           <div
-          class="default-btn font-weight-normal c-pointer mr-4"
+          class="default-btn font-weight-normal c-pointer"
           @click="() => (showExport = !showExport)"
           style="width: fixed; position:relative">
                    Export As &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
@@ -85,36 +85,35 @@
     <!--end of header area -->
 
     <!-- date area -->
-    <div class="container-fluid my-3 px-0 bg-area">
-      <div
-        style="padding: 0.2rem 0 1.2rem 0"
-        class="row d-flex flex-row justify-content-center align-items-center"
-      >
-        <div class="col-md-2">
-          <h4 class="small font-weight-bold ml-4">Date Range</h4>
-        </div>
-
-        <div class="col-md-7 d-sm-flex">
-          <div class="p-field p-col-12 p-md-4 mt-1">
-          <!--  <div><label for="" class="font-weight-bold">START DATE</label></div> -->
-            <Calendar id="icon" v-model="startDate" :showIcon="true" />
-          </div>
-          <div class="p-field p-col-12 p-md-4 my-1">
-           <!-- <div><label for="" class="font-weight-bold">END DATE</label></div> -->
-            <Calendar id="endDate" v-model="endDate" :showIcon="true" />
-          </div>
-        </div>
-
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center pr-5">
-          <button
-            class="default-btn generate-report c-pointer font-weight-normal"
-            @click="allMembersInChurch"
-          >
-            Generate
-          </button>
+   <div class="container-fluid bg-area my-3">
+        <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3 ">
+              <div class="col-md-4 col-sm-12 px-md-0">
+                  <div class="p-field p-col-12 pt-md-2 pb-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+                    </div>
+                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                  </div>
+              </div>
+              <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+                    </div>
+                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                  </div>
+              </div>
+            <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <button
+                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
+                            @click="allMembersInChurch">
+                            Generate Report
+                    </button>
+                  </div>
+              </div>
         </div>
       </div>
-    </div>
     <!--end of date area -->
 
     <section>
@@ -139,10 +138,10 @@
         <table id="table" class="table remove-styles mt-0  table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
-             class="small-text text-capitalize text-nowrap"
-              style="border-bottom: 0"
+             class="small-text text-capitalize text-nowrap font-weight-bold"
+              style="border-bottom: 0; font-size:medium"
             >
-              <th scope="col">Title</th>
+              <!-- <th scope="col">Title</th> -->
               <th scope="col">Name</th>
               <th scope="col">Email</th>
               <th scope="col">Phone</th>
@@ -156,10 +155,11 @@
               <th scope="col">Contact Status</th>
             </tr>
           </thead>
-          <tbody class="font-weight-normal text-nowrap">
+          <tbody class="font-weight-bold text-nowrap"
+          style="font-size: small">
             <tr v-for="(newConvert, index) in newConvertsInChurch"
             :key="index">
-              <td>{{ newConvert.title }}</td>
+              <!-- <td>{{ newConvert.title }}</td> -->
               <td>{{ newConvert.firstName }} {{ newConvert.lastName }}</td>
               <td>{{ newConvert.email }}</td>
               <td>{{ newConvert.mobilePhone }}</td>
@@ -174,9 +174,9 @@
             </tr>
           </tbody>
         </table>
-        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-          <PaginationButtons />
-        </div> -->
+        <div class="table-foot d-flex justify-content-end mt-3">
+          <!-- <PaginationButtons /> -->
+        </div>
       </div>
      </div>
       <!--end table header -->
@@ -295,13 +295,13 @@ console.log(newConvertsInChurch.value, "✌️✌️");
     white-space: initial;
     font-size: 1rem;
     border-radius: 3rem;
-    /* border: 1px solid #002044; */
+    border: 1px solid #002044;
     padding: .5rem 1.25rem;
     width: auto;
-	border:none;
+	/* border:none; */
     /* outline: transparent !important; */
     max-height: 40px;
-    background: #6c757d47 !important;
+    /* background: #6c757d47 !important; */
     min-width: 121px;
 }
 
@@ -345,7 +345,7 @@ console.log(newConvertsInChurch.value, "✌️✌️");
     width: 100% !important;
     box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
     border: 0.063rem solid #dde2e6 !important;
-    border-radius: 30px !important;
+    /* border-radius: 30px !important; */
     text-align: left !important;
     margin-bottom: auto !important;
     padding-bottom: 0.5rem !important;
@@ -381,7 +381,8 @@ border-top-right-radius: 0 !important;
 
 .responsiveness{
   max-width: 100%;
-  overflow-y: scroll;
+  overflow-x: scroll;
+  /* overflow-y: scroll; */
 }
 
 

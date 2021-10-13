@@ -2,7 +2,7 @@
     <div class=" container container-top container-wide mb-4  ">
         <div class="row d-flex justify-content-between px-3">
             <div class="heading-text">First Timer Performance Report</div>
-            <div class="default-btn border-secondary font-weight-normal c-pointer"
+            <div class="default-btn mb-2 border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
                 <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
@@ -12,29 +12,34 @@
             <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
         </div>
            <!-- date area -->
-        <div class="container-fluid my-2 py-5   bg-area">
-            <div class="row d-flex justify-content-center  ">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0  "> 
-                    <div><label for="icon" class="font-weight-bold">Start Date</label></div>
-                    <div>
-                        <Calendar  id="icon" v-model="startDate" :showIcon="true" />
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
-                    <div><label for="icon" class="font-weight-bold">End Date</label></div>
-                    <div class="col-12">
-                        <Calendar id="icon" v-model="endDate" :showIcon="true" />
-                    </div>
-                </div>
+        <div class="container-fluid my-2 pt-4 pb-5   bg-area">
+            <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3  ">
 
-                <div @click="genarateReport" class="col-12 col-sm-6 col-md-4 col-lg-3 ">
-                    <label for="icon"></label>
-                    <div class="mt-2">
-                        <button class=" default-btn generate-report   c-pointer font-weight-bold">
-                            Generate Report
-                        </button>
+              <div class="col-md-4 col-sm-12 px-md-0">
+                  <div class="p-field p-col-12 pt-md-2 pb-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                     </div>
-                </div>
+                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                  </div>
+              </div>
+              <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+                    </div>
+                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                  </div>
+              </div>
+              <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <button
+                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
+                            @click="generateReport">
+                            Generate Report
+                    </button>
+                  </div>
+              </div>
             </div>
         </div>
     <!--end of date area -->
@@ -67,7 +72,7 @@
                 </div> -->
              </div>
             <div class="  row " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                <div class="col-12 container-fluid table d-flex flex-wrap">
+                <div class="col-12 container-fluid round-border mt-3 d-flex flex-wrap">
                     <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                         <div class="col-12  text-center">
                             <div class="col-12  font-weight-bold">Gender Distribution</div>
@@ -101,7 +106,7 @@
             <!-- <div class="row "> -->
         <section>
             <!-- table header -->
-            <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " 
+            <div class="mt-4 container-fluid table-main px-0 remove-styles2 remove-border responsiveness " 
             :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                 <table class="table remove-styles mt-0  table-hover table-header-area  " id="table">
                 <thead class="table-header-area-main">
@@ -115,12 +120,12 @@
                     <th scope="col">Email</th>
                     <th scope="col">Home Address</th>
                     <th scope="col">Gender</th>
-                    <th scope="col">Marital Status</th>
-                    <th scope="col">Activity Date</th>
+                    <!-- <th scope="col">Marital Status</th> -->
+                    <!-- <th scope="col">Activity Date</th> -->
                     <!-- <th scope="col">Current Status</th> -->
                     </tr>
                 </thead>
-                <tbody class="font-weight-normal text-nowrap">
+                <tbody class="font-weight-bold text-nowrap" style="font-size: small " >
                     <tr v-for="(firstTimer, index) in firstTimerInChurch" :key="index">
                     <!-- <td>{{ firstTimer.event }}</td> -->
                     <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
@@ -128,8 +133,8 @@
                     <td>{{ firstTimer.email }}</td>
                     <td>{{ firstTimer.homeAddress }}</td>
                     <td>{{ firstTimer.gender }}</td>
-                    <td>{{ firstTimer.maritalStatus }}</td>
-                    <td>{{ formatDate(firstTimer.activityDate) }}</td>
+                    <!-- <td>{{ firstTimer.maritalStatus }}</td> -->
+                    <!-- <td>{{ formatDate(firstTimer.activityDate) }}</td> -->
                     <!-- <td>{{ firstTimer.status }}</td> -->
                     </tr>
                 </tbody>
@@ -152,7 +157,7 @@ import Calendar from "primevue/calendar";
 // import Dropdown from "primevue/dropdown";
 import Listbox from 'primevue/listbox';
 import axios from "@/gateway/backendapi";
-import PerformancePieChart from '../../../components/charts/PieChart.vue';
+import PerformancePieChart from '../../../components/charts/ReportPieChart.vue';
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
 import MultiSelect from 'primevue/multiselect';
@@ -207,6 +212,7 @@ export default {
     const genderChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
+       genderChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
@@ -215,7 +221,6 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
-        // genderChartResult.value = []
         genderChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -232,6 +237,7 @@ export default {
        const maritalStatusChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
+       maritalStatusChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(
@@ -243,7 +249,6 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
-        // maritalStatusChartResult.value = []
         maritalStatusChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -259,6 +264,7 @@ export default {
     const eventDateChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
+      eventDateChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(
@@ -270,7 +276,6 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
-        eventDateChartResult.value = []
         eventDateChartResult.value.push({
           name: prop,
         //   value: result[prop].length
@@ -284,7 +289,7 @@ export default {
       return eventDateChartResult.value.map(i => formatDate(i.name))
     })
 
-    const genarateReport = () => {
+    const generateReport = () => {
         axios
         .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
@@ -334,7 +339,7 @@ export default {
         eventDateChartResult,
         startDate,
         endDate,
-        genarateReport,
+        generateReport,
         showReport,
         showExport,
         fileHeaderToExport,
@@ -369,7 +374,7 @@ export default {
 
 .responsiveness{
   max-width: 100%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 
 .default-btn {
@@ -421,6 +426,11 @@ export default {
   margin-bottom: auto !important;
   padding-bottom: 0.5rem;
 }
+.round-border{
+   border-radius: 0.5rem;
+   box-shadow: 0 0.063rem 0.25rem #02172e45;
+   border: 0.063rem solid #dde2e6;
+}
 
 .table-header-area {
   border-top-left-radius: 0;
@@ -453,7 +463,7 @@ padding-right: 0;
 padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
-overflow-x: scroll;
+/* overflow-x: scroll; */
 }
 .move-enter-active {
   animation: move-in .8s;

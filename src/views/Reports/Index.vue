@@ -163,6 +163,7 @@ export default {
 .baseline {
     transition: all 150ms ease-in-out;
     background-color: #136acd;
+    /* background-color: #33475b; */
     /* color: #136acd" */
     border-radius: 24px;
     bottom: -2.5px;
@@ -174,7 +175,8 @@ export default {
 
 .hide-base {
     transition: all 150ms ease-in-out;
-    background-color: #33475b;
+    background-color: #136acd;
+    /* background-color: #33475b; */
     border-radius: 24px;
     bottom: -2.5px;
     height: 6px;

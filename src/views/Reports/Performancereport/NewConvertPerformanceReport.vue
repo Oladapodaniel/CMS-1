@@ -2,7 +2,7 @@
     <div class=" container container-top container-wide mb-4  ">
         <div class="row d-flex justify-content-between px-3">
           <div class="heading-text"> New Convert Performance Report</div>
-          <div class="default-btn font-weight-normal border-secondary c-pointer"
+          <div class="default-btn mb-2 font-weight-normal border-secondary c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
                 <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
@@ -13,40 +13,45 @@
         </div>
         
            <!-- date area -->
-        <div class="container-fluid my-2 py-5   bg-area">
-            <div class="row justify-content-center pl-3 ">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0  "> 
-                    <div><label for="icon" class="font-weight-bold">Start Date</label></div>
-                    <div>
-                        <Calendar id="icon" v-model="startDate" :showIcon="true" />
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0  ">
-                    <div><label for="icon" class="font-weight-bold">End Date</label></div>
-                    <div>
-                        <Calendar id="icon" v-model="endDate" :showIcon="true" />
-                    </div>
-                </div>
+        <div class="container-fluid my-2 pt-4 pb-5   bg-area">
+            <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3  ">
 
-                <div @click="genarateReport" class="col-12 col-sm-6 col-md-4 col-lg-3 ">
-                    <label for="icon"></label>
-                    <div class="mt-2">
-                        <button class=" default-btn  generate-report  c-pointer font-weight-bold">
-                            Generate Report
-                        </button>
+              <div class="col-md-4 col-sm-12 px-md-0">
+                  <div class="p-field p-col-12 pt-md-2 pb-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                     </div>
-                </div>
+                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                  </div>
+              </div>
+              <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+                    </div>
+                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                  </div>
+              </div>
+              <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <button
+                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
+                            @click="generateReport">
+                            Generate Report
+                    </button>
+                  </div>
+              </div>
             </div>
-        </div>
+          </div>
     <!--end of date area -->
       <div id="element-to-print">
         <div  class="container-fluid ">
             <div class="row w-100">
-                <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                <!-- <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                     <div class="mt-5 display-1 font-weight-bold text-center heading-text">
                        New Convert Analysis Report 
                     </div>
-                </div>
+                </div> -->
                 <!-- <div class="col-12 w-100 text-center ">
                     <div class="col-12   text-center">
                         <div class="col-12 font-weight-bold">Firsttimer By Event Date</div>
@@ -68,7 +73,7 @@
                 </div> -->
              </div>
             <div class="  row " :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
-                <div class="col-12 container-fluid table d-flex flex-wrap">
+                <div class="col-12 container-fluid round-border mt-3 d-flex flex-wrap">
                     <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                         <div class="col-12  text-center">
                             <div class="col-12  font-weight-bold">Gender Distribution</div>
@@ -118,7 +123,7 @@
             <!-- <div class="row "> -->
         <section>
             <!-- table header -->
-            <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness "
+            <div class=" container-fluid mt-4 table-main px-0 remove-styles2 remove-border responsiveness "
             :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                 <table class="table remove-styles mt-0 table-hover table-header-area" id="table">
                 <thead class="table-header-area-main">
@@ -132,12 +137,12 @@
                     <th scope="col">Email</th>
                     <th scope="col">Home Address</th>
                     <th scope="col">Gender</th>
-                    <th scope="col">Marital Status</th>
-                    <th scope="col">Activity Date</th>
+                    <!-- <th scope="col">Marital Status</th> -->
+                    <!-- <th scope="col">Activity Date</th> -->
                     <!-- <th scope="col">Current Status</th> -->
                     </tr>
                 </thead>
-                <tbody class="font-weight-normal text-nowrap">
+                <tbody class="font-weight-bold text-nowrap" style="font-size: small">
                     <tr v-for="(NewConvert, index) in newConvertInChurch" :key="index">
                     <!-- <td>{{ firstTimer.event }}</td> -->
                     <td>{{ NewConvert.lastName }} {{ NewConvert.firstName }}</td>
@@ -145,8 +150,8 @@
                     <td>{{ NewConvert.email }}</td>
                     <td>{{ NewConvert.homeAddress }}</td>
                     <td>{{ NewConvert.gender }}</td>
-                    <td>{{ NewConvert.maritalStatus }}</td>
-                    <td>{{ formatDate(NewConvert.activityDate) }}</td>
+                    <!-- <td>{{ NewConvert.maritalStatus }}</td> -->
+                    <!-- <td>{{ formatDate(NewConvert.activityDate) }}</td> -->
                     <!-- <td>{{ firstTimer.status }}</td> -->
                     </tr>
                 </tbody>
@@ -167,7 +172,7 @@
 import {computed,ref } from "vue";
 import Calendar from "primevue/calendar";
 import axios from "@/gateway/backendapi";
-import PerformancePieChart from '../../../components/charts/PieChart.vue';
+import PerformancePieChart from '../../../components/charts/ReportPieChart.vue';
 import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
 // import Dropdown from "primevue/dropdown";
 import Listbox from 'primevue/listbox';
@@ -250,6 +255,7 @@ export default {
     const genderChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
+       genderChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
@@ -258,7 +264,6 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
-        // genderChartResult.value = []
         genderChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -275,6 +280,7 @@ export default {
        const maritalStatusChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
+        maritalStatusChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(
@@ -286,7 +292,6 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
-        // maritalStatusChartResult.value = []
         maritalStatusChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -302,6 +307,7 @@ export default {
     const eventDateChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
+      eventDateChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(
@@ -313,7 +319,6 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
-        eventDateChartResult.value = []
         eventDateChartResult.value.push({
           name: prop,
         //   value: result[prop].length
@@ -327,7 +332,7 @@ export default {
       return eventDateChartResult.value.map(i => formatDate(i.name))
     })
 
-    const genarateReport = () => {
+    const generateReport = () => {
         axios
         .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
@@ -352,99 +357,7 @@ export default {
     }
     const downloadFile = () => {
         exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
-      }
-    // const downLoadExcel = () => {
-    //         if (selectedFileType.value === "pdf") {
-    //             // printJS({
-    //             // //   ignoreElements: ['ignore1', 'ignore2'],
-    //             //   maxWidth: 867,
-    //             //   header: 'DONATION TRANSACTIONS',
-    //             //   printable: [{
-    //             //         DATE: '543',
-    //             //         EVENT: '5242',
-    //             //         DONATION: '4242',
-    //             //         AMOUNT: 23432,
-    //             //         DONOR: '234234234'
-    //             //         }],
-    //             //   properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
-    //             //   type: 'json',
-    //             //   headerStyle:
-    //             //     'font-family: Nunito Sans, Calibri; text-align: center;',
-    //             //   gridHeaderStyle:
-    //             //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
-    //             //   gridStyle:
-    //             //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
-    //             // })
-    //             var element = document.getElementById('element-to-print');
-    //             var opt = {
-    //                 // margin:       1,
-    //                 filename:     `${fileName.value}.pdf`,
-    //                 // image:        { type: 'jpeg', quality: 0.98 },
-    //                 // html2canvas:  { scale: 2 },
-    //                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
-    //                 pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-    //             };
-
-    //                 // New Promise-based usage:
-    //                 html2pdf().set(opt).from(element).save();
-    //             // html2pdf(element);
-    //         } else {
-    //             const filterVal = fileHeaderToExport.value.map((i, index) => index)
-    //             const list = fileToExport.value
-    //             const header = fileHeaderToExport.value
-    //             console.log(filterVal)
-    //             console.log(fileHeaderToExport.value)
-                
-    //             ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
-    //         }
-    //     }
-
-    //   const tableHeaderToJson = () => {
-    //         // let _htmlToJSON = function(){
-    //             // let _tr = _table.getElementsByTagName("tr")[index];
-    //             let _th = document.getElementsByTagName("th");
-    //             let _arr = [].map.call( _th, function( th ) {
-    //                 return th.innerHTML;
-    //             }).join( ',' );
-    //             let _data = _arr.split(",");
-    //             console.log(_data)
-    //             console.log("html to JSON", _data);
-    //             // emit('data-header-to-export', _data)          
-    //         // };
-    //         fileHeaderToExport.value = _data
-    //             // _htmlToJSON();
-    //   }
-
-    //   const tableToJson = () => {
-    //         let _table = document.getElementById("table");
-    //         let _trLength = _table.getElementsByTagName("tr").length;
-    //         let _jsonData = [];
-    //         let _obj = {};
-
-    //         let _htmlToJSON = function(index){
-    //             let _tr = _table.getElementsByTagName("tr")[index];
-    //             let _td = _tr.getElementsByTagName("td");
-    //             let _arr = [].map.call( _td, function( td ) {
-    //                 return td.innerHTML;
-    //             }).join( ',' );
-    //             let _data = _arr.split(",");
-    //             // console.log(_data)
-                
-    //             _obj = Object.assign({}, _data)
-                
-    //             _jsonData.push(_obj);
-                
-    //         };
-    //         for(var i = 1; i < _trLength; i++){
-    //             _htmlToJSON(i);
-    //         }
-    //         fileToExport.value = _jsonData
-    //         console.log("html to JSON", _jsonData);
-    //         console.log(fileToExport.value,'my alldata')
-    //         // emit('data-to-export', _jsonData)
-    //     }
-        
-
+      }       
     const formatDate = (date) => {
       return dateFormatter.normalDate(date);
     };
@@ -483,7 +396,7 @@ export default {
         eventDateChartResult,
         startDate,
         endDate,
-        genarateReport,
+        generateReport,
         showReport,
         pieChart,
         showExport,
@@ -551,6 +464,11 @@ export default {
   font: normal normal 800 1.5rem Nunito sans;
 }
 
+.round-border{
+   border-radius: 0.5rem;
+   box-shadow: 0 0.063rem 0.25rem #02172e45;
+   border: 0.063rem solid #dde2e6;
+}
 .bg-area {
   background-color: #ebeff4;
   border-radius: 0.5rem;
@@ -598,7 +516,7 @@ padding-right: 0;
 padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
-overflow-x: scroll;
+/* overflow-x: scroll; */
 }
 .move-enter-active {
   animation: move-in .8s;
