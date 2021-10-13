@@ -2,9 +2,7 @@
   <div class="container-fluid px-5 mt-5">
      <div class="row d-flex justify-content-between px-3">
             <h3 class="heading-text ml-1">Basic Income And Revenue Report</h3>
-<<<<<<< HEAD
-            <div @click="() => showExport = !showExport" class="cursor-pointer default-btn  d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
-=======
+                  <!-- {{groupedAccountName}} -->
             <div class="default-btn  font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
@@ -13,7 +11,6 @@
                 </div>
           </div>
             <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
->>>>>>> a534212218f750233c566bc05fc4119e5737870c
       </div>
       <!-- <div class="row my-4" v-if="showExport">
           <div class="col-sm-5">
@@ -79,7 +76,7 @@
           <div class="row">
                 <div class="col-12 ">
                     <div class="my-5 text-center  serviceAttendance">
-                       <span class="heading-text">INCOME STATEMENT</span> <span class="statement">-[Statement of Activities]</span> 
+                       <!-- <span class="heading-text">INCOME STATEMENT</span> <span class="statement">-[Statement of Activities]</span>  -->
                     </div>
                 </div>
                 <div class="col-12 col-sm-12  col-md-12 col-lg-12">
@@ -157,14 +154,22 @@
               <th scope="col">Date</th>
             </tr>
           </thead>
-          <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(getIncomeDetail, index) in getIncomeDetails" :key='index'>
-              <td>{{getIncomeDetail ? getIncomeDetail.fund : ''}}</td>
-              <td>{{getIncomeDetail ? getIncomeDetail.accountCategory : ''}}</td>
-              <td>{{getIncomeDetail ? getIncomeDetail.accountName : ''}}</td>
-              <td>{{getIncomeDetail ? getIncomeDetail.description : ''}}</td>
-              <td>{{getIncomeDetail ? getIncomeDetail.amount : ''}}</td>
-              <td>{{getIncomeDetail ? formatDate(getIncomeDetail.date): ''}}</td>
+          <tbody class="font-weight-normal text-nowrap" v-for="(group, index) in Array.from(series)" :key='index'>
+            <tr v-for="(item, index) in accounts(group)" :key='index'>
+              <td>{{item ? item.fund : ''}}</td>
+              <td>{{item ? item.accountCategory : ''}}</td>
+              <td>{{item.accountName ? item.accountName : ''}}</td>
+              <td>{{item ? item.description : ''}}</td>
+              <td>{{item ?  Math.abs(item.amount) : ''}}</td>
+              <td>{{item ? formatDate(item.date): ''}}</td>
+            </tr>        
+            <tr class="second-row">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{grouped(group)}}</td>
+              <td></td>
             </tr>        
           </tbody>
         </table>
@@ -178,7 +183,7 @@
 </template>
 
 <script>
-import { ref, onMounted} from "vue";
+import { ref, onMounted, computed} from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
@@ -191,6 +196,7 @@ import exportService from "../../../services/exportFile/exportservice"
 import axios from "@/gateway/backendapi";
 import axioz from "axios";
 import dateFormatter from  "../../../services/dates/dateformatter";
+import groupResponse from  "../../../services/groupArray/groupResponse";
 
 export default {
   components: {
@@ -199,14 +205,9 @@ export default {
     Calendar,
     ByGenderChart,
     PaginationButtons,
-<<<<<<< HEAD
-    InputText,
-    Dropdown
-=======
     // InputText,
     // Dropdown,
     Listbox
->>>>>>> a534212218f750233c566bc05fc4119e5737870c
   },
   setup() {
     const startDate = ref(new Date());
@@ -239,7 +240,7 @@ export default {
      const pieChartData = ref([]);
      const fileName = ref("");
      const selectedFileType = ref("");
-    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'},{name: 'pdf'} ])
+     const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'},{name: 'pdf'} ])
      const fileHeaderToExport = ref([]);
      const fileToExport = ref([]);
      const getIncomeDetails = ref([]);
@@ -247,6 +248,15 @@ export default {
      const formatDate = (activityDate) => {
         return dateFormatter.normalDate(activityDate);
       };
+     const groupedAccountName = ref({});
+
+    const getIncomeDetailAccountName = computed(() => {
+      if (getIncomeDetails.value.length === 0) return []
+      const groupAccount = getIncomeDetails.value.map(i => i && i.accountName ? i.accountName : '' )
+      const groupAccountSet = new Set(groupAccount)
+      groupAccountSet.forEach(i => i)
+      // return groupAccountSet
+    })
 
      const incomeEndPoint = () => {
         axios
@@ -256,12 +266,17 @@ export default {
              console.log(res, 'income response');
              toggleReport.value = true;
              getIncomeDetails.value = res.data
+            const resMap = res.data.filter(i => i !== null)
+            console.log(resMap)
+            groupedAccountName.value = groupResponse.groupData(resMap, 'accountName')
+            console.log(groupedAccountName, 'abc');
+             
              console.log(res.data, 'getIncomeDetails');
              const accountNameMap = res.data.map(i => i && i.accountName ? i.accountName : '')
-            //  console.log(accountNameMap, "CCCCCCCC");
+             console.log(accountNameMap, "CCCCCCCC");
              const groupAccountName = new Set(accountNameMap)
              series.value = groupAccountName
-            //  console.log(series.value, 'serrrrr');
+             console.log(series.value, 'serrrrr');
             console.log(groupAccountName, 'groupAccountName...');
             groupAccountName.forEach(i => {
                 const data = {
@@ -318,14 +333,28 @@ export default {
       }
       return color;
     }
-
-    axioz.post(`/v1/users/login`, { headers: { 'Authorization': 'Basic base64(admin: secret)'} }, { 'new_password': "new_password" }).then(res => {
-      console.log(res ,'whatsapp login');
-    })
+    const grouped = (group) => {
+      // alert(group)
+      console.log(groupedAccountName.value , 'star');
+      if (!groupedAccountName.value || !groupedAccountName.value[group] ) return 0
+      const sum = groupedAccountName.value[group]
+        .filter(i => i.amount)
+        .map(i => i.amount)
+        .reduce((a, b) => a + b)
+      // console.log(sum, "SUM");
+      return Math.abs(sum);
+    }
+    const accounts = (group) => {
+      // alert(group)
+      if (!groupedAccountName.value || !groupedAccountName.value[group] ) return []
+      return groupedAccountName.value[group]
+    }
    
     return {
       summary,
       Calendar,
+      grouped,
+      accounts,
       startDate,
       endDate,
       membersInChurch,
@@ -341,6 +370,8 @@ export default {
       bookTypeList,
       fileHeaderToExport,
       fileToExport,
+      getIncomeDetailAccountName,
+      groupedAccountName,
       downloadFile,
       formatDate,
       incomeEndPoint,
@@ -355,25 +386,6 @@ export default {
 * {
   box-sizing: border-box;
 }
-<<<<<<< HEAD
-=======
-.default-btn {
-    font-weight: 600;
-    white-space: initial;
-    font-size: 1rem;
-    border-radius: 3rem;
-    /* border: 1px solid #002044; */
-    padding: .5rem 1.25rem;
-    width: auto;
-	border:none;
-    /* outline: transparent !important; */
-    max-height: 40px;
-    background: #6c757d47 !important;
-    color:#000;
-    text-decoration: none;
-    min-width: 121px;
-}
->>>>>>> a534212218f750233c566bc05fc4119e5737870c
 
 .default-btn:hover {
   text-decoration: none;
@@ -474,5 +486,9 @@ export default {
     max-height: 2.5rem;
     background: #fff;
     min-width: 7.6rem;
+}
+.second-row {
+  /* vertical-align: bottom; */
+  background:  #dee2e6;
 }
 </style>
