@@ -12,29 +12,34 @@
             <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
         </div>
            <!-- date area -->
-        <div class="container-fluid my-2 py-5   bg-area">
-            <div class="row d-flex justify-content-center pl-3  ">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0  "> 
-                    <div class=""><label for="icon" class="font-weight-bold">Start Date</label></div>
-                    <div class="">
-                        <Calendar  id="icon" v-model="startDate" :showIcon="true" />
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
-                    <div class=""><label for="icon" class="font-weight-bold">End Date</label></div>
-                    <div class="">
-                        <Calendar id="icon" v-model="endDate" :showIcon="true" />
-                    </div>
-                </div>
+        <div class="container-fluid my-2 pt-4 pb-5   bg-area">
+            <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3  ">
 
-                <div @click="genarateReport" class="col-12 col-sm-6 col-md-4 col-lg-3 ">
-                    <label for="icon"></label>
-                    <div class="mt-2">
-                        <button class=" default-btn generate-report   c-pointer font-weight-bold">
-                            Generate Report
-                        </button>
+              <div class="col-md-4 col-sm-12 px-md-0">
+                  <div class="p-field p-col-12 pt-md-2 pb-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                     </div>
-                </div>
+                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                  </div>
+              </div>
+              <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+                    </div>
+                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                  </div>
+              </div>
+              <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <button
+                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
+                            @click="generateReport">
+                            Generate Report
+                    </button>
+                  </div>
+              </div>
             </div>
         </div>
     <!--end of date area -->
@@ -120,7 +125,7 @@
                     <!-- <th scope="col">Current Status</th> -->
                     </tr>
                 </thead>
-                <tbody class="font-weight-normal text-nowrap">
+                <tbody class="font-weight-bold text-nowrap" style="font-size: small " >
                     <tr v-for="(firstTimer, index) in firstTimerInChurch" :key="index">
                     <!-- <td>{{ firstTimer.event }}</td> -->
                     <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
@@ -152,7 +157,7 @@ import Calendar from "primevue/calendar";
 // import Dropdown from "primevue/dropdown";
 import Listbox from 'primevue/listbox';
 import axios from "@/gateway/backendapi";
-import PerformancePieChart from '../../../components/charts/PieChart.vue';
+import PerformancePieChart from '../../../components/charts/ReportPieChart.vue';
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
 import MultiSelect from 'primevue/multiselect';
@@ -207,6 +212,7 @@ export default {
     const genderChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
+       genderChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
@@ -215,7 +221,6 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
-        // genderChartResult.value = []
         genderChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -232,6 +237,7 @@ export default {
        const maritalStatusChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
+       maritalStatusChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(
@@ -243,7 +249,6 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
-        // maritalStatusChartResult.value = []
         maritalStatusChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -259,6 +264,7 @@ export default {
     const eventDateChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
+      eventDateChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(
@@ -270,7 +276,6 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
-        eventDateChartResult.value = []
         eventDateChartResult.value.push({
           name: prop,
         //   value: result[prop].length
@@ -284,7 +289,7 @@ export default {
       return eventDateChartResult.value.map(i => formatDate(i.name))
     })
 
-    const genarateReport = () => {
+    const generateReport = () => {
         axios
         .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
@@ -334,7 +339,7 @@ export default {
         eventDateChartResult,
         startDate,
         endDate,
-        genarateReport,
+        generateReport,
         showReport,
         showExport,
         fileHeaderToExport,
