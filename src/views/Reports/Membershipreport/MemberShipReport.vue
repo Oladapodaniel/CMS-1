@@ -179,7 +179,7 @@
                               <th scope="col">Birthday</th> -->
                               </tr>
                           </thead>
-                          <tbody class="font-weight-normal text-nowrap">
+                          <tbody class="font-weight-bold text-nowrap" style="font-size: small;">
                               <tr v-for="(member, index) in membersInChurch" :key="index">
                               <!-- <td>{{member.churchActivity}}</td> -->
                               <td>{{member.membership}}</td>

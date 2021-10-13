@@ -34,11 +34,11 @@
                         <div><label for="icon">Start Date</label></div>
                         <Calendar id="icon" v-model="startDate" :showIcon="true" />
                     </div>
-                    <div class="p-field border col-12 col-md-12 col-lg-3 font-weight-bold mt-2 mt-sm-2 mt-md-0 mt-lg-0">
+                    <div class="p-field  col-12 col-md-12 col-lg-3 font-weight-bold mt-2 mt-sm-2 mt-md-0 mt-lg-0">
                         <div><label for="icon">End Date</label></div>
                         <Calendar id="endDate" v-model="endDate" :showIcon="true" />
                     </div>
-                    <div class="col-8  col-sm-7 col-md-5 col-lg-3 mt-2 mt-sm-2 mt-md-0 mt-lg-0 ">
+                    <div class="col-8  col-sm-7 col-md-5 col-lg-3 mt-2 mt-sm-2 mt-md-1 mt-lg-1 ">
                         <div><label for="" class="font-weight-bold ">Select Member</label></div>
                         <div class="dropdown ">
                            <!-- <button id="dropdownMenuButton" class="btn border-secondary default-btn" data-toggle="dropdown">{{ userSearchString ? userSearchString: 'Search Member' }}</button>  -->
@@ -150,10 +150,10 @@
                                   <th scope="col">Channel</th>
                               </tr>
                             </thead>
-                            <tbody class="font-weight-normal text-nowrap">
+                            <tbody class="font-weight-bold text-nowrap" style="font-size: small;">
                                 <tr v-for="(OfferingList, index) in offeringInChurch" :key="index">
                                 <td>{{ OfferingList.contributionName }}</td>
-                                <td>{{ OfferingList.amount }}</td>
+                                <td>{{ OfferingList.amount }}.00</td>
                                 <td>{{ OfferingList.eventName }}</td>
                                 <td>{{ formatDate(OfferingList.date) }}</td>
                                 <td>{{ OfferingList.contactName }}</td>
@@ -298,96 +298,6 @@ export default {
      const downloadFile = () => {
         exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
       }
-    // const downLoadExcel = () => {
-    //         if (selectedFileType.value === "pdf") {
-    //             // printJS({
-    //             // //   ignoreElements: ['ignore1', 'ignore2'],
-    //             //   maxWidth: 867,
-    //             //   header: 'DONATION TRANSACTIONS',
-    //             //   printable: [{
-    //             //         DATE: '543',
-    //             //         EVENT: '5242',
-    //             //         DONATION: '4242',
-    //             //         AMOUNT: 23432,
-    //             //         DONOR: '234234234'
-    //             //         }],
-    //             //   properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
-    //             //   type: 'json',
-    //             //   headerStyle:
-    //             //     'font-family: Nunito Sans, Calibri; text-align: center;',
-    //             //   gridHeaderStyle:
-    //             //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
-    //             //   gridStyle:
-    //             //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
-    //             // })
-    //             var element = document.getElementById('element-to-print');
-    //             var opt = {
-    //                 // margin:       1,
-    //                 filename:     `${fileName.value}.pdf`,
-    //                 // image:        { type: 'jpeg', quality: 0.98 },
-    //                 // html2canvas:  { scale: 2 },
-    //                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
-    //                 pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-    //             };
-
-    //                 // New Promise-based usage:
-    //                 html2pdf().set(opt).from(element).save();
-    //             // html2pdf(element);
-    //         } else {
-    //             const filterVal = fileHeaderToExport.value.map((i, index) => index)
-    //             const list = fileToExport.value
-    //             const header = fileHeaderToExport.value
-    //             console.log(filterVal)
-    //             console.log(fileHeaderToExport.value)
-                
-    //             ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
-    //         }
-    //     }
-
-    //   const tableHeaderToJson = () => {
-    //         // let _htmlToJSON = function(){
-    //             // let _tr = _table.getElementsByTagName("tr")[index];
-    //             let _th = document.getElementsByTagName("th");
-    //             let _arr = [].map.call( _th, function( th ) {
-    //                 return th.innerHTML;
-    //             }).join( ',' );
-    //             let _data = _arr.split(",");
-    //             console.log(_data)
-    //             console.log("html to JSON", _data);
-    //             // emit('data-header-to-export', _data)          
-    //         // };
-    //         fileHeaderToExport.value = _data
-    //             // _htmlToJSON();
-    //   }
-
-    //   const tableToJson = () => {
-    //         let _table = document.getElementById("table");
-    //         let _trLength = _table.getElementsByTagName("tr").length;
-    //         let _jsonData = [];
-    //         let _obj = {};
-
-    //         let _htmlToJSON = function(index){
-    //             let _tr = _table.getElementsByTagName("tr")[index];
-    //             let _td = _tr.getElementsByTagName("td");
-    //             let _arr = [].map.call( _td, function( td ) {
-    //                 return td.innerHTML;
-    //             }).join( ',' );
-    //             let _data = _arr.split(",");
-    //             // console.log(_data)
-                
-    //             _obj = Object.assign({}, _data)
-                
-    //             _jsonData.push(_obj);
-                
-    //         };
-    //         for(var i = 1; i < _trLength; i++){
-    //             _htmlToJSON(i);
-    //         }
-    //         fileToExport.value = _jsonData
-    //         console.log("html to JSON", _jsonData);
-    //         console.log(fileToExport.value,'my alldata')
-    //         // emit('data-to-export', _jsonData)
-    //     }
 
     const searchForUsers = () => {
           if (userSearchString.value.length >= 3) {
