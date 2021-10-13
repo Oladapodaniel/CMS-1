@@ -123,22 +123,7 @@
 
     <section>
       <!-- chart area -->
-<<<<<<< HEAD
       <div class="chart row"
-=======
-      <!-- <div class="chart  row d-flex"
-      :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
-        <div class="chart1 col-12 col-md-6">
-          <IncomeStatementChart
-            domId="chart"
-            title="Income Statement Report"
-            distance ="5"
-            :titleMargin="10"
-            :summary="[ { name: 'Test', y: 50 }, { name: 'DEST', y: 50 }, ]"
-          />
-      </div> -->
-      <div class="chart  row d-flex"
->>>>>>> f45ac131f832189ed9cc4029b0f9b96c43bd68b2
       :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
         <div class="chart1 col-12 col-md-12">
           <ByGenderChart
@@ -149,7 +134,6 @@
             :summary="groupofIcomeAndExpense"
           />
       </div>
-<<<<<<< HEAD
         </div>
         <div class="chart row">
           <div class="col-12 col-md-12">
@@ -168,28 +152,6 @@
             :series="['Income', 'Expense']"
             yAxisText = "Amount"
              />
-=======
-
-      <div class="chart1 col-12 col-md-6">
-        <IncomeStatmentColumnChart
-          domId="chart1"
-          title="Income Statement Report"
-          distance="5"
-          :titleMargin="10"
-          :data="incomeStatementDetail"
-          subtitle="c"
-          :series="['Income', 'Expense']"
-          yAxisText = "Amount"
-            />
-      </div>
-
-        <div class="chart row">
-            <div class="col-12 col-md-6">
-               <NegativeChart :data="incomeStatementDetail"/>
-            </div>
-        </div>
-
->>>>>>> f45ac131f832189ed9cc4029b0f9b96c43bd68b2
         </div>
         </div> -->
       <!--end of chart area -->
@@ -276,16 +238,8 @@ import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
-<<<<<<< HEAD
-// import IncomeStatmentColumnChart from "../../../components/charts/ColumnChart2.vue";
-import NegativeChart from "../../../components/charts/NegativeColumnChart";
-// import Dropdown from "primevue/dropdown";
-// import InputText from "primevue/inputtext";
-import Listbox from 'primevue/listbox';
-=======
 import IncomeStatmentColumnChart from "../../../components/charts/ReportColumnChart.vue";
 import NegativeChart from "../../../components/charts/NegativeColumnChart";
->>>>>>> f45ac131f832189ed9cc4029b0f9b96c43bd68b2
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforincomestatement.js";
 import groupResponse from '../../../services/groupArray/groupResponse.js'
@@ -294,13 +248,8 @@ import groupResponse from '../../../services/groupArray/groupResponse.js'
 export default {
   components: {
     Calendar,
-<<<<<<< HEAD
     ByGenderChart,
     // IncomeStatmentColumnChart,
-=======
-    IncomeStatementChart,
-    IncomeStatmentColumnChart,
->>>>>>> f45ac131f832189ed9cc4029b0f9b96c43bd68b2
     NegativeChart,
       // Dropdown,
     // InputText,
@@ -413,11 +362,6 @@ export default {
             console.log(groupofIcomeAndExpense.value)
         };
 
-<<<<<<< HEAD
-
-=======
-// Negative Column Chart Area
->>>>>>> f45ac131f832189ed9cc4029b0f9b96c43bd68b2
          const incomeStatementDetail = computed(() => {
          if (groupofIcomeAndExpense.value.length === 0) return []
         //    incomeStatementData.value = []
