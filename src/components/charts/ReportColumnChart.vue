@@ -33,6 +33,7 @@ export default {
         chart: {
           type: "column",
           renderTo: props.domId,
+          height: 300,
         },
         credits: {
           enabled: false,
