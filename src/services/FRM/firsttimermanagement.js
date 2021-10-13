@@ -280,6 +280,51 @@ const frm = {
                     }
                 })
         })
+    },
+    comment (taskId, body) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/FirsttimerManager/task/${taskId}/comment`, body)
+                .then(res => {
+                    resolve(res.data)
+                })
+                .catch(error => {
+                    if (error.response) {
+                        reject(error.response)
+                    }   else {
+                        reject(error)
+                    }
+                })
+        })
+    },
+    deleteComment (commentId) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`/api/FirsttimerManager/comment/${commentId}/delete`)
+                .then(res => {
+                    resolve(res.data)
+                })
+                .catch(error => {
+                    if (error.response) {
+                        reject(error.response)
+                    }   else {
+                        reject(error)
+                    }
+                })
+        })
+    },
+    editComment (commentId, body) {
+        return new Promise((resolve, reject) => {
+            axios.put(`/api/FirsttimerManager/comment/${commentId}/edit`, body)
+                .then(res => {
+                    resolve(res.data)
+                })
+                .catch(error => {
+                    if (error.response) {
+                        reject(error.response)
+                    }   else {
+                        reject(error)
+                    }
+                })
+        })
     }
 }
 

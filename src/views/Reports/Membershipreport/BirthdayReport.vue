@@ -129,7 +129,7 @@
                 <div class="col-12" v-if="genderSummary.length === 0">
                   No Data Available
                 </div>
-                <div class="col-12" style="height: 40vh">
+                <div class="col-12">
                   <BirthdayChart
                     domId="chart1"
                     distance="5"
@@ -145,7 +145,7 @@
                 <div class="col-12" v-if="maritalStatusSummary.length === 0">
                   No Data Available
                 </div>
-                <div class="col-12" style="height: 40vh">
+                <div class="col-12">
                   <BirthdayChart
                     domId="chart2"
                     distance="5"

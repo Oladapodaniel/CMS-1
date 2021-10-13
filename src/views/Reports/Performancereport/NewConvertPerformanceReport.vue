@@ -128,7 +128,7 @@
                 <table class="table remove-styles mt-0 table-hover table-header-area" id="table">
                 <thead class="table-header-area-main">
                     <tr
-                    class="small-text text-capitalize text-nowrap"
+                    class="text-capitalize text-nowrap"
                     style="border-bottom: 0"
                     >
                     <!-- <th scope="col">Church Activity</th> -->

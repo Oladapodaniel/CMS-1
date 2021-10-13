@@ -230,6 +230,7 @@ import printJS from "print-js";
     }
      getAllEvents()
      const getActivityReport = ()=>{
+       activityReport.value = []
        const eventId = selectedEvents.value.length === 1 ? selectedEvents.value[0].id : ''
          axios.get(`/api/Reports/events/getActivityAttendanceReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&activityId=${eventId}`)
          .then((res)=>{

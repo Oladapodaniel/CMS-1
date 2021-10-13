@@ -91,7 +91,7 @@
                 <div class="col-md-5 col-12 border-bottom">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
                         <router-link to="/tenant/reports/celebrationsreport" class="linked"><h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Birthday Report</h4></router-link>
-                        <router-link to="/tenant /reports/celebrationsreport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
+                        <router-link to="/tenant/reports/celebrationsreport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
                         <p class="ju mb-3 paragraph1">This reports provides a detailed list of all the church contacts celebrating their birthday within the selected period</p>

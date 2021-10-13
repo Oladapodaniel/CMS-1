@@ -123,27 +123,27 @@
         <table class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
-              class="small-text text-capitalize text-nowrap"
+              class="font-weight-bold text-capitalize text-nowrap"
               style="border-bottom: 0"
             >
               <th scope="col">Event Name</th>
               <th scope="col">Date</th>
               <th scope="col">Description</th>
               <th scope="col">Topic</th>
-              <th scope="col">Text</th>
+              <!-- <th scope="col">Text</th> -->
               <th scope="col">First Timers</th>
               <th scope="col">New Converts</th>
               <th scope="col">Testimonies</th>
             </tr>
           </thead>
-          <tbody class="font-weight-normal text-nowrap">
+          <tbody class="font-weight-bold small-text text-nowrap">
             <tr v-for="(analysisTable, index) in analysisReport" :key="index" >
               <!-- <td>{{index === 0 ? analysisTable.text : ""}}</td> -->
               <td>{{(selectedSummary.length > 1 || (selectedSummary.length == 1 && index ==0)) ? analysisTable.eventName: ''}}</td>
               <td>{{formatDate(analysisTable.date)}}</td>
               <td>{{analysisTable.description}}</td>
               <td>{{analysisTable.topic}}</td>
-              <td>{{analysisTable.text}}</td>
+              <!-- <td>{{analysisTable.text}}</td> -->
               <td>{{analysisTable.firstTimers}}</td>
               <td>{{analysisTable.newConverts}}</td>
               <td>{{analysisTable.testmonies}}</td>
@@ -241,6 +241,7 @@ import MultiSelect from 'primevue/multiselect'
     }
      getAllEvents()
      const getAnalysisReport = ()=>{
+         analysisReport.value = []
          const activityId = selectedSummary.value.length === 1 ? selectedSummary.value[0].id : ''
          axios.get(`/api/Reports/events/getActivityAnalysisReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&eventId=${activityId}`)
          .then((res)=>{
