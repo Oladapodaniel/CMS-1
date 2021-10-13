@@ -28,7 +28,7 @@
           class="default-btn font-weight-normal c-pointer"
           @click="() => (showExport = !showExport)"
           style="width: fixed; position:relative">
-                   Export As &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                   Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
                    <div
                         class=" c-pointer"
                         style="width: 6rem; z-index:1000; position:absolute"

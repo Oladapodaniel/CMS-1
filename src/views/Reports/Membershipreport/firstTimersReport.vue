@@ -169,7 +169,7 @@
           >
             <thead class="table-header-area-main">
               <tr
-                class="small-text text-capitalize text-nowrap font-weight-bold"
+                class="text-capitalize text-nowrap font-weight-bold"
                 style="border-bottom: 0; font-size:medium"
               >
                 <!-- <th scope="col">Church Activity</th> -->
@@ -184,8 +184,7 @@
 
               </tr>
             </thead>
-            <tbody class="font-weight-bold text-nowrap"  style="
-    font-size: small">
+            <tbody class="small-text font-weight-bold text-nowrap">
               <tr v-for="(firstTimer, index) in firstTimerInChurch" :key="index">
                 <!-- <td>{{ firstTimer.event }}</td> -->
                 <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
