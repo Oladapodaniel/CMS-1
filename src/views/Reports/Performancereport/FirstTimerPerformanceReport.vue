@@ -111,7 +111,7 @@
                 <table class="table remove-styles mt-0  table-hover table-header-area  " id="table">
                 <thead class="table-header-area-main">
                     <tr
-                    class="small-text text-capitalize text-nowrap"
+                    class="text-capitalize text-nowrap"
                     style="border-bottom: 0"
                     >
                     <!-- <th scope="col">Church Activity</th> -->
@@ -377,22 +377,22 @@ export default {
   /* overflow-y: scroll; */
 }
 
-.default-btn {
-    /* font-weight: 600;
+/* .default-btn {
+     font-weight: 600;
     white-space: initial;
     font-size: 1rem;
-    border-radius: 3rem; */
-    /* border: 1px solid #002044; */
-    /* padding: .5rem 1.25rem;
+    border-radius: 3rem; 
+    border: 1px solid #002044; 
+    padding: .5rem 1.25rem;
     width: auto;
-	border:none; */
-    /* outline: transparent !important; */
-    /* max-height: 40px;
+	border:none; 
+    outline: transparent !important; 
+    max-height: 40px;
     background: #6c757d47 !important;
     color:#000;
     text-decoration: none;
-    min-width: 121px; */
-}
+    min-width: 121px; 
+} */
 
 .default-btn:hover {
   text-decoration: none;

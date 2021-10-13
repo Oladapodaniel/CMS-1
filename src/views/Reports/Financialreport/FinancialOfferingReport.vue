@@ -30,11 +30,11 @@
         </div>
         <div class="container-fluid ">
                 <div class="row py-5  " style="background: #ebeff4;  border-radius: 0.5rem;">
-                    <div class="p-field  col-12 col-md-6 col-lg-3 font-weight-bold  mt-0">
+                    <div class="p-field  p-col-12 col-md-6 col-lg-3 font-weight-bold  mt-0">
                         <div><label for="icon">Start Date</label></div>
                         <Calendar id="icon" v-model="startDate" :showIcon="true" />
                     </div>
-                    <div class="p-field  col-12 col-md-12 col-lg-3 font-weight-bold mt-2 mt-sm-2 mt-md-0 mt-lg-0">
+                    <div class="p-field  p-col-12 p-col-md-12 col-lg-3 font-weight-bold mt-2 mt-sm-2 mt-md-0 mt-lg-0">
                         <div><label for="icon">End Date</label></div>
                         <Calendar id="endDate" v-model="endDate" :showIcon="true" />
                     </div>

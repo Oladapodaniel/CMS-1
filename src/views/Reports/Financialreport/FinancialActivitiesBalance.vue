@@ -238,23 +238,23 @@
 .heading-text {
   font: normal normal 800 1.5rem Nunito sans;
 }
-
+/* 
 .default-btn {
-    /* font-weight: 600;
+    font-weight: 600;
     white-space: initial;
     font-size: 1rem;
-    border-radius: 3rem; */
-    /* border: 1px solid #002044; */
-    /* padding: .5rem 1.25rem;
+    border-radius: 3rem; 
+    border: 1px solid #002044; 
+    padding: .5rem 1.25rem;
     width: auto;
-	border:none; */
-    /* outline: transparent !important; */
-    /* max-height: 40px;
+	border:none; 
+     outline: transparent !important; 
+     max-height: 40px;
     background: #6c757d47 !important;
     color:#000;
     text-decoration: none;
-    min-width: 121px; */
-}
+    min-width: 121px; 
+} */
 
 .default-btn:hover {
   text-decoration: none;
