@@ -241,6 +241,7 @@ import MultiSelect from 'primevue/multiselect'
     }
      getAllEvents()
      const getAnalysisReport = ()=>{
+         analysisReport.value = []
          const activityId = selectedSummary.value.length === 1 ? selectedSummary.value[0].id : ''
          axios.get(`/api/Reports/events/getActivityAnalysisReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&eventId=${activityId}`)
          .then((res)=>{
