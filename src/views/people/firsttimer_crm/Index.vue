@@ -382,7 +382,7 @@ export default {
             displayPosition.value = false;
             
             let body = {
-            title: "string",
+            // title: "string",
             note: note.value,
             firsttimerID: route.params.personId,
             type: 91
@@ -390,6 +390,7 @@ export default {
             try {
                 let res = await frmservice.saveNote(route.params.personId, body)
                 console.log(res)
+                getLogs()
             }
             catch (err) {
                 console.log(err)
