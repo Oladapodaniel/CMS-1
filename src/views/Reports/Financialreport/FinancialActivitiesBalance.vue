@@ -1,6 +1,6 @@
 <template>
-<div class="container container-top container-wide mt-5   mb-4">
-        <div class="row d-flex justify-content-between px-3">
+<div class="container container-top container-wide mb-4">
+        <div class="row d-flex justify-content-between pr-4">
             <div class="heading-text">Accounting Activity and Balance Report </div>
             <div class="default-btn border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
@@ -11,9 +11,9 @@
             </div>
             <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
         </div>
-        <div class="container-fluid my-2 py-5  ">
+        <div class="container-fluid mb-2 py-4  ">
              <div class="row">
-                <div style="background: #ebeff4;  border-radius: 0.5rem;" class="row mx-2 w-100 py-5" >
+                <div style="background: #ebeff4;  border-radius: 0.5rem;" class="row  w-100 py-5" >
                 <div class="col-12 col-md-6 col-lg-3">
                     <div><label for="" class="font-weight-bold">Select Account</label></div>
                     <div>
@@ -69,15 +69,16 @@
               <th scope="col">Balance</th>
             </tr>
           </thead>
-          <tbody class="font-weight-normal text-nowrap">
+          <tbody class="font-weight-bold text-nowrap" style="font-size: small;">
             <tr v-for="(AccountList, index) in accountInChurch" :key="index">
               <td>{{ formatDate(AccountList.date) }}</td>
               <td>{{ AccountList.accountName }}</td>
               <td>{{ AccountList.refNumber }}</td>
               <td>{{ AccountList.description }}</td>
-              <td>{{AccountList.debit.toFixed(2).toLocaleString()}}</td>
-              <td>{{AccountList.credit.toFixed(2).toLocaleString() }}</td>
-              <td>{{parseFloat(AccountList.balance).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</td>
+              <td>{{Math.abs(AccountList.debit).toLocaleString()}}.00</td>
+              <td>{{Math.abs(AccountList.credit).toLocaleString()}}.00</td>
+              <td>({{Math.abs(AccountList.balance).toLocaleString()}}.00)</td>
+              <!-- <td>{{parseFloat(AccountList.balance).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</td> -->
             </tr>
             <tr class="answer-row">
               <td class="answer">Total</td>
@@ -237,23 +238,23 @@
 .heading-text {
   font: normal normal 800 1.5rem Nunito sans;
 }
-
+/* 
 .default-btn {
-    /* font-weight: 600;
+    font-weight: 600;
     white-space: initial;
     font-size: 1rem;
-    border-radius: 3rem; */
-    /* border: 1px solid #002044; */
-    /* padding: .5rem 1.25rem;
+    border-radius: 3rem; 
+    border: 1px solid #002044; 
+    padding: .5rem 1.25rem;
     width: auto;
-	border:none; */
-    /* outline: transparent !important; */
-    /* max-height: 40px;
+	border:none; 
+     outline: transparent !important; 
+     max-height: 40px;
     background: #6c757d47 !important;
     color:#000;
     text-decoration: none;
-    min-width: 121px; */
-}
+    min-width: 121px; 
+} */
 
 .default-btn:hover {
   text-decoration: none;

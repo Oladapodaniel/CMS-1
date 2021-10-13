@@ -6,9 +6,9 @@
 
         </div>
         <div class="row">
-  <div style="background: #ebeff4;" class="row mx-2 w-100 py-5" >
+  <div style="background: #ebeff4;" class="row mx-2 w-100 py-5 mb-2" >
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div><label for="" class="font-weight-bold">SELECT EVENT</label></div>
+                    <div><label for="" class="font-weight-bold">Select Event</label></div>
 
                     <div>
                         <!-- <Dropdown v-model="selectedEvents" :options="allEvents" optionLabel="text" class="w-100" placeholder="Select Member" :filter="false" filterPlaceholder="Find Car"/> -->
@@ -31,7 +31,7 @@
 
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div class=""><label for="" class=" ml-2 font-weight-bold">START DATE</label></div>
+                    <div class=""><label for="" class=" ml-2 font-weight-bold">Start Date</label></div>
                     <div>
                         <div>
                             <Calendar id="icon" v-model="startDate" class="calendar1 w-100" :showIcon="true" />
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div><label for="" class="font-weight-bold">END DATE</label></div>
+                    <div><label for="" class="font-weight-bold">End Date</label></div>
                      <div>
                             <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" />
                         </div>
@@ -57,7 +57,7 @@
 
                  <div class=" borderInner mb-2">
                      <h5 class="ml-3 mt-4"></h5>
-                         <div class="" v-show="activityReport.length > 0">
+                         <div class="round-border" v-show="activityReport.length > 0">
                         <PerformanceColumnChart
                             domId="chart"
                             title="Attendance Analysis Chart"
@@ -89,7 +89,7 @@
 
                     <div class=" borderInner mt-5">
                      <h5 class="ml-3 mt-4"></h5>
-                         <div class="" v-show="activityReport.length > 0">
+                         <div class="round-border" v-show="activityReport.length > 0">
                         <PerformanceColumnChart
                             domId="chart1"
                             title="Attendance Analysis Chart By Category"
@@ -122,7 +122,7 @@
              <section>
                  <!-- table header -->
 
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-2" v-show="activityReport.length > 0">
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-5" v-show="activityReport.length > 0">
         <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
@@ -164,7 +164,7 @@
 
 <script>
 import { computed, ref } from 'vue';
-import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
+import PerformanceColumnChart from "../../../components/charts/ReportColumnChart.vue";
 import groupData from '../../../services/groupArray/groupResponse';
 import MultiSelect from 'primevue/multiselect';
 
@@ -230,6 +230,7 @@ import printJS from "print-js";
     }
      getAllEvents()
      const getActivityReport = ()=>{
+       activityReport.value = []
        const eventId = selectedEvents.value.length === 1 ? selectedEvents.value[0].id : ''
          axios.get(`/api/Reports/events/getActivityAttendanceReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&activityId=${eventId}`)
          .then((res)=>{
@@ -453,6 +454,11 @@ import printJS from "print-js";
 .table-header-area-main {
   background-color: #ebeff4;
 }
+.round-border{
+   border-radius: 0.5rem;
+   box-shadow: 0 0.063rem 0.25rem #02172e45;
+   border: 0.063rem solid #dde2e6;
+}
 
 .table-main {
     width: 100% !important;
@@ -524,9 +530,9 @@ border-top-right-radius: 0 !important;
 
     }
     .lineGrap{
-      border:  0px #e9e9e9 solid!important;
-      border-radius: 2px;
-       box-shadow: 0px 1px 4px #02172E45;
+   border-radius: 0.5rem;
+   box-shadow: 0 0.063rem 0.25rem #02172e45;
+   border: 0.063rem solid #dde2e6;
        font-weight: bold;
     }
     .borderInner{
