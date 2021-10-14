@@ -1,10 +1,9 @@
 <template>
 <div class="container container-wide mt-5 mb-4">
      <div>
-            <h3 class="font-weight-bold mt-5 mb-2">Church Activities Performance Analysis Report</h3>
+            <h3 class="font-weight-bold mt-5 mb-2">Church Activities Performance Summary Report</h3>
         </div>
-        <div class="row">
-  <div style="background: #ebeff4;" class="row mx-2 w-100 py-5" >
+  <div style="background: #ebeff4;" class="row m-0 py-5" >
                 <div class="col-12 col-md-6 col-lg-3">
                     <div><label for="" class="font-weight-bold">Select Event</label></div>
                     <div>
@@ -48,7 +47,6 @@
                     </div>
                 </div>
              </div> 
-             </div>
              <div>
                  <h3 class="font-weight-bold mt-5 ml-2"  v-show="analysisReport.length > 0"></h3>
                  
