@@ -475,7 +475,7 @@
                 </ckeditor> -->
                 
               </div>
-              <DecoupledEditor v-model="editorData" :loadedMessage="editorData" :label="'you find me'" />
+              <DecoupledEditor v-model="editorData" :loadedMessage="loadedMessage" :label="'you find me'" />
             </div>
           </div>
 
@@ -962,7 +962,7 @@ export default {
               </style>
             </head>
             <body>
-              <div id="email-body" style="max-width: 1000px; margin: auto"> ${editorData.value} </div>
+              <div id="email-body" style="max-width: 1000px; margin: auto"> {${editorData.value}} </div>
             </body>
           </html>`,
         // contacts: [],
@@ -1021,11 +1021,11 @@ export default {
 
     const draftMessage = async () => {
       try {
-        await composerObj.saveDraft({
+        await composerObj.saveDraft("/api/Messaging/saveEmaillDraft", {
           subject: subject.value,
           body: editorData.value,
           isDefaultBirthDayMessage: false,
-        }, "/api/Messaging/saveEmaillDraft");
+        });
         store.dispatch("communication/getEmailDrafts");
         toast.add({
           severity: "success",
@@ -1158,7 +1158,9 @@ export default {
       try {
           const { message, subject: subj } = await composeService.getSMSById(messageId);
           loadedMessage.value = message;
+          console.log( loadedMessage.value, 'MESSAGESSS');
           subject.value = subj;
+           console.log( subject.value, 'SUBJECTSS');
       } catch (error) {
           console.log(error)
           toast.add({
