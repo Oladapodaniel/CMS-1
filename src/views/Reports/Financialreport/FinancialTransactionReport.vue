@@ -110,17 +110,17 @@
                 <th scope="col">Date</th>
               </tr>
             </thead>
-            <tbody class="font-weight-normal text-nowrap">
-              <tr v-for="(transaction, index) in accountTransaction"
+            <tbody class="font-weight-normal text-nowrap"  v-for="(transaction, index) in accountTransaction"
               :key="index">
-                <td>{{ transaction.fund }}</td>
-                <td>{{ transaction.accountName }}</td>
-                <td>{{ transaction.refNumber }}</td>
-                <td>{{ transaction.description }}</td>
-                <td>{{ transaction.debit }}</td>
-                <td>{{ transaction.credit }}</td>
-                <td>{{ formatDate(transaction.date) }}</td>
-              </tr>
+              <tr>
+                      <td>{{ transaction.fund }}</td>
+                      <td>{{ transaction.accountName }}</td>
+                      <td>{{ transaction.refNumber }}</td>
+                      <td>{{ transaction.description }}</td>
+                      <td>{{ transaction.debit }}</td>
+                      <td>{{ transaction.credit }}</td>
+                      <td>{{ formatDate(transaction.date) }}</td>
+                  </tr>
             </tbody>
           </table>
           <!-- <div class="table-foot d-flex justify-content-end mt-n3">
