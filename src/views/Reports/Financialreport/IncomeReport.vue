@@ -2,6 +2,7 @@
   <div class="container-fluid px-5 mt-5">
      <div class="row d-flex justify-content-between px-3">
             <h3 class="heading-text ml-1">Basic Income And Revenue Report</h3>
+                  <!-- {{groupedAccountName}} -->
             <div class="default-btn  font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
@@ -72,13 +73,13 @@
     </div>
     <section id="element-to-print" :class="{'hideClass' : !toggleReport, 'showClass':toggleReport}"> 
         <!-- chart area -->
-          <div class="row">
+          <div class="row chart-div">
                 <div class="col-12 ">
                     <div class="my-5 text-center  serviceAttendance">
-                       <span class="heading-text">INCOME STATEMENT</span> <span class="statement">-[Statement of Activities]</span> 
+                       <!-- <span class="heading-text">INCOME STATEMENT</span> <span class="statement">-[Statement of Activities]</span>  -->
                     </div>
                 </div>
-                <div class="col-12 col-sm-12  col-md-12 col-lg-12">
+                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                     <div class="col-12 text-center" style="">
                         <!-- <div class="col-12  font-weight-bold pt-3">Membership By Marital Status</div> -->
                         <!-- <div class="col-12">No Data Available</div> -->
@@ -94,11 +95,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 ">
                     <div class="col-12 text-center">
                         <!-- <div class="col-12 font-weight-bold pt-3">Membership By Marital Status</div> -->
                         <!-- <div class="col-12">No Data Available</div> -->
-                        <div class="col-12 chart-div " style="">
+                        <div class="col-12" style="">
                          <ByMaritalStatusChart
                             domId="chart1"
                             title=""
@@ -142,7 +143,7 @@
         <table class="table remove-styles mt-0 table-responsive table-hover table-header-area" id="table">
           <thead class="table-header-area-main">
             <tr
-              class="small-text text-capitalize text-nowrap"
+              class="font-weight-bold text-capitalize text-nowrap"
               style="border-bottom: 0"
             >
               <th scope="col">Fund</th>
@@ -153,14 +154,22 @@
               <th scope="col">Date</th>
             </tr>
           </thead>
-          <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(getIncomeDetail, index) in getIncomeDetails" :key='index'>
-              <td>{{getIncomeDetail ? getIncomeDetail.fund : ''}}</td>
-              <td>{{getIncomeDetail ? getIncomeDetail.accountCategory : ''}}</td>
-              <td>{{getIncomeDetail ? getIncomeDetail.accountName : ''}}</td>
-              <td>{{getIncomeDetail ? getIncomeDetail.description : ''}}</td>
-              <td>{{getIncomeDetail ? getIncomeDetail.amount : ''}}</td>
-              <td>{{getIncomeDetail ? formatDate(getIncomeDetail.date): ''}}</td>
+          <tbody class="font-weight-bold small-text text-nowrap" v-for="(group, index) in Array.from(series)" :key='index'>
+            <tr v-for="(item, index) in accounts(group)" :key='index'>
+              <td>{{item ? item.fund : ''}}</td>
+              <td>{{item ? item.accountCategory : ''}}</td>
+              <td>{{item.accountName ? item.accountName : ''}}</td>
+              <td>{{item ? item.description : ''}}</td>
+              <td>{{item ?  Math.abs(item.amount) : ''}}</td>
+              <td>{{item ? formatDate(item.date): ''}}</td>
+            </tr>        
+            <tr class="second-row">
+              <td class="totalAmount">Total Income</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="totalAmount">#{{grouped(group)}}</td>
+              <td></td>
             </tr>        
           </tbody>
         </table>
@@ -174,18 +183,20 @@
 </template>
 
 <script>
-import { ref, onMounted} from "vue";
+import { ref, onMounted, computed} from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
-import ByMaritalStatusChart from "@/components/charts/PieChart";
-import ColumnChart2 from "@/components/charts/ColumnChart2";
+import ByMaritalStatusChart from "@/components/charts/ReportPieChart";
+import ColumnChart2 from "@/components/charts/ReportColumnChart";
 // import InputText from 'primevue/inputtext';
 // import Dropdown from "primevue/dropdown";
 import Listbox from 'primevue/listbox';
 import exportService from "../../../services/exportFile/exportservice"
 import axios from "@/gateway/backendapi";
+import axioz from "axios";
 import dateFormatter from  "../../../services/dates/dateformatter";
+import groupResponse from  "../../../services/groupArray/groupResponse";
 
 export default {
   components: {
@@ -229,14 +240,23 @@ export default {
      const pieChartData = ref([]);
      const fileName = ref("");
      const selectedFileType = ref("");
-    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'},{name: 'pdf'} ])
+     const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'},{name: 'pdf'} ])
      const fileHeaderToExport = ref([]);
      const fileToExport = ref([]);
      const getIncomeDetails = ref([]);
      const showExport = ref(false);
      const formatDate = (activityDate) => {
-        return dateFormatter.normalDate(activityDate);
+        return dateFormatter.monthDayYear(activityDate);
       };
+     const groupedAccountName = ref({});
+
+    const getIncomeDetailAccountName = computed(() => {
+      if (getIncomeDetails.value.length === 0) return []
+      const groupAccount = getIncomeDetails.value.map(i => i && i.accountName ? i.accountName : '' )
+      const groupAccountSet = new Set(groupAccount)
+      groupAccountSet.forEach(i => i)
+      // return groupAccountSet
+    })
 
      const incomeEndPoint = () => {
         axios
@@ -246,12 +266,17 @@ export default {
              console.log(res, 'income response');
              toggleReport.value = true;
              getIncomeDetails.value = res.data
+            const resMap = res.data.filter(i => i !== null)
+            console.log(resMap)
+            groupedAccountName.value = groupResponse.groupData(resMap, 'accountName')
+            console.log(groupedAccountName, 'abc');
+             
              console.log(res.data, 'getIncomeDetails');
              const accountNameMap = res.data.map(i => i && i.accountName ? i.accountName : '')
-            //  console.log(accountNameMap, "CCCCCCCC");
+             console.log(accountNameMap, "CCCCCCCC");
              const groupAccountName = new Set(accountNameMap)
              series.value = groupAccountName
-            //  console.log(series.value, 'serrrrr');
+             console.log(series.value, 'serrrrr');
             console.log(groupAccountName, 'groupAccountName...');
             groupAccountName.forEach(i => {
                 const data = {
@@ -308,10 +333,28 @@ export default {
       }
       return color;
     }
+    const grouped = (group) => {
+      // alert(group)
+      console.log(groupedAccountName.value , 'star');
+      if (!groupedAccountName.value || !groupedAccountName.value[group] ) return 0
+      const sum = groupedAccountName.value[group]
+        .filter(i => i.amount)
+        .map(i => i.amount)
+        .reduce((a, b) => a + b)
+      // console.log(sum, "SUM");
+      return Math.abs(sum);
+    }
+    const accounts = (group) => {
+      // alert(group)
+      if (!groupedAccountName.value || !groupedAccountName.value[group] ) return []
+      return groupedAccountName.value[group]
+    }
    
     return {
       summary,
       Calendar,
+      grouped,
+      accounts,
       startDate,
       endDate,
       membersInChurch,
@@ -327,6 +370,8 @@ export default {
       bookTypeList,
       fileHeaderToExport,
       fileToExport,
+      getIncomeDetailAccountName,
+      groupedAccountName,
       downloadFile,
       formatDate,
       incomeEndPoint,
@@ -340,22 +385,6 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
-}
-.default-btn {
-    font-weight: 600;
-    white-space: initial;
-    font-size: 1rem;
-    border-radius: 3rem;
-    /* border: 1px solid #002044; */
-    padding: .5rem 1.25rem;
-    width: auto;
-	border:none;
-    /* outline: transparent !important; */
-    max-height: 40px;
-    background: #6c757d47 !important;
-    color:#000;
-    text-decoration: none;
-    min-width: 121px;
 }
 
 .default-btn:hover {
@@ -377,7 +406,12 @@ export default {
 .heading-text {
   font: normal normal 800 1.5rem Nunito sans;
 }
-
+.totalAmount {
+    font-weight: bolder;
+    font-size: medium;
+    color: #136acd;
+    /* color: blue; */
+}
 .bg-area {
   background-color: #ebeff4;
   border-radius: 0.5rem;
@@ -421,8 +455,8 @@ export default {
 }
 
  .chart-div{
-         border: 1px solid #DDE2E6;
-        border-radius: 30px;
+        border: 1px solid #DDE2E6;
+        border-radius: 10px;
         margin: 0 0 24px 0;
         box-shadow: 0px 1px 4px #02172E45;
         border: 1px solid #DDE2E6;
@@ -457,5 +491,9 @@ export default {
     max-height: 2.5rem;
     background: #fff;
     min-width: 7.6rem;
+}
+.second-row {
+  /* vertical-align: bottom; */
+  background:  #dee2e6;
 }
 </style>

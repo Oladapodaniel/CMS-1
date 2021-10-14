@@ -1,64 +1,61 @@
 <template>
 <div class="container container-wide mt-5 mb-4">
-  <!-- <div class="row d-flex justify-content-between px-3">
-            <div class="heading-text">Attendance Report</div> -->
-            <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
-        </div>
-        <div class="row my-4" v-if="showExport">
-            <div class="col-sm-5">
-                <span class="p-float-label">
-                    <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
-                    <label for="inputtext">Enter file name</label>
-                </span>
-            </div>
-            <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
-                <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
-            </div>
-            <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn border-secondary d-flex align-items-center c-pointer justify-content-center">Download</div></div>
-        </div> -->
      <div>
             <h3 class="font-weight-bold mt-5 mb-2">Church Activities Attendance Report</h3>
             <span class="mt-5 mb-3">This reports gives an indepth view of the growth and attendance pattern of the ministry.</span>
 
         </div>
-        <div class="row">
-  <div style="background: #ebeff4;" class="row mx-2 w-100 py-5" >
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div><label for="" class="font-weight-bold">SELECT EVENT</label></div>
+                <div style="background: #ebeff4;" class="row m-0 py-5 mb-2" >
+                              <div class="col-12 col-md-6 col-lg-3">
+                                  <div><label for="" class="font-weight-bold">Select Event</label></div>
 
-                    <div>
-                        <Dropdown v-model="selectedEvents" :options="allEvents" optionLabel="text" class="w-100" placeholder="Select Member" :filter="false" filterPlaceholder="Find Car"/>
-                    </div>
+                                  <div>
+                                      <!-- <Dropdown v-model="selectedEvents" :options="allEvents" optionLabel="text" class="w-100" placeholder="Select Member" :filter="false" filterPlaceholder="Find Car"/> -->
+                                      <MultiSelect v-model="selectedEvents" :options="allEvents" optionLabel="text" placeholder="Select Events" :filter="true" class="multiselect-custom w-100">
+                                          <template #value="slotProps">
+                                              <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
+                                                  <div>{{option.text}}</div>
+                                              </div>
+                                              <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                                  All Events
+                                              </template>
+                                          </template>
+                                          <template #option="slotProps">
+                                              <div class="country-item">
+                                                  <div>{{slotProps.option.text}}</div>
+                                              </div>
+                                          </template>
+                                      </MultiSelect>
+                                  </div>
 
-                </div>
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div class=""><label for="" class=" ml-2 font-weight-bold">START DATE</label></div>
-                    <div>
-                        <div>
-                            <Calendar id="icon" v-model="startDate" class="calendar1 w-100" :showIcon="true" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div><label for="" class="font-weight-bold">END DATE</label></div>
-                     <div>
-                            <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" />
-                        </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3">
-                    <label for="" ></label>
-                    <div class="mt-2">
-                        <button @click="getActivityReport()" class="btn default-btn primary-bg "><div class="text-white">Generate Report</div></button>
-                    </div>
-                </div>
-             </div>
-             </div>
+                              </div>
+                              <div class="col-12 col-md-6 col-lg-3">
+                                  <div class=""><label for="" class=" ml-2 font-weight-bold">Start Date</label></div>
+                                  <div>
+                                      <div>
+                                          <Calendar id="icon" v-model="startDate" class="calendar1 w-100" :showIcon="true" />
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-12 col-md-6 col-lg-3">
+                                  <div><label for="" class="font-weight-bold">End Date</label></div>
+                                  <div>
+                                          <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" />
+                                      </div>
+                              </div>
+                              <div class="col-12 col-md-6 col-lg-3">
+                                  <label for="" ></label>
+                                  <div class="mt-2">
+                                      <button @click="getActivityReport()" class="btn default-btn primary-bg "><div class="text-white">Generate Report</div></button>
+                                  </div>
+                              </div>
+                          </div>
              <div>
                  <h3 class="font-weight-bold mt-5 ml-2"  v-show="activityReport > 0">SERVICE PERFORMANCE ANALYSIS REPORT </h3>
 
                  <div class=" borderInner mb-2">
                      <h5 class="ml-3 mt-4"></h5>
-                         <div class="" v-show="activityReport.length > 0">
+                         <div class="round-border" v-show="activityReport.length > 0">
                         <PerformanceColumnChart
                             domId="chart"
                             title="Attendance Analysis Chart"
@@ -72,7 +69,7 @@
                         </div>
                  </div>
                  <div
-                      class="area-chart mt-5"
+                      class="area-chart mt-5 lineGrap"
                       v-show="
                         activityReport.length > 0
                       "
@@ -88,9 +85,9 @@
                       />
                     </div>
 
-                    <div class=" borderInner mb-2">
+                    <div class=" borderInner mt-5">
                      <h5 class="ml-3 mt-4"></h5>
-                         <div class="" v-show="activityReport.length > 0">
+                         <div class="round-border" v-show="activityReport.length > 0">
                         <PerformanceColumnChart
                             domId="chart1"
                             title="Attendance Analysis Chart By Category"
@@ -123,11 +120,11 @@
              <section>
                  <!-- table header -->
 
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-2" >
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-5" v-show="activityReport.length > 0">
         <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
-              class="small-text text-capitalize text-nowrap"
+              class="text-capitalize text-nowrap font-weight-bolder"
               style="border-bottom: 0"
             >
               <th scope="col">Event Name & Date</th>
@@ -135,7 +132,7 @@
               <th scope="col">Category Attendance</th>
             </tr>
           </thead>
-          <tbody class="font-weight-normal text-nowrap">
+          <tbody class="font-weight-bolder text-nowrap">
             <tr v-for="(activityTable, index) in grousService" :key="index" >
               <td>{{ activityTable.name}}</td>
               <td>
@@ -165,10 +162,11 @@
 
 <script>
 import { computed, ref } from 'vue';
-import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
-import groupData from '../../../services/groupArray/groupResponse'
+import PerformanceColumnChart from "../../../components/charts/ReportColumnChart.vue";
+import groupData from '../../../services/groupArray/groupResponse';
+import MultiSelect from 'primevue/multiselect';
 
-import Dropdown from "primevue/dropdown";
+// import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import ReportAreaChart from "@/components/charts/AreaChart.vue";
 import axios from "@/gateway/backendapi";
@@ -178,7 +176,8 @@ import exportService from "../../../services/exportFile/exportservice"
 import printJS from "print-js";
     export default {
         components:{
-          Dropdown,
+          // Dropdown,
+          MultiSelect,
             Calendar,
             // InputText,
             PerformanceColumnChart,
@@ -229,7 +228,9 @@ import printJS from "print-js";
     }
      getAllEvents()
      const getActivityReport = ()=>{
-         axios.get(`/api/Reports/events/getActivityAttendanceReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&activityId=${selectedEvents.value.id}`)
+       activityReport.value = []
+       const eventId = selectedEvents.value.length === 1 ? selectedEvents.value[0].id : ''
+         axios.get(`/api/Reports/events/getActivityAttendanceReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&activityId=${eventId}`)
          .then((res)=>{
              activityReport.value = res.data;
              console.log(activityReport.value);
@@ -451,6 +452,11 @@ import printJS from "print-js";
 .table-header-area-main {
   background-color: #ebeff4;
 }
+.round-border{
+   border-radius: 0.5rem;
+   box-shadow: 0 0.063rem 0.25rem #02172e45;
+   border: 0.063rem solid #dde2e6;
+}
 
 .table-main {
     width: 100% !important;
@@ -520,6 +526,12 @@ border-top-right-radius: 0 !important;
     border-color:  #b0b2b5!important;
     border-radius: 15px!important;
 
+    }
+    .lineGrap{
+   border-radius: 0.5rem;
+   box-shadow: 0 0.063rem 0.25rem #02172e45;
+   border: 0.063rem solid #dde2e6;
+       font-weight: bold;
     }
     .borderInner{
         width: 100%;

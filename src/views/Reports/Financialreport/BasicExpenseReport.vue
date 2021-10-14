@@ -25,7 +25,7 @@
         </div> -->
 
            <!-- <div
-          class="default-btn font-weight-normal c-pointer mr-4"
+          class="default-btn font-weight-normal c-pointer"
           @click="() => (showExport = !showExport)"
           style="width: fixed; position:relative">
                    Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
@@ -85,36 +85,35 @@
     </div>
     <!--end of header area -->
     <!-- date area -->
-    <div class="container-fluid my-3 px-0 bg-area">
-      <div
-        style="padding: 0.2rem 0 1.2rem 0"
-        class="row d-flex flex-row justify-content-center align-items-center"
-      >
-        <div class="col-md-2">
-          <h4 class="small font-weight-bold ml-4">Date Range</h4>
-        </div>
-
-        <div class="col-md-7 d-sm-flex">
-          <div class="p-field p-col-12 p-md-4 mt-1">
-            <!-- <label for="icon">Start Date</label> -->
-            <Calendar id="icon" v-model="startDate" :showIcon="true" />
-          </div>
-          <div class="p-field p-col-12 p-md-4 my-1">
-            <!-- <label for="icon">End Date</label> -->
-            <Calendar id="endDate" v-model="endDate" :showIcon="true" />
-          </div>
-        </div>
-
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center pr-5">
-          <button
-            class="default-btn generate-report c-pointer font-weight-normal"
-            @click="generateReport"
-          >
-            Generate
-          </button>
+ <div class="container-fluid bg-area my-3">
+        <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3 ">
+              <div class="col-md-4 col-sm-12 px-md-0">
+                  <div class="p-field p-col-12 pt-md-2 pb-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+                    </div>
+                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                  </div>
+              </div>
+              <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <div>
+                      <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+                    </div>
+                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                  </div>
+              </div>
+            <div class="col-md-4 col-sm-12 pr-md-0">
+                  <div class="p-field p-col-12 pt-md-2">
+                    <button
+                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
+                            @click="generateReport">
+                            Generate Report
+                    </button>
+                  </div>
+              </div>
         </div>
       </div>
-    </div>
     <!--end of date area -->
     <div id="element-to-print">
       <section>
@@ -141,8 +140,8 @@
           <table id="table" class="table remove-styles mt-0 table-header-area">
             <thead class="table-header-area-main">
               <tr
-              class="small-text text-capitalize text-nowrap"
-                style="border-bottom: 0"
+              class="small-text text-capitalize text-nowrap font-weight-bold"
+                style="border-bottom: 0; font-size:medium"
               >
                 <th scope="col">Fund</th>
                 <th scope="col">Account Name</th>
@@ -151,11 +150,46 @@
                 <th scope="col">Date</th>
               </tr>
             </thead>
-            <tbody class="font-weight-normal text-nowrap">
+            <tbody class="font-weight-bold text-nowrap"  style="
+                          font-size: small" v-for="(fund, index) in funds"
+              :key="index">
+                <tr v-if="fund.name !== 'null'">
+                  <td>{{ fund.name }}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr v-for="(account, indxx) in fund.name !== 'null' ? fund.value : []"
+              :key="indxx">
+                  <td></td>
+                  <td>{{ account.accountName }}</td>
+                  <td>{{ account.description }}</td>
+                  <td>{{ Math.abs(account.amount).toLocaleString() }}.00</td>
+                  <td>{{ formatDate(account.date) }}</td>
+                  </tr>
+                <tr class="answer-row" v-if="fund.name !== 'null'">
+                  <td  class="answer">Sub-Total</td>
+                  <td></td>
+                  <td></td>
+                  <td class="answer">NGN{{ total(fund.value).toLocaleString() }}.00</td>
+                  <td></td>
+                </tr>
+            </tbody>
+             <tbody class="font-weight-bold text-nowrap" style="
+                           font-size: small">
+           <tr class="answer-row">
+              <td class="answer">Total Expenses</td>
+              <td></td>
+              <td></td>
+              <td class="answer">NGN{{ fundSum.toLocaleString()}}.00</td>
+              <td></td>
+            </tr>
+          </tbody>
+
+            <!-- <tbody class="font-weight-normal text-nowrap">
               <tr style="position: relative" v-for="(fund, index) in funds"
               :key="index">
-                <!-- <td>{{ index === 0 ? transaction.fund : " " }}</td> -->
-                <!-- :colspan="funds.length - 1" -->
                 <td>{{fund.name}}
                   <tr style="position: absolute;bottom:0">
                     <td class="answer">SubTotal</td>
@@ -192,11 +226,11 @@
                 <td  class="answer"> {{fundSum.toLocaleString() }}</td>
                 <td></td>
               </tr>
-            </tbody>
+            </tbody> -->
           </table>
-          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-            <PaginationButtons />
-          </div> -->
+          <div class="table-foot d-flex justify-content-end mt-3">
+            <!-- <PaginationButtons /> -->
+          </div>
         </div>
       </div>
         <!-- <button @click="amountTotal">click me</button> -->
@@ -399,13 +433,13 @@ export default {
     white-space: initial;
     font-size: 1rem;
     border-radius: 3rem;
-    /* border: 1px solid #002044; */
+    border: 1px solid #002044;
     padding: .5rem 1.25rem;
     width: auto;
-	border:none;
+	/* border:none; */
     /* outline: transparent !important; */
     max-height: 40px;
-    background: #6c757d47 !important;
+    /* background: #6c757d47 !important; */
     min-width: 121px;
 }
 
@@ -489,7 +523,8 @@ border-top-right-radius: 0 !important;
 
 .responsiveness{
   max-width: 100%;
-  overflow-y: scroll;
+  overflow-x: scroll;
+  /* overflow-y: scroll; */
 }
 
 .graph-area{
@@ -503,7 +538,9 @@ border-top-right-radius: 0 !important;
 
 .answer{
   font-weight: bolder;
-   color: #000;
+  font-size:medium;
+   /* color: #000; */
+   color: #136acd;
 }
 
 .answer-row{
@@ -511,7 +548,7 @@ border-top-right-radius: 0 !important;
 }
 
 .answer-row:hover{
-  background-color: none;
+  background-color:none;
 }
 
 .move-enter-active {
