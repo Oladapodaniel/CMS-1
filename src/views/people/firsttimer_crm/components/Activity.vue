@@ -3,13 +3,13 @@
     <div class="col-12">
        <div class="col-12 card-bg p-3 py-4">
             <div class="row">
-                <div class="col-4">
-                    <Skeleton width="100%" height="1.2rem" borderRadius="16px" />
+                <div class="col-12">
+                    <Skeleton width="100%" height="1rem" borderRadius="16px" />
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col-12">
-                    <Skeleton width="100%" height="1.2rem" borderRadius="16px" />
+                    <Skeleton width="100%" height="1rem" borderRadius="16px" />
                 </div>
             </div>
        </div>
@@ -84,7 +84,7 @@
                             <div class="col-6 label-text mt-3">Reminder</div>
                             <div class="col-6 mt-2">
                                 <div @click="toggleDueDate" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
-                                    In 3 business days&nbsp; <i class="pi pi-sort-down"></i>
+                                    {{ getDueDate(item.loggedTask.dueDate) }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
                                 <OverlayPanel ref="dueDateOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                     <div class="container-fluid p-0">
@@ -114,36 +114,36 @@
                             <div class="col-4 label-text">Assigned to</div>
                             <div class="col-4 mt-2">
                                 <div @click="toggleTodo" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
-                                    Todo&nbsp; <i class="pi pi-sort-down"></i>
+                                    {{ item.selectedActivity ? item.selectedActivity : activityType.find(i => i.id === item.type).value }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
                                 <OverlayPanel ref="todoOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                     <div class="container-fluid p-0">
-                                        <div class="row hover-log" v-for="(item, index) in activityType" :key="index">
-                                            <div class="py-2 px-3">{{ item.value }}</div>
+                                        <div class="row hover-log c-pointer" v-for="(item, todoIndex) in activityType" :key="todoIndex">
+                                            <div class="py-2 px-3" @click="resetActivityType(todoIndex, index, indx)">{{ item.value }}</div>
                                         </div>
                                     </div>
                                 </OverlayPanel>
                             </div>
                             <div class="col-4 mt-2">
                                 <div @click="togglePriority" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
-                                    None&nbsp; <i class="pi pi-sort-down"></i>
+                                    {{ item.selectedPriority ? item.selectedPriority : taskPriority.find(i => i.id === item.loggedTask.priority).name }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
                                 <OverlayPanel ref="priorityOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                     <div class="container-fluid p-0">
-                                        <div class="row hover-log" v-for="(item, index) in taskPriority" :key="index">
-                                            <div class="py-2 px-3">{{ item.name }}</div>
+                                        <div class="row hover-log" v-for="(item, priorityIndex) in taskPriority" :key="priorityIndex">
+                                            <div class="py-2 px-3" @click="resetPriority(priorityIndex, index, indx)">{{ item.name }}</div>
                                         </div>
                                     </div>
                                 </OverlayPanel>
                             </div>
                             <div class="col-4 mt-2">
                                 <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
-                                    Oladapo Daniel&nbsp; <i class="pi pi-sort-down"></i>
+                                    {{ item.selectedContact ? item.selectedContact : item.person }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
                                 <OverlayPanel ref="contactOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="make-scrollable">
                                     <div class="container-fluid p-0">
-                                        <div class="row hover-log" v-for="(item, index) in allContacts" :key="index">
-                                            <div class="py-2 px-3" @click="chooseContact(item)">{{ item.firstName }} {{ item.lastName }}</div>
+                                        <div class="row hover-log" v-for="(item, contactIndex) in allContacts" :key="contactIndex">
+                                            <div class="py-2 px-3" @click="chooseContact(item, index, indx)">{{ item.firstName }} {{ item.lastName }}</div>
                                         </div>
                                     </div>
                                 </OverlayPanel>
@@ -537,6 +537,26 @@ export default {
             }
         }
 
+        const getDueDate = (date) => {
+             return frmservice.dueDate().find(i => new Date(i.value).toDateString() == new Date(date).toDateString()) ? frmservice.dueDate().find(i => new Date(i.value).toDateString() == new Date(date).toDateString()).name : "Select due date"
+        }
+
+        const resetActivityType = (todoIndex, index, indx) => {
+            console.log(todoIndex, index)
+            props.activities[index].value[indx].selectedActivity = props.activityType[todoIndex]
+            todoOp.value.hide();
+        }
+
+        const resetPriority = (priorityIndex, index, indx) => {
+            props.activities[index].value[indx].selectedPriority = props.taskPriority[priorityIndex]
+            priorityOp.value.hide();
+        }
+
+        const chooseContact = (item, index, indx) => {
+            console.log(item)
+            props.activities[index].value[indx].selectedContact = item
+        }
+
         return {
             noteIcon,
             toggleNoteIcon,
@@ -576,7 +596,11 @@ export default {
             setToEditComment,
             commentId,
             commentIndexToEdit,
-            taskCommentRef
+            taskCommentRef,
+            getDueDate,
+            resetActivityType,
+            resetPriority,
+            chooseContact
 
         }
     }
