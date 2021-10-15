@@ -550,7 +550,7 @@ border-top-right-radius: 0 !important;
 
     }
     .round-border{
-   border-radius: 0.5rem;
+   /* border-radius: 0.5rem; */
    box-shadow: 0 0.063rem 0.25rem #02172e45;
    border: 0.063rem solid #dde2e6;
 }
