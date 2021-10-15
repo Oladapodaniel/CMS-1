@@ -324,11 +324,11 @@
         </div>
         <div class="inputs">
           <div class="submit-div">
-            <!-- <button class="action-btn ml-3 cancel-btn btn" @click.prevent="onCancel">
+            <button class="action-btn ml-3 cancel-btn btn" @click.prevent="onCancel">
               Cancel
-            </button> -->
+            </button>
 
-            <button
+            <!-- <button
               class="default-btn outline-none"
               :class="{ 'btn-loading': loading }"
               :disabled="loading"
@@ -339,7 +339,7 @@
               ></i>
               <span>Save and add another</span>
               <span></span>
-            </button>
+            </button> -->
             <button class="ml-3 submit-btn text-white btn" @click.prevent="saveAndRoute">
               Save
             </button>
@@ -820,7 +820,7 @@ export default {
           if (response.status === 200 || response.status === 201) {
             loading.value = false;
             // if(!routeToFRM.value) {
-            //   router.push("/tenant/firsttimerslist");
+              router.push("/tenant/firsttimerslist");
             // } else {
             //   router.push(`/tenant/firsttimermanagement/${res.data.personId}`)
             //   routeToFRM.value = false
@@ -907,7 +907,7 @@ export default {
     };
 
     const saveAndRoute = () => {
-      routeToFRM.value = true
+      // routeToFRM.value = true
       onSubmit()
     }
 
