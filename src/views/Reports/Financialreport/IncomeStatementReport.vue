@@ -134,7 +134,7 @@
             :summary="[ { name: 'Test', y: 50 }, { name: 'DEST', y: 50 }, ]"
           />
       </div> -->
-      <div class="chart  row d-flex"
+      <!-- <div class="chart  row d-flex"
       :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
         <div class="chart1 col-12 col-md-6">
           <IncomeStatementChart
@@ -165,7 +165,7 @@
             </div>
         </div>
 
-        </div>
+        </div> -->
       <!--end of chart area-->
     </section>
 
@@ -276,11 +276,11 @@
 
 import { ref, computed} from "vue";
 import Calendar from "primevue/calendar";
-import IncomeStatementChart from "@/components/charts/ReportPieChart.vue";
+// import IncomeStatementChart from "@/components/charts/ReportPieChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
-import IncomeStatmentColumnChart from "../../../components/charts/ReportColumnChart.vue";
-import NegativeChart from "../../../components/charts/NegativeColumnChart";
+// import IncomeStatmentColumnChart from "../../../components/charts/ReportColumnChart.vue";
+// import NegativeChart from "../../../components/charts/NegativeColumnChart";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforincomestatement.js";
 import groupResponse from '../../../services/groupArray/groupResponse.js'
@@ -291,9 +291,9 @@ import incomeExpenseHelper from "./Helper/Incomeexpenses-helper.js";
 export default {
   components: {
     Calendar,
-    IncomeStatementChart,
-    IncomeStatmentColumnChart,
-    NegativeChart,
+    // IncomeStatementChart,
+    // IncomeStatmentColumnChart,
+    // NegativeChart,
       // Dropdown,
     // InputText,
     // Listbox,
@@ -761,6 +761,11 @@ border-top-right-radius: 0 !important;
   margin: 0.125rem 0;
 }
 
+.responsive-horizontalrule{
+  display:inline-block;
+}
+
+
 .answer-row2{
   background-color: #136ACD;
 }
@@ -771,9 +776,6 @@ border-top-right-radius: 0 !important;
    color: #fff;
 }
 
-.responsive-horizontalrule{
-  display:inline-block;
-}
 
 /* .move-enter-active {
   animation: move-in .8s;
