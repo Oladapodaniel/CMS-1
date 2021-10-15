@@ -134,7 +134,7 @@
             :summary="[ { name: 'Test', y: 50 }, { name: 'DEST', y: 50 }, ]"
           />
       </div> -->
-      <div class="chart  row d-flex"
+      <!-- <div class="chart  row d-flex"
       :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
         <div class="chart1 col-12 col-md-6">
           <IncomeStatementChart
@@ -165,7 +165,7 @@
             </div>
         </div>
 
-        </div>
+        </div> -->
       <!--end of chart area-->
     </section>
 
@@ -209,11 +209,11 @@
               <td>{{ formatDate(account.date) }}</td>
             </tr>
             <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
-              <td class="answer">Sub-Total</td>
+              <td class="subtotal">Subtotal</td>
               <!-- <td></td> -->
               <td></td>
               <td></td>
-              <td class="answer">NGN{{ sum(tableData[row].expenses).toLocaleString() }}.00</td>
+              <td class="subtotal">NGN{{ sum(tableData[row].expenses).toLocaleString() }}.00</td>
               <td></td>
             </tr>
             <tr v-for="(account, indx) in tableData[row].incomes" :key="indx">
@@ -225,37 +225,37 @@
               <td>{{ formatDate(account.date) }}   </td>
             </tr>
             <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
-              <td class="answer">Sub-Total</td>
-              <td></td>
-              <td></td>
+              <td class="subtotal">Subtotal</td>
               <!-- <td></td> -->
-              <td class="answer">NGN{{ sum(tableData[row].incomes).toLocaleString() }}.00</td>
+              <td></td>
+              <td></td>
+              <td class="subtotal">NGN{{ sum(tableData[row].incomes).toLocaleString() }}.00</td>
               <td></td>
             </tr>
             <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
-              <td class="answer">Total</td>
-              <td></td>
-              <td></td>
+              <td class="total-answer">Total</td>
               <!-- <td></td> -->
-              <td class="answer">NGN{{ 1000000 }}.00</td>
+              <td></td>
+              <td></td>
+              <td class="total-answer">NGN{{ sumOfDiffAcctInFunds(tableData[row]).toLocaleString() }}.00</td>
               <td></td>
             </tr>
              <tr  style="background-color: #fff;">
-                      <td>&nbsp;</td>
+                      <!-- <td>&nbsp;</td> -->
                       <td>&nbsp;</td>
                       <td>&nbsp;</td>
                       <td>&nbsp;</td>
                       <td>&nbsp;</td>
             </tr>
           </tbody>
-          <tbody class="font-weight-bold text-nowrap" style="
+          <tbody class="font-weight-bolder text-nowrap" style="
                         font-size: small">
-           <tr class="answer-row">
-              <td class="answer">Grand Total</td>
+           <tr class="answer-row2">
+              <td class="gross-total">Gross Total</td>
               <!-- <td></td> -->
               <td></td>
               <td></td>
-              <td class="answer">NGN{{ diffBtwIncomeAndExpenses.toLocaleString()  }}.00</td>
+              <td class="gross-total responsive-horizontalrule"> NGN{{ diffBtwIncomeAndExpenses.toLocaleString()  }}.00 <hr class="horizontal-rule"/></td>
               <td></td>
             </tr>
           </tbody>
@@ -276,11 +276,11 @@
 
 import { ref, computed} from "vue";
 import Calendar from "primevue/calendar";
-import IncomeStatementChart from "@/components/charts/ReportPieChart.vue";
+// import IncomeStatementChart from "@/components/charts/ReportPieChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
-import IncomeStatmentColumnChart from "../../../components/charts/ReportColumnChart.vue";
-import NegativeChart from "../../../components/charts/NegativeColumnChart";
+// import IncomeStatmentColumnChart from "../../../components/charts/ReportColumnChart.vue";
+// import NegativeChart from "../../../components/charts/NegativeColumnChart";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforincomestatement.js";
 import groupResponse from '../../../services/groupArray/groupResponse.js'
@@ -291,9 +291,9 @@ import incomeExpenseHelper from "./Helper/Incomeexpenses-helper.js";
 export default {
   components: {
     Calendar,
-    IncomeStatementChart,
-    IncomeStatmentColumnChart,
-    NegativeChart,
+    // IncomeStatementChart,
+    // IncomeStatmentColumnChart,
+    // NegativeChart,
       // Dropdown,
     // InputText,
     // Listbox,
@@ -350,6 +350,46 @@ export default {
           return incomeTotal - expenseTotal
       })
 
+
+          // const dataInFundTypeOne = tableData.value.incomes
+          // // const dataInFundTypeTwo = tableData
+          // console.log(dataInFundTypeOne, '❤️🤣👍')
+          // // console.log(dataInFundTypeTwo, '👍🥁🎁')
+
+
+      const sumOfDiffAcctInFunds = (item) => {
+        let incomeres = item.incomes.reduce((a, b) => {
+          return { amount: +a.amount + +b.amount }
+        })
+        console.log(incomeres.amount)
+
+       let expenseres = item.expenses.length > 0 ? item.expenses.reduce((a, b) => {
+          return { amount: +a.amount + +b.amount }
+        }) : 0
+        console.log(expenseres.amount)
+        const summedValue = Math.abs(incomeres.amount) + Math.abs(expenseres.amount)
+        console.log(summedValue)
+        return summedValue   //     if(tableData.value.length === 0) return 0
+      //     const dataInFundTypeOne  = [];
+      //     for(let groupedItem of tableData.value) {
+      //       console.log(groupedItem)
+      //       dataInFundTypeOne.push(...groupedItem.value)
+      //     }
+      //     console.log(dataInFundTypeOne, "💐😀🎉")
+      //     return dataInFundTypeOne.reduce((arr, cur) => {
+      //           return arr + cur[type]
+      //     }, 0)
+      }
+
+      // console.log(sumOfDiffAcctInFunds(tableData), '❤️❤️❤️❤️')
+
+      // const data = {
+      //    code: 42,
+      //    items: [{ id: 1, name: 'foo'},
+      //            {id: 2, name: 'bar'} ]
+      //                };
+      //   const item_name = data['items'][1]['name'];
+      //     console.log(item_name, "🎁🎁")
 
     const generateReport = () => {
       axios
@@ -542,6 +582,10 @@ export default {
 
 
     return {
+      // dataInFundTypeOne,
+      // dataInFundTypeTwo,
+      // data,
+      sumOfDiffAcctInFunds,
       groupAccountCategoery,
       fundSum,
       Calendar,
@@ -681,10 +725,16 @@ border-top-right-radius: 0 !important;
   /* overflow-y: scroll; */
 }
 
-.answer{
-  font-weight: bolder;
-  font-size:medium;
-   /* color: #000; */
+
+.subtotal{
+  font-weight: 700;
+  font-size:large;
+    color: #136acd;
+}
+
+.total-answer{
+  font-weight: 900;
+  font-size:large;
    color: #136acd;
 }
 
@@ -704,6 +754,28 @@ border-top-right-radius: 0 !important;
 .accounType-color{
   font-size:medium;
 }
+
+.horizontal-rule{
+ border: 0.1875rem solid #FFE50F;
+  border-radius: 5px;
+  margin: 0.125rem 0;
+}
+
+.responsive-horizontalrule{
+  display:inline-block;
+}
+
+
+.answer-row2{
+  background-color: #136ACD;
+}
+
+.gross-total{
+    font-weight: bolder;
+  font-size:large;
+   color: #fff;
+}
+
 
 /* .move-enter-active {
   animation: move-in .8s;

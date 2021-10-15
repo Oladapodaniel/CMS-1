@@ -1,4 +1,4 @@
-<template>{{mappedExpenses}}
+<template>
   <div class="container-fluid px-5">
     <!-- header area -->
     <div class="container">
@@ -118,7 +118,8 @@
     <div id="element-to-print">
       <section>
         <!-- chart area -->
-        <div  class="chart row d-flex justify-content-center"
+        <!-- d-flex justify-content-center -->
+        <!-- <div  class="chart row"
         :class=" accountTransaction &&  accountTransaction.length > 0 ? 'graph-area' : '' ">
         <div class="chart1 col-12 col-md-6 ">
             <ByGenderChart
@@ -129,7 +130,7 @@
               :summary="mappedExpenses"
             />
           </div>
-        </div>
+        </div> -->
         <!--end of chart area -->
       </section>
 
@@ -169,20 +170,20 @@
                   <td>{{ formatDate(account.date) }}</td>
                   </tr>
                 <tr class="answer-row" v-if="fund.name !== 'null'">
-                  <td  class="answer">Subtotal</td>
+                  <td  class="subtotal">Subtotal</td>
                   <td></td>
                   <!-- <td></td> -->
-                  <td class="answer">NGN{{ total(fund.value).toLocaleString() }}.00</td>
+                  <td class="subtotal">NGN{{ total(fund.value).toLocaleString() }}.00</td>
                   <td></td>
                 </tr>
             </tbody>
              <tbody class="font-weight-bold text-nowrap" style="
                            font-size: small">
-           <tr class="answer-row">
-              <td class="answer">Total Expenses</td>
+           <tr class="answer-row2">
+              <td class="total">Total Expenses</td>
               <!-- <td></td> -->
               <td></td>
-              <td class="answer">NGN{{ fundSum.toLocaleString()}}.00</td>
+              <td class="total responsive-horizontalrule">NGN{{ fundSum.toLocaleString()}}.00<hr class="horizontal-rule"/></td>
               <td></td>
             </tr>
           </tbody>
@@ -243,7 +244,7 @@
 <script>
 import { ref, computed } from "vue";
 import Calendar from "primevue/calendar";
-import ByGenderChart from "@/components/charts/PieChart.vue";
+// import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
@@ -259,7 +260,7 @@ import groupResponse from '../../../services/groupArray/groupResponse.js';
 export default {
   components: {
     Calendar,
-    ByGenderChart,
+    // ByGenderChart,
     // Listbox,
     // PerformanceColumnChart,
     // PaginationButtons,
@@ -411,21 +412,6 @@ export default {
 </script>
 
 <style scoped>
-/* .default-btn {
-  font-weight: 800;
-  font-size: 1rem;
-  white-space: initial;
-  border-radius: 3rem;
-  border: 1px solid #136acd;
-  padding: 0.5rem 1.25rem;
-  color: #136acd;
-  width: auto;
-  outline: transparent !important;
-  max-height: 2.5rem;
-  background: #fff;
-  min-width: 7.6rem;
-} */
-
 .default-btn {
     font-weight: 600;
     white-space: initial;
@@ -553,6 +539,33 @@ border-top-right-radius: 0 !important;
   color:#136acd;
   font-size: larger;
 }
+
+.total{
+    font-weight: bolder;
+  font-size:large;
+   color: #fff;
+}
+
+.answer-row2{
+  background-color: #136ACD;
+}
+
+.subtotal{
+  font-weight: 700;
+  font-size:large;
+    color: #136acd;
+}
+
+.horizontal-rule{
+ border: 0.1875rem solid #FFE50F;
+  border-radius: 5px;
+  margin: 0.125rem 0;
+}
+
+.responsive-horizontalrule{
+  display:inline-block;
+}
+
 
 /* .move-enter-active {
   animation: move-in .8s;
