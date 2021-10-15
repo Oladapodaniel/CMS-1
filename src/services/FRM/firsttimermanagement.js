@@ -340,6 +340,21 @@ const frm = {
                     }
                 })
         })
+    },
+    editBasicDetails (body) {
+        return new Promise((resolve, reject) => {
+            axios.put(`/api/People/EditFirstTimer`, body)
+                .then(res => {
+                    resolve(res.data)
+                })
+                .catch(error => {
+                    if (error.response) {
+                        reject(error.response)
+                    }   else {
+                        reject(error)
+                    }
+                })
+        })
     }
 }
 

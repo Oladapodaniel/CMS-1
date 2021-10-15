@@ -100,7 +100,7 @@
                             </div>
                             <div class="col-6 mt-2">
                                 <div @click="toggleReminder" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                    {{ reminder(item.loggedTask.reminder) }}&nbsp; <i class="pi pi-sort-down"></i>
+                                    {{ item.loggedTask.reminder }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
                                 <OverlayPanel ref="reminderOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                     <div class="container-fluid p-0">
