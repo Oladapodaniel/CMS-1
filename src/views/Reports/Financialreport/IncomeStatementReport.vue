@@ -123,6 +123,17 @@
 
     <section>
       <!-- chart area -->
+      <!-- <div class="chart  row d-flex"
+      :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
+        <div class="chart1 col-12 col-md-6">
+          <IncomeStatementChart
+            domId="chart"
+            title="Income Statement Report"
+            distance ="5"
+            :titleMargin="10"
+            :summary="[ { name: 'Test', y: 50 }, { name: 'DEST', y: 50 }, ]"
+          />
+      </div> -->
       <div class="chart  row d-flex"
       :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
         <div class="chart1 col-12 col-md-6">
@@ -148,11 +159,11 @@
             />
       </div>
 
-        <!-- <div class="chart row">
+        <div class="chart row">
             <div class="col-12 col-md-6">
                <NegativeChart :data="incomeStatementDetail"/>
             </div>
-        </div> -->
+        </div>
 
         </div>
       <!--end of chart area-->
@@ -166,9 +177,8 @@
           <thead class="table-header-area-main">
             <tr
              class="small-text text-capitalize text-nowrap font-weight-bold"
-              style="border-bottom: 0; font-size:medium"
-            >
-              <th scope="col">Fund</th>
+              style="border-bottom: 0; font-size:medium">
+              <!-- <th scope="col">Fund</th> -->
               <th scope="col">Account Category</th>
               <th scope="col">Account Name</th>
               <th scope="col">Description</th>
@@ -180,16 +190,19 @@
           <tbody class="font-weight-bold text-nowrap"  style="
     font-size: small" v-for="(row, index) in tableRows" :key="index">
             <tr>
-              <td>{{ row }}</td>
-              <td></td>
+              <td
+                 class="fundType-color"
+                 style="font-size: medium">{{ row }}
+              </td>
+              <!-- <td></td> -->
               <td></td>
               <td></td>
               <td></td>
               <td></td>
             </tr>
             <tr v-for="(account, indx) in tableData[row].expenses" :key="indx">
-              <td></td>
-              <td>{{ indx === 0 ? account.accountCategory : '' }}</td>
+              <!-- <td></td> -->
+              <td class="accounType-color">{{ indx === 0 ? account.accountCategory : '' }}</td>
               <td>{{ account.accountName }}</td>
               <td>{{ account.description }}</td>
               <td>({{ Math.abs(account.amount).toLocaleString()}}.00)</td>
@@ -197,15 +210,15 @@
             </tr>
             <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
               <td class="answer">Sub-Total</td>
-              <td></td>
+              <!-- <td></td> -->
               <td></td>
               <td></td>
               <td class="answer">NGN{{ sum(tableData[row].expenses).toLocaleString() }}.00</td>
               <td></td>
             </tr>
             <tr v-for="(account, indx) in tableData[row].incomes" :key="indx">
-              <td></td>
-              <td>{{ indx === 0 ? account.accountCategory : '' }}</td>
+              <!-- <td></td> -->
+              <td class="accounType-color">{{ indx === 0 ? account.accountCategory : '' }}</td>
               <td>{{ account.accountName }}</td>
               <td>{{ account.description }}</td>
               <td>{{ Math.abs(account.amount).toLocaleString() }}.00</td>
@@ -215,16 +228,31 @@
               <td class="answer">Sub-Total</td>
               <td></td>
               <td></td>
-              <td></td>
+              <!-- <td></td> -->
               <td class="answer">NGN{{ sum(tableData[row].incomes).toLocaleString() }}.00</td>
               <td></td>
             </tr>
-          </tbody>
-          <tbody class="font-weight-bold text-nowrap" style="
-    font-size: small">
-           <tr class="answer-row">
+            <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
               <td class="answer">Total</td>
               <td></td>
+              <td></td>
+              <!-- <td></td> -->
+              <td class="answer">NGN{{ 1000000 }}.00</td>
+              <td></td>
+            </tr>
+             <tr  style="background-color: #fff;">
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+            </tr>
+          </tbody>
+          <tbody class="font-weight-bold text-nowrap" style="
+                        font-size: small">
+           <tr class="answer-row">
+              <td class="answer">Grand Total</td>
+              <!-- <td></td> -->
               <td></td>
               <td></td>
               <td class="answer">NGN{{ diffBtwIncomeAndExpenses.toLocaleString()  }}.00</td>
@@ -251,20 +279,21 @@ import Calendar from "primevue/calendar";
 import IncomeStatementChart from "@/components/charts/ReportPieChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
-// import IncomeStatmentColumnChart from "../../../components/charts/ReportColumnChart.vue";
-// import NegativeChart from "../../../components/charts/NegativeColumnChart";
+import IncomeStatmentColumnChart from "../../../components/charts/ReportColumnChart.vue";
+import NegativeChart from "../../../components/charts/NegativeColumnChart";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforincomestatement.js";
 import groupResponse from '../../../services/groupArray/groupResponse.js'
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import incomeExpenseHelper from "./Helper/Incomeexpenses-helper.js";
+// import Listbox from 'primevue/listbox';
 
 export default {
   components: {
     Calendar,
     IncomeStatementChart,
-    // IncomeStatmentColumnChart,
-    // NegativeChart,
+    IncomeStatmentColumnChart,
+    NegativeChart,
       // Dropdown,
     // InputText,
     // Listbox,
@@ -421,12 +450,13 @@ export default {
             console.log(groupofIcomeAndExpense.value)
         };
 
+// Negative Column Chart Area
          const incomeStatementDetail = computed(() => {
          if (groupofIcomeAndExpense.value.length === 0) return []
          allIncomeAndExpenses.value.push({
              name: 'Income',
             //  color: '#002044',
-             data: [groupofIcomeAndExpense.value[0].value]
+             data: [Math.abs(groupofIcomeAndExpense.value[0].value)]
          })
 
          allIncomeAndExpenses.value.push({
@@ -437,6 +467,7 @@ export default {
          console.log(allIncomeAndExpenses.value)
          return allIncomeAndExpenses.value
      })
+     // Negative Column Chart Area
 /*End of Chart Area */
 
     let groupedIncomeItemToDisplay = ref([])
@@ -551,21 +582,6 @@ export default {
 </script>
 
 <style scoped>
-/* .default-btn {
-  font-weight: 800;
-  font-size: 1rem;
-  white-space: initial;
-  border-radius: 3rem;
-  border: 1px solid #136acd;
-  padding: 0.5rem 1.25rem;
-  color: #136acd;
-  width: auto;
-  outline: transparent !important;
-  max-height: 2.5rem;
-  background: #fff;
-  min-width: 7.6rem;
-} */
-
 .default-btn {
     font-weight: 600;
     white-space: initial;
@@ -680,7 +696,16 @@ border-top-right-radius: 0 !important;
   background-color:none;
 }
 
-.move-enter-active {
+
+.fundType-color{
+  color:#136acd;
+  font-size: larger;
+}
+.accounType-color{
+  font-size:medium;
+}
+
+/* .move-enter-active {
   animation: move-in .8s;
 }
 .move-leave-active {
@@ -696,7 +721,7 @@ border-top-right-radius: 0 !important;
     opacity: 1;
   }
 
-}
+} */
 
 /* .fade-enter-active {
   animation: fade-in .5s;

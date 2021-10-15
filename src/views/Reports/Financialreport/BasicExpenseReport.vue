@@ -1,4 +1,4 @@
-<template>{{fund}} {{funds.value}}
+<template>{{mappedExpenses}}
   <div class="container-fluid px-5">
     <!-- header area -->
     <div class="container">
@@ -140,10 +140,10 @@
           <table id="table" class="table remove-styles mt-0 table-header-area">
             <thead class="table-header-area-main">
               <tr
-              class="small-text text-capitalize text-nowrap font-weight-bold"
+              class=" text-capitalize text-nowrap font-weight-bold"
                 style="border-bottom: 0; font-size:medium"
               >
-                <th scope="col">Fund</th>
+                <!-- <th scope="col">Fund</th> -->
                 <th scope="col">Account Name</th>
                 <th scope="col">Description</th>
                 <th scope="col">Amount</th>
@@ -154,24 +154,24 @@
                           font-size: small" v-for="(fund, index) in funds"
               :key="index">
                 <tr v-if="fund.name !== 'null'">
-                  <td>{{ fund.name }}</td>
+                  <td class="fundType-color" >{{ fund.name }}</td>
                   <td></td>
                   <td></td>
-                  <td></td>
+                  <!-- <td></td> -->
                   <td></td>
                 </tr>
                 <tr v-for="(account, indxx) in fund.name !== 'null' ? fund.value : []"
               :key="indxx">
-                  <td></td>
+                  <!-- <td></td> -->
                   <td>{{ account.accountName }}</td>
                   <td>{{ account.description }}</td>
                   <td>{{ Math.abs(account.amount).toLocaleString() }}.00</td>
                   <td>{{ formatDate(account.date) }}</td>
                   </tr>
                 <tr class="answer-row" v-if="fund.name !== 'null'">
-                  <td  class="answer">Sub-Total</td>
+                  <td  class="answer">Subtotal</td>
                   <td></td>
-                  <td></td>
+                  <!-- <td></td> -->
                   <td class="answer">NGN{{ total(fund.value).toLocaleString() }}.00</td>
                   <td></td>
                 </tr>
@@ -180,7 +180,7 @@
                            font-size: small">
            <tr class="answer-row">
               <td class="answer">Total Expenses</td>
-              <td></td>
+              <!-- <td></td> -->
               <td></td>
               <td class="answer">NGN{{ fundSum.toLocaleString()}}.00</td>
               <td></td>
@@ -252,7 +252,7 @@ import dateFormatter from  "../../../services/dates/dateformatter";
 // import Listbox from 'primevue/listbox';
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforbasicexpense.js";
-import groupResponse from '../../../services/groupArray/groupResponse.js'
+import groupResponse from '../../../services/groupArray/groupResponse.js';
 // import numbers_formatter from "../../../services/numbers/numbers_formatter.js"
 // import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
 
@@ -261,8 +261,6 @@ export default {
     Calendar,
     ByGenderChart,
     // Listbox,
-    // Dropdown,
-    // InputText,
     // PerformanceColumnChart,
     // PaginationButtons,
   },
@@ -551,7 +549,12 @@ border-top-right-radius: 0 !important;
   background-color:none;
 }
 
-.move-enter-active {
+.fundType-color{
+  color:#136acd;
+  font-size: larger;
+}
+
+/* .move-enter-active {
   animation: move-in .8s;
 }
 .move-leave-active {
@@ -567,5 +570,5 @@ border-top-right-radius: 0 !important;
     opacity: 1;
   }
 
-}
+} */
 </style>

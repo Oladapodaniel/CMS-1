@@ -143,7 +143,7 @@
         <table class="table remove-styles mt-0 table-responsive table-hover table-header-area" id="table">
           <thead class="table-header-area-main">
             <tr
-              class="small-text text-capitalize text-nowrap"
+              class="font-weight-bold text-capitalize text-nowrap"
               style="border-bottom: 0"
             >
               <th scope="col">Fund</th>
@@ -154,7 +154,7 @@
               <th scope="col">Date</th>
             </tr>
           </thead>
-          <tbody class="font-weight-normal text-nowrap" v-for="(group, index) in Array.from(series)" :key='index'>
+          <tbody class="font-weight-bold small-text text-nowrap" v-for="(group, index) in Array.from(series)" :key='index'>
             <tr v-for="(item, index) in accounts(group)" :key='index'>
               <td>{{item ? item.fund : ''}}</td>
               <td>{{item ? item.accountCategory : ''}}</td>
@@ -164,11 +164,11 @@
               <td>{{item ? formatDate(item.date): ''}}</td>
             </tr>        
             <tr class="second-row">
+              <td class="totalAmount">Total Income</td>
               <td></td>
               <td></td>
               <td></td>
-              <td></td>
-              <td>{{grouped(group)}}</td>
+              <td class="totalAmount">#{{numberWithCommas(grouped(group))}}</td>
               <td></td>
             </tr>        
           </tbody>
@@ -333,6 +333,10 @@ export default {
       }
       return color;
     }
+
+    const numberWithCommas = (x) => {
+     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
     const grouped = (group) => {
       // alert(group)
       console.log(groupedAccountName.value , 'star');
@@ -376,7 +380,7 @@ export default {
       formatDate,
       incomeEndPoint,
       getRandomColor,
-
+      numberWithCommas,
     };
   },
 };
@@ -406,7 +410,12 @@ export default {
 .heading-text {
   font: normal normal 800 1.5rem Nunito sans;
 }
-
+.totalAmount {
+    font-weight: bolder;
+    font-size: medium;
+    color: #136acd;
+    /* color: blue; */
+}
 .bg-area {
   background-color: #ebeff4;
   border-radius: 0.5rem;

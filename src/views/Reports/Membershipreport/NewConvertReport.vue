@@ -143,16 +143,18 @@
             >
               <!-- <th scope="col">Title</th> -->
               <th scope="col">Name</th>
+                <th scope="col">Phone</th>
               <th scope="col">Email</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Gender</th>
-              <th scope="col">Marital Status</th>
               <th scope="col">Home Address</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Current Status</th>
+              <!-- <th scope="col">Contact Status</th> -->
+              <!-- <th scope="col">Marital Status</th>
               <th scope="col">Event Name</th>
               <th scope="col">Description</th>
               <th scope="col">Activity Date</th>
-              <th scope="col">Contact Date</th>
-              <th scope="col">Contact Status</th>
+              <th scope="col">Contact Date</th> -->
+
             </tr>
           </thead>
           <tbody class="font-weight-bold text-nowrap"
@@ -161,16 +163,17 @@
             :key="index">
               <!-- <td>{{ newConvert.title }}</td> -->
               <td>{{ newConvert.firstName }} {{ newConvert.lastName }}</td>
+               <td>{{ newConvert.mobilePhone }}</td>
               <td>{{ newConvert.email }}</td>
-              <td>{{ newConvert.mobilePhone }}</td>
+               <td>{{ newConvert.homeAddress }}</td>
               <td>{{ newConvert.gender }}</td>
-              <td>{{ newConvert.maritalStatus }}</td>
-              <td>{{ newConvert.homeAddress }}</td>
+               <td>{{ newConvert.contactStatus}}</td>
+              <!-- <td>{{ newConvert.maritalStatus }}</td>
               <td>{{ newConvert.name }}</td>
               <td>{{ newConvert.description }}</td>
               <td>{{ formatDate(newConvert.activityDate) }}</td>
-              <td>{{ formatDate(newConvert.contactDate)}}</td>
-              <td>{{ newConvert.contactStatus}}</td>
+              <td>{{ formatDate(newConvert.contactDate)}}</td> -->
+
             </tr>
           </tbody>
         </table>
@@ -191,8 +194,6 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
-// import Dropdown from "primevue/dropdown";
-// import InputText from "primevue/inputtext";
 import Listbox from 'primevue/listbox';
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
@@ -202,8 +203,6 @@ export default {
     Calendar,
     ByGenderChart,
     Listbox,
-    //   Dropdown,
-    // InputText,
     // PaginationButtons,
   },
   setup() {
@@ -275,20 +274,6 @@ console.log(newConvertsInChurch.value, "✌️✌️");
 </script>
 
 <style scoped>
-/* .default-btn {
-  font-weight: 800;
-  font-size: 1rem;
-  white-space: initial;
-  border-radius: 3rem;
-  border: 1px solid #136acd;
-  padding: 0.5rem 1.25rem;
-  color: #136acd;
-  width: auto;
-  outline: transparent !important;
-  max-height: 2.5rem;
-  background: #fff;
-  min-width: 7.6rem;
-} */
 
 .default-btn {
     font-weight: 600;
@@ -381,7 +366,7 @@ border-top-right-radius: 0 !important;
 
 .responsiveness{
   max-width: 100%;
-  overflow-x: scroll;
+  /* overflow-x: scroll; */
   /* overflow-y: scroll; */
 }
 
