@@ -71,6 +71,7 @@ import { ref, watchEffect } from '@vue/runtime-core';
         }
 
         watchEffect(() => {
+            // alert(props.loadedMessage)
             editorData.value = props.loadedMessage;
         })
 

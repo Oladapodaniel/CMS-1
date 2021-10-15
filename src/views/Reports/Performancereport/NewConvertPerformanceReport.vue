@@ -220,8 +220,8 @@ export default {
     const showReport = ref(false);
     const pieChart = ref([{ name: "First Timer ", color: "#002044", data: [ 0, 3, 13, 14, 0, 15, 20, 20 ] }]);
     // const series = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 24, 25, 26, 27, 28, 29, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52 ]);
-    const startDate = ref(new Date());
-    const endDate = ref(new Date());
+    const startDate = ref("");
+    const endDate = ref("");
     const newConvertInChurch = ref([]);
     const genderChartResult = ref([]);
     const maritalStatusChartResult = ref([]);

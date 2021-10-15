@@ -168,7 +168,7 @@
               <td></td>
               <td></td>
               <td></td>
-              <td class="totalAmount">#{{grouped(group)}}</td>
+              <td class="totalAmount">#{{numberWithCommas(grouped(group))}}</td>
               <td></td>
             </tr>        
           </tbody>
@@ -333,6 +333,10 @@ export default {
       }
       return color;
     }
+
+    const numberWithCommas = (x) => {
+     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
     const grouped = (group) => {
       // alert(group)
       console.log(groupedAccountName.value , 'star');
@@ -376,7 +380,7 @@ export default {
       formatDate,
       incomeEndPoint,
       getRandomColor,
-
+      numberWithCommas,
     };
   },
 };
