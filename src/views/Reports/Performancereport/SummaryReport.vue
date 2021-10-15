@@ -1,7 +1,18 @@
 <template>
 <div class="container container-wide mt-5 mb-4">
-     <div>
-            <h3 class="font-weight-bold mt-5 mb-2">Church Activities Performance Summary Report</h3>
+     <div class="row d-flex justify-content-between px-3">
+         <div>
+            <h3 class="font-weight-bold mt-2 mb-2">Church Activities Performance Summary Report</h3>
+        </div>
+              <!-- <div class="heading-text">Summary Report</div> -->
+              <div class="default-btn border-secondary font-weight-normal c-pointer"
+                @click="() => (showExport = !showExport)"
+                style="width: fixed; position:relative">
+                        Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                        <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+                              <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                        </div>
+              </div>
         </div>
   <div style="background: #ebeff4;" class="row m-0 py-5" >
                 <div class="col-12 col-md-6 col-lg-3">
@@ -47,10 +58,10 @@
                     </div>
                 </div>
              </div> 
-             <div>
+             <div id="element-to-print">
                  <h3 class="font-weight-bold mt-5 ml-2"  v-show="analysisReport.length > 0"></h3>
                  
-                 <div class=" borderInner mb-2">
+                 <div class=" borderInner mb-2" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                      <h5 class="ml-3 mt-5"></h5>
                         <div class="round-border" v-show="analysisReport.length > 0">
                         <PerformanceColumnChart
@@ -65,7 +76,7 @@
                         />
                         </div>
                  </div>
-                  <div class="borderInner mb-2">
+                  <div class="borderInner mb-2" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                      <h5 class="ml-3 mt-5"></h5>
                      <div class="round-border"  v-show="analysisReport.length > 0">
                         <PerformanceColumnChart
@@ -81,7 +92,7 @@
                         </div>
 
                  </div>
-                   <div class="borderInner mb-2">
+                   <div class="borderInner mb-2" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                      <h5 class="ml-3 mt-5"></h5>
                      <div class="round-border" v-show="analysisReport.length > 0">
                         <PerformanceColumnChart
@@ -97,7 +108,7 @@
                         </div>
 
                  </div>
-                 <div class="borderInner mb-2">
+                 <div class="borderInner mb-2" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                      <h5 class="ml-3 mt-5"></h5>
                      <div class="round-border" v-show="analysisReport.length > 0">
                         <PerformanceColumnChart
@@ -113,11 +124,11 @@
                         </div>
 
                  </div>
-             </div>
+             
              <section>
        <!-- table header -->
        
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-5" v-show="analysisReport.length > 0" >
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-5" id="table" v-show="analysisReport.length > 0" :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
         <table class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
@@ -175,6 +186,7 @@
       <!--end table header -->
       <Toast/>
       </section>
+      </div>
              </div>
      
 
@@ -185,6 +197,8 @@
 import { ref, computed } from 'vue';
 // import ByGenderChart from "@/components/charts/PieChart.vue";
 import PerformanceColumnChart from "../../../components/charts/ReportColumnChart.vue";
+import exportService from "../../../services/exportFile/exportservice"
+import printJS from "print-js";
 
 // import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
@@ -192,10 +206,12 @@ import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter.js"
 import {useToast} from 'primevue/usetoast'
 import MultiSelect from 'primevue/multiselect'
+import Listbox from 'primevue/listbox';
 
     export default {
         components:{
             // Dropdown,
+            Listbox,
             MultiSelect,
             Calendar,
             PerformanceColumnChart,
@@ -205,8 +221,18 @@ import MultiSelect from 'primevue/multiselect'
         setup() {
     const toast = useToast()
      const formatDate = (date) => {
-      return dateFormatter.monthDayYear(date);
+      return dateFormatter.normalDate(date);
     };
+     const downloadFile = () => {
+        exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
+      }
+    const showExport = ref(false);
+    const showReport = ref(false);
+    const fileName = ref("")
+    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'}, {name: 'pdf'} ])
+    const selectedFileType = ref("");
+    const fileHeaderToExport = ref([])
+    const fileToExport = ref([]);
     const colunmChartAttendance = ref([{name: "First Timers", color: "", data: [1,67,89,67,80,66,80,67,789,7,80,47, 90]}]);
     const colunmChartNewCovert = ref([{name: "New Convert", color: "", data: [1,67,89,67,80,56,70,67,79,7,80,89,80]}]);
     const  series = ref([])
@@ -251,6 +277,11 @@ import MultiSelect from 'primevue/multiselect'
              mainFirsttimerNewCovertData.value = []
              
              getEventServices()
+                setTimeout(() => {
+                        fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
+                        fileToExport.value = exportService.tableToJson(document.getElementById("table"))
+                    }, 1000)
+                    showReport.value = true
              console.log(report.value); 
              console.log(res, 'Good');
              if(res.status >=400 && res.status <= 499){
@@ -406,7 +437,19 @@ import MultiSelect from 'primevue/multiselect'
             newConvert1Data,
             testmoniesData,
             firstTimer1Data,
-            newConvertsChart
+            newConvertsChart,
+            printJS,
+            showExport,
+            fileName,
+            bookTypeList,
+             selectedFileType,
+             fileHeaderToExport,
+             fileToExport,
+             downloadFile,
+             showReport
+             
+             
+
         }
         
     }
@@ -507,7 +550,7 @@ border-top-right-radius: 0 !important;
 
     }
     .round-border{
-   border-radius: 0.5rem;
+   /* border-radius: 0.5rem; */
    box-shadow: 0 0.063rem 0.25rem #02172e45;
    border: 0.063rem solid #dde2e6;
 }

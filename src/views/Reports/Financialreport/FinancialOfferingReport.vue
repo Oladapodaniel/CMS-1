@@ -30,64 +30,107 @@
         </div>
         <div class="container-fluid ">
                 <div class="row py-5  " style="background: #ebeff4;  border-radius: 0.5rem;">
-                    <div class="p-field  p-col-12 col-md-6 col-lg-3 font-weight-bold  mt-0">
-                        <div><label for="icon">Start Date</label></div>
-                        <Calendar id="icon" v-model="startDate" :showIcon="true" />
-                    </div>
-                    <div class="p-field  p-col-12 p-col-md-12 col-lg-3 font-weight-bold mt-2 mt-sm-2 mt-md-0 mt-lg-0">
-                        <div><label for="icon">End Date</label></div>
-                        <Calendar id="endDate" v-model="endDate" :showIcon="true" />
-                    </div>
-                    <div class="col-8  col-sm-7 col-md-5 col-lg-3 mt-2 mt-sm-2 mt-md-1 mt-lg-1 ">
-                        <div><label for="" class="font-weight-bold ">Select Member</label></div>
-                        <div class="dropdown ">
-                           <!-- <button id="dropdownMenuButton" class="btn border-secondary default-btn" data-toggle="dropdown">{{ userSearchString ? userSearchString: 'Search Member' }}</button>  -->
-                           <input type="text" class="form-control" 
-                                    v-model="userSearchString"
-                                    @input="searchForUsers"
-                                    data-toggle="dropdown"
-                                />
-                            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" >
-                                 
-                                <a
-                                class="dropdown-item font-weight-700 small-text" href="#"
-                                v-for="(member, index) in searchedMembers"
-                                :key="index"
-                                @click="addExistingMember(member)"
-                                >{{ member.name }}</a>
-                                <a
-                                class="dropdown-item font-weight-700 small-text"
-                                href="#"
-                                v-if="
-                                    searchingForMembers && searchedMembers.length === 0
-                                "
-                                ><i class="pi pi-spin pi-spinner"></i></a>
-                                <p
-                                class="modal-promt pl-1 bg-secondary m-0"
-                                v-if="
-                                    userSearchString.length < 3 &&
-                                    searchedMembers.length === 0
-                                "
-                                >
-                                Enter 3 or moore characters
-                                </p>
-                                <a
-                                class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
-                                style="border-top: 1px solid #002044; color: #136acd"
-                                @click="showAddMemberForm"
-                                data-dismiss="modal"
-                                >
-                                </a>
+                  <div class="col-9">
+                      <div class="row">
+                        <div class="col-md-6 col-sm-12 pr-md-0">
+                            <div class="p-field p-col-11 pt-md-2 pb-2">
+                              <div>
+                                <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+                              </div>
+                              <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
                             </div>
                         </div>
+                        <!-- <div class="p-field p-col-md-6 p-col-lg-12  font-weight-bold  mt-0">
+                            <div><label for="icon">Start Date</label></div>
+                            <Calendar id="icon" class="w-100" v-model="startDate" :showIcon="true" />
+                        </div> -->
+                         <div class="col-md-6 col-sm-12 pr-md-0">
+                            <div class="p-field p-col-11 pt-md-2">
+                              <div>
+                                <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+                              </div>
+                              <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                            </div>
+                        </div>
+
+                        <!-- <div class="p-field p-col-md-6 p-col-lg-12 font-weight-bold mt-2 mt-sm-2 mt-md-0 mt-lg-0">
+                            <div><label for="icon">End Date</label></div>
+                            <Calendar id="endDate" class="w-100" v-model="endDate" :showIcon="true" />
+                        </div> -->
+                        <div class="col-md-6 col-sm-12 pr-md-0">
+                          <div class="p-field  pt-md-2 p-col-12  font-weight-bold">
+                              <div><label for="icon" class=" mb-0 font-weight-bold">Select Categories</label></div>
+                              <!-- <div> -->
+                                <MultiSelect v-model="selectedCategories" :options="Categories" optionLabel="name" placeholder="Select Categories" :filter="true" class="multiselect-custom w-100">
+                                    <template #value="slotProps">
+                                        <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
+                                            <div>{{option.name}}</div>
+                                        </div>
+                                        <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                            Select Categories
+                                        </template>
+                                    </template>
+                                    <template #option="slotProps">
+                                        <div class="country-item">
+                                            <div>{{slotProps.option.name}}</div>
+                                        </div>
+                                    </template>
+                                </MultiSelect>
+                            <!-- </div>   -->
+                          </div>
+                        </div>
+                        <div class=" col-sm-12 col-md-6 pr-md-0   pt-md-2 ">
+                            <div><label for="" class=" mb-0 font-weight-bold ">Select Member</label></div>
+                            <div class="dropdown ">
+                              <!-- <button id="dropdownMenuButton" class="btn border-secondary default-btn" data-toggle="dropdown">{{ userSearchString ? userSearchString: 'Search Member' }}</button>  -->
+                              <input type="text" class="form-control" style="height: 2.8rem;" 
+                                        v-model="userSearchString"
+                                        @input="searchForUsers"
+                                        data-toggle="dropdown"
+                                    />
+                                <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" >
+                                    
+                                    <a
+                                    class="dropdown-item font-weight-700 small-text" href="#"
+                                    v-for="(member, index) in searchedMembers"
+                                    :key="index"
+                                    @click="addExistingMember(member)"
+                                    >{{ member.name }}</a>
+                                    <a
+                                    class="dropdown-item font-weight-700 small-text"
+                                    href="#"
+                                    v-if="
+                                        searchingForMembers && searchedMembers.length === 0
+                                    "
+                                    ><i class="pi pi-spin pi-spinner"></i></a>
+                                    <p
+                                    class="modal-promt pl-1 bg-secondary m-0"
+                                    v-if="
+                                        userSearchString.length < 3 &&
+                                        searchedMembers.length === 0
+                                    "
+                                    >
+                                    Enter 3 or moore characters
+                                    </p>
+                                    <a
+                                    class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
+                                    style="border-top: 1px solid #002044; color: #136acd"
+                                    @click="showAddMemberForm"
+                                    data-dismiss="modal"
+                                    >
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-6 col-md-6 col-lg-3 mt-2">
-                        <div><label for="" ></label></div>
+                    <div class="col-9 col-md-6 col-lg-3 mt-2">
+                        <div style="height: 43%"></div>
                         <div @click="genarateReport">
                             <button class=" col-11 w-100 default-btn generate-report  "><div class="text-white">Generate Report</div></button>
                         </div>
                     </div> 
-                </div>
+                  </div>
         </div>
         <div id="element-to-print">
           <div class="container-fluid  ">
@@ -154,7 +197,7 @@
                             <tbody class="font-weight-bold text-nowrap" style="font-size: small;">
                                 <tr v-for="(OfferingList, index) in offeringInChurch" :key="index">
                                 <td>{{ OfferingList.contributionName }}</td>
-                                <td>{{ OfferingList.amount }}.00</td>
+                                <td>{{ OfferingList.amount.toLocaleString()}}.00</td>
                                 <td>{{ OfferingList.eventName }}</td>
                                 <td>{{ formatDate(OfferingList.date) }}</td>
                                 <td>{{ OfferingList.contactName }}</td>
@@ -177,14 +220,13 @@
  import { computed, ref } from "vue";
  import Calendar from "primevue/calendar";
  import Listbox from 'primevue/listbox';
-//  import MultiSelect from 'primevue/multiselect';
+ import MultiSelect from 'primevue/multiselect';
  import axios from "@/gateway/backendapi";
 //  import PaginationButtons from "../../../components/pagination/PaginationButtons";
  import OfferingPieChart from '../../../components/charts/ReportPieChart.vue';
  import OfferingColumnChart from "../../../components/charts/ReportColumnChart.vue";
  import membershipService from "../../../services/membership/membershipservice";
  import dateFormatter from  "../../../services/dates/dateformatter";
-//  import ExcelExport from "../../../services/exportFile/exportToExcel"
  import printJS from "print-js";
 //  import html2pdf from "html2pdf.js"
 //  import InputText from 'primevue/inputtext';
@@ -199,18 +241,20 @@ export default {
         OfferingPieChart,
         OfferingColumnChart,
         Calendar,
-        // MultiSelect, 
+        MultiSelect
         // PaginationButtons 
         },
     setup() {
+        const Categories = ref({});
+        const selectedCategories = ref();
         const showReport = ref(false);
-        const startDate = ref(new Date());
-        const endDate = ref(new Date());
+        const startDate = ref("");
+        const endDate = ref("");
         const selectedofferingCategory = ref();
         const userSearchString = ref("");
         const searchingForMembers = ref(false);
         const searchedMembers = ref([]);
-        const offeringReportItem = ref('');
+        const offeringPersonID = ref('');
         const offeringInChurch = ref([]);
         const display = ref(false);
         const offeringData = ref([]);
@@ -273,30 +317,60 @@ export default {
       return offeringChartResult.value.map(i => i)
     })
 
+    const getMemberClassification = async () => {
+      try {
+        axios
+          .get('/api/Financials/Contributions/Items')   
+          .then((res) => {
+            Categories.value = res.data;
+            console.log(res.data,'Fejiro');
+          })
+          .catch((err) => console.log(err));
+        // donationSummary.value = data;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMemberClassification();
+
      const genarateReport = () => {
-        axios.get(`/api/Reports/financials/getContactAllContributionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&personID=${offeringReportItem.value}`)
-        .then((res) => {
-          console.log(res, "🎄🎄🎄");
-          offeringInChurch.value = res.data;
-          // console.log(offeringInChurch.value, "✌️✌️");
-          offeringChart(res.data,'contributionName')
-        //   maritalStatusChart(res.data,'maritalStatus')
-        //   eventDateChart(res.data,'activityDate')
-         setTimeout(() => {
-                        fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
-                        fileToExport.value = exportService.tableToJson(document.getElementById("table"))
-                    }, 1000)
-                    showReport.value = true;
-                    
-        })
-        .catch((err) => {
-          console.log(err);
-          
-        });
-        
+       if(offeringPersonID.value){
+            let OfferingCategory = selectedCategories.value.map(i => i.id)
+        //  console.log(OfferingCategory, 'MyGod');
+          axios.post(`/api/Reports/financials/getContactContributionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&personID=${offeringPersonID.value}`, OfferingCategory )
+          .then((res) => {
+            console.log(res, "🎄🎄🎄");
+            offeringInChurch.value = res.data;
+            // console.log(offeringInChurch.value, "✌️✌️");
+            offeringChart(res.data,'contributionName')
+          //   maritalStatusChart(res.data,'maritalStatus')
+          //   eventDateChart(res.data,'activityDate')
+                      showReport.value = true;
+                      
+          })
+          .catch((err) => {
+            console.log(err);
+            
+          });
+       }
+       else{
+         axios.get(`/api/Reports/financials/getAllContactsAllContributionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+         .then((res) =>{
+           console.log(res);
+           offeringInChurch.value = res.data;
+           offeringChart(res.data,'contributionName')
+            showReport.value = true;
+
+         })
+         .catch((err)=>{
+           console.log(err)
+         })
+       }
 
     }
      const downloadFile = () => {
+        fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
+        fileToExport.value = exportService.tableToJson(document.getElementById("table"))
         exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
       }
 
@@ -318,7 +392,7 @@ export default {
         };
         const addExistingMember = (member) => {
           userSearchString.value = member.name;
-          offeringReportItem.value = member.id
+          offeringPersonID.value = member.id
           // console.log(userSearchString.value, member)
         }
         const showAddMemberForm = () => {
@@ -342,10 +416,12 @@ export default {
             showAddMemberForm,
             addExistingMember,
             searchForUsers,
+            selectedCategories,
+            Categories,
             userSearchString,
             searchingForMembers,
             searchedMembers,
-            offeringReportItem,
+            offeringPersonID,
             offeringInChurch,
             endDate,
             showExport,
@@ -487,7 +563,7 @@ padding-right: 0;
 padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
-/* overflow-x: scroll; */
+overflow-x: scroll;
 }
 .move-enter-active {
   animation: move-in .8s;

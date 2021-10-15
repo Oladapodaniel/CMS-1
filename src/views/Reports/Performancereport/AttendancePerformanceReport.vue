@@ -1,7 +1,18 @@
 <template>
 <div class="container container-wide mt-5 mb-4">
+  <div class="row d-flex justify-content-between px-3">
+              <!-- <div class="heading-text">Attendance Report</div> -->
+              <h3 class="font-weight-bold mt-2 mb-2">Church Activities Attendance Report</h3>
+              <div class="default-btn border-secondary font-weight-normal c-pointer"
+                @click="() => (showExport = !showExport)"
+                style="width: fixed; position:relative">
+                        Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                        <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+                              <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                        </div>
+              </div>
+        </div>
      <div>
-            <h3 class="font-weight-bold mt-5 mb-2">Church Activities Attendance Report</h3>
             <span class="mt-5 mb-3">This reports gives an indepth view of the growth and attendance pattern of the ministry.</span>
 
         </div>
@@ -50,12 +61,12 @@
                                   </div>
                               </div>
                           </div>
-             <div>
+             <div id="element-to-print">
                  <h3 class="font-weight-bold mt-5 ml-2"  v-show="activityReport > 0">SERVICE PERFORMANCE ANALYSIS REPORT </h3>
 
                  <div class=" borderInner mb-2">
                      <h5 class="ml-3 mt-4"></h5>
-                         <div class="round-border" v-show="activityReport.length > 0">
+                         <div class="round-border" v-show="activityReport.length > 0" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                         <PerformanceColumnChart
                             domId="chart"
                             title="Attendance Analysis Chart"
@@ -68,12 +79,7 @@
                         />
                         </div>
                  </div>
-                 <div
-                      class="area-chart mt-5 lineGrap"
-                      v-show="
-                        activityReport.length > 0
-                      "
-                    >
+                 <div class="area-chart mt-5 lineGrap" v-show="activityReport.length > 0" :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                       <ReportAreaChart
                         elemId="chart"
                         domId="areaChart1"
@@ -87,7 +93,7 @@
 
                     <div class=" borderInner mt-5">
                      <h5 class="ml-3 mt-4"></h5>
-                         <div class="round-border" v-show="activityReport.length > 0">
+                         <div class="round-border" v-show="activityReport.length > 0" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                         <PerformanceColumnChart
                             domId="chart1"
                             title="Attendance Analysis Chart By Category"
@@ -116,12 +122,11 @@
                         :series="categoryData"
                       />
                     </div> -->
-             </div>
              <section>
                  <!-- table header -->
 
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-5" v-show="activityReport.length > 0">
-        <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-5" id="table" v-show="activityReport.length > 0" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+        <table  class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
               class="text-capitalize text-nowrap font-weight-bolder"
@@ -133,18 +138,10 @@
             </tr>
           </thead>
           <tbody class="font-weight-bolder text-nowrap">
-            <tr v-for="(activityTable, index) in grousService" :key="index" >
-              <td>{{ activityTable.name}}</td>
-              <td>
-              <div v-for="(item, index) in activityTable.value" :key="index">
-                <div class="py-2">{{item.attendanceCategory}}</div>
-              </div>
-              </td>
-              <td>
-                <div v-for="(item, index) in activityTable.value" :key="index">
-                  <div class="py-2">{{item.attendance}}</div>
-                </div>
-              </td>
+            <tr v-for="(item, index) in groupedActivityService" :key="index" >
+              <td>{{ item.name}}</td>
+              <td>{{ item.category }}</td>
+              <td>{{ item.amount }}</td>
             </tr>
           </tbody>
         </table>
@@ -154,6 +151,7 @@
       </div>
       <!--end table header -->
       </section>
+      </div>
              </div>
 
 
@@ -174,9 +172,11 @@ import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter.js"
 import exportService from "../../../services/exportFile/exportservice"
 import printJS from "print-js";
+import Listbox from 'primevue/listbox';
     export default {
         components:{
           // Dropdown,
+          Listbox,
           MultiSelect,
             Calendar,
             // InputText,
@@ -189,11 +189,12 @@ import printJS from "print-js";
      const formatDate = (date) => {
       return dateFormatter.monthDayYear(date);
     };
-    const fileName = ref("")
+    const showReport = ref(false);
+    const fileName = ref("");
      const selectedFileType = ref("");
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);
-    const bookTypeList = ref([ 'xlsx', 'csv', 'txt' ])
+    const bookTypeList = ref([ { name: 'xlsx' },{ name: 'csv'}, {name: 'txt'}, {name: 'pdf'} ]);
     const showExport = ref(false);
     const allEvents = ref({});
     const selectedEvents =ref()
@@ -214,15 +215,15 @@ import printJS from "print-js";
     const categoryData = ref([])
     const attendanceGroup = ref({})
     const grousService = ref([])
+    const groupedActivityService = ref([])
      const downloadFile = () => {
-        exportService.downLoadExcel(selectedFileType.value, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
+        exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
       }
 
     const getAllEvents = ()=>{
             axios.get('/api/Reports/events/getEvents')
             .then((res)=>{
                 allEvents.value = res.data;
-                console.log(res, 'welcome');
             })
             .catch((err)=> console.log(err));
     }
@@ -245,6 +246,7 @@ import printJS from "print-js";
                         fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
                         fileToExport.value = exportService.tableToJson(document.getElementById("table"))
                     }, 1000)
+                    showReport.value = true
           })
          .catch((err)=> console.log(err))
      };
@@ -261,7 +263,16 @@ import printJS from "print-js";
                 value: result[prop]
                 })
             }
-       console.log(grousService.value);
+     
+      grousService.value.forEach(i => {
+        i.value.forEach(j => {
+          groupedActivityService.value.push({
+            name: i.name.split(",").join(""),
+            category: j.attendanceCategory,
+            amount: j.attendance
+          })
+        })
+      })
 
      }
 
@@ -287,8 +298,6 @@ import printJS from "print-js";
             let serviceValue = Object.values(i)[serviceIndex]
             series.value.unshift(dateFormatter.monthDayYear(serviceValue))
            })
-           console.log(series.value)
-           console.log(attendanceData.value)
 
      }
 
@@ -311,7 +320,7 @@ import printJS from "print-js";
             let womenIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let womenValue = Object.values(i)[womenIndex]
             womenData.value.unshift(womenValue)
-            console.log(womenData)
+           
         })
          categoryData.value.push({
                 name: 'Women',
@@ -333,7 +342,6 @@ import printJS from "print-js";
             let boyIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let boyValue = Object.values(i)[boyIndex]
             boyData.value.unshift(boyValue)
-            console.log(boyData)
         })
          categoryData.value.push({
                 name: 'Boy',
@@ -344,7 +352,7 @@ import printJS from "print-js";
             let girlIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let girlValue = Object.values(i)[girlIndex]
             girlData.value.unshift(girlValue)
-            console.log(girlData)
+            
         })
          categoryData.value.push({
                 name: 'Girl',
@@ -366,7 +374,6 @@ import printJS from "print-js";
             let TeenagersIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let TeenagersValue = Object.values(i)[TeenagersIndex]
            TeenagersData.value.unshift(TeenagersValue)
-            console.log(TeenagersData)
         })
          categoryData.value.push({
                 name: 'Teenagers',
@@ -377,14 +384,12 @@ import printJS from "print-js";
             let SinglesIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let SinglesValue = Object.values(i)[SinglesIndex]
            SinglesData.value.unshift(SinglesValue)
-            console.log(SinglesData)
         })
          categoryData.value.push({
                 name: 'Singles',
                 color: '#f7d68f',
                 data: SinglesData
             })
-            console.log(categoryData.value);
 
         return categoryData.value
 
@@ -417,12 +422,14 @@ import printJS from "print-js";
             grousService,
             showExport,
               printJS,
-              downloadFile,
+            downloadFile,
           bookTypeList,
           selectedFileType,
           fileHeaderToExport,
           fileToExport,
-          fileName
+          fileName,
+          showReport,
+          groupedActivityService
         }
 
     }

@@ -54,10 +54,10 @@
       </div>
 
       <div class="row">
-        <div class="col-2 pr-md-0 col-lg-2 align-self-center">
+        <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
           <span class="small-text">Send to : </span>
         </div>
-        <div class="p-0 col-10 col-lg-10 form-group mb-0">
+        <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
           <div class="dropdown">
             <button
               class="btn btn-default border dropdown-toggle small-text pl-md-0"
@@ -1096,16 +1096,24 @@ export default {
           .join();
       }
 
-      if (multipleContact.value instanceof File) {
-        sendSMSToUploadedContacts(gateway)
-      } else if (sendOrSchedule == 2) {
-        const dateToBeExecuted = executionDate.value
-        data.executionDate = dateToBeExecuted.split("T")[0];
-        data.date = dateToBeExecuted
-        data.time = dateToBeExecuted.split("T")[1]
-        scheduleMessage(data);
+      if (subject.value) {
+        if (multipleContact.value instanceof File) {
+          sendSMSToUploadedContacts(gateway)
+        } else if (sendOrSchedule == 2) {
+          const dateToBeExecuted = executionDate.value
+          data.executionDate = dateToBeExecuted.split("T")[0];
+          data.date = dateToBeExecuted
+          data.time = dateToBeExecuted.split("T")[1]
+          scheduleMessage(data);
+        } else {
+          sendSMS(data);
+        }
       } else {
-        sendSMS(data);
+        toast.add({
+          severity: "warn",
+          summary: "No sender id selected",
+          detail: `Kindly select a sender id and try again`,
+        });
       }
     };
 
