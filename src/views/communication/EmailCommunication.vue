@@ -79,8 +79,6 @@
 
                 </router-view>
             </div>
-
-
           </div>
         </div>
       </main>

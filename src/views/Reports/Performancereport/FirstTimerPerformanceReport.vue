@@ -176,8 +176,8 @@ export default {
         },
     setup() {
     const showReport = ref(false);
-    const startDate = ref(new Date());
-    const endDate = ref(new Date());
+    const startDate = ref("");
+    const endDate = ref("");
     const firstTimerInChurch = ref([]);
     const genderChartResult = ref([]);
     const maritalStatusChartResult = ref([]);
@@ -463,7 +463,7 @@ padding-right: 0;
 padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
-/* overflow-x: scroll; */
+overflow-x: scroll;
 }
 .move-enter-active {
   animation: move-in .8s;

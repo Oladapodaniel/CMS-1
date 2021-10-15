@@ -115,9 +115,9 @@
                 >Email</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <!-- <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/whatsapp">Whatsapp</router-link>
-            </li>
+            </li> -->
             <li class="dd-list-item" v-if="false">
               <router-link class="dd-link-item routelink" to="">Voice</router-link>
             </li>
@@ -607,7 +607,7 @@ export default {
   margin-left: 20px !important;
   overflow: hidden;
   /* Change to 180px */
-  height: 130px;
+  height: 80px;
   transition: all 0.3s ease-in-out;
 }
 

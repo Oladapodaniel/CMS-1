@@ -82,7 +82,7 @@ var highchartsOptions = {
                     value: 4
                 }
             },
-            showInLegend: true
+            // showInLegend: true
         }
     },
     series: [{
