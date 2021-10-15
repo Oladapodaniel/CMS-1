@@ -325,6 +325,21 @@ const frm = {
                     }
                 })
         })
+    },
+    editTask (taskId, body) {
+        return new Promise((resolve, reject) => {
+            axios.put(`/api/FirsttimerManager/task/${taskId}/edit`, body)
+                .then(res => {
+                    resolve(res.data)
+                })
+                .catch(error => {
+                    if (error.response) {
+                        reject(error.response)
+                    }   else {
+                        reject(error)
+                    }
+                })
+        })
     }
 }
 

@@ -141,6 +141,9 @@
                     </div>
                 </div>
             </div>
+
+            <!-- <div class="cancel-btn btn-btn col-2 offset-3 ml-3 p-2 mt-3" @click="cancelTaskEdit">Cancel</div> -->
+            <div class="p-2 offset-3 col-6 mt-3 save-btn btn-btn pointer-cursor">Save</div>
         </div>
     </div>
     <div class="container">
@@ -545,17 +548,6 @@ export default {
                 groupedContacts: [],
             }
             console.log(body)
-            // let b = {
-            //     subject: "string",
-            //     message: "string",
-                
-                
-            //     toContacts: "string",
-            //     toOthers: "string",
-            //     isoCode: "string",
-            //     
-            //     gateWayToUse: "string",
-            //     }
             try {
                 let res = await frmservice.sendSms(route.params.personId, body)
                 console.log(res)
