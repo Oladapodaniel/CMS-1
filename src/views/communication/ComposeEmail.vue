@@ -1158,9 +1158,9 @@ export default {
       try {
           const { message, subject: subj } = await composeService.getSMSById(messageId);
           loadedMessage.value = message;
-          console.log( loadedMessage.value, 'MESSAGESSS');
+          // console.log( loadedMessage.value, 'MESSAGESSS');
           subject.value = subj;
-           console.log( subject.value, 'SUBJECTSS');
+          //  console.log( subject.value, 'SUBJECTSS');
       } catch (error) {
           console.log(error)
           toast.add({
