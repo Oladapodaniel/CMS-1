@@ -138,18 +138,10 @@
             </tr>
           </thead>
           <tbody class="font-weight-bolder text-nowrap">
-            <tr v-for="(activityTable, index) in grousService" :key="index" >
-              <td>{{ activityTable.name}}</td>
-              <td>
-              <div v-for="(item, index) in activityTable.value" :key="index">
-                <div class="py-2">{{item.attendanceCategory}}</div>
-              </div>
-              </td>
-              <td>
-                <div v-for="(item, index) in activityTable.value" :key="index">
-                  <div class="py-2">{{item.attendance}}</div>
-                </div>
-              </td>
+            <tr v-for="(item, index) in groupedActivityService" :key="index" >
+              <td>{{ item.name}}</td>
+              <td>{{ item.category }}</td>
+              <td>{{ item.amount }}</td>
             </tr>
           </tbody>
         </table>
@@ -202,7 +194,7 @@ import Listbox from 'primevue/listbox';
      const selectedFileType = ref("");
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);
-    const bookTypeList = ref([ { name: 'csv'}, {name: 'txt'}, {name: 'pdf'} ]);
+    const bookTypeList = ref([ { name: 'xlsx' },{ name: 'csv'}, {name: 'txt'}, {name: 'pdf'} ]);
     const showExport = ref(false);
     const allEvents = ref({});
     const selectedEvents =ref()
@@ -223,6 +215,7 @@ import Listbox from 'primevue/listbox';
     const categoryData = ref([])
     const attendanceGroup = ref({})
     const grousService = ref([])
+    const groupedActivityService = ref([])
      const downloadFile = () => {
         exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
       }
@@ -231,7 +224,6 @@ import Listbox from 'primevue/listbox';
             axios.get('/api/Reports/events/getEvents')
             .then((res)=>{
                 allEvents.value = res.data;
-                console.log(res, 'welcome');
             })
             .catch((err)=> console.log(err));
     }
@@ -271,7 +263,16 @@ import Listbox from 'primevue/listbox';
                 value: result[prop]
                 })
             }
-       console.log(grousService.value);
+     
+      grousService.value.forEach(i => {
+        i.value.forEach(j => {
+          groupedActivityService.value.push({
+            name: i.name.split(",").join(""),
+            category: j.attendanceCategory,
+            amount: j.attendance
+          })
+        })
+      })
 
      }
 
@@ -297,8 +298,6 @@ import Listbox from 'primevue/listbox';
             let serviceValue = Object.values(i)[serviceIndex]
             series.value.unshift(dateFormatter.monthDayYear(serviceValue))
            })
-           console.log(series.value)
-           console.log(attendanceData.value)
 
      }
 
@@ -321,7 +320,7 @@ import Listbox from 'primevue/listbox';
             let womenIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let womenValue = Object.values(i)[womenIndex]
             womenData.value.unshift(womenValue)
-            console.log(womenData)
+           
         })
          categoryData.value.push({
                 name: 'Women',
@@ -343,7 +342,6 @@ import Listbox from 'primevue/listbox';
             let boyIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let boyValue = Object.values(i)[boyIndex]
             boyData.value.unshift(boyValue)
-            console.log(boyData)
         })
          categoryData.value.push({
                 name: 'Boy',
@@ -354,7 +352,7 @@ import Listbox from 'primevue/listbox';
             let girlIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let girlValue = Object.values(i)[girlIndex]
             girlData.value.unshift(girlValue)
-            console.log(girlData)
+            
         })
          categoryData.value.push({
                 name: 'Girl',
@@ -376,7 +374,6 @@ import Listbox from 'primevue/listbox';
             let TeenagersIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let TeenagersValue = Object.values(i)[TeenagersIndex]
            TeenagersData.value.unshift(TeenagersValue)
-            console.log(TeenagersData)
         })
          categoryData.value.push({
                 name: 'Teenagers',
@@ -387,14 +384,12 @@ import Listbox from 'primevue/listbox';
             let SinglesIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let SinglesValue = Object.values(i)[SinglesIndex]
            SinglesData.value.unshift(SinglesValue)
-            console.log(SinglesData)
         })
          categoryData.value.push({
                 name: 'Singles',
                 color: '#f7d68f',
                 data: SinglesData
             })
-            console.log(categoryData.value);
 
         return categoryData.value
 
@@ -433,7 +428,8 @@ import Listbox from 'primevue/listbox';
           fileHeaderToExport,
           fileToExport,
           fileName,
-          showReport
+          showReport,
+          groupedActivityService
         }
 
     }
