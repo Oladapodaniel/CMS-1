@@ -59,7 +59,7 @@
       <div id="element-to-print" class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " >
         <table class="table remove-styles mt-0  table-hover table-header-area" id="table">
           <thead class="table-header-area-main">
-            <tr class="small-text text-capitalize text-nowrap" style="border-bottom: 0" >
+            <tr class=" font-weight-bold text-capitalize text-nowrap" style="border-bottom: 0" >
               <th scope="col">Date</th>
               <th scope="col">Account Name</th>
               <th scope="col">Ref Number</th>
@@ -69,7 +69,7 @@
               <th scope="col">Balance</th>
             </tr>
           </thead>
-          <tbody class="font-weight-bold text-nowrap" style="font-size: small;">
+          <tbody class="font-weight-bold text-nowrap small-text">
             <tr v-for="(AccountList, index) in accountInChurch" :key="index">
               <td>{{ formatDate(AccountList.date) }}</td>
               <td>{{ AccountList.accountName }}</td>
@@ -123,8 +123,8 @@
         setup() {
 
       const accountType = ref([]);
-    const startDate = ref(new Date());
-    const endDate = ref(new Date());
+    const startDate = ref("");
+    const endDate = ref("");
     const selectedAccount = ref({});
     const accountInChurch = ref([]);
     const acountID = ref([]);
