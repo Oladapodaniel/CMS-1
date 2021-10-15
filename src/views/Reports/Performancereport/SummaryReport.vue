@@ -1,7 +1,10 @@
 <template>
 <div class="container container-wide mt-5 mb-4">
      <div class="row d-flex justify-content-between px-3">
-              <div class="heading-text">Summary Report</div>
+         <div>
+            <h3 class="font-weight-bold mt-2 mb-2">Church Activities Performance Summary Report</h3>
+        </div>
+              <!-- <div class="heading-text">Summary Report</div> -->
               <div class="default-btn border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">
@@ -10,9 +13,6 @@
                               <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
                         </div>
               </div>
-        </div>
-     <div>
-            <h3 class="font-weight-bold mt-5 mb-2">Church Activities Performance Summary Report</h3>
         </div>
   <div style="background: #ebeff4;" class="row m-0 py-5" >
                 <div class="col-12 col-md-6 col-lg-3">

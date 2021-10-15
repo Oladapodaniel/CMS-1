@@ -1,7 +1,8 @@
 <template>
 <div class="container container-wide mt-5 mb-4">
   <div class="row d-flex justify-content-between px-3">
-              <div class="heading-text">Attendance Report</div>
+              <!-- <div class="heading-text">Attendance Report</div> -->
+              <h3 class="font-weight-bold mt-2 mb-2">Church Activities Attendance Report</h3>
               <div class="default-btn border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">
@@ -12,7 +13,6 @@
               </div>
         </div>
      <div>
-            <h3 class="font-weight-bold mt-5 mb-2">Church Activities Attendance Report</h3>
             <span class="mt-5 mb-3">This reports gives an indepth view of the growth and attendance pattern of the ministry.</span>
 
         </div>
