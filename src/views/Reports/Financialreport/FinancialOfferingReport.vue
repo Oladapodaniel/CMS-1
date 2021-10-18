@@ -37,7 +37,7 @@
                               <div>
                                 <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                               </div>
-                              <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                              <Calendar dateFormat="dd/mm/yy" class="w-100" id="icon" v-model="startDate" :showIcon="true" />
                             </div>
                         </div>
                         <!-- <div class="p-field p-col-md-6 p-col-lg-12  font-weight-bold  mt-0">
@@ -49,7 +49,7 @@
                               <div>
                                 <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                               </div>
-                              <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                              <Calendar dateFormat="dd/mm/yy" class="w-100" id="icon" v-model="endDate" :showIcon="true" />
                             </div>
                         </div>
 
@@ -146,20 +146,7 @@
                     <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-12"> -->
                         <!-- <div class="col-12   text-center" > -->
                             <!-- <div class="col-12 text-center" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">No Data Available</div> -->
-                            <div class="col-12 col-md-6 mt-3 col-lg-6  " >
-                              <OfferingPieChart
-                                domId="chart3"
-                                  distance="5"
-                                  :titleMargin="10"
-                                  :summary="mappedOffering"
-                              />
-                            </div>
-                        <!-- </div> -->
-                    <!-- <div class="col-12 "> -->
-                      <!-- <div class="col-12  text-center" > -->
-                          <!-- <div class="col-12  font-weight-bold">Membership By Marital Status</div> -->
-                          <!-- <div class="col-12 text-center" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
-                            <div class="col-12 col-md-6 col-lg-6  " >
+                             <div class="col-12 col-md-6 col-lg-6  " >
                                   <OfferingColumnChart
                                       domId="chart1"
                                       title="Offering Report"
@@ -172,6 +159,20 @@
                                       
                                   />
                               </div>
+                            
+                        <!-- </div> -->
+                    <!-- <div class="col-12 "> -->
+                      <!-- <div class="col-12  text-center" > -->
+                          <!-- <div class="col-12  font-weight-bold">Membership By Marital Status</div> -->
+                          <!-- <div class="col-12 text-center" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                           <div class="col-12 col-md-6 mt-3 col-lg-6  " >
+                              <OfferingPieChart
+                                domId="chart3"
+                                  distance="5"
+                                  :titleMargin="10"
+                                  :summary="mappedOffering"
+                              />
+                            </div>
                          
                       <!-- </div> -->
                   <!-- </div> -->
@@ -202,6 +203,15 @@
                                 <td>{{ formatDate(OfferingList.date) }}</td>
                                 <td>{{ OfferingList.contactName }}</td>
                                 <td>{{ OfferingList.channel }}</td>
+                                </tr>
+                                 <tr class="answer-row">
+                                  <td class="answer">Total</td>
+                                  <td></td>
+                                  <td></td>
+                                  <td class="answer">NGN{{sumTotal && sumTotal.amount ? sumTotal.amount.toLocaleString() : 0}}.00</td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
                                 </tr>
                             </tbody>
                           </table>
@@ -272,6 +282,19 @@ export default {
         // onMounted(()=>{
         // pieChart.value = { name: "First Timer ", value: 2, name: "First Timer ", value: 2, };
         // })
+      //   const sum = computed => {
+      //   if (!arr || arr.length <= 0) return 0;
+      //   const amounts = arr.map(OfferingList => OfferingList.amount);
+      //   return Math.abs(amounts.reduce((a, b) => a + b))
+      // }
+        const sumTotal = computed (()=>{
+          if(offeringInChurch.value.length === 0) return 0
+           return offeringInChurch.value.reduce((a,b) => {
+             return { amount: a.amount + b.amount }
+            })
+          
+        })
+
     const offeringDetail = computed(() => {
          if (offeringInChurch.value.length === 0) return []
            offeringData.value = []
@@ -337,7 +360,7 @@ export default {
        if(offeringPersonID.value){
             let OfferingCategory = selectedCategories.value.map(i => i.id)
         //  console.log(OfferingCategory, 'MyGod');
-          axios.post(`/api/Reports/financials/getContactContributionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&personID=${offeringPersonID.value}`, OfferingCategory )
+          axios.post(`/api/Reports/financials/getContactContributionsReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&personID=${offeringPersonID.value}`, OfferingCategory )
           .then((res) => {
             console.log(res, "🎄🎄🎄");
             offeringInChurch.value = res.data;
@@ -354,7 +377,7 @@ export default {
           });
        }
        else{
-         axios.get(`/api/Reports/financials/getAllContactsAllContributionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+         axios.get(`/api/Reports/financials/getAllContactsAllContributionsReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
          .then((res) =>{
            console.log(res);
            offeringInChurch.value = res.data;
@@ -430,6 +453,7 @@ export default {
             selectedFileType,
             fileToExport,
             fileHeaderToExport,
+            sumTotal,
             // tableToJson,
             // tableHeaderToJson,
             printJS,
@@ -449,6 +473,22 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+}
+
+.answer{
+  font-weight: bolder;
+  color: rgb(0, 0, 0);
+}
+.answer-row{
+  background-color: #d5d5d5;
+  border-radius: 30px !important;
+  border-bottom-left-radius:  50px !important;
+  border-bottom-right-radius: 50px !important;
+  font-weight: bold;
+}
+
+.answer-row:hover{
+  background-color: #d1d1d1;
 }
 .table-row-bg {
     background: #ebeff4
