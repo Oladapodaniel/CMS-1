@@ -32,13 +32,13 @@
                     <div class="col-sm-6 mt-4">
                         <div class="font-weight-600">Start Date</div>
                         <div class="mt-2">
-                            <Calendar id="icon" class="w-100" v-model="startDate" :showIcon="true" />
+                            <Calendar id="icon" class="w-100" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy" />
                         </div>
                     </div>
                     <div class="col-sm-6 mt-4">
                         <div class="font-weight-600">End Date</div>
                         <div class="mt-2">
-                            <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" />
+                            <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy" />
                         </div>
                     </div>
                 </div>

@@ -575,79 +575,24 @@ export default {
       e.preventDefault();
     };
 
-    const day = ref([
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20,
-      22,
-      23,
-      24,
-      25,
-      26,
-      27,
-      28,
-      29,
-      30,
-      31,
-    ]);
-    const month = ref([
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ]);
+    const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
+    const month = ref([ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]);
     const maritalStatusArr = ref([]);
     const selectedMaritalStatus = ref(null);
-
     const genderArr = ref([]);
     const selectedGender = ref(null);
-
     const comMeansArr = ref(["Call", "Email", "Visit", "SMS"]);
     const selectedCommunicationMeans = ref(null);
-
     const joinInterestArr = ref(["Yes", "No", "Maybe", "On Transit"]);
     const selectedJoinInterest = ref(null);
-
     const wantVisitArr = ref(["Yes", "No", "Maybe", "On Transit"]);
     const selectedVisitOption = ref(null);
-
     const eventsAttended = ref([]);
     const selectedEventAttended = ref({});
-
     const howDidYouAboutUs = ref([]);
     const selectedAboutUsSource = ref(null);
-
     const selectedFollowUp = ref(null);
-
-    const firstTimersObj = ref({
-      sendWelcomeSMS: false,
-      sendWelcomeEmail: true,
-    });
+    const firstTimersObj = ref({ sendWelcomeSMS: false, sendWelcomeEmail: true });
 
     const eventName = computed(() => {
       return newEvents.value.map((i) => i.name);
