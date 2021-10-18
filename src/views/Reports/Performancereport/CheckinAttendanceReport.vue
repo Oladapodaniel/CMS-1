@@ -128,8 +128,8 @@ export default {
         getGroups()
 
         const getAttendanceReport = async() => {
-            let start = new Date(startDate.value).toLocaleDateString()
-            let end = new Date(endDate.value).toLocaleDateString()
+            let start = new Date(startDate.value).toLocaleDateString("en-US")
+            let end = new Date(endDate.value).toLocaleDateString("en-US")
             loading.value = true
             try {
                 let { data } = await axios.get(`/api/Reports/events/getCheckInAttendanceReport?groupID=${selectedGroups.value.id}&eventID=${selectedEvent.value.id}&startDate=${start}&endDate=${end}`)
