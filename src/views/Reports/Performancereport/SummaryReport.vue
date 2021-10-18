@@ -1,7 +1,10 @@
 <template>
 <div class="container container-wide mt-5 mb-4">
      <div class="row d-flex justify-content-between px-3">
-              <div class="heading-text">Summary Report</div>
+         <div>
+            <h3 class="font-weight-bold mt-2 mb-2">Church Activities Performance Summary Report</h3>
+        </div>
+              <!-- <div class="heading-text">Summary Report</div> -->
               <div class="default-btn border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">
@@ -10,9 +13,6 @@
                               <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
                         </div>
               </div>
-        </div>
-     <div>
-            <h3 class="font-weight-bold mt-5 mb-2">Church Activities Performance Summary Report</h3>
         </div>
   <div style="background: #ebeff4;" class="row m-0 py-5" >
                 <div class="col-12 col-md-6 col-lg-3">
@@ -41,14 +41,14 @@
                     <div class=""><label for="" class=" ml-2 font-weight-bold">Start Date</label></div>
                     <div>
                         <div>
-                            <Calendar id="icon" v-model="startDate" class="calendar1 w-100" :showIcon="true" />
+                            <Calendar id="icon" v-model="startDate" class="calendar1 w-100" :showIcon="true" dateFormat="dd/mm/yy" />
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
                     <div><label for="" class="font-weight-bold w-100">End Date</label></div>
                      <div>
-                            <Calendar id="icon" v-model="endDate" class="w-100" :showIcon="true" />
+                            <Calendar id="icon" v-model="endDate" class="w-100" :showIcon="true" dateFormat="dd/mm/yy" />
                         </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
@@ -237,7 +237,7 @@ import Listbox from 'primevue/listbox';
     const colunmChartNewCovert = ref([{name: "New Convert", color: "", data: [1,67,89,67,80,56,70,67,79,7,80,89,80]}]);
     const  series = ref([])
     const series1 = ref([1,2,3,4,5,6,7,8,9])
-    const allEvents = ref({});
+    const allEvents = ref([]);
     const analysisReport = ref([])
     const startDate = ref('');
     const endDate = ref('');
@@ -267,7 +267,7 @@ import Listbox from 'primevue/listbox';
      const getAnalysisReport = ()=>{
          analysisReport.value = []
          const activityId = selectedSummary.value.length === 1 ? selectedSummary.value[0].id : ''
-         axios.get(`/api/Reports/events/getActivityAnalysisReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&eventId=${activityId}`)
+         axios.get(`/api/Reports/events/getActivityAnalysisReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&eventId=${activityId}`)
          .then((res)=>{
              analysisReport.value = res.data;
              console.log(analysisReport.value);
@@ -284,17 +284,14 @@ import Listbox from 'primevue/listbox';
                     showReport.value = true
              console.log(report.value); 
              console.log(res, 'Good');
-             if(res.status >=400 && res.status <= 499){
+             if(analysisReport.value.length === 0){
                  toast.add({
-              severity: "error",
-              summary: "",
-              detail: "Check Internet Connectivity",
-              life: 9000,
-            });
-
+                    severity: 'warn', 
+                    summary:'No data for this date range', 
+                    detail:'Select other parameters to generate report', 
+                    life: 8000
+                })
              }
-             
-
           }) 
          .catch((err)=> console.log(err))
      };
@@ -347,7 +344,7 @@ import Listbox from 'primevue/listbox';
              color: '#fca311',
              data: newConvert1Data.value
          })
-         console.log(newConvert1Data.value)
+        //  console.log(newConvert1Data.value)
          return mainNewConvertData.value
      })
 
@@ -357,9 +354,6 @@ import Listbox from 'primevue/listbox';
             let serviceValue = Object.values(i)[serviceIndex]
             series.value.unshift(dateFormatter.monthDayYear(serviceValue)) 
            })
-           console.log(series.value)
-           console.log(attendanceData.value)
-           
      }
 
     const FTNCChart = computed(() => {

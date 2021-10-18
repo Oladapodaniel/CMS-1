@@ -32,13 +32,13 @@
                     <div class="col-sm-6 mt-4">
                         <div class="font-weight-600">Start Date</div>
                         <div class="mt-2">
-                            <Calendar id="icon" class="w-100" v-model="startDate" :showIcon="true" />
+                            <Calendar id="icon" class="w-100" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy" />
                         </div>
                     </div>
                     <div class="col-sm-6 mt-4">
                         <div class="font-weight-600">End Date</div>
                         <div class="mt-2">
-                            <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" />
+                            <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy" />
                         </div>
                     </div>
                 </div>
@@ -128,8 +128,8 @@ export default {
         getGroups()
 
         const getAttendanceReport = async() => {
-            let start = new Date(startDate.value).toLocaleDateString()
-            let end = new Date(endDate.value).toLocaleDateString()
+            let start = new Date(startDate.value).toLocaleDateString("en-US")
+            let end = new Date(endDate.value).toLocaleDateString("en-US")
             loading.value = true
             try {
                 let { data } = await axios.get(`/api/Reports/events/getCheckInAttendanceReport?groupID=${selectedGroups.value.id}&eventID=${selectedEvent.value.id}&startDate=${start}&endDate=${end}`)
@@ -143,7 +143,7 @@ export default {
                     if(data.length === 0 && searched.value) {
                         toast.add({
                             severity: 'warn', 
-                            summary:'No data available', 
+                            summary:'No data for this date range', 
                             detail:'Select other parameters to generate report', 
                             life: 8000
                         })
