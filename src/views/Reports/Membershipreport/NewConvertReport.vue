@@ -92,7 +92,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy"/>
                   </div>
               </div>
               <div class="col-md-4 col-sm-12 pr-md-0">
@@ -100,7 +100,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/>
                   </div>
               </div>
             <div class="col-md-4 col-sm-12 pr-md-0">
@@ -218,7 +218,7 @@ export default {
     const fileToExport = ref([]);
     const allMembersInChurch = () => {
       axios
-        .get(`/api/Reports/people/getNewConvertsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/Reports/people/getNewConvertsReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
         .then((res) => {
           console.log(res);
           newConvertsInChurch.value = res.data;

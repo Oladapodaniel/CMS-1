@@ -97,7 +97,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy" />
                   </div>
               </div>
               <div class="col-md-4 col-sm-12 pr-md-0">
@@ -105,7 +105,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy" />
                   </div>
               </div>
             <div class="col-md-4 col-sm-12 pr-md-0">
@@ -255,7 +255,7 @@
               <!-- <td></td> -->
               <td></td>
               <td></td>
-              <td class="gross-total responsive-horizontalrule"> NGN{{ diffBtwIncomeAndExpenses.toLocaleString()  }}.00 <hr class="horizontal-rule"/></td>
+              <td class="gross-total responsive-horizontalrule"> NGN{{ Math.abs( diffBtwIncomeAndExpenses).toLocaleString()  }}.00 <hr class="horizontal-rule"/></td>
               <td></td>
             </tr>
           </tbody>
@@ -351,11 +351,6 @@ export default {
       })
 
 
-          // const dataInFundTypeOne = tableData.value.incomes
-          // // const dataInFundTypeTwo = tableData
-          // console.log(dataInFundTypeOne, '❤️🤣👍')
-          // // console.log(dataInFundTypeTwo, '👍🥁🎁')
-
 
       const sumOfDiffAcctInFunds = (item) => {
         let incomeres = item.incomes.reduce((a, b) => {
@@ -367,33 +362,16 @@ export default {
           return { amount: +a.amount + +b.amount }
         }) : 0
         console.log(expenseres.amount)
-        const summedValue = Math.abs(incomeres.amount) + Math.abs(expenseres.amount)
+
+        const summedValue = Math.abs(incomeres.amount || 0) + Math.abs(expenseres.amount || 0)
         console.log(summedValue)
-        return summedValue   //     if(tableData.value.length === 0) return 0
-      //     const dataInFundTypeOne  = [];
-      //     for(let groupedItem of tableData.value) {
-      //       console.log(groupedItem)
-      //       dataInFundTypeOne.push(...groupedItem.value)
-      //     }
-      //     console.log(dataInFundTypeOne, "💐😀🎉")
-      //     return dataInFundTypeOne.reduce((arr, cur) => {
-      //           return arr + cur[type]
-      //     }, 0)
+        return summedValue
       }
 
-      // console.log(sumOfDiffAcctInFunds(tableData), '❤️❤️❤️❤️')
-
-      // const data = {
-      //    code: 42,
-      //    items: [{ id: 1, name: 'foo'},
-      //            {id: 2, name: 'bar'} ]
-      //                };
-      //   const item_name = data['items'][1]['name'];
-      //     console.log(item_name, "🎁🎁")
 
     const generateReport = () => {
       axios
-        .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
         .then((res) => {
           console.log(res, "🎄🎄🎄");
           tableData.value = incomeExpenseHelper.formatAccounts(res.data)
