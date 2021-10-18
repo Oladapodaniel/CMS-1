@@ -143,7 +143,7 @@ export default {
                     if(data.length === 0 && searched.value) {
                         toast.add({
                             severity: 'warn', 
-                            summary:'No data available', 
+                            summary:'No data for this date range', 
                             detail:'Select other parameters to generate report', 
                             life: 8000
                         })
