@@ -57,7 +57,7 @@
           </div>
           <div class="p-field p-col-12 p-md-4 my-1">
             <div><label for="icon" class="font-weight-bold">End Date</label></div>
-            <Calendar id="endDate" v-model="endDate" :showIcon="true" />
+            <Calendar id="endDate" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/>
           </div>
         </div>
         
@@ -260,7 +260,7 @@ export default {
 
      const incomeEndPoint = () => {
         axios
-        .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
         .then((res) => {
             pieChartData.value = [];
              console.log(res, 'income response');
