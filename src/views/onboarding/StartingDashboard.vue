@@ -29,7 +29,7 @@
                   <h4>Add members</h4>
                 </div>
                 <div class="box-small-text">
-                  <p>Stay compliant by keeping accurate records</p>
+                  <p>Stay compliant by keeping accurate records of your members.</p>
                 </div>
               </div>
             </div>
@@ -52,7 +52,7 @@
                   <h4>Send SMS</h4>
                 </div>
                 <div class="box-small-text">
-                  <p>Stay compliant by keeping accurate records</p>
+                  <p>Communicate with your members by sending sms with our seamless sms.</p>
                 </div>
               </div>
             </div>
@@ -75,7 +75,7 @@
                   <h4>Add first timers</h4>
                 </div>
                 <div class="box-small-text">
-                  <p>Stay compliant by keeping accurate records</p>
+                  <p>Keep accurate record and follow up your first timers with our automation system.</p>
                 </div>
                 
               </div>

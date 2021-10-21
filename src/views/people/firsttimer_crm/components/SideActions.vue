@@ -125,6 +125,100 @@
     <div class="container">
         <div class="row">
             <div class="col-12 mt-4 font-weight-700">
+                <i class="pi pi-angle-up uniform-primary-color c-pointer" :class="{ 'unroll-icon' : !moreIcon, 'roll-icon' : moreIcon }" @click="toggleMoreIcon"></i>&nbsp;&nbsp;&nbsp;&nbsp;More
+            </div>
+            <div class="col-12" :class="{ 'hide-contact' : !moreIcon, 'show-contact' : moreIcon }">
+                <div class="row">
+                    <div class="col-12 mt-4 label-text">Gender</div>
+                    <div class="col-12 mt-2">
+                        <Dropdown :options="genders" class="w-100 phone-input" optionLabel="value" v-model="selectedGender" placeholder="Select option" />
+                    </div>
+                    <div class="col-12 mt-4 label-text">Marital Status</div>
+                    <div class="col-12 mt-2">
+                        <Dropdown v-model="selectedMaritalStatus" :options="maritalStatus" optionLabel="value" class="w-100 phone-input" placeholder="Select option" />
+                    </div>
+                    <div class="col-12 mt-4 label-text">Date of birth</div>
+                    <div class="col-4 mt-2">
+                        <Dropdown v-model="selectedBirthday" :options="day" class="w-100 phone-input" placeholder="Day" />
+                    </div>
+                    <div class="col-4 mt-2">
+                        <Dropdown v-model="selectedBirthMonth" :options="month" class="w-100 phone-input" placeholder="Month" />
+                    </div>
+                    <div class="col-4 mt-2">
+                        <Dropdown v-model="selectedBirthYear" :options="year" class="w-100 phone-input" placeholder="Year" />
+                    </div>
+                    <div class="col-12 mt-4 label-text">Address</div>
+                    <div class="col-12 mt-2">
+                        <div class="task-border border-transparent d-flex justify-content-between p-2" :class="{ 'hover-border' : hoverPhone }" @mouseover="toggleHoverPhone" @mouseleave="OutHoverPhone" @click="editAddress">
+                            <div>{{ personDetails.address }}</div>
+                            <i class="pi pi-pencil align-self-center" :class="{ 'uniform-primary-color' : hoverTask, 'text-white' : !hoverPhone }"></i>
+                            </div>
+                
+                    </div>
+                    <div class="col-12 mt-4 label-text">Event of service attended</div>
+                    <div class="col-12 mt-2">
+                        <div class="dropdown">
+                            <div class="cursor-pointer phone-input d-flex justify-content-between" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div>{{ Object.keys(selectedEventAttended).length > 0 ? selectedEventAttended.name : personDetails.activityID && eventsAttended.length > 0 ? eventsAttended.find(i => {
+                                    if (i.activityID == personDetails.activityID) return i
+                                    return 'no id'
+                                }).name : "Select event attended" }}</div>
+                                <div><i class="pi pi-chevron-down"></i></div>
+                            </div>
+                            <div
+                                class="dropdown-menu"
+                                aria-labelledby="dropdownMenuButton"
+                            >
+                                <!-- <a
+                                class="dropdown-item elipsis-items"
+                                @mouseover="toggle($event, person.id)"
+                                href="#"
+                                >
+                                Convert to member
+                                </a> -->
+                                    <input
+                                    type="text"
+                                    class="form-control dd dd-search-field"
+                                    v-model="eventsSearchString"
+                                    placeholder="search for event"
+                                    />
+   
+                                <a
+                                    class="dropdown-item cursor-pointer py-2"
+                                    v-for="(event, index) in eventsAttended"
+                                    :key="index"
+                                    @click="eventAttendedSelected(event)"
+                                >
+                                    {{ event.name }}
+                                </a>
+                                <a
+                                    class="text-center mb-1 mt-1 py-1"
+                                    v-if="
+                                    eventsSearchString &&
+                                    eventsAttended.length > 0 &&
+                                    filteredEvents.length === 0
+                                    "
+                                >
+                                    No match found
+                                </a>
+                                        
+                            </div>
+                            </div>
+                        <!-- <div class="task-border border-transparent d-flex justify-content-between p-2" :class="{ 'hover-border' : hoverPhone }" @mouseover="toggleHoverPhone" @mouseleave="OutHoverPhone" @click="editAddress">
+                            <div>{{ personDetails.address }}</div>
+                            <i class="pi pi-pencil align-self-center" :class="{ 'uniform-primary-color' : hoverTask, 'text-white' : !hoverPhone }"></i>
+                            </div> -->
+                
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-4 font-weight-700">
                 <i class="pi pi-angle-up uniform-primary-color c-pointer" :class="{ 'unroll-icon' : !insightIcon, 'roll-icon' : insightIcon }" @click="toggleInsightIcon"></i>&nbsp;&nbsp;&nbsp;&nbsp;Insights
             </div>
             <div class="col-12" :class="{ 'hide-contact' : !insightIcon, 'show-contact' : insightIcon }">
@@ -214,6 +308,21 @@
             <div class="row">
                 <div class="offset-1 p-2 col-2 mt-3 ml-3 save-btn btn-btn c-pointer" @click="editBasicDetails">Save</div>
                 <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3 c-pointer" @click="cancelContactName">Cancel</div>
+            </div>
+        </div>
+        </OverlayPanel>
+
+        <OverlayPanel ref="addressRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" style="width: 450px" :breakpoints="{'960px': '75vw'}">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div>Address</div>
+                    <input v-model="personDetails.address" class="form-control mt-3"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-1 p-2 col-2 mt-3 ml-3 save-btn btn-btn c-pointer" @click="editBasicDetails">Save</div>
+                <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3 c-pointer" @click="cancelPhoneEdit">Cancel</div>
             </div>
         </div>
         </OverlayPanel>
@@ -392,9 +501,11 @@ export default {
         const selectedCallOutcome = ref({})
         const date = ref("")
         const timeRef = ref(false)
+        const addressRef = ref()
         const callLogDesc = ref("")
         const contactIcon = ref(true)
         const insightIcon = ref(false)
+        const moreIcon = ref(false)
         const aboutUsSource = ref([])
         const selectedAboutUsSource = ref({})
         const communicationMeans = ref([ { name: "Call", id: 0 }, { name: "Email", id: 1 }, { name: "Visit", id: 2 }, { name: "SMS", id: 3 } ]);
@@ -406,6 +517,18 @@ export default {
         const selectedLog = ref({})
         const smsMessage = ref("")
         const isoCode = ref("")
+        const eventsSearchString = ref("")
+        const eventsAttended = ref([])
+        const selectedEventAttended = ref({})
+        const genders = ref([])
+        const maritalStatus = ref([])
+        const selectedGender = ref({})
+        const selectedMaritalStatus = ref({})
+        const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
+        const month = ref([ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]);
+        const selectedBirthday = ref("")
+        const selectedBirthMonth = ref("")
+        const selectedBirthYear = ref("")
 
 
         const selectedContactLog = computed(() => {
@@ -419,6 +542,10 @@ export default {
         
         const editPhone = (event) => {
             phoneRef.value.toggle(event);
+        };
+        
+        const editAddress = (event) => {
+            addressRef.value.toggle(event);
         };
         
         const editContactName = (event) => {
@@ -602,6 +729,10 @@ export default {
         const toggleInsightIcon = () => {
             insightIcon.value = !insightIcon.value
         }
+        
+        const toggleMoreIcon = () => {
+            moreIcon.value = !moreIcon.value
+        }
 
         const getKnowlegdeSource = async() => {
             try {
@@ -619,6 +750,8 @@ export default {
                 let data = await lookupTable.getLookUps()
                 console.log(data)
                 outcomeList.value = data.outcome
+                genders.value = data.genders
+                maritalStatus.value = data.maritalStatus
             }
             catch (err) {
                 console.log(err)
@@ -687,6 +820,16 @@ export default {
 
         }
 
+        const year = computed(() => {
+            const arrOfYears = [];
+            let currentYear = new Date().getFullYear();
+            while (arrOfYears.length <= 100) {
+                arrOfYears.push(currentYear);
+                currentYear = currentYear - 1;
+            }
+            return arrOfYears;
+        });
+
         watchEffect(() => {
             if (props.personDetails && lifeCycle.value.length > 0) {
                 selectedLifeCycle.value = lifeCycle.value.find(i => i.id === props.personDetails.firstTimerCycleStageID)
@@ -705,6 +848,11 @@ export default {
                 selectedAboutUsSource.value = aboutUsSource.value.find(i => i.id === props.personDetails.howDidYouAboutUsId)
                 selectedJoinInterest.value = joinInterestArr.value.find(i => i.id === props.personDetails.interestedInJoining)
                 selectedVisitOption.value = wantVisitArr.value.find(i => i.id === props.personDetails.wantsToBeVisited)
+                selectedGender.value = genders.value.find(i => i.id === props.personDetails.genderId)
+                selectedMaritalStatus.value = maritalStatus.value.find(i => i.id === props.personDetails.maritalStatusId)
+                selectedBirthday.value = day.value.find(i => i == props.personDetails.birthday)
+                selectedBirthMonth.value = month.value[Number(props.personDetails.birthMonth) - 1]
+                selectedBirthYear.value = year.value.find(i => i == props.personDetails.birthYear)
             }
         })
 
@@ -719,6 +867,17 @@ export default {
             }
         }
 
+        const getEvents = () => {
+            axios.get("/api/Events/EventActivity").then((res) => {
+                eventsAttended.value = res.data;
+            });
+        }
+        getEvents()
+
+        const eventAttendedSelected = (event) => {
+            selectedEventAttended.value = event
+        }
+
         const editBasicDetails = async() => {
             let payload = {
                 personId: route.params.personId,
@@ -726,22 +885,21 @@ export default {
                 firstName: props.personDetails.firstName,
                 lastName: props.personDetails.lastName,
                 phoneNumber: props.personDetails.phoneNumber,
-                howDidYouAboutUsId: selectedAboutUsSource.value.id,
-                communicationMeans: selectedCommunicationMeans.value.id,
-                interestedInJoining: selectedJoinInterest.value.id,
-                wantsToBeVisited: selectedVisitOption.value.id,
-                genderId: props.personDetails.genderId,
-                maritalStatusId: props.personDetails.maritalStatusId,
-                birthday: props.personDetails.birthday,
-                birthMonth: props.personDetails.birthMonth,
-                birthYear: props.personDetails.birthYear,
                 address: props.personDetails.address,
+                activityID: selectedEventAttended && Object.keys(selectedEventAttended.value).length > 0 ? selectedEventAttended.value.activityID : props.personDetails.activityID,
+                howDidYouAboutUsId: selectedAboutUsSource.value ? selectedAboutUsSource.value.id : 0,
+                communicationMeans: selectedCommunicationMeans.value ? selectedCommunicationMeans.value.id : 0,
+                interestedInJoining: selectedJoinInterest.value ? selectedJoinInterest.value.id : 0,
+                wantsToBeVisited: selectedVisitOption.value ? selectedVisitOption.value.id : 0,
+                genderId: selectedGender.value && Object.keys(selectedGender.value).length > 0 ? selectedGender.value.id : props.personDetails.genderId,
+                maritalStatusId: selectedMaritalStatus.value && Object.keys(selectedMaritalStatus.value).length > 0 ? selectedMaritalStatus.value.id : props.personDetails.maritalStatusId,
+                birthday: selectedBirthday.value ? selectedBirthday.value : props.personDetails.birthday,
+                birthMonth: selectedBirthMonth.value ? month.value.findIndex(i => i == selectedBirthMonth.value) + 1 : props.personDetails.birthMonth,
+                birthYear: selectedBirthYear.value ? selectedBirthYear.value : props.personDetails.birthYear,
                 firstTimerId: route.params.personId
-        
-                // "firstTimerCycleStageID": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                // "leadStatus": 0,
-                // "contactOwnerID": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
             }
+            console.log(selectedBirthMonth.value)
+            console.log(payload)
 
             try {
                 let res = await frmservice.editBasicDetails(payload)
@@ -755,10 +913,19 @@ export default {
             }
             catch (err) {
                 console.log(err)
+                if (err.status === 400) {
+                    toast.add({
+                    severity: "warn",
+                    summary: "Empty fields present",
+                    detail: "Please fill other fields",
+                    life: 5000,
+                });
+                }
             }
             contactNameRef.value.hide();
             editEmailRef.value.hide();
             phoneRef.value.hide();
+            addressRef.value.hide();
         }
 
 
@@ -807,7 +974,9 @@ export default {
             toggleContactIcon,
             contactIcon,
             insightIcon,
+            moreIcon,
             toggleInsightIcon,
+            toggleMoreIcon,
             aboutUsSource,
             selectedAboutUsSource,
             communicationMeans,
@@ -831,7 +1000,23 @@ export default {
             phoneRef,
             cancelEmailEdit,
             cancelPhoneEdit,
-            editPhone
+            editPhone,
+            editAddress,
+            addressRef,
+            eventsAttended,
+            eventsSearchString,
+            selectedEventAttended,
+            eventAttendedSelected,
+            genders,
+            maritalStatus,
+            selectedMaritalStatus,
+            selectedGender,
+            day,
+            month,
+            year,
+            selectedBirthday,
+            selectedBirthMonth,
+            selectedBirthYear
         }
             
     }
@@ -963,5 +1148,11 @@ export default {
     height: 480px;
     transition: all 0.5s ease-in-out;
     /* overflow: hidden; */
+}
+
+.dropdown-menu {
+    height: 300px;
+    overflow: scroll;
+    box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%);
 }
 </style>

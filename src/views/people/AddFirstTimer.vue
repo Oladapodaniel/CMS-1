@@ -63,7 +63,7 @@
                         v-model="selectedMaritalStatus"
                         :options="maritalStatusArr"
                         optionLabel="value"
-                        :placeholder="selectedMaritalStatus ? selectedMaritalStatus.value : 'Marital status'"
+                        placeholder="Marital status"
                         style="width: 100%"
                       />
                     </div>
@@ -109,7 +109,7 @@
                   @click.prevent="selectEventAttended"
                   class="form-control input dd small-text"
                 >
-                  {{ selectedEventAttended ? selectedEventAttended.name : "" }}
+                  {{ selectedEventAttended ? selectedEventAttended.name : "Select service attended" }}
                   {{ newEvent.activity.date }}
                 </button>
               </div>
@@ -268,7 +268,7 @@
                       v-model="selectedAboutUsSource"
                       :options="howDidYouAboutUs"
                       optionLabel="name"
-                      :placeholder="selectedAboutUsSource ? selectedAboutUsSource.name : 'How did you hear about us?'"
+                      placeholder="How did you hear about us?"
                       style="width: 100%"
                     />
                   </div>
@@ -281,7 +281,7 @@
                     <Dropdown
                       v-model="selectedCommunicationMeans"
                       :options="comMeansArr"
-                      :placeholder="selectedCommunicationMeans ? selectedCommunicationMeans : 'Means of communication'"
+                      placeholder="Means of communication"
                       style="width: 100%"
                     />
                   </div>
@@ -322,14 +322,16 @@
             </div>
           </div>
         </div>
-        <div class="inputs">
+        <div class="inputs mt-2">
           <div class="submit-div">
             <button class="action-btn ml-3 cancel-btn btn" @click.prevent="onCancel">
               Cancel
             </button>
-
+            <button class="ml-3 submit-btn text-white btn" @click.prevent="saveAndRoute">
+              Save
+            </button>
             <!-- <button
-              class="default-btn outline-none"
+              class="default-btn outline-none "
               :class="{ 'btn-loading': loading }"
               :disabled="loading"
             >
@@ -340,10 +342,22 @@
               <span>Save and add another</span>
               <span></span>
             </button> -->
-            <button class="ml-3 submit-btn text-white btn" @click.prevent="saveAndRoute">
-              Save
-            </button>
           </div>
+          <div class="submit-div">
+          <button
+              class="default-btn outline-none"
+              :class="{ 'btn-loading': loading }"
+              :disabled="loading"
+              
+            >
+              <i
+                class="fas fa-circle-notch fa-spin mr-2"
+                v-if="loading"
+              ></i>
+              <span>Save and add another</span>
+              <span></span>
+            </button>
+            </div>
         </div>
 
         <div class="container">
@@ -815,9 +829,23 @@ export default {
             loading.value = false;
             
             if(!routeToFRM.value) {
-              router.push("/tenant/firsttimerslist");
+              // router.push("/tenant/firsttimerslist");
+              firstTimersObj.value = {}
+              selectedGender.value = {}
+              selectedMaritalStatus.value = {}
+              selectedEventAttended.value = {}
+              selectedAboutUsSource.value = {}
+              selectedCommunicationMeans.value = {}
+              selectedJoinInterest.value = {}
+              selectedVisitOption.value = {}
+              birthMonth.value = ""
+
+              validatePhone.value.classList.remove('is-valid')
+              validateEmail.value.classList.remove('is-valid')
+              validatePhone.value.classList.remove('is-invalid')
+              validateEmail.value.classList.remove('is-invalid')
             } else {
-              router.push(`/tenant/firsttimermanagement/${res.data.personId}`)
+              router.push(`/tenant/firsttimermanagement/${res.data.personID}`)
               routeToFRM.value = false
             }
 
@@ -852,7 +880,7 @@ export default {
     };
 
     const saveAndRoute = () => {
-      // routeToFRM.value = true
+      routeToFRM.value = true
       onSubmit()
     }
 
