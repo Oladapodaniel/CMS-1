@@ -86,7 +86,7 @@
               <td></td>
               <td></td>
               <td class="answer text-success ">NGN {{sumDebit ? sumDebit.toLocaleString() : 0}}.00</td>
-              <td class="answer text-danger ">NGN {{sumCredit ? sumCredit.toLocaleString() : 0}}.00</td>
+              <td class="answer text-danger ">NGN {{sumCredit ? Math.abs(sumCredit).toLocaleString() : 0}}.00</td>
               <td></td>
             </tr>
             <tr class="answer-row">
