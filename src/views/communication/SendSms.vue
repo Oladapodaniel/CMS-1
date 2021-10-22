@@ -459,7 +459,6 @@
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
-              @click="openSenderDropDown"
             >
             <!-- @click="closeDropdownIfOpen" -->
               {{ Object.keys(selectedSender).length > 0 ? selectedSender.mask : "Select Sender Id" }}
@@ -1341,10 +1340,6 @@ export default {
       multipleContact.value = e.target.files[0]
     }
 
-    const openSenderDropDown = () => {
-      // senderRef.value.focus
-    }
-
     const getSenderId = async() => {
       try {
         let { data } = await axios.get(`/api/Messaging/RetrieveTenantSenderIDs`)
@@ -1492,7 +1487,6 @@ export default {
       uploadFile,
       multipleContact,
       sendSMSToUploadedContacts,
-      openSenderDropDown,
       senderRef,
       senderIdText,
       saveSenderId,

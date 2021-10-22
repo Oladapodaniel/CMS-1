@@ -54,14 +54,14 @@
                     <div class="col-12" v-if="showNotes" transition="bounce">
                         <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
                     </div>
-                    <div class="col-12" v-if="showEmails" transition="bounce">
-                        <Emails @openemailmodal="openEmailModal" :emailList="emailList"/>
+                    <div class="col-12 px-0" v-if="showEmails" transition="bounce">
+                        <Emails @openemailmodal="openEmailModal" :emailList="emailList" @emaillicon="toggleEmailIcon" :personDetails="personDetails"/>
                     </div>
                     <div class="col-12" v-if="showCalls" transition="bounce">
                         <Calls :personDetails="personDetails" :logList="logList" @individualcallicon="setCallLogIcon" @opencalllogpane="openCallLogPane" @hoverLog="setHoverLogProp" @outhoverLog="setOutHoverLogProp"/>
                     </div>
                     <div class="col-12" v-if="showTasks" transition="bounce">
-                        <Tasks :addTask="taskList" @individualtoggletask="setIconPropTask" :taskTime="taskTime" @opentaskeditor="openTaskEditor" />
+                        <Tasks :addTask="taskList" @individualtoggletask="setIconMainTask" :taskTime="taskTime" @opentaskeditor="openTaskEditor" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :allContacts="allContacts" :personDetails="personDetails" />
                     </div>
                 </div>
             </div>
@@ -385,7 +385,7 @@ export default {
             // title: "string",
             note: note.value,
             firsttimerID: route.params.personId,
-            type: 91
+            type: 96
             }
             try {
                 let res = await frmservice.saveNote(route.params.personId, body)
@@ -416,6 +416,11 @@ export default {
         const setIconPropTask = (payload) => {
             // taskList.value[payload].taskIcon = !taskList.value[payload].taskIcon
             searchActivities.value[payload.parentIndex].value[payload.mainIndex].taskIcon = !searchActivities.value[payload.parentIndex].value[payload.mainIndex].taskIcon
+        }
+        
+        const setIconMainTask = (payload) => {
+            taskList.value[payload].taskIcon = !taskList.value[payload].taskIcon
+            // searchActivities.value[payload.parentIndex].value[payload.mainIndex].taskIcon = !searchActivities.value[payload.parentIndex].value[payload.mainIndex].taskIcon
         }
 
         const sendEmail = async () => {
@@ -711,9 +716,9 @@ export default {
             // Group by type
             const type = groupResponse.groupData(activities.value, 'type')
             console.log(type)
-            noteList.value = type[91]
-            taskList.value = type[87]
-            emailList.value = type[88]
+            noteList.value = type[96]
+            taskList.value = activities.value.filter(i => i.person)
+            emailList.value = type[90]
             
             // Group by date
             const mappedActivities = activities.value.map(i => {
@@ -763,6 +768,10 @@ export default {
 
         const editCommentInView = (payload) => {
             searchActivities.value[payload.parentIndex].value[payload.mainIndex].loggedTask.comments.splice(payload.index, 1, payload.body)
+        }
+
+        const toggleEmailIcon = (payload) => {
+            emailList.value[payload].logIcon = !emailList.value[payload].logIcon
         }
 
         return {
@@ -854,7 +863,9 @@ export default {
             searchActivities,
             pushToComment,
             removeCommentFromView,
-            editCommentInView
+            editCommentInView,
+            toggleEmailIcon,
+            setIconMainTask
         }
     }
 }
