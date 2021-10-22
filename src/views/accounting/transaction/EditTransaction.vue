@@ -81,11 +81,11 @@
 
             <div class="container-fluid">
               <div class="row">
-                <div class="col-md-12 px-0" v-for="(account, index) in filteredCashandBank" :key="index" @click="accountFlow($event, account)">
+                <div class="  col-md-12 px-0" v-for="(account, index) in filteredCashandBank" :key="index" @click="accountFlow($event, account)">
                   <!-- <div class="desc-head py-1 px-3 close-modal text-capitalize" v-if="accounts.length > 0">{{ accTypes[index] }}</div> -->
-                  <div class="header-border close-modal">
+                  <div class="header-border hover-text close-modal">
                     <div v-if="account">
-                      <div class="close-modal offset-sm-1 py-2 small-text">{{ account.text }}</div>
+                      <div class="close-modal offset-sm-1  py-2 small-text" >{{ account.text }}</div>
                       <!-- <div
                         @click="accountFlow($event, item)"
                         class="manual-dd-item close-modal"
@@ -135,14 +135,14 @@
           <div class="col-12" v-for="(i, index) in splittedTransactions" :key="index">
             <div class="label-text">{{ transactionDetails.id && transactionDetails.debitSplitAccounts && transactionDetails.debitSplitAccounts.length > 0 ? "Expense Account" : transactionDetails.id ? "Income Account" : transactionDetails.account }}</div>
 
-            <div class="dropdown">
-              <button class="btn btn-default text-left bg-light col-7" :class="{ 'col-12': splittedTransactions.length === 1 }" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            <div class="dropdown cursor-pointer">
+              <button class="btn cursor-pointer btn-default text-left bg-light col-7" :class="{ 'col-12': splittedTransactions.length === 1 }" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                 style="border: 1px solid #ced4da;border-radius: 4px;background: rgb(253, 253, 253)"
               >
                 <span class="text-left">{{ splittedTransactions.length === 0 || !splittedTransactions[index].text ? "Select" : splittedTransactions[index].text }}</span>
                 <span class="float-right"><i class="pi pi-chevron-down" style="fontSize: .9rem"></i></span> 
               </button><input type="text" placeholder="amount" :class="{ 'col-4': splittedTransactions.length > 1 }" class="form-control d-inline" v-model="i.amount" v-if="splittedTransactions.length > 1"><span v-if="splittedTransactions.length > 1" class="col-1 px-1" @click="removeSplit(index)"><i class="pi pi-trash"></i></span>
-              <div class="dropdown-menu w-100" id="noTransfrom" aria-labelledby="dropdownMenuButton">
+              <div class="dropdown-menu cursor-pointer w-100" id="noTransfrom" aria-labelledby="dropdownMenuButton">
                 <div class="row">
                   <div class="col-md-11 mx-auto">
                     <input
@@ -155,8 +155,8 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-md-11 mx-auto">
-                    <a class="dropdown-item" v-for="(item, indx) in expenseIncomeAccounts" :key="indx" @click="categories(item, index)">{{ item.text }}</a>
+                  <div class="col-md-11 ">
+                    <a class="dropdown-item cursor-pointer" v-for="(item, indx) in expenseIncomeAccounts" :key="indx" @click="categories(item, index)">{{ item.text }}</a>
                   </div>
                 </div>
               </div>
@@ -700,6 +700,12 @@ export default {
   max-height: 300px;
   overflow: auto;
   top: inherit !important;
+}
+.hover-text{
+  background-color: white;
+}
+.hover-text:hover{
+  background-color: rgb(248, 247, 247);
 }
 .parent-desc.first {
   color: #8898aa;
