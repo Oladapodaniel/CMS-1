@@ -382,7 +382,7 @@ export default {
             displayPosition.value = false;
             
             let body = {
-            title: "string",
+            // title: "string",
             note: note.value,
             firsttimerID: route.params.personId,
             type: 91
@@ -390,6 +390,7 @@ export default {
             try {
                 let res = await frmservice.saveNote(route.params.personId, body)
                 console.log(res)
+                getLogs()
             }
             catch (err) {
                 console.log(err)
@@ -575,11 +576,14 @@ export default {
         }
 
         const setIconPropLog = (payload) => {
-            activities.value[payload].logIcon = !activities.value[payload].logIcon
+            // activities.value[payload].logIcon = !activities.value[payload].logIcon
+            searchActivities.value[payload.parentIndex].value[payload.mainIndex].logIcon = !searchActivities.value[payload.parentIndex].value[payload.mainIndex].logIcon
+            
         }
 
         const setEditTaskProp = (payload) => {
-            activities.value[payload].editTask = true
+            // activities.value[payload].editTask = true
+            searchActivities.value[payload.parentIndex].value[payload.mainIndex].editTask = true
         }
 
         const setEditTaskProp2 = (payload) => {
@@ -587,7 +591,8 @@ export default {
         }
 
         const saveTaskItem = (payload) => {
-            activities.value[payload].editTask = false
+            // activities.value[payload].editTask = false
+            searchActivities.value[payload.parentIndex].value[payload.mainIndex].editTask = false
         }
 
         // const saveTaskItem2 = (payload) => {
@@ -595,11 +600,13 @@ export default {
         // }
 
         const setHoverTaskProp = (payload) => {
-            activities.value[payload].hoverTask = true
+            // activities.value[payload].hoverTask = true
+            searchActivities.value[payload.parentIndex].value[payload.mainIndex].hoverTask = true
         }
 
         const setOutHoverTaskProp = (payload) => {
-            activities.value[payload].hoverTask = false
+            // activities.value[payload].hoverTask = false
+            searchActivities.value[payload.parentIndex].value[payload.mainIndex].hoverTask =false
         }
 
         // const setHoverTaskProp2 = (payload) => {

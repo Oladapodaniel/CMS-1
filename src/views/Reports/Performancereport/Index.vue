@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-md-5 col-12 mt-4">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                        <router-link to="/tenant/reports/attendancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Group Category Attendance </h4></router-link>
+                        <router-link to="/tenant/reports/attendancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Attendance report </h4></router-link>
                          <router-link to="/tenant/reports/attendancereport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
