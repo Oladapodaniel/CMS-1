@@ -5,9 +5,9 @@
             <div class="col font-weight-700 text-right uniform-primary-color">Actions <i class="pi pi-angle-down"></i></div>
         </div>
         <div class="row mt-5">
-            <div class="col-6 offset-3">
+            <div class="col-6 offset-3 d-flex justify-content-center">
                 <img :src="personDetails.pictureUrl" class="contact-image w-100 h-100" v-if="personDetails.pictureUrl"/>
-                <img src="../../../../assets/people/phone-import.svg" class="contact-image w-100 h-100" v-else/>
+                <img src="../../../../assets/people/phone-import.svg" class="contact-image" v-else/>
             </div>
             <div class="col-12 text-center">
                 <div class="contact-name">{{ `${personDetails.firstName ? personDetails.firstName : ""} ${personDetails.lastName ? personDetails.lastName : ""}` }}</div>
@@ -329,7 +329,7 @@
 
         <OverlayPanel ref="logDropDown" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                     <div class="container-fluid p-0">
-                        <div class="row hover-log" v-for="(item, index) in activityType" :key="index">
+                        <div class="row hover-log" v-for="(item, index) in activityLogs" :key="index">
                             <div class="py-2 px-3 " @click="toggleLogPane($event, item)">{{ item.value }}</div>
                         </div>
                     </div>
@@ -361,7 +361,7 @@
                         </OverlayPanel>
                    </div>
                    <div class="col-6 pr-0">
-                       <div class="label-text">Call Outcome</div>
+                       <div class="label-text">{{ selectedLog.value }} Outcome</div>
                        <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleOutcome" aria:haspopup="true" aria-controls="overlay_panel">{{ Object.keys(selectedCallOutcome).length > 0 ? selectedCallOutcome.value : "Select an outcome &nbsp;" }} <i class="pi pi-sort-down"></i></div>
                        <OverlayPanel ref="outcomeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                             <div class="container-fluid p-0">
@@ -398,11 +398,11 @@
                </div> -->
                <div class="row mt-3">
                    <div class="col-12 p-0">
-                       <textarea name="" placeholder="Describe the call..." class="w-100 form-control" rows="6" v-model="callLogDesc"></textarea>
+                       <textarea name="" :placeholder="`Describe the ${selectedLog.value}...`" class="w-100 form-control" rows="6" v-model="callLogDesc"></textarea>
                    </div>
                </div>
                <div class="row d-flex justify-content-start mt-3">
-                    <div class="primary-bg default-btn border-0 text-white text-center pointer-cursor" @click="saveLog">Save</div>
+                    <div class="primary-bg default-btn border-0 text-white text-center c-pointer" @click="saveLog">Save</div>
                 </div>
            </div>
         </Dialog>
@@ -411,8 +411,33 @@
         <Dialog header="Send SMS" v-model:visible="displaySMSPane" :style="{width: '50vw'}" :position="position" :modal="true">
            <div class="container-fluid">
                <div class="row mt-3">
-                   <div class="col-12 p-0 mt-1">
-                       <textarea name="" placeholder="SMS here" class="w-100 form-control" rows="12" v-model="smsMessage"></textarea>
+                   <div class="p-0 col-md-12">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle small-text border w-100 text-left" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                            <!-- @click="closeDropdownIfOpen" -->
+                            {{ Object.keys(selectedSender).length > 0 ? selectedSender.mask : "Select Sender Id" }}
+                            </button>
+                            <div
+                            class="dropdown-menu w-100 pb-0 border-0"
+                            aria-labelledby="dropdownMenuButton"
+                            >
+                            <div class="px-2">
+ 
+                            </div>
+                            <a v-for="(item, index) in senderIDs" :key="index"
+                                class="dropdown-item c-pointer small-text  py-2" @click="setIdToSubject(item)"
+                                >{{ item.mask }}
+                            </a>
+                            <a
+                                class="dropdown-item c-pointer text-center create-new-bg border-top py-2" data-toggle="modal" data-target="#senderIdModal"
+                                ><i class="pi pi-plus-circle"></i>&nbsp;Request new sender id
+                                </a
+                            >
+                            </div>
+                        </div>
+                        </div>
+                   <div class="col-12 p-0 mt-3">
+                       <textarea name="" placeholder="Type your message here ..." class="w-100 form-control" rows="12" v-model="smsMessage"></textarea>
                    </div>
                </div>
                <div class="row d-flex justify-content-start mt-3">
@@ -430,7 +455,7 @@ import Tooltip from 'primevue/tooltip';
 import OverlayPanel from 'primevue/overlaypanel';
 import axios from "@/gateway/backendapi";
 import lookupTable from "../../../../services/lookup/lookupservice"
-import Contacts from "./AllMembers.vue"
+// import Contacts from "./AllMembers.vue"
 import { useRoute } from "vue-router"
 import frmservice from "@/services/FRM/firsttimermanagement"
 import { useStore } from "vuex";
@@ -442,7 +467,7 @@ export default {
     components: {
         Dropdown,
         OverlayPanel,
-        Contacts
+        // Contacts
     },
     directives: {
         'tooltip': Tooltip
@@ -456,32 +481,9 @@ export default {
         const store = useStore()
         const selectedContact = ref({})
         const contacts = ref([])
-        const lifeCycle = ref([
-            // {
-            //     stage: 'FirstTimer'
-            // },
-            // {
-            //     stage: 'Believers Foundation Class'
-            // },
-            // {
-            //     stage: 'Join Cell Group'
-            // },
-            // {
-            //     stage: 'Water Baptism'
-            // },
-            // {
-            //     stage: 'Wofbi'
-            // },
-            // {
-            //     stage: 'Holy Spirit Baptism'
-            // },
-            // {
-            //     stage: 'Join Church Department'
-            // }
-        ])
+        const lifeCycle = ref([])
         const selectedLifeCycle = ref("")
         const leadStatus = ref(frmservice.leadStatus())
-        // 'Busy', 'Connected', 'Left live message', 'Left voicemail', 'No answer', 'Wrong number'
         const outcomeList = ref([])
         const selectedLeadStatus = ref("")
         const editEmailRef = ref()
@@ -529,6 +531,10 @@ export default {
         const selectedBirthday = ref("")
         const selectedBirthMonth = ref("")
         const selectedBirthYear = ref("")
+        const activityLogs = ref([])
+        const selectedSender = ref({})
+        const senderIDs = ref([])
+        const subject = ref("")
 
 
         const selectedContactLog = computed(() => {
@@ -593,18 +599,18 @@ export default {
         }
 
         const call = () => {
-            let sinchClient = new SinchClient({
-                applicationKey: 'b1392f96-6a4b-4e44-bdf1-0e1f4dd2d1a0',
-                capabilities: { calling: true },
-            })
-            var signUpObj = {};
-                signUpObj.username = 'oladapo'
+            // let sinchClient = new SinchClient({
+            //     applicationKey: 'b1392f96-6a4b-4e44-bdf1-0e1f4dd2d1a0',
+            //     capabilities: { calling: true },
+            // })
+            // var signUpObj = {};
+            //     signUpObj.username = 'oladapo'
              
-                    sinchClient.start(signUpObj, function () {
-                        global_username = signUpObj.username;
-                        // console.log(ticket)
-                        //On success, show the UI
-                    })
+            //         sinchClient.start(signUpObj, function () {
+            //             global_username = signUpObj.username;
+            //             // console.log(ticket)
+            //             //On success, show the UI
+            //         })
                     // let error = function (error) {
                     //     console.log(error)
                     // }
@@ -670,6 +676,7 @@ export default {
                 let data = await frmservice.createLog(body)
                 console.log(data)
                 emit('updatelogtoview')
+                callLogDesc.value = ""
             }
             catch (err) {
                 console.log(err)
@@ -690,15 +697,21 @@ export default {
         }
         getIsoCode()
 
+        const setIdToSubject = (item) => {
+            console.log(item)
+            subject.value = item.mask
+            selectedSender.value = item
+        }
+
         const sendSms = async() => {
             let body = {
-                subject: "",
+                subject: subject.value,
                 message: smsMessage.value,
                 toOthers: props.personDetails.phoneNumber,
                 isoCode: isoCode.value,
-                gateWayToUse: "hostedsms",
+                gateWayToUse: "hybridKonnect",
                 ispersonalized: true,
-                category: "string",
+                category: "",
                 contacts: [],
                 emailAddress: "",
                 emailDisplayName: "",
@@ -708,6 +721,8 @@ export default {
             try {
                 let res = await frmservice.sendSms(route.params.personId, body)
                 console.log(res)
+                displaySMSPane.value = false
+                emit("updatelogtoview")
             }
             catch (err) {
                 console.log(err)
@@ -886,7 +901,7 @@ export default {
                 lastName: props.personDetails.lastName,
                 phoneNumber: props.personDetails.phoneNumber,
                 address: props.personDetails.address,
-                activityID: selectedEventAttended && Object.keys(selectedEventAttended.value).length > 0 ? selectedEventAttended.value.activityID : props.personDetails.activityID,
+                activityID: selectedEventAttended.value && Object.keys(selectedEventAttended.value).length > 0 ? selectedEventAttended.value.activityID : props.personDetails.activityID,
                 howDidYouAboutUsId: selectedAboutUsSource.value ? selectedAboutUsSource.value.id : 0,
                 communicationMeans: selectedCommunicationMeans.value ? selectedCommunicationMeans.value.id : 0,
                 interestedInJoining: selectedJoinInterest.value ? selectedJoinInterest.value.id : 0,
@@ -927,6 +942,22 @@ export default {
             phoneRef.value.hide();
             addressRef.value.hide();
         }
+        
+        watchEffect(() => {
+            activityLogs.value = props.activityType.filter(i => i.id !== 96)
+        })
+
+        const getSenderId = async() => {
+        try {
+            let { data } = await axios.get(`/api/Messaging/RetrieveTenantSenderIDs`)
+            console.log(data)
+            senderIDs.value = data.returnObject
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        getSenderId()
 
 
         return {
@@ -1016,7 +1047,12 @@ export default {
             year,
             selectedBirthday,
             selectedBirthMonth,
-            selectedBirthYear
+            selectedBirthYear,
+            activityLogs,
+            selectedSender,
+            senderIDs,
+            setIdToSubject,
+            subject
         }
             
     }
@@ -1030,8 +1066,8 @@ export default {
 }
 
 .contact-image {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     object-fit: cover;
     border-radius: 50%
 }
@@ -1154,5 +1190,15 @@ export default {
     height: 300px;
     overflow: scroll;
     box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%);
+}
+
+.create-new-bg {
+    background: #dadada;
+    color: rgb(15, 71, 134)
+}
+
+.create-new-bg:hover {
+  background: #dadadad2;
+  color: rgb(15, 71, 134)
 }
 </style>

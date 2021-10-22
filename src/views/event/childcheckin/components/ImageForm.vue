@@ -4,14 +4,14 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-6 offset-3 col-md-10 offset-md-1 upl-img-box border" style="border: 2px solid red;">
-                        <img v-if="url" class="w-100" :src="url" alt="Uploaded Image" />
+                        <img v-if="url" class="img-style" :src="url" alt="Uploaded Image" />
                           <img
                             v-else-if="!pictureUrl"
                             src="../../../../assets/people/phone-import.svg"
                             alt="Uploaded Image"
-                            class="w-100"
+                            class="img-style"
                           />
-                          <img v-else :src="pictureUrl" class="w-100" alt="Uploaded Image" />
+                          <img v-else :src="pictureUrl" class="img-style" alt="Uploaded Image" />
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { onUpdated, ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 // import axios from "@/gateway/backendapi"
     export default {
         props: ['editPicture', 'resetImage', 'memberDetails'],
@@ -86,7 +86,7 @@ import { onUpdated, ref } from 'vue'
             //     })
             // }
 
-            onUpdated(() => {
+            watchEffect(() => {
                 if (props.editPicture) {
                     pictureUrl.value = props.editPicture
                     console.log('hereeeee')
@@ -101,18 +101,6 @@ import { onUpdated, ref } from 'vue'
                     url.value = ""
                 }
             })
-
-            // onUpdated(() => {
-            //     if(!props.resetImage && pictureUrl.value) {
-            //         pictureUrl.value = props.resetImage
-            //         console.log('here111')
-            //     }
-                // if (!props.resetImage && url.value) {
-                //     url.value = props.resetImage
-                //     console.log('here222')
-                // }
-                // console.log(props.resetImage, 'reset hereee')
-            // })
 
             return {
                 // disabled,
@@ -158,5 +146,12 @@ import { onUpdated, ref } from 'vue'
     width: 135px;
     border: none;
     outline: none;
+  }
+
+  .img-style {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
   }
 </style>

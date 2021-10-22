@@ -1,5 +1,4 @@
 <template>
-
   <div class="my-con" @click="closeManualModalIfOpen">
     <div class="header mt-2">
       <h3 class="header-text font-weight-bold">Add First timers</h3>
@@ -7,6 +6,7 @@
     </div>
 
     <div class="form-div">
+      
       <form @submit.prevent="onSubmit">
         <div class="bio-div mt-2">
           <p class="form-section-header">Bio:</p>
@@ -239,6 +239,9 @@
                 </div>
               </div>
             </div>
+            <div style="width: 225px">
+              <ImageForm @image="setImageToUrl" />
+            </div>
           </div>
         </div>
         <!-- <hr class="hr"> -->
@@ -324,40 +327,25 @@
         </div>
         <div class="inputs mt-2">
           <div class="submit-div">
-            <button class="action-btn ml-3 cancel-btn btn" @click.prevent="onCancel">
+            <button class="action-btn cancel-btn btn" @click.prevent="onCancel">
               Cancel
             </button>
+            <button
+                class="default-btn outline-none ml-3"
+                :class="{ 'btn-loading': loading }"
+                :disabled="loading"     
+              >
+                <i
+                  class="fas fa-circle-notch fa-spin mr-2"
+                  v-if="loading"
+                ></i>
+                <span>Save and add another</span>
+                <span></span>
+              </button>
             <button class="ml-3 submit-btn text-white btn" @click.prevent="saveAndRoute">
               Save
             </button>
-            <!-- <button
-              class="default-btn outline-none "
-              :class="{ 'btn-loading': loading }"
-              :disabled="loading"
-            >
-              <i
-                class="fas fa-circle-notch fa-spin mr-2"
-                v-if="loading"
-              ></i>
-              <span>Save and add another</span>
-              <span></span>
-            </button> -->
           </div>
-          <div class="submit-div">
-          <button
-              class="default-btn outline-none"
-              :class="{ 'btn-loading': loading }"
-              :disabled="loading"
-              
-            >
-              <i
-                class="fas fa-circle-notch fa-spin mr-2"
-                v-if="loading"
-              ></i>
-              <span>Save and add another</span>
-              <span></span>
-            </button>
-            </div>
         </div>
 
         <div class="container">
@@ -570,9 +558,10 @@ import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress"
 import setupService from '../../services/setup/setupservice';
+import ImageForm from '../event/childcheckin/components/ImageForm.vue'
 
 export default {
-  components: { Dropdown, Dialog },
+  components: { Dropdown, Dialog, ImageForm },
 
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
@@ -828,6 +817,13 @@ export default {
             console.log(res.data);
             loading.value = false;
             
+            toast.add({
+                severity: "success",
+                summary: "Successful",
+                detail: "First timer created successfully",
+                life: 2000,
+              });
+              
             if(!routeToFRM.value) {
               // router.push("/tenant/firsttimerslist");
               firstTimersObj.value = {}
@@ -845,16 +841,11 @@ export default {
               validatePhone.value.classList.remove('is-invalid')
               validateEmail.value.classList.remove('is-invalid')
             } else {
-              router.push(`/tenant/firsttimermanagement/${res.data.personID}`)
-              routeToFRM.value = false
+              setTimeout(() => {
+                router.push(`/tenant/firsttimermanagement/${res.data.personID}`)
+                routeToFRM.value = false
+              }, 2000)
             }
-
-            toast.add({
-              severity: "success",
-              summary: "Firsttimer Created",
-              detail: "Firsttimer was created succesfully",
-              life: 4000,
-            });
           })
           .catch((err) => {
             finish()
@@ -1186,6 +1177,10 @@ export default {
         }
       }
 
+      const setImageToUrl = (payload) => {
+        console.log(payload)
+      }
+
     return {
       onSubmit,
       onCancel,
@@ -1249,7 +1244,8 @@ export default {
       firstTimerPhone,
       firstTimerEmail,
       routeToFRM,
-      saveAndRoute
+      saveAndRoute,
+      setImageToUrl
     };
   },
 };
@@ -1280,7 +1276,7 @@ export default {
   }
 
 .submit-div {
-  margin-left: 19em;
+  margin-left: 14em;
 }
 
 .inputs {
