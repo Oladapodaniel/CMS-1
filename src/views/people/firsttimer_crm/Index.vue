@@ -251,7 +251,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue"
+import { computed, onUpdated, ref } from "vue"
 import SideActions from "./components/SideActions"
 import Activity from "./components/Activity"
 import Notes from "./components/Notes"
@@ -773,6 +773,15 @@ export default {
         const toggleEmailIcon = (payload) => {
             emailList.value[payload].logIcon = !emailList.value[payload].logIcon
         }
+
+        onUpdated(() => {
+            let r = () => Math.random() * 256 >> 0;
+            let color = `rgb(${r()}, ${r()}, ${r()}, 0.2)`;
+            taskList.value = taskList.value.map(i => {
+                i.color = color
+                return i
+            })  
+        })
 
         return {
             toggleActivity,

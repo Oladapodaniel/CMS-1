@@ -263,7 +263,7 @@
             <!-- Log for contactowner, lifecycle, leadstatus -->
             <transition name="fade">
                 <div class="col-12 mt-4" v-if="item.type === 93 || item.type === 94 || item.type === 95">
-                    <div class="col-12 card-bg lifecycle-bg p-4 " :class="{ 'lifecycle-card' : item.type === 94 }">
+                    <div class="col-12 card-bg lifecycle-bg p-4 " :style="`background: ${item.type === 94 ? item.color : 'white'}`">
                         <div class="row d-flex justify-content-between">
                             
                                 <div class="col-6 align-self-center"><span class="font-weight-700">{{ item.type === 94 ? "Lifecycle changed" : item.type === 95 ? "Lead status changed" : "Contact's owner changed" }}</span><span class="font-weight-700 uniform-primary-color"></span></div>
@@ -292,7 +292,7 @@
 
 
 <script>
-import { ref } from "vue"
+import { onUpdated, ref } from "vue"
 import Dropdown from "primevue/dropdown";
 import dateFormatter from '../../../../services/dates/dateformatter';
 import frmservice from "@/services/FRM/firsttimermanagement";
@@ -557,6 +557,7 @@ export default {
                 }
         }
 
+    
         return {
             noteIcon,
             toggleNoteIcon,
