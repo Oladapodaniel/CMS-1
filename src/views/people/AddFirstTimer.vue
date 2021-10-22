@@ -239,9 +239,9 @@
                 </div>
               </div>
             </div>
-            <div style="width: 225px">
+            <!-- <div style="width: 225px">
               <ImageForm @image="setImageToUrl" />
-            </div>
+            </div> -->
           </div>
         </div>
         <!-- <hr class="hr"> -->
