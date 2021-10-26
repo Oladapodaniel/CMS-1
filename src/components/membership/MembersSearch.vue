@@ -29,23 +29,45 @@
         <a
             class="dropdown-item font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
             style="border-top: 1px solid rgb(0, 32, 68); color: rgb(19, 106, 205);"
+            @click="() => display = true"
             >Add new member</a
         >
         </div>
     </div>
+    <Dialog
+        header="Create New Member"
+        v-model:visible="display"
+        :style="{ width: '70vw', maxWidth: '600px'}"
+        :modal="true"
+        position="top"
+        >
+        <div class="row">
+            <div class="col-md-12">
+            <NewPerson @cancel="() => display = false" @person-id="getPersonId($event)"/>
+            </div>
+        </div>
+    </Dialog>
+    
 </template>
 
 <script>
 import { ref, watchEffect } from "vue"
 import axios from "@/gateway/backendapi";
+import NewPerson from './NewDonor.vue';
+import Dialog from "primevue/dialog";
 export default {
     emits: ['memberdetail'],
     props: ['currentMember', 'stylesidebarinput'],
+    components: {
+        NewPerson,
+        Dialog
+    },
     setup (props, { emit }) {
         const userSearchString = ref("")
         const searchRef = ref("")
         const members = ref([])
         const loading = ref(false)
+        const display = ref(false)
 
         const searchForUsers = async () => {
             loading.value = true
@@ -88,6 +110,10 @@ export default {
             // }
         })
 
+        const getPersonId = (payload) => {
+            console.log(payload)
+        }
+
         return {
             userSearchString,
             selectMember,
@@ -95,7 +121,9 @@ export default {
             // focusSearch,
             searchRef,
             searchForUsers,
-            loading
+            loading,
+            getPersonId,
+            display
         }
     }
 }

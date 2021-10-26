@@ -5,7 +5,7 @@
             <div class="col font-weight-700 text-right uniform-primary-color">Actions <i class="pi pi-angle-down"></i></div>
         </div>
         <div class="row mt-5">
-            <div class="col-6 offset-3 d-flex justify-content-center">
+            <div class="col-6 offset-3 d-flex justify-content-center profile-overlay">
                 <img :src="personDetails.pictureUrl" class="contact-image w-100 h-100" v-if="personDetails.pictureUrl"/>
                 <img src="../../../../assets/people/phone-import.svg" class="contact-image" v-else/>
             </div>
@@ -1195,4 +1195,13 @@ export default {
   background: #dadadad2;
   color: rgb(15, 71, 134)
 }
+
+/* .profile-overlay img {
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+} */
 </style>

@@ -661,7 +661,9 @@ import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress"
 import setupService from '../../services/setup/setupservice';
 import ImageForm from '../../components/membership/ImageForm.vue';
+import SearchMembers from '../../components/membership/MembersSearch.vue';
 import grousService from "../../services/groups/groupsservice";
+import { useStore } from "vuex"
 
 export default {
   components: { Dropdown, Dialog, ImageForm, SearchMembers },

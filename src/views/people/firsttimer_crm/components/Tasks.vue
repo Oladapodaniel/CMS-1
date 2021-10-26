@@ -6,7 +6,7 @@
                 <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <div class="col align-self-center"><span class="font-weight-700 c-pointer"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.taskIcon, 'unroll-note-icon' : !item.taskIcon}" @click="toggleTaskIcon(index)"></i>&nbsp;&nbsp;{{ item.typeText }} {{ item.person ? 'task' : 'logged' }}</span>{{ item.person ? `assigned to ` : '' }} <span class="font-weight-700">{{ item.person ? item.person : "" }}</span></div>
+                        <div class="col align-self-center"><span class="font-weight-700 c-pointer"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.taskIcon, 'unroll-note-icon' : !item.taskIcon}" @click="toggleTaskIcon(index)"></i>&nbsp;&nbsp;{{ item.typeText }} {{ item.person ? 'task' : 'logged' }}</span> {{ item.person ? `assigned to ` : '' }} <span class="font-weight-700">{{ item.person ? item.person : "" }}</span></div>
                         
                     </div>
                     <div>
@@ -70,7 +70,7 @@
                             <div class="col-4 mt-2">
                                 <div @click="toggleTodo" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
                                     <!-- {{ item.selectedActivity ? item.selectedActivity.value : activityType.find(i => i.id === item.type).value }} -->
-                                   Todo here &nbsp; <i class="pi pi-sort-down"></i>
+                                   Todo &nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
                                 <OverlayPanel ref="todoOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                     <div class="container-fluid p-0">
@@ -83,7 +83,7 @@
                             <div class="col-4 mt-2">
                                 <div @click="togglePriority" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
                                     <!-- {{ item.selectedPriority ? item.selectedPriority.name : taskPriority.find(i => i.id === item.loggedTask.priority).name }} -->
-                                    priority here&nbsp; <i class="pi pi-sort-down"></i>
+                                    priority &nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
                                 <OverlayPanel ref="priorityOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                     <div class="container-fluid p-0">
@@ -96,7 +96,7 @@
                             <div class="col-4 mt-2">
                                 <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
                                     <!-- {{ item.selectedContact ? `${item.selectedContact.firstName} ${item.selectedContact.lastName}` : item.person }} -->
-                                   contact here &nbsp; <i class="pi pi-sort-down"></i>
+                                   contact &nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
                                 <OverlayPanel ref="contactOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="make-scrollable">
                                     <div class="container-fluid p-0">
