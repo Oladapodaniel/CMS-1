@@ -1,15 +1,16 @@
 <template>
-    <div class="container-fluid container-wide">
-        <RegisterpersonId/>
+    <div class="container-fluid container-top">
+        
+        <AddNewperson />
     </div>
 </template>
 
 <script>
 
-import RegisterpersonId from '../../views/people/RegisterPersonID.vue'
+import AddNewperson from '../../views/people/AddPerson.vue'
 export default {
     components :{
-        RegisterpersonId
+        AddNewperson
     },
     setup() {
         

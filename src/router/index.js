@@ -9,6 +9,17 @@ import TermsOfUse from '../components/temp/PaymentPage';
 const routes = [
 
     {
+        path: '/registerpersonid',
+        name: 'RegisterPersonID',
+        meta: {
+            title: 'RegisterPerson',
+        },
+        component: () =>
+            import ( /* webpackChunkName: "emailsent" */ '../views/people/RegisterPersonID.vue')
+    },
+
+
+    {
         path: '/pagination',
         name: 'Pagination',
         component: Pagination
@@ -112,6 +123,7 @@ const routes = [
         component: () =>
             import ( /* webpackChunkName: "emailsent" */ '../views/account/EmailSent.vue')
     },
+
     {
         path: '/tenant',
         name: 'Home',
