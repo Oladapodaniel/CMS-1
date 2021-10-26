@@ -61,7 +61,7 @@
 
 <script>
 import Dropdown from "primevue/dropdown";
-import ImageForm from "./ImageForm";
+import ImageForm from "../../../../components/membership/ImageForm.vue";
 
 export default {
     components: { Dropdown, ImageForm },

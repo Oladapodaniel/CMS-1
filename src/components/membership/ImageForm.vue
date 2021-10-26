@@ -7,7 +7,7 @@
                         <img v-if="url" class="img-style" :src="url" alt="Uploaded Image" />
                           <img
                             v-else-if="!pictureUrl"
-                            src="../../../../assets/people/phone-import.svg"
+                            src="../../assets/people/phone-import.svg"
                             alt="Uploaded Image"
                             class="img-style"
                           />
@@ -48,8 +48,9 @@
 
 <script>
 import { ref, watchEffect } from 'vue'
-// import axios from "@/gateway/backendapi"
+import axios from "@/gateway/backendapi"
     export default {
+        emits: ['image', 'pictureurl'],
         props: ['editPicture', 'resetImage', 'memberDetails'],
         setup (props, { emit }) {
             // const disabled =ref(true)
@@ -64,27 +65,28 @@ import { ref, watchEffect } from 'vue'
                 // disabled.value = false
                 url.value = URL.createObjectURL(image.value);
                 emit("image", image.value)
+                uploadImage()
             }
 
-            // const uploadImage = () => {
-            //     loading.value = true
-            //     let formData = new FormData()
-            //     formData.append("mediaFileImage", image.value)
+            const uploadImage = () => {
+                loading.value = true
+                let formData = new FormData()
+                formData.append("mediaFileImage", image.value)
 
-            //     axios.post("/api/Media/UploadProfilePicture", formData)
-            //     .then(res => {
-            //         loading.value = false
-            //     console.log(res)
-            //     pictureUrl.value = res.data.pictureUrl
-            //     // url.value = URL.createObjectURL(image.value);
+                axios.post("/api/Media/UploadProfilePicture", formData)
+                .then(res => {
+                    loading.value = false
+                console.log(res)
+                pictureUrl.value = res.data.pictureUrl
+                // url.value = URL.createObjectURL(image.value);
 
-            //     emit("picture-url", pictureUrl.value)
-            //     })
-            //     .catch(err => {
-            //         loading.value = false
-            //         console.log(err)
-            //     })
-            // }
+                emit("pictureurl", pictureUrl.value)
+                })
+                .catch(err => {
+                    loading.value = false
+                    console.log(err)
+                })
+            }
 
             watchEffect(() => {
                 if (props.editPicture) {
@@ -149,8 +151,8 @@ import { ref, watchEffect } from 'vue'
   }
 
   .img-style {
-      width: 160px;
-      height: 160px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
   }

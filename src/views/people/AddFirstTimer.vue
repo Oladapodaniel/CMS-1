@@ -238,9 +238,25 @@
                   </div>
                 </div>
               </div>
+              <div class="input-field">
+                <label for="" class="label">Choose contact owner</label>
+                <div class="input p-0 border-0">
+                  <SearchMembers v-bind:currentMember="firstTimersObj" @memberdetail="setContact"/>
+                </div>
+              </div>
+              <div class="input-field">
+                <label for="" class="label">Add to group</label>
+                <div class="p-2 border" style="width: 330px; margin: 4px 8px; border-radius: 3px">
+                  <div v-for="(item, index) in firstTimerInGroup" :key='index'>
+                    <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
+                  </div>
+                  <div v-if="firstTimerInGroup.length === 0">No group added yet</div>
+                  <div class="font-weight-700 text-primary border-top text-center c-pointer" data-toggle="modal" data-target="#addToGroup">Add</div>
+                </div>
+              </div>
             </div>
             <div style="width: 225px">
-              <ImageForm @image="setImageToUrl" />
+              <ImageForm @pictureurl="setImageToUrl" />
             </div>
           </div>
         </div>
@@ -316,8 +332,6 @@
                   </div>
                 </div>
               </div>
-
-
             </div>
 
             <div class="image-div other">
@@ -325,6 +339,7 @@
             </div>
           </div>
         </div>
+      
         <div class="inputs mt-2">
           <div class="submit-div">
             <button class="action-btn cancel-btn btn" @click.prevent="onCancel">
@@ -543,6 +558,93 @@
             </div>
           </div>
         </div>
+
+         <!-- Modal -->
+        <div
+          class="modal fade"
+          id="addToGroup"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="addToGroup"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="background: #ebeff4">
+                <h5 class="modal-title font-weight-bold" id="addToGroup">
+                  Group Membership
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row my-4">
+                  <div class="col-md-4 text-md-right">
+                    <label for="" class="font-weight-600">Name</label>
+                  </div>
+                  <div class="col-md-7">
+                    <Dropdown
+                      v-model="groupToAddTo"
+                      :options="allGroups"
+                      style="width: 100%"
+                      :filter="false"
+                      placeholder="Select a group"
+                      optionLabel="name"
+                    />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4 text-md-right">
+                    <label for="" class="font-weight-600">Position</label>
+                  </div>
+                  <div class="col-md-7">
+                    <input
+                      type="text"
+                      v-model="position"
+                      class="form-control"
+                      placeholder="e.g Member"
+                    />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="" class="font-weight-600"></label>
+                  </div>
+
+                  <div class="col-md-7">
+                    <div class="col-md-12 mt-3 text-center">
+                      <p class="my-1 text-danger" v-if="addToGroupError">
+                        Please select a group
+                      </p>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-6 d-md-flex justify-content-end">
+                        <button class="default-btn" data-dismiss="modal">Cancel</button>
+                      </div>
+                      <div class="col-md-6">
+                        <button
+                          class="default-btn primary-bg border-0 text-white"
+                          :data-dismiss="dismissAddToGroupModal"
+                          @click="addMemberToGroup"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
     </div>
   </div>
@@ -558,15 +660,18 @@ import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress"
 import setupService from '../../services/setup/setupservice';
-import ImageForm from '../event/childcheckin/components/ImageForm.vue'
+import ImageForm from '../../components/membership/ImageForm.vue';
+import SearchMembers from '../../components/membership/MembersSearch.vue';
+import grousService from "../../services/groups/groupsservice";
+import { useStore } from "vuex"
 
 export default {
-  components: { Dropdown, Dialog, ImageForm },
+  components: { Dropdown, Dialog, ImageForm, SearchMembers },
 
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
     const toast = useToast();
-
+    const store = useStore()
     const showEventList = ref(false);
     const selectEventAttended = () => {
       showEventList.value = !showEventList.value;
@@ -596,11 +701,6 @@ export default {
     const selectedAboutUsSource = ref(null);
     const selectedFollowUp = ref(null);
     const firstTimersObj = ref({ sendWelcomeSMS: false, sendWelcomeEmail: true });
-
-    const eventName = computed(() => {
-      return newEvents.value.map((i) => i.name);
-    });
-
     const showCategory = ref(false);
     const eventText = ref("");
     const displayModal = ref(false);
@@ -612,7 +712,17 @@ export default {
     const firstTimerPhone = ref("")
     const firstTimerEmail = ref("")
     const routeToFRM = ref(false)
+    const firstTimerInGroup = ref([])
+    const allGroups = ref([]);
+    const groupToAddTo = ref({})
+    const position = ref("")
+    const addToGroupError = ref(false);
+    const dismissAddToGroupModal = ref("");
 
+
+    const eventName = computed(() => {
+      return newEvents.value.map((i) => i.name);
+    });
 
     const filterEventCategory = computed(() => {
       // let x;
@@ -680,7 +790,13 @@ export default {
       firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
         ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1
         : 0;
-      // console.log(selectedAboutUsSource.value.id)
+      firstTimersObj.value.groups = firstTimerInGroup.value.length > 0 ? firstTimerInGroup.value.map(i => {
+        return {
+          groupId: i.groupId,
+          position: i.position
+        }
+      }) : []
+      
       switch (birthMonth.value) {
         case "January":
           firstTimersObj.value.birthMonth = "1";
@@ -807,9 +923,7 @@ export default {
           showError.value = true;
           console.log(err.response);
         }
-        console.log('toedit')
       } else {
-        console.log('tocreate')
         axios
           .post("/api/people/firsttimer", firstTimersObj.value)
           .then((res) => {
@@ -1178,8 +1292,96 @@ export default {
       }
 
       const setImageToUrl = (payload) => {
-        console.log(payload)
+        firstTimersObj.value.imageUrl = payload
       }
+
+      const setContact = (payload) => {
+        if (!payload.email) {
+          toast.add({
+              severity: "warn",
+              summary: "No email associate with the person",
+              detail: "This contact does not have any email records, communicate with this person to create him as a user",
+              life: 15000,
+            });
+        }
+        firstTimersObj.value.contactOwnerId = payload.id
+      }
+
+     
+
+    const getGroups = async () => {
+      try {
+        let groups = store.getters["groups/groups"];
+
+        if (groups && groups.length > 0) {
+          allGroups.value = groups;
+          return true;
+        } else {
+          let group = await grousService.getGroups();
+          if (group) {
+            allGroups.value = group;
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getGroups();
+
+    const addMemberToGroup = async () => {
+      addToGroupError.value = false;
+      if (!groupToAddTo.value || !groupToAddTo.value.id) {
+        addToGroupError.value = true;
+        return false;
+      }
+      dismissAddToGroupModal.value = "modal";
+      // if (route.params.personId) {
+      // let personInfo = {
+      // people: [
+      //     {
+      //       groupId: groupToAddTo.value.id ,
+      //       position: position.value,
+      //       personId: route.params.personId
+      //     }
+      //   ]
+      // }
+
+      //   try {
+      //   const response = await membershipService.addMemberToGroup(
+      //     personInfo, groupToAddTo.value.id
+      //   );
+      //   console.log("RESPONSE", response);
+      //   toast.add({
+      //     severity: "success",
+      //     summary: "Added Successfully",
+      //     detail: `Member add to ${groupToAddTo.value.name}`,
+      //     life: 3000,
+      //   });
+
+      //   firstTimerInGroup.value.push({
+      //     name: groupToAddTo.value.name,
+      //     groupId: groupToAddTo.value.id,
+      //     position: position.value
+      //   })
+
+      //   groupToAddTo.value = {}
+      //   position.value = ""
+      //   } catch (error) {
+      //     console.log(error);
+      //   }
+      // } else {
+        console.log(groupToAddTo.value)
+        firstTimerInGroup.value.push({
+          name: groupToAddTo.value.name,
+          groupId: groupToAddTo.value.id,
+          position: position.value
+        })
+
+        groupToAddTo.value = {}
+        position.value = ""
+      // }
+      console.log(firstTimerInGroup.value)
+    };
 
     return {
       onSubmit,
@@ -1245,7 +1447,15 @@ export default {
       firstTimerEmail,
       routeToFRM,
       saveAndRoute,
-      setImageToUrl
+      setImageToUrl,
+      setContact,
+      firstTimerInGroup,
+      allGroups,
+      groupToAddTo,
+      position,
+      addToGroupError,
+      dismissAddToGroupModal,
+      addMemberToGroup
     };
   },
 };
