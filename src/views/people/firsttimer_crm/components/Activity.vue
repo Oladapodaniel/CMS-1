@@ -55,7 +55,7 @@
                 <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <div class="col align-self-center"><span class="font-weight-700 c-pointer"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.taskIcon, 'unroll-note-icon' : !item.taskIcon}" @click="toggleTaskIcon(index, indx)"></i>&nbsp;&nbsp;{{ item.typeText }} {{ item.person ? 'task' : 'logged' }}</span>{{ item.person ? `assigned to ` : '' }} <span class="font-weight-700">{{ item.person ? item.person : "" }}</span></div>
+                        <div class="col align-self-center"><span class="font-weight-700 c-pointer"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.taskIcon, 'unroll-note-icon' : !item.taskIcon}" @click="toggleTaskIcon(index, indx)"></i>&nbsp;&nbsp;{{ item.typeText }} {{ item.person ? 'task' : 'logged' }}</span> {{ item.person ? `assigned to ` : '' }} <span class="font-weight-700">{{ item.person ? item.person : "" }}</span></div>
                         
                     </div>
                     <div>
@@ -79,8 +79,8 @@
                                 <div><i class="pi pi-pencil" :class="{ 'uniform-primary-color' : item.hoverTask, 'text-white' : !item.hoverTask }"></i></div>
                             </div>
                             <input type="text" class="form-control col-10" v-model="item.loggedTask.instructions" v-if="item.editTask"/>
-                            <div class="offset-1 p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveTask(index, indx)" v-if="item.editTask">Save</div>
-                            <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" v-if="item.editTask" @click="cancelTaskEdit(index, indx)">Cancel</div>
+                            <div class="offset-1 p-2 col-2 mt-3 save-btn btn-btn c-pointer" @click="saveTask(index, indx)" v-if="item.editTask">Save</div>
+                            <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3 c-pointer" v-if="item.editTask" @click="cancelTaskEdit(index, indx)">Cancel</div>
                             <div class="col-12">
                                 <hr />
                             </div>
@@ -141,7 +141,7 @@
                                 </OverlayPanel>
                             </div>
                             <div class="col-4 mt-2">
-                                <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                <!-- <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
                                     {{ item.selectedContact ? `${item.selectedContact.firstName} ${item.selectedContact.lastName}` : item.person }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
                                 <OverlayPanel ref="contactOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="make-scrollable">
@@ -150,7 +150,18 @@
                                             <div class="py-2 px-3" @click="chooseContact(item, index, indx)">{{ item.firstName }} {{ item.lastName }}</div>
                                         </div>
                                     </div>
-                                </OverlayPanel>
+                                </OverlayPanel> -->
+                                <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                {{ item.selectedContact ? `${item.selectedContact.name}` : item.person }}&nbsp; <i class="pi pi-sort-down"></i>
+                            </div>
+                            <OverlayPanel ref="contactOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
+                                <div class="container-fluid p-0">
+                                    <div class="py-2 px-3">Assign this task to</div>
+                                    <div class="py-2 px-3">
+                                        <SearchMember @memberdetail="chooseContact($event, index, indx)"/>
+                                    </div>
+                                </div>
+                            </OverlayPanel>
                             </div>
 
                             <div class="col-12">
@@ -160,8 +171,8 @@
                             </div> -->
                             <textarea class="form-control col-12 mt-3" rows="4" v-model="item.loggedTask.note"></textarea>
                             <div class="d-flex justify-content-start">
-                                <div class="p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="editTask(index, indx)" >Save</div>
-                            <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" @click="cancelTaskEdit2">Cancel</div>
+                                <div class="p-2 col-2 mt-3 save-btn btn-btn c-pointer" @click="editTask(index, indx)" >Save</div>
+                            <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3 c-pointer" @click="cancelTaskEdit2">Cancel</div>
                             </div>
                             </div>
                         </div>
@@ -292,14 +303,16 @@
 
 
 <script>
-import { onUpdated, ref } from "vue"
+import { ref } from "vue"
 import Dropdown from "primevue/dropdown";
 import dateFormatter from '../../../../services/dates/dateformatter';
 import frmservice from "@/services/FRM/firsttimermanagement";
 import { useRoute } from "vue-router"
+import SearchMember from "../../../../components/membership/MembersSearch.vue"
 export default {
     components: {
-        Dropdown
+        Dropdown,
+        SearchMember
     },
     props: ['personDetails', 'addNotes', 'addTask', 'dueDate', 'activities', 'loader', 'getReminder', 'activityType', 'taskPriority', 'allContacts'],
     emits: ['individualtoggle', 'individualtoggletask', 'individualcallicon', 'edittask', 'edittask2', 'savetask', 'hovertask', 'outhovertask', "commentindex", "removecommetfromview", "editcommentinview"],
@@ -374,6 +387,7 @@ export default {
                 mainIndex: indx
             }
             emit('savetask', indexes)
+            editTask(index, indx)
         }
         
         const cancelTaskEdit = () => {
@@ -526,9 +540,11 @@ export default {
             priorityOp.value.hide();
         }
 
-        const chooseContact = (item, index, indx) => {
-            console.log(item)
-            props.activities[index].value[indx].selectedContact = item
+        const chooseContact = (payload, index, indx) => {
+            // console.log(payload)
+            // console.log(index)
+            // console.log(indx)
+            props.activities[index].value[indx].selectedContact = payload
             contactOp.value.hide()
         }
 

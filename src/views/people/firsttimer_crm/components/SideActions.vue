@@ -79,10 +79,10 @@
                 <div class="col-12 mt-2">
                     <!-- <Contacts /> -->
                     <!-- <Dropdown v-model="selectedContact" :options="contacts" :filter="true" class="w-100 phone-input" optionLabel="firstName" placeholder="Select Contact" /> -->
-                    <Dropdown v-model="selectedContact" :options="contacts" optionLabel="firstName" :filter="true" placeholder="Select a contact" :showClear="false" class="w-100 phone-input" @change="updateOwner">
+                    <!-- <Dropdown v-model="selectedContact" :options="contacts" optionLabel="firstName" :filter="true" placeholder="Select a contact" :showClear="false" class="w-100 phone-input" @change="updateOwner">
                         <template #value="slotProps">
                             <div class="country-item country-item-value" v-if="slotProps.value">
-                                <!-- <img src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png" /> -->
+
                                 <div>{{slotProps.value.firstName}} {{slotProps.value.lastName}}</div>
                             </div>
                             <span v-else>
@@ -91,11 +91,12 @@
                         </template>
                         <template #option="slotProps">
                             <div class="country-item">
-                                <!-- <img src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png" /> -->
+                             
                                 <div>{{slotProps.option.firstName}} {{slotProps.option.lastName}}</div>
                             </div>
                         </template>
-                    </Dropdown>
+                    </Dropdown> -->
+                    <SearchMember v-bind:currentMember="selectedContact" @memberdetail="updateOwner" :stylesidebarinput="true"/>
                 </div>
                 <!-- <div class="col-5 align-self-center">
                     <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
@@ -169,13 +170,6 @@
                                 class="dropdown-menu"
                                 aria-labelledby="dropdownMenuButton"
                             >
-                                <!-- <a
-                                class="dropdown-item elipsis-items"
-                                @mouseover="toggle($event, person.id)"
-                                href="#"
-                                >
-                                Convert to member
-                                </a> -->
                                     <input
                                     type="text"
                                     class="form-control dd dd-search-field"
@@ -455,7 +449,6 @@ import Tooltip from 'primevue/tooltip';
 import OverlayPanel from 'primevue/overlaypanel';
 import axios from "@/gateway/backendapi";
 import lookupTable from "../../../../services/lookup/lookupservice"
-// import Contacts from "./AllMembers.vue"
 import { useRoute } from "vue-router"
 import frmservice from "@/services/FRM/firsttimermanagement"
 import { useStore } from "vuex";
@@ -463,11 +456,12 @@ import { useStore } from "vuex";
 // import SinchClient from 'sinch-rtc/sinch.min.js'
 // import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
+import SearchMember from "../../../../components/membership/MembersSearch.vue"
 export default {
     components: {
         Dropdown,
         OverlayPanel,
-        // Contacts
+        SearchMember
     },
     directives: {
         'tooltip': Tooltip
@@ -790,13 +784,13 @@ export default {
         };
         getMembers();
 
-        const updateOwner = async() => {
-            const payload = {
+        const updateOwner = async(payload) => {
+            const body = {
                 firstTimerID: route.params.personId,
-                ownerID: selectedContact.value.id
+                ownerID: payload.id
             }
             try {
-                let res = await frmservice.updateContactOwner(route.params.personId, payload)
+                let res = await frmservice.updateContactOwner(route.params.personId, body)
                 console.log(res)
                 emit('updatelogtoview')
             }

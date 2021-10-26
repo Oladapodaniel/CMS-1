@@ -478,7 +478,7 @@
               <div class="col-md-12 d-flex justify-content-center">
                 <button
                   class="default-btn primary-bg text-white border-0 contn-btn"
-                  @click.once="onContinue"
+                  @click="onContinue"
                   :disabled="!selectedEvent.id || !selectedGroup.id"
                 >
                   Save and Continue
@@ -722,9 +722,7 @@ export default {
           console.log(error);
         }
       console.log("Only Top")
-      } 
-      
-      if (!amount.value && !selectedBank.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value &&  image.value) {
+      } else if (!amount.value && !selectedBank.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value &&  image.value) {
         console.log("Free and image")
         try {
             let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
@@ -745,9 +743,7 @@ export default {
         catch (err) {
           console.log(err)
         }
-      }
-
-      if (amount.value && selectedBank.value && accountNumber.value && selectedCashAccount.value && selectedIncomeAccount.value &&  image.value) {
+      } else if (amount.value && selectedBank.value && accountNumber.value && selectedCashAccount.value && selectedIncomeAccount.value &&  image.value) {
         console.log('image and paid')
         try {
             let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
@@ -770,7 +766,7 @@ export default {
           console.log(err)
         }
       }
-       
+       console.log('heareeeejrklnaejvhil')
     };
 
     const showPaidTab = () => {
@@ -977,7 +973,7 @@ export default {
 }
 
 .show-tem-free {
-    height: 798px;
+    /* height: 798px; */
     overflow: hidden;
     transition: all 1s ease-in-out
 }
@@ -985,8 +981,8 @@ export default {
 
 
 .show-tem {
-    height: 1050px;
-    /* overflow: hidden; */
+    /* height: 1050px; */
+    overflow: hidden;
     transition: all 1s ease-in-out
 }
 

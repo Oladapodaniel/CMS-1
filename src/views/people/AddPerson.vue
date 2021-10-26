@@ -708,11 +708,11 @@ export default {
         selectedMembership.value ? selectedMembership.value.id : ""
       );
       formData.append(
-        "peopleInGroups",
-        peopleInGroupIDs.value.length > 0 ? peopleInGroupIDs.value.map(i => {
+        "personGroups",
+        peopleInGroupIDs.value.length > 0 ? JSON.stringify(peopleInGroupIDs.value.map(i => {
           delete i.name
           return i
-        })  : []
+        }) ) : []
       );
       formData.append("homeAddress", personObj.address ? personObj.address : "");
       // formData.append("picture", image.value ? image.value : "");
