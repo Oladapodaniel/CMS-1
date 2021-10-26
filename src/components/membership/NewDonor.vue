@@ -210,7 +210,7 @@ import Button from 'primevue/button'
 import { reactive, ref,computed } from 'vue'
 import { useRoute } from "vue-router";
 import axios from "@/gateway/backendapi";
-import ImageForm from '../../event/childcheckin/components/ImageForm'
+import ImageForm from './ImageForm'
 import Dropdown from "primevue/dropdown";
     export default {
         components:{ Button, ImageForm, Dropdown  },

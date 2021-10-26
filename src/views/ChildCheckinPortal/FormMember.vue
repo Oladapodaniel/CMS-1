@@ -82,7 +82,7 @@
 import { watch, ref } from "vue"
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
-import ImageForm from "../event/childcheckin/components/ImageForm";
+import ImageForm from "../../components/membership/ImageForm.vue";
 import { useRoute } from "vue-router"
 
 export default {

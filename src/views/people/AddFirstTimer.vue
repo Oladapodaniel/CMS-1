@@ -660,9 +660,7 @@ import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress"
 import setupService from '../../services/setup/setupservice';
-import ImageForm from '../event/childcheckin/components/ImageForm.vue'
-import SearchMembers from "@/components/membership/MembersSearch"
-import { useStore } from "vuex";
+import ImageForm from '../../components/membership/ImageForm.vue';
 import grousService from "../../services/groups/groupsservice";
 
 export default {

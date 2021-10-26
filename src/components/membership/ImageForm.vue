@@ -7,7 +7,7 @@
                         <img v-if="url" class="img-style" :src="url" alt="Uploaded Image" />
                           <img
                             v-else-if="!pictureUrl"
-                            src="../../../../assets/people/phone-import.svg"
+                            src="../../assets/people/phone-import.svg"
                             alt="Uploaded Image"
                             class="img-style"
                           />
@@ -151,8 +151,8 @@ import axios from "@/gateway/backendapi"
   }
 
   .img-style {
-      width: 160px;
-      height: 160px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
   }
