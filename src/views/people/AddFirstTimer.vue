@@ -255,15 +255,9 @@
                 </div>
               </div>
             </div>
-<<<<<<< HEAD
-            <!-- <div style="width: 225px">
-              <ImageForm @image="setImageToUrl" />
-            </div> -->
-=======
             <div style="width: 225px">
               <ImageForm @pictureurl="setImageToUrl" />
             </div>
->>>>>>> development
           </div>
         </div>
         <!-- <hr class="hr"> -->
