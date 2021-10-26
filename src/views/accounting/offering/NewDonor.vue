@@ -101,16 +101,82 @@
                                 <div class="col-md-4 text-md-right pr-md-0">
                                     <label for="" class="font-weight-700">Gender</label>
                                 </div>
-                                <div class="col-md-8">
-                                    <input type="text" v-model="donor.gender" placeholder="Gender" class="form-control">
+                                <div class="col-md-8"> 
+                                    
+                                    <div class="dropdown w-100 ">
+                                        <div id="dropdownMenuButton"  class="w-100  border py-2 pl-3 rounded" data-toggle="dropdown">{{ Object.keys(genderType).length > 0 ? genderType.value : 'Gender'}}</div>
+                                        <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" >
+                                            <a
+                                                     class="dropdown-item  " href="#"
+                                                       v-for="(gender, index) in genders" :key="index" 
+                                                        @click="addGenderType(gender)">
+                                                   
+                                                <div class="hover-text cursor-pointer" >{{gender.value}}</div>
+                                            </a>
+                                            
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row my-3">
                                 <div class="col-md-4 text-md-right pr-md-0">
                                     <label for="" class="font-weight-700">Date of birth</label>
                                 </div>
-                                <div class="col-md-8">
-                                    <input type="date" v-model="donor.dateOfBirth" class="form-control">
+                                <div class="col-md-8  d-flex justify-content-between flex-wrap">
+                                    <div class="col-12 col-md-5 border cursor-pointer py-2 rounded col-lg-5">
+                                        <div class="dropdown col-12">
+                                            <div id="dropdownMenuButton"  class="w-100   " data-toggle="dropdown">{{ birthDay ? birthDay: 'Days'}}</div>
+                                            <div class="dropdown-menu flowY  w-100" aria-labelledby="dropdownMenuButton" >
+                                                <a
+                                                        class="dropdown-item  " href="#"
+                                                        v-for="(birthDays, index) in birthDaysArr" :key="index" 
+                                                            @click="addbirthDays(birthDays)">
+                                                    
+                                                    <div class="hover-text cursor-pointer" >{{birthDays}}</div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class=" col-12 col-md-6 border cursor-pointer py-2 rounded col-lg-6">
+                                        <div class="dropdown col-12  ">
+                                            <div id="dropdownMenuButton"  class=" w-100  " data-toggle="dropdown">{{ birthMonth ? birthMonth : 'Month'}}</div>
+                                            <div class="dropdown-menu flowY w-100"  aria-labelledby="dropdownMenuButton" >
+                                                <a
+                                                        class="dropdown-item   " href="#"
+                                                        v-for="(month, index) in months" :key="index" 
+                                                            @click="addBirthMonth(month)">
+                                                    
+                                                    <div class="hover-text cursor-pointer " >{{month}}</div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class=" col-12 text-center cursor-pointer mt-2 mx-md-auto border rounded ">
+                                        <div class="col-12  py-2 rounded  ">
+                                            <div   class="w-100 col-12 " data-toggle="dropdown">{{ birthYear ? birthYear: 'Year'}} </div>
+                                            <!-- <i class="pi pi-angle-down arrow-icon  "></i> -->
+                                            <div class="dropdown-menu flowY  w-100"  aria-labelledby="dropdownMenuButton" >
+                                                <a
+                                                        class="dropdown-item  " href="#"
+                                                        v-for="(birthYears, index) in birthYearsArr" :key="index" 
+                                                            @click="addBirthYears(birthYears)">
+                                                    
+                                                    <div class="hover-text cursor-pointer" >{{birthYears}}</div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- <div class="p-field cs-select day p-col-12">
+                                            <Dropdown
+                                            v-model="donor.yearOfBirth"
+                                            :options="birthYearsArr"
+                                            placeholder="Year"
+                                            style="width: 100%"
+                                            />
+                                        </div> -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -137,25 +203,74 @@
 </template>
 
 <script>
+// import { useStore } from "vuex";
 // import InputText from 'primevue/inputtext';
+import moment from "moment";
 import Button from 'primevue/button'
-import { reactive, ref } from 'vue'
+import { reactive, ref,computed } from 'vue'
 import { useRoute } from "vue-router";
 import axios from "@/gateway/backendapi";
 import ImageForm from '../../event/childcheckin/components/ImageForm'
+import Dropdown from "primevue/dropdown";
     export default {
-        components:{ Button, ImageForm },
+        components:{ Button, ImageForm, Dropdown  },
 
         setup(props, { emit }) {
             const route = useRoute();
+            // const store = useStore();
             const donor = reactive({ });
             const image = ref('');
-    // let image = ref("");
-    // const imageSelected = (e) => {
-    //   image.value = e.target.files[0];
-    //   url.value = URL.createObjectURL(image.value);
-    //   memberToEdit.value.pictureUrl = URL.createObjectURL(image.value);
-    // };
+            let person = reactive({
+                monthOfBirth: null,
+                dayOfBirth: null,
+                yearOfBirth: null,
+                // monthOfWedding: null,
+                // dayOfWedding: null,
+                // yearOfWedding: null,
+                });
+            const months = ref([ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]);
+            const birthDate = moment();
+            const birthMonth = ref("");
+            const birthDay = ref("");
+            const birthYear = ref("");
+            const genderType = ref({});
+            const daysInBirthMonth = ref(birthDate.daysInMonth());
+
+            const addGenderType = (gender) => {
+                genderType.value = gender;
+            }
+            const addbirthDays = (birthDays) => {
+                birthDay.value = birthDays;
+                console.log(birthDay.value, "Days");
+            }
+            const addBirthMonth = (month) => {
+                birthMonth.value = month;
+                console.log(birthMonth.value, 'month');
+
+            }
+            const addBirthYears = (birthYears) => {
+                birthYear.value = birthYears;
+                console.log(birthYear.value, 'Years');
+            }
+            const birthYearsArr = computed(() => {
+            const arrOfYears = [];
+            let currentYear = new Date().getFullYear();
+            while (arrOfYears.length <= 100) {
+                arrOfYears.push(currentYear);
+                currentYear = currentYear - 1;
+            }
+            return arrOfYears;
+            });
+
+            const birthDaysArr = computed(() => {
+            console.log(birthDate.month(), "month");
+            const arrOfDays = [];
+            console.log(daysInBirthMonth.value, "dm");
+            for (let i = 1; i <= daysInBirthMonth.value; i++) {
+                arrOfDays.push(i);
+            }
+            return arrOfDays;
+            });
 
 
 
@@ -163,6 +278,57 @@ import ImageForm from '../../event/childcheckin/components/ImageForm'
                      image.value = payload
                      console.log(image.value, "weldone");
                  }
+            // let genders = ref(store.getters["lookups/genders"]);
+            let genders = ref('');
+           // if (!genders.value || genders.value.length === 0) getLookUps();
+
+            // const gendersArr = computed(() => {
+            //     return genders.value.map((i) => i.value);
+            //     });
+            // const getPersonGenderId = () => {
+            //     if (memberToEdit.value && memberToEdit.value.personId) {
+            //         if (genders.value && genders.value.length > 0) {
+            //         donor.gender.value = genders.value.find(
+            //             (i) => i.id === memberToEdit.value.genderID
+            //         );
+            //         } else {
+            //         getLookUps();
+            //         }
+            //     }
+            //     };
+            const getLookUps = () => {
+            axios
+                .get("/api/LookUp/GetAllLookUps")
+                .then((res) => {
+                console.log(res, "lksa");
+                genders.value = res.data.find(
+                    (i) => i.type.toLowerCase() === "gender"
+                ).lookUps;
+                console.log(genders.value , "gender")
+                // try {
+                //   selectedGender.value = genders.value.find(
+                //     (i) => i.id === memberToEdit.value.genderID
+                //   );
+                // } catch (error) {
+                //   console.log(error);
+                // }
+
+                //   maritalStatus.value = res.data.find(
+                //     (i) => i.type.toLowerCase() === "maritalstatus"
+                //   ).lookUps;
+                // try {
+                //   selectedMaritalStatus.value = maritalStatus.value.find(
+                //     (i) => i.id === memberToEdit.value.maritalStatusID
+                //   );
+                // } catch (error) {
+                //   console.log(error);
+                // }
+                //   console.log(maritalStatus, "MS");
+                })
+                .catch((err) => console.log(err.response));
+            };
+            getLookUps();
+
 
             const saveDonor = async () => {
                 emit("cancel");
@@ -173,15 +339,18 @@ import ImageForm from '../../event/childcheckin/components/ImageForm'
                     console.log('did it emit')
 
                 }
-                 
-
+                 console.log(birthMonth.value)
+                console.log(months.value.indexOf(birthMonth.value) + 1)
                 const formData = new FormData()
                 formData.append("firstName", donor.firstName)
                 formData.append("lastName", donor.lastName)
                 formData.append("mobilePhone", donor.mobilePhone)
                 formData.append("email", donor.email)
-                formData.append("gender", donor.gender)
-                formData.append("dateOfBirth", donor.dateOfBirth)
+                formData.append("gender", genderType.value.id)
+
+                formData.append("dayOfBirth", birthDay.value )
+                formData.append("monthOfBirth", months.value.indexOf(birthMonth.value) + 1 )
+                formData.append("yearOfBirth", birthYear.value )
                 formData.append("picture", image.value )
                 try {
                      return new Promise((resolve, reject) => {
@@ -218,6 +387,23 @@ import ImageForm from '../../event/childcheckin/components/ImageForm'
                 onCancel,
                 setImage,
                 image,
+                genders,
+                birthMonth,
+                birthDay,
+                birthYear,
+                months,
+                person,
+                birthDaysArr,
+                birthYearsArr,
+                addGenderType,
+                genderType,
+                addbirthDays,
+                addBirthMonth,
+                addBirthYears
+
+                // getLookUps
+                // gendersArr,
+                // getPersonGenderId
             }
         }
     }
@@ -228,6 +414,52 @@ import ImageForm from '../../event/childcheckin/components/ImageForm'
     margin-top: 300px;
     margin-bottom: 300px;
 } */
+.flowY{
+    height: 300px;
+    overflow-y: scroll;
+} 
+
+.hover-text:hover{
+  background-color: rgb(248, 247, 247);
+}
+.cs-select.month {
+  width: 111px;
+}
+
+.cs-select.day {
+  width: 87px;
+}
+
+.arrow-icon {
+  position: relative;
+  right: 25px;
+  top: 10px;
+  /* margin-top: -31px; */
+  font-size: 21px;
+}
+
+.cs-select.year {
+  width: 113px;
+}
+
+@media (max-width: 376px) {
+  /* .bio-info.celeb-info {
+    margin-top: 80px;
+  } */
+
+  .cs-select.month {
+    width: 85px;
+  }
+
+  .cs-select.day {
+    width: 85px;
+  }
+
+  .cs-select.year {
+    width: 90px;
+  }
+}
+
 .p-button-outlined{
     background-color:#fff9f9!Important;
     color: black!important;
