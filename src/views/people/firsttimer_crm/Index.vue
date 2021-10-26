@@ -225,13 +225,17 @@
                             </OverlayPanel>
                         </div> -->
                         <div class="col-4 mt-2">
+                            <!-- <div>
+                                
+                            </div> -->
                             <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                {{ Object.keys(selectedContact).length > 0 ? selectedContact.firstName + ' ' + selectedContact.lastName : "Select contact" }}&nbsp; <i class="pi pi-sort-down"></i>
+                                {{ Object.keys(selectedContact).length > 0 ? selectedContact.name : "Select contact" }}&nbsp; <i class="pi pi-sort-down"></i>
                             </div>
-                            <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="make-scrollable">
+                            <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
                                 <div class="container-fluid p-0">
-                                    <div class="row hover-log" v-for="(item, index) in allContacts" :key="index">
-                                        <div class="py-2 px-3" @click="chooseContact(item)">{{ item.firstName }} {{ item.lastName }}</div>
+                                    <div class="py-2 px-3">Search from your members to whom you want to assign this task.</div>
+                                    <div class="py-2 px-3">
+                                        <SearchMember @memberdetail="chooseContact"/>
                                     </div>
                                 </div>
                             </OverlayPanel>
@@ -251,7 +255,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue"
+import { computed, onUpdated, ref, watchEffect } from "vue"
 import SideActions from "./components/SideActions"
 import Activity from "./components/Activity"
 import Notes from "./components/Notes"
@@ -270,6 +274,7 @@ import frmservice from "@/services/FRM/firsttimermanagement"
 import groupResponse from '../../../services/groupArray/groupResponse'
 import dateFormatter from '../../../services/dates/dateformatter'
 // import SelectButton from 'primevue/selectbutton';
+import SearchMember from "../../../components/membership/MembersSearch.vue"
 export default {
     inheritAttrs: false,
     components: {
@@ -282,8 +287,9 @@ export default {
         InputText,
         Dialog,
         Editor,
-        Dropdown
-        // SelectButton
+        Dropdown,
+        // SelectButton,
+        SearchMember
     },
     setup () {
         const toast = useToast()
@@ -332,6 +338,7 @@ export default {
         const loader = ref(false)
         const groupedActivities = ref([])
         const searchActivitiesText = ref("")
+        // const inputFocus = ref(false)
 
         
 
@@ -507,6 +514,7 @@ export default {
         
         const toggleContact = (event) => {
             contactRef.value.toggle(event);
+            // inputFocus.value = true
         };
 
         const setDueDate = (item) => {
@@ -720,14 +728,35 @@ export default {
             taskList.value = activities.value.filter(i => i.person)
             emailList.value = type[90]
             
+            let colors = ['rgba(148, 249, 192, 0.4)', 'rgba(148, 211, 249, 0.4)', 'rgba(232, 249, 148, 0.4)', 'rgba(249, 219, 148, 0.4)', 'rgba(249, 148, 239, 0.4)']
+            let index = 0
+            
+            // let col =  colorss[index++];
             // Group by date
+            //  let r = () => Math.random() * 256 >> 0;
+            //  `rgb(${r()}, ${r()}, ${r()}, 0.2)`;
             const mappedActivities = activities.value.map(i => {
                 i.date = formatDate(i.date)
+                i.color = colors[index]
                 return i
             })
+            for (let i = 0; i < mappedActivities.length; i++) {
+                const element = mappedActivities[i];
+                if (element.type == 94) {
+                    element.color = colors[index]
+                    if (index == colors.length - 1){
+                        index = 0;
+                    } else {
+                        index++;
+                    }
+                }
+                
+                
+            }
             const date = groupResponse.groupData(mappedActivities, 'date')
             console.log(date)
              groupedActivities.value = []
+            
             for (const prop in date) {
                 groupedActivities.value.push({
                 name: prop,
@@ -773,6 +802,24 @@ export default {
         const toggleEmailIcon = (payload) => {
             emailList.value[payload].logIcon = !emailList.value[payload].logIcon
         }
+
+        onUpdated(() => {
+            // let r = () => Math.random() * 256 >> 0;
+            // let color = `rgb(${r()}, ${r()}, ${r()}, 0.2)`;
+            // taskList.value = taskList.value.map(i => {
+            //     i.color = color
+            //     return i
+            // })  
+        })
+
+        watchEffect(() => {
+            // let r = () => Math.random() * 256 >> 0;
+            // let color = `rgb(${r()}, ${r()}, ${r()}, 0.2)`;
+            // taskList.value = taskList.value.map(i => {
+            //     i.color = color
+            //     return i
+            // }) 
+        })
 
         return {
             toggleActivity,
@@ -865,7 +912,8 @@ export default {
             removeCommentFromView,
             editCommentInView,
             toggleEmailIcon,
-            setIconMainTask
+            setIconMainTask,
+            // inputFocus
         }
     }
 }
@@ -989,13 +1037,13 @@ export default {
 }
 
 .hover-log:hover {
-    background: rgba(202, 202, 202, 0.356);
+    background: rgba(249, 148, 239, 0.524);
     cursor: pointer
 }
 
-.make-scrollable {
+/* .make-scrollable {
     height: 800px;
     overflow: scroll;
     margin-top: 100px
-}
+} */
 </style>

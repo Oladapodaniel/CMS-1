@@ -182,14 +182,14 @@
                         </div>
 
                         <div class="col-md-4">
-                            <ImageForm :editPicture="pictureUrl" @image="setImage" :resetImage="resetImage" :memberDetails="memberDetails"/>
+                            <ImageForm @image="setImage"/>
                         </div>
                     </div>
                 <div class="row">
-                <div class="col-md-4 text-md-right">
+                <div class="col-md-3 text-md-right">
                     <h4 class="header4 text-md-right"></h4>
                  </div>
-                 <div class="col-md-7 px-0 d-flex justify-content-center">
+                 <div class="col-md-7 px-0">
                      <Button label="Cancel" class="p-button-outlined p-button-secondary mr-3 px-5 p-button-rounded" @click="onCancel" />
                      <Button label="Save"  class="p-button-primary p-button-rounded px-5 mr-3 max" @click="saveDonor" />
                  </div>
@@ -210,7 +210,7 @@ import Button from 'primevue/button'
 import { reactive, ref,computed } from 'vue'
 import { useRoute } from "vue-router";
 import axios from "@/gateway/backendapi";
-import ImageForm from '../../event/childcheckin/components/ImageForm'
+import ImageForm from './ImageForm'
 import Dropdown from "primevue/dropdown";
     export default {
         components:{ Button, ImageForm, Dropdown  },
@@ -336,8 +336,6 @@ import Dropdown from "primevue/dropdown";
                 if (route.fullPath.includes("/tenant/addfamily") || route.fullPath.includes("/tenant/createpeoplegroup") ) {
                     emit("show-ward-modal", true)
                     emit("show-group-modal", true)
-                    console.log('did it emit')
-
                 }
                  console.log(birthMonth.value)
                 console.log(months.value.indexOf(birthMonth.value) + 1)
