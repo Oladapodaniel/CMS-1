@@ -20,7 +20,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                    <Calendar dateFormat="dd/mm/yy" class="w-100" id="icon" v-model="startDate" :showIcon="true" />
                   </div>
               </div>
               <div class="col-md-4 col-sm-12 pr-md-0">
@@ -28,7 +28,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                    <Calendar dateFormat="dd/mm/yy" class="w-100" id="icon" v-model="endDate" :showIcon="true" />
                   </div>
               </div>
               <div class="col-md-4 col-sm-12 pr-md-0">
@@ -176,8 +176,8 @@ export default {
         },
     setup() {
     const showReport = ref(false);
-    const startDate = ref(new Date());
-    const endDate = ref(new Date());
+    const startDate = ref("");
+    const endDate = ref("");
     const firstTimerInChurch = ref([]);
     const genderChartResult = ref([]);
     const maritalStatusChartResult = ref([]);
@@ -291,7 +291,7 @@ export default {
 
     const generateReport = () => {
         axios
-        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
         .then((res) => {
 
           console.log(res, "🎄🎄🎄");
@@ -463,7 +463,7 @@ padding-right: 0;
 padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
-/* overflow-x: scroll; */
+overflow-x: scroll;
 }
 .move-enter-active {
   animation: move-in .8s;

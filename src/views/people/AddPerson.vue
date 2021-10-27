@@ -11,7 +11,7 @@
           <p class="form-section-header">Bio:</p>
           <div class="bio-info">
             <div class="inputs">
-              <!--  <div class="input-field">
+               <div class="input-field">
                 <label for="" class="label">Membership</label>
                 <div class="cstm-select">
                   <div style="width: 330px">
@@ -21,11 +21,11 @@
                       optionLabel="name"
                       placeholder="--Select membership--"
                       style="width: 100%"
-                    /> -->
-              <!-- <SelectElem :typ="'membership'" name="membership" :options="['--Select membership--', ...peopleClassifications]" value="--Select membership--" @input="itemSelected"/>
+                    />
+              <!-- <SelectElem :typ="'membership'" name="membership" :options="['--Select membership--', ...peopleClassifications]" value="--Select membership--" @input="itemSelected"/>-->
                   </div>
                 </div>
-              </div> -->
+              </div>
               <div class="input-field">
                 <label for="" class="label"
                   >Firstname<span style="color: red"> *</span></label
@@ -708,11 +708,11 @@ export default {
         selectedMembership.value ? selectedMembership.value.id : ""
       );
       formData.append(
-        "peopleInGroups",
-        peopleInGroupIDs.value.length > 0 ? peopleInGroupIDs.value.map(i => {
+        "personGroups",
+        peopleInGroupIDs.value.length > 0 ? JSON.stringify(peopleInGroupIDs.value.map(i => {
           delete i.name
           return i
-        })  : []
+        }) ) : []
       );
       formData.append("homeAddress", personObj.address ? personObj.address : "");
       // formData.append("picture", image.value ? image.value : "");
@@ -836,7 +836,7 @@ export default {
     let genders = ref(store.getters["lookups/genders"]);
     let maritalStatus = ref(store.getters["lookups/maritalStatus"]);
     let ageGroups = ref(store.getters["lookups/ageGroups"]);
-    // let memberships = ref(store.getters["lookups/peopleClassifications"]);
+    let memberships = ref(store.getters["lookups/peopleClassifications"]);
 
     const selectedMaritalStatus = ref(null);
     const selectedGender = ref(null);
@@ -873,25 +873,25 @@ export default {
         .catch((err) => console.log(err.response));
     };
 
-    // const getPeopleClassifications = async () => {
-    //   try {
-    //     const response = await axios.get(
-    //       "/api/Settings/GetTenantPeopleClassification"
-    //     );
-    //     const { data } = response;
-    //     memberships.value = data;
-    //     console.log(memberships.value, "ms");
-    //     peopleClassifications.value = data.map((i) => i.name);
-    //     getPersonPeopleClassificationId();
-    //   } catch (err) {
-    //     if (err.response && err.response.status === 401) {
-    //       localStorage.removeItem("token");
+    const getPeopleClassifications = async () => {
+      try {
+        const response = await axios.get(
+          "/api/Settings/GetTenantPeopleClassification"
+        );
+        const { data } = response;
+        memberships.value = data;
+        console.log(memberships.value, "ms");
+        peopleClassifications.value = data.map((i) => i.name);
+        getPersonPeopleClassificationId();
+      } catch (err) {
+        if (err.response && err.response.status === 401) {
+          localStorage.removeItem("token");
 
-    //       router.push("/");
-    //     }
-    //     console.log(err);
-    //   }
-    // };
+          router.push("/");
+        }
+        console.log(err);
+      }
+    };
 
     const getAgeGroups = () => {
       console.log("Calling age");
@@ -940,17 +940,17 @@ export default {
       }
     };
 
-    // const getPersonPeopleClassificationId = () => {
-    //   if (memberToEdit.value && memberToEdit.value.personId) {
-    //     if (memberships.value && memberships.value.length > 0) {
-    //       selectedMembership.value = memberships.value.find(
-    //         (i) => i.id === memberToEdit.value.peopleClassificationID
-    //       );
-    //     } else {
-    //       getPeopleClassifications();
-    //     }
-    //   }
-    // };
+    const getPersonPeopleClassificationId = () => {
+      if (memberToEdit.value && memberToEdit.value.personId) {
+        if (memberships.value && memberships.value.length > 0) {
+          selectedMembership.value = memberships.value.find(
+            (i) => i.id === memberToEdit.value.peopleClassificationID
+          );
+        } else {
+          getPeopleClassifications();
+        }
+      }
+    };
 
     const getPersonAgeGroupId = () => {
       if (memberToEdit.value && memberToEdit.value.personId) {
@@ -997,7 +997,7 @@ export default {
         populatePersonDetails(res);
         getPersonGenderId();
         getPersonMaritalStatusId();
-        // getPersonPeopleClassificationId();
+        getPersonPeopleClassificationId();
         getPersonAgeGroupId();
         console.log(res);
         routeParams.value = route.params.personId;
@@ -1128,7 +1128,7 @@ export default {
       selectedMaritalStatus,
       selectedGender,
       selectedMembership,
-      // memberships,
+      memberships,
       selectedAgeGroup,
       ageGroups,
       getAgeGroups,

@@ -92,7 +92,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true"  dateFormat="dd/mm/yy"/>
                   </div>
               </div>
               <div class="col-md-4 col-sm-12 pr-md-0">
@@ -100,7 +100,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true"  dateFormat="dd/mm/yy"/>
                   </div>
               </div>
             <div class="col-md-4 col-sm-12 pr-md-0">
@@ -118,7 +118,8 @@
     <div id="element-to-print">
       <section>
         <!-- chart area -->
-        <div  class="chart row d-flex justify-content-center"
+        <!-- d-flex justify-content-center -->
+        <!-- <div  class="chart row"
         :class=" accountTransaction &&  accountTransaction.length > 0 ? 'graph-area' : '' ">
         <div class="chart1 col-12 col-md-6 ">
             <ByGenderChart
@@ -129,7 +130,7 @@
               :summary="mappedExpenses"
             />
           </div>
-        </div>
+        </div> -->
         <!--end of chart area -->
       </section>
 
@@ -140,10 +141,10 @@
           <table id="table" class="table remove-styles mt-0 table-header-area">
             <thead class="table-header-area-main">
               <tr
-              class="small-text text-capitalize text-nowrap font-weight-bold"
+              class=" text-capitalize text-nowrap font-weight-bold"
                 style="border-bottom: 0; font-size:medium"
               >
-                <th scope="col">Fund</th>
+                <!-- <th scope="col">Fund</th> -->
                 <th scope="col">Account Name</th>
                 <th scope="col">Description</th>
                 <th scope="col">Amount</th>
@@ -154,35 +155,35 @@
                           font-size: small" v-for="(fund, index) in funds"
               :key="index">
                 <tr v-if="fund.name !== 'null'">
-                  <td>{{ fund.name }}</td>
+                  <td class="fundType-color" >{{ fund.name }}</td>
                   <td></td>
                   <td></td>
-                  <td></td>
+                  <!-- <td></td> -->
                   <td></td>
                 </tr>
                 <tr v-for="(account, indxx) in fund.name !== 'null' ? fund.value : []"
               :key="indxx">
-                  <td></td>
+                  <!-- <td></td> -->
                   <td>{{ account.accountName }}</td>
                   <td>{{ account.description }}</td>
                   <td>{{ Math.abs(account.amount).toLocaleString() }}.00</td>
                   <td>{{ formatDate(account.date) }}</td>
                   </tr>
                 <tr class="answer-row" v-if="fund.name !== 'null'">
-                  <td  class="answer">Sub-Total</td>
+                  <td  class="subtotal">Subtotal</td>
                   <td></td>
-                  <td></td>
-                  <td class="answer">NGN{{ total(fund.value).toLocaleString() }}.00</td>
+                  <!-- <td></td> -->
+                  <td class="subtotal">NGN{{ total(fund.value).toLocaleString() }}.00</td>
                   <td></td>
                 </tr>
             </tbody>
              <tbody class="font-weight-bold text-nowrap" style="
                            font-size: small">
-           <tr class="answer-row">
-              <td class="answer">Total Expenses</td>
+           <tr class="answer-row2">
+              <td class="total">Total Expenses</td>
+              <!-- <td></td> -->
               <td></td>
-              <td></td>
-              <td class="answer">NGN{{ fundSum.toLocaleString()}}.00</td>
+              <td class="total responsive-horizontalrule">NGN{{ fundSum.toLocaleString()}}.00<hr class="horizontal-rule"/></td>
               <td></td>
             </tr>
           </tbody>
@@ -243,7 +244,7 @@
 <script>
 import { ref, computed } from "vue";
 import Calendar from "primevue/calendar";
-import ByGenderChart from "@/components/charts/PieChart.vue";
+// import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
@@ -252,17 +253,15 @@ import dateFormatter from  "../../../services/dates/dateformatter";
 // import Listbox from 'primevue/listbox';
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforbasicexpense.js";
-import groupResponse from '../../../services/groupArray/groupResponse.js'
+import groupResponse from '../../../services/groupArray/groupResponse.js';
 // import numbers_formatter from "../../../services/numbers/numbers_formatter.js"
 // import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
 
 export default {
   components: {
     Calendar,
-    ByGenderChart,
+    // ByGenderChart,
     // Listbox,
-    // Dropdown,
-    // InputText,
     // PerformanceColumnChart,
     // PaginationButtons,
   },
@@ -282,7 +281,7 @@ export default {
     const fileToExport = ref([]);
     const generateReport = () => {
       axios
-        .get(`/api/Reports/financials/getAccountTypeReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&acccountType=${3}`)
+        .get(`/api/Reports/financials/getAccountTypeReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&acccountType=${3}`)
         .then((res) => {
 
           console.log(res, "🎄🎄🎄");
@@ -413,21 +412,6 @@ export default {
 </script>
 
 <style scoped>
-/* .default-btn {
-  font-weight: 800;
-  font-size: 1rem;
-  white-space: initial;
-  border-radius: 3rem;
-  border: 1px solid #136acd;
-  padding: 0.5rem 1.25rem;
-  color: #136acd;
-  width: auto;
-  outline: transparent !important;
-  max-height: 2.5rem;
-  background: #fff;
-  min-width: 7.6rem;
-} */
-
 .default-btn {
     font-weight: 600;
     white-space: initial;
@@ -551,7 +535,39 @@ border-top-right-radius: 0 !important;
   background-color:none;
 }
 
-.move-enter-active {
+.fundType-color{
+  color:#136acd;
+  font-size: larger;
+}
+
+.total{
+    font-weight: bolder;
+  font-size:large;
+   color: #fff;
+}
+
+.answer-row2{
+  background-color: #136ACD;
+}
+
+.subtotal{
+  font-weight: 700;
+  font-size:large;
+    color: #136acd;
+}
+
+.horizontal-rule{
+ border: 0.1875rem solid #FFE50F;
+  border-radius: 5px;
+  margin: 0.125rem 0;
+}
+
+.responsive-horizontalrule{
+  display:inline-block;
+}
+
+
+/* .move-enter-active {
   animation: move-in .8s;
 }
 .move-leave-active {
@@ -567,5 +583,5 @@ border-top-right-radius: 0 !important;
     opacity: 1;
   }
 
-}
+} */
 </style>

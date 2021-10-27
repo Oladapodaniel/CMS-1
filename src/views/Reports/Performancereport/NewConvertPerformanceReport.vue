@@ -21,7 +21,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                    <Calendar dateFormat="dd/mm/yy" class="w-100" id="icon" v-model="startDate" :showIcon="true" />
                   </div>
               </div>
               <div class="col-md-4 col-sm-12 pr-md-0">
@@ -29,7 +29,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                    <Calendar dateFormat="dd/mm/yy" class="w-100" id="icon" v-model="endDate" :showIcon="true" />
                   </div>
               </div>
               <div class="col-md-4 col-sm-12 pr-md-0">
@@ -220,8 +220,8 @@ export default {
     const showReport = ref(false);
     const pieChart = ref([{ name: "First Timer ", color: "#002044", data: [ 0, 3, 13, 14, 0, 15, 20, 20 ] }]);
     // const series = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 24, 25, 26, 27, 28, 29, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52 ]);
-    const startDate = ref(new Date());
-    const endDate = ref(new Date());
+    const startDate = ref("");
+    const endDate = ref("");
     const newConvertInChurch = ref([]);
     const genderChartResult = ref([]);
     const maritalStatusChartResult = ref([]);
@@ -334,7 +334,7 @@ export default {
 
     const generateReport = () => {
         axios
-        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
         .then((res) => {
 
           console.log(res, "🎄🎄🎄");

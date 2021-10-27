@@ -22,7 +22,7 @@
           </button>
         </div> -->
 
-         <div
+         <!-- <div
           class="default-btn font-weight-normal c-pointer"
           @click="() => (showExport = !showExport)"
           style="width: fixed; position:relative">
@@ -38,7 +38,7 @@
                          :options="bookTypeList"
                          optionLabel="name"/>
                     </div>
-              </div>
+              </div> -->
 
       </div>
     </div>
@@ -51,7 +51,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy"/>
                   </div>
               </div>
               <div class="col-md-4 col-sm-12 pr-md-0">
@@ -59,7 +59,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/>
                   </div>
               </div>
             <div class="col-md-4 col-sm-12 pr-md-0">
@@ -98,10 +98,18 @@
           <table class="table remove-styles mt-0 table-hover table-header-area">
             <thead class="table-header-area-main">
               <tr
-              class="small-text text-capitalize text-nowrap"
-                style="border-bottom: 0"
+              class="text-capitalize text-nowrap font-weight-bold"
+                style="border-bottom: 0; font-size:medium"
               >
-                <th scope="col">Fund</th>
+              <!-- <div>
+                <tr>
+
+                  <div class="text-capitalize font-weight-normal"></div>
+                </tr> -->
+                <!-- <th scope="col">Fund</th>
+                <th scope="col"><span></span></th> -->
+              <!-- </div> -->
+                <!-- <th scope="col">Fund</th> -->
                 <th scope="col">Account Name</th>
                 <th scope="col">Reference Number</th>
                 <th scope="col">Description</th>
@@ -110,16 +118,59 @@
                 <th scope="col">Date</th>
               </tr>
             </thead>
-            <tbody class="font-weight-normal text-nowrap"  v-for="(transaction, index) in accountTransaction"
+            <tbody class="font-weight-bold text-nowrap mt-4"  style="
+                          font-size: small" v-for="(fund, index) in funds"
               :key="index">
               <tr>
-                      <td>{{ transaction.fund }}</td>
-                      <td>{{ transaction.accountName }}</td>
-                      <td>{{ transaction.refNumber }}</td>
-                      <td>{{ transaction.description }}</td>
-                      <td>{{ transaction.debit }}</td>
-                      <td>{{ transaction.credit }}</td>
-                      <td>{{ formatDate(transaction.date) }}</td>
+                <!-- v-if="fund.name !== 'null' " -->
+                <td v-if="fund.name !== 'null' " class="fundType-color"  style="
+                          font-size: medium">{{fund.name}}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+               </tr>
+                <!-- <div v-for="(item, index) in fund.value" :key="index">
+                 <div>{{item}}</div>
+                 </div> -->
+              <tr v-for="(account, indxx) in fund.value"
+              :key="indxx">
+                      <!-- <td>{{ account.fund }}</td> -->
+                      <td>{{ account.accountName }}</td>
+                      <td>{{ account.refNumber }}</td>
+                      <td>{{ account.description }}</td>
+                      <td class="text-success font-weight-bolder">{{ account.debit.toLocaleString() }}.00</td>
+                      <!-- <td class="credit" v-if="account.credit === 0 ? account.value : (account.value) ">({{ account.credit }}.00)</td> -->
+                      <td class="text-danger font-weight-bolder">({{ Math.abs( account.credit).toLocaleString() }}.00)</td>
+                      <td>{{ formatDate(account.date) }}</td>
+                  </tr>
+                  <tr class="answer-row">
+                      <td  class="answer">Subtotal</td>
+                      <td></td>
+                      <td></td>
+                      <td class="text-success fund-answer">NGN{{ total(fund.value,"debit").toLocaleString() }}.00</td>
+                      <td class="text-danger fund-answer">NGN({{ Math.abs(total(fund.value, "credit")).toLocaleString() }}.00)</td>
+                      <td></td>
+                  </tr>
+                  <tr v-if="indxx === length-1" style="background-color: #fff;">
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                  </tr>
+            </tbody>
+            <tbody>
+                <tr class="answer-row">
+                      <td  class="answer" style="font-weight: bolder; font-size:medium;">Total</td>
+                      <td></td>
+                      <td></td>
+                      <td class="text-success fund-answer">NGN{{ sumOfCreditAndDebit("debit").toLocaleString() }}.00</td>
+                      <td class="text-danger fund-answer">NGN({{ Math.abs(sumOfCreditAndDebit("credit")).toLocaleString() }}.00)</td>
+                      <td></td>
                   </tr>
             </tbody>
           </table>
@@ -134,9 +185,9 @@
     </div>
   </div>
 </template>
-
+//  computed
 <script>
-import { ref } from "vue";
+import { ref, } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
@@ -144,13 +195,14 @@ import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice";
-import Listbox from 'primevue/listbox';
+// import Listbox from 'primevue/listbox';
+import groupResponse from '../../../services/groupArray/groupResponse.js';
 
 export default {
   components: {
     Calendar,
     ByGenderChart,
-    Listbox,
+    // Listbox,
     // PaginationButtons,
   },
   setup() {
@@ -165,14 +217,17 @@ export default {
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
+    const fundType = ref([]);
+    const funds = ref([]);
     const generateReport = () => {
       axios
-        .get(`/api/Reports/financials/getAccountTransactionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/Reports/financials/getAccountTransactionsReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
         .then((res) => {
 
           console.log(res, "🎄🎄🎄");
-          accountTransaction.value = res.data;
+          accountTransaction.value = res.data.filter(i => i !== null)
           console.log(accountTransaction.value, "✌️✌️");
+          groupedFundType()
             /* function to call service and populate table */
           setTimeout(() => {
             fileHeaderToExport.value = exportService.tableHeaderToJson(
@@ -195,7 +250,7 @@ export default {
  console.log(fileHeaderToExport.value, "🎁🎁")
 
   console.log(fileName.value, "🎁🎁")
-  alert(selectedFileType.value)
+  // alert(selectedFileType.value)
   console.log(fileToExport.value, "🎁🎁")
 
       exportService.downLoadExcel(
@@ -207,12 +262,46 @@ export default {
       return dateFormatter.monthDayYear(activityDate);
     };
 
-    // onMounted(() => {
-    //   firstTimerChart.value = [{name: "Dapo", value: 77}]
-    // })
+  // grouped different type of funds
+  const groupedFundType = () => {
+    fundType.value = groupResponse.groupData(accountTransaction.value, 'fund')
+    console.log(fundType.value, "🎄🎄")
+    for (const prop in fundType.value) {
+      funds.value.push({
+        name:  prop,
+        value: fundType.value[prop]
+      })
+    }
+    console.log(funds.value);
+  }
 
+   const total = (arr, str) => {
+      console.log(arr, "kgkfuvygu");
+          if(!arr || arr.length === 0) return 0
+          return arr.reduce((acc, cur) => {
+        return acc + cur[str]
+      }, 0)
+    }
+
+   const sumOfCreditAndDebit = (type) => {
+      if (funds.value.length === 0) return 0
+      const allAccounts = [ ];
+      for(let group of funds.value) {
+        console.log(group)
+        allAccounts.push(...group.value)
+      }
+      console.log(allAccounts)
+       return allAccounts.reduce((arr, cur) => {
+          return arr + cur[type]
+        }, 0)
+   }
 
     return {
+      total,
+      sumOfCreditAndDebit,
+      fundType,
+      funds,
+      groupedFundType,
       Calendar,
       startDate,
       endDate,
@@ -232,21 +321,6 @@ export default {
 </script>
 
 <style scoped>
-/* .default-btn {
-  font-weight: 800;
-  font-size: 1rem;
-  white-space: initial;
-  border-radius: 3rem;
-  border: 1px solid #136acd;
-  padding: 0.5rem 1.25rem;
-  color: #136acd;
-  width: auto;
-  outline: transparent !important;
-  max-height: 2.5rem;
-  background: #fff;
-  min-width: 7.6rem;
-} */
-
 
 .default-btn {
     font-weight: 600;
@@ -305,7 +379,6 @@ export default {
     width: 100% !important;
     box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
     border: 0.063rem solid #dde2e6 !important;
-    /* border-radius: 30px !important; */
     text-align: left !important;
     margin-bottom: auto !important;
     padding-bottom: 0.5rem !important;
@@ -345,5 +418,28 @@ border-top-right-radius: 0 !important;
 .responsiveness{
   max-width: 100%;
   overflow-y: scroll;
+}
+
+.fundType-color{
+  color:#136acd
+}
+
+.answer{
+  font-weight: bolder;
+  font-size:medium;
+   color: #136acd;
+}
+
+.answer-row{
+  background-color: #ebeff4;
+}
+
+.answer-row:hover{
+  background-color:none;
+}
+
+.fund-answer{
+  font-weight: bolder;
+  font-size:medium;
 }
 </style>

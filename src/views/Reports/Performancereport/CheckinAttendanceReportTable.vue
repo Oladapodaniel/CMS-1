@@ -18,8 +18,8 @@
                             <td>{{ item.value[0].gender }}</td>
                             <td>{{ item.value[0].phone }}</td>
                             <td v-for="(itemm, index) in groupedReportByDate" :key='index'>{{ itemm.value.find(i => i.personId === item.value[0].personId) ? itemm.value.find(i => i.personId === item.value[0].personId).attendance : "" }}</td>
-                            <td class="text-success"> {{ attendance(item.value[0].personId, 1) }}</td>
-                            <td class="text-danger">{{ attendance(item.value[0].personId, 2) }}</td>
+                            <td class="text-danger"> {{ attendance(item.value[0].personId, 1) }}</td>
+                            <td class="text-success">{{ attendance(item.value[0].personId, 2) }}</td>
                             <td>{{ attendance(item.value[0].personId, 3) }}</td>
                         </tr>
                     </tbody>

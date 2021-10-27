@@ -54,13 +54,13 @@
       </div>
 
       <div class="row">
-        <div class="col-2 pr-md-0 col-lg-2 align-self-center">
+        <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
           <span class="small-text">Send to : </span>
         </div>
-        <div class="col-10 pl-md-0 col-lg-10 form-group mb-0">
+        <div class="p-0 col-md-10 col-lg-10 form-group mb-0">
           <div class="dropdown">
             <button
-              class="btn btn-default dropdown-toggle small-text pl-md-0"
+              class="btn btn-default border dropdown-toggle small-text pl-md-0"
               type="button"
               id="dropdownMenuButton"
               data-toggle="dropdown"
@@ -450,22 +450,15 @@
         <div class="col-md-2">
           <span class="font-weight-600 small-text">Sender: </span>
         </div>
-        <div class="col-md-10 pl-0">
-          <!-- <input
-            type="text"
-            class="input p-0 mx-0 grey-rounded-border pl-2"
-            style="border-radius: 4px"
-            v-model="subject"
-          /> -->
+        <div class="p-0 col-md-10">
           <div class="dropdown">
             <button
-              class="btn btn-default dropdown-toggle small-text pl-md-0"
+              class="btn btn-default dropdown-toggle small-text pl-md-0 border"
               type="button"
               id="dropdownMenuButton"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
-              @click="openSenderDropDown"
             >
             <!-- @click="closeDropdownIfOpen" -->
               {{ Object.keys(selectedSender).length > 0 ? selectedSender.mask : "Select Sender Id" }}
@@ -475,16 +468,16 @@
               aria-labelledby="dropdownMenuButton"
             >
             <div class="px-2">
-            <input type="text" class="form-control" placeholder="Search sender id" ref="senderRef" v-model="searchSenderText">
+            <!-- <input type="text" class="form-control" placeholder="Search sender id" ref="senderRef" v-model="searchSenderText"> -->
             </div>
               <a v-for="(item, index) in searchSenderIDs" :key="index"
-                class="dropdown-item c-pointer small-text py-2" @click="setIdToSubject(item)"
+                class="dropdown-item c-pointer small-text font-weight-700 py-2" @click="setIdToSubject(item)"
                 >{{ item.mask }}
                 </a
               >
               <a
-                class="dropdown-item c-pointer text-primary font-weight-700 text-center border-top py-2" data-toggle="modal" data-target="#senderIdModal"
-                ><i class="pi pi-plus-circle"></i>&nbsp;Create new sender id
+                class="dropdown-item c-pointer font-weight-700 text-center create-new-bg border-top py-2" data-toggle="modal" data-target="#senderIdModal"
+                ><i class="pi pi-plus-circle"></i>&nbsp;Request new sender id
                 </a
               >
             </div>
@@ -598,19 +591,12 @@
                     <div class="row" v-if="!nigerian">
                       <div class="col-md-12 text-center">
                         <button
-                          class="primary-btn default-btn border-0 px-4 my-2 primary-bg text-white outline-none extra-btn"
+                          class="primary-btn default-btn px-4 my-2 border-0 primary-bg text-white outline-none extra-btn"
                           data-dismiss="modal"
                           @click="contructScheduleMessageBody(1, '')"
                         >
                           Send SMS Now
                         </button>
-                        <!-- <button
-                          class="primary-btn default-btn border-0 px-4 my-2 primary-bg text-white outline-none extra-btn"
-                          data-dismiss="modal"
-                          @click="contructScheduleMessageBody(1, '')"
-                        >
-                          Send SMS Now {{ `${nigerian}` }}
-                        </button> -->
                       </div>
                     </div>
 
@@ -632,28 +618,23 @@
                         </div>
 
                         <div class="row d-flex justify-content-between">
-                          <div class="col-md-6 px-1">
+                          <div class="col-md-8 offset-2 px-1">
                             <div class="container">
                               <div class="row">
                                 <div class="col-md-12">
                                   <label
                                     for=""
                                     class="small-text font-weight-600 py-2"
-                                    >NEW** BULK SMS - 100% SMS DELIVERY</label
+                                    >NEW** HYBRID BULK SMS - 100% SMS DELIVERY</label
                                   >
                                 </div>
                                 <div
                                   class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center"
                                 >
                                   <button
-                                    class="primary-btn default-btn primary-bg border-0 px-4 my-2 font-weight-600 outline-none"
+                                    class="primary-btn default-btn border-0 primary-bg px-4 my-2 font-weight-600 outline-none"
                                     data-dismiss="modal"
-                                    @click="
-                                      contructScheduleMessageBody(
-                                        1,
-                                        'hostedsms'
-                                      )
-                                    "
+                                    @click="contructScheduleMessageBody(1,'hybridKonnect')"
                                   >
                                     Send SMS Now
                                   </button>
@@ -667,17 +648,17 @@
                                     >100% delivery to all valid phone
                                     numbers.</span
                                   >
+                                  <span>Sender ID Customization - YES</span>
                                   <span>Not Affected by DND.</span>
                                   <span
-                                    >Dedicated phone number: No sender
-                                    customization.</span
+                                    >Failed SMS are Retried with Other Options.</span
                                   >
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <div class="col-md-6 px-1">
+                          <!-- <div class="col-md-6 px-1">
                             <div class="container">
                               <div class="row">
                                 <div class="col-md-12">
@@ -690,11 +671,11 @@
                                 <div
                                   class="col-md-12 my-2 send-now-div py-2 d-flex justify-content-center"
                                 >
-                                  <!-- hostedsms_instant -->
+                                   hostedsms_instant 
                                   <button
-                                    class="primary-btn default-btn border-0 px-4 my-2 grey-background text-grey outline-none"
+                                    class="primary-btn default-btn px-4 border-0 my-2 grey-background text-grey outline-none"
                                     data-dismiss="modal"
-                                    @click="contructScheduleMessageBody(1, '')"
+                                    @click="contructScheduleMessageBody(1, 'hostedsms')"
                                   >
                                     Send SMS Now
                                   </button>
@@ -713,7 +694,7 @@
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div> -->
                         </div>
                       </div>
                     </div>
@@ -747,7 +728,7 @@
                       <div class="invalid-feedback text-danger pl-2">
                         <ul>
                           <li>Should not contain any special characters</li>
-                          <li>Should not be less than 5 characters and more than 11 characters</li>
+                          <li>Should not be less than 3 characters and more than 11 characters</li>
                         </ul>
                       </div>
                     </div>
@@ -756,7 +737,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn default-btn " data-dismiss="modal">Close</button>
-                <button type="button" class="btn default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="saveSenderId">Save changes</button>
+                <button type="button" class="btn default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="saveSenderId" :disabled="requestbtn">Request sender id</button>
               </div>
             </div>
           </div>
@@ -807,6 +788,7 @@ export default {
     const selectedSender = ref({})
     const searchSenderText = ref("")
     const senderIdRef = ref()
+    const requestbtn = ref(false)
 
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
@@ -970,20 +952,35 @@ export default {
               severity: "success",
               summary: "SMS Sent",
               detail: `SMS Sent successfully`,
-              life: 6000,
+              life: 7000,
             });
 
             store.dispatch("removeSMSUnitCharge", res.data.unitsUsed);
             console.log(pageCount, "Page count ");
 
-            console.log(res , ' My reall name');
+            console.log(res);
+            // Save the res to store in other to get it in the view sent sms page
+            // let sentObj = {
+            //     message: res.data.message,
+            //     id: res.data.returnObjects ? res.data.returnObjects[0].communicationReportID : '',
+            //     smsUnitsUsed: res.data.unitsUsed,
+            //     dateSent: res.data.returnObjects ? `Today | ${moment.parseZone(new Date(res.data.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}` : "",
+            //     deliveryReport: [{ report: res.data.messageStatus }]
+            //   }
+            //   console.log(sentObj)
+            //   store.dispatch("communication/addSmsToSentList", sentObj)
+            //   setTimeout(() => {
+            //     router.push({ name: "SentMessages" })
+            //   }, 3500)
+            
+            
             // Save the res to store in other to get it in the view sent sms page
             let sentObj = {
                 message: res.data.message,
-                id: res.data.returnObjects ? res.data.returnObjects[0].communicationReportID : '',
+                id: res.data.channel,
                 smsUnitsUsed: res.data.unitsUsed,
-                dateSent: res.data.returnObjects ? `Today | ${moment.parseZone(new Date(res.data.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}` : "",
-                deliveryReport: [{ report: res.data.messageStatus }]
+                dateSent: "",
+                deliveryReport: [{ report: "-" }]
               }
               console.log(sentObj)
               store.dispatch("communication/addSmsToSentList", sentObj)
@@ -1098,16 +1095,24 @@ export default {
           .join();
       }
 
-      if (multipleContact.value instanceof File) {
-        sendSMSToUploadedContacts(gateway)
-      } else if (sendOrSchedule == 2) {
-        const dateToBeExecuted = executionDate.value
-        data.executionDate = dateToBeExecuted.split("T")[0];
-        data.date = dateToBeExecuted
-        data.time = dateToBeExecuted.split("T")[1]
-        scheduleMessage(data);
+      if (subject.value) {
+        if (multipleContact.value instanceof File) {
+          sendSMSToUploadedContacts(gateway)
+        } else if (sendOrSchedule == 2) {
+          const dateToBeExecuted = executionDate.value
+          data.executionDate = dateToBeExecuted.split("T")[0];
+          data.date = dateToBeExecuted
+          data.time = dateToBeExecuted.split("T")[1]
+          scheduleMessage(data);
+        } else {
+          sendSMS(data);
+        }
       } else {
-        sendSMS(data);
+        toast.add({
+          severity: "warn",
+          summary: "No sender id selected",
+          detail: `Kindly select a sender id and try again`,
+        });
       }
     };
 
@@ -1335,10 +1340,6 @@ export default {
       multipleContact.value = e.target.files[0]
     }
 
-    const openSenderDropDown = () => {
-      // senderRef.value.focus
-    }
-
     const getSenderId = async() => {
       try {
         let { data } = await axios.get(`/api/Messaging/RetrieveTenantSenderIDs`)
@@ -1407,22 +1408,24 @@ export default {
 
     const setIdToSubject = (item) => {
       console.log(item)
-      subject.value = item.id
+      subject.value = item.mask
       selectedSender.value = item
     }
 
     const validateSenderId = (e) => {
-      var regExp = /^[a-zA-Z0-9]{5,11}$/;
+      var regExp = /^[a-zA-Z0-9]{3,11}$/;
       var testString = e.target.value;
                   
       if(regExp.test(testString)){
         /* do something if letters are found in your string */
         senderIdRef.value.classList.add('is-valid')
         senderIdRef.value.classList.remove('is-invalid')
+        requestbtn.value = false
       } else {
         /* do something if letters are not found in your string */
         senderIdRef.value.classList.add('is-invalid')
         senderIdRef.value.classList.remove('is-valid')
+        requestbtn.value = true
       }
     }
     
@@ -1484,7 +1487,6 @@ export default {
       uploadFile,
       multipleContact,
       sendSMSToUploadedContacts,
-      openSenderDropDown,
       senderRef,
       senderIdText,
       saveSenderId,
@@ -1495,7 +1497,8 @@ export default {
       searchSenderText,
       validateSenderId,
       senderIdRef,
-      searchSenderIDs
+      searchSenderIDs,
+      requestbtn
     };
   },
 };
@@ -1743,6 +1746,16 @@ input:focus {
 }
 
 .template-text {
+  color: rgb(15, 71, 134)
+}
+
+.create-new-bg {
+background: #dadada;
+color: rgb(15, 71, 134)
+}
+
+.create-new-bg:hover {
+  background: #dadadad2;
   color: rgb(15, 71, 134)
 }
 </style>

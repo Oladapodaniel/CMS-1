@@ -1,7 +1,8 @@
 <template>
 <div class="container container-wide mt-5 mb-4">
   <div class="row d-flex justify-content-between px-3">
-              <div class="heading-text">Attendance Report</div>
+              <!-- <div class="heading-text">Attendance Report</div> -->
+              <h3 class="font-weight-bold mt-2 mb-2">Church Activities Attendance Report</h3>
               <div class="default-btn border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">
@@ -12,7 +13,6 @@
               </div>
         </div>
      <div>
-            <h3 class="font-weight-bold mt-5 mb-2">Church Activities Attendance Report</h3>
             <span class="mt-5 mb-3">This reports gives an indepth view of the growth and attendance pattern of the ministry.</span>
 
         </div>
@@ -44,14 +44,14 @@
                                   <div class=""><label for="" class=" ml-2 font-weight-bold">Start Date</label></div>
                                   <div>
                                       <div>
-                                          <Calendar id="icon" v-model="startDate" class="calendar1 w-100" :showIcon="true" />
+                                          <Calendar id="icon" v-model="startDate" class="calendar1 w-100" :showIcon="true" dateFormat="dd/mm/yy" />
                                       </div>
                                   </div>
                               </div>
                               <div class="col-12 col-md-6 col-lg-3">
                                   <div><label for="" class="font-weight-bold">End Date</label></div>
                                   <div>
-                                          <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" />
+                                          <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy" />
                                       </div>
                               </div>
                               <div class="col-12 col-md-6 col-lg-3">
@@ -138,18 +138,10 @@
             </tr>
           </thead>
           <tbody class="font-weight-bolder text-nowrap">
-            <tr v-for="(activityTable, index) in grousService" :key="index" >
-              <td>{{ activityTable.name}}</td>
-              <td>
-              <div v-for="(item, index) in activityTable.value" :key="index">
-                <div class="py-2">{{item.attendanceCategory}}</div>
-              </div>
-              </td>
-              <td>
-                <div v-for="(item, index) in activityTable.value" :key="index">
-                  <div class="py-2">{{item.attendance}}</div>
-                </div>
-              </td>
+            <tr v-for="(item, index) in groupedActivityService" :key="index" >
+              <td>{{ item.name}}</td>
+              <td>{{ item.category }}</td>
+              <td>{{ item.amount }}</td>
             </tr>
           </tbody>
         </table>
@@ -160,7 +152,8 @@
       <!--end table header -->
       </section>
       </div>
-             </div>
+    </div>
+    <Toast />
 
 
 </template>
@@ -181,6 +174,7 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
 import exportService from "../../../services/exportFile/exportservice"
 import printJS from "print-js";
 import Listbox from 'primevue/listbox';
+import { useToast } from 'primevue/usetoast';
     export default {
         components:{
           // Dropdown,
@@ -192,17 +186,14 @@ import Listbox from 'primevue/listbox';
             ReportAreaChart
 
         },
-
-        setup() {
-     const formatDate = (date) => {
-      return dateFormatter.monthDayYear(date);
-    };
+    setup() {
+    const toast = useToast()
     const showReport = ref(false);
     const fileName = ref("");
-     const selectedFileType = ref("");
+    const selectedFileType = ref("");
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);
-    const bookTypeList = ref([ { name: 'csv'}, {name: 'txt'}, {name: 'pdf'} ]);
+    const bookTypeList = ref([ { name: 'xlsx' },{ name: 'csv'}, {name: 'txt'}, {name: 'pdf'} ]);
     const showExport = ref(false);
     const allEvents = ref({});
     const selectedEvents =ref()
@@ -223,6 +214,7 @@ import Listbox from 'primevue/listbox';
     const categoryData = ref([])
     const attendanceGroup = ref({})
     const grousService = ref([])
+    const groupedActivityService = ref([])
      const downloadFile = () => {
         exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
       }
@@ -231,7 +223,6 @@ import Listbox from 'primevue/listbox';
             axios.get('/api/Reports/events/getEvents')
             .then((res)=>{
                 allEvents.value = res.data;
-                console.log(res, 'welcome');
             })
             .catch((err)=> console.log(err));
     }
@@ -239,7 +230,7 @@ import Listbox from 'primevue/listbox';
      const getActivityReport = ()=>{
        activityReport.value = []
        const eventId = selectedEvents.value.length === 1 ? selectedEvents.value[0].id : ''
-         axios.get(`/api/Reports/events/getActivityAttendanceReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&activityId=${eventId}`)
+         axios.get(`/api/Reports/events/getActivityAttendanceReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&activityId=${eventId}`)
          .then((res)=>{
              activityReport.value = res.data;
              console.log(activityReport.value);
@@ -255,6 +246,15 @@ import Listbox from 'primevue/listbox';
                         fileToExport.value = exportService.tableToJson(document.getElementById("table"))
                     }, 1000)
                     showReport.value = true
+
+              if (activityReport.value.length === 0) {
+                toast.add({
+                    severity: 'warn', 
+                    summary:'No data for this date range', 
+                    detail:'Select other parameters to generate report', 
+                    life: 8000
+                })
+              }
           })
          .catch((err)=> console.log(err))
      };
@@ -271,7 +271,16 @@ import Listbox from 'primevue/listbox';
                 value: result[prop]
                 })
             }
-       console.log(grousService.value);
+     
+      grousService.value.forEach(i => {
+        i.value.forEach(j => {
+          groupedActivityService.value.push({
+            name: i.name.split(",").join(""),
+            category: j.attendanceCategory,
+            amount: j.attendance
+          })
+        })
+      })
 
      }
 
@@ -297,19 +306,17 @@ import Listbox from 'primevue/listbox';
             let serviceValue = Object.values(i)[serviceIndex]
             series.value.unshift(dateFormatter.monthDayYear(serviceValue))
            })
-           console.log(series.value)
-           console.log(attendanceData.value)
 
      }
 
     const summaryChart = computed(() => {
          if (Object.keys(attendanceGroup.value).length === 0) return new Object()
-            attendanceGroup.value.Babies.forEach(i => {
+            attendanceGroup.value.Babies ? attendanceGroup.value.Babies.forEach(i => {
             let babiesIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let babiesValue = Object.values(i)[babiesIndex]
             babiesData.value.unshift(babiesValue)
             console.log(babiesData.value)
-        })
+        }) : []
 
          categoryData.value.push({
                 name: 'Babies',
@@ -317,88 +324,95 @@ import Listbox from 'primevue/listbox';
                 data: babiesData.value
             })
 
-           attendanceGroup.value.FeMale.forEach(i => {
+           attendanceGroup.value.FeMale ? attendanceGroup.value.FeMale.forEach(i => {
             let womenIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let womenValue = Object.values(i)[womenIndex]
             womenData.value.unshift(womenValue)
-            console.log(womenData)
-        })
+           
+        }) : []
+
          categoryData.value.push({
                 name: 'Women',
                 color: '#43eb10',
-                data: womenData
+                data: womenData.value
             })
-            attendanceGroup.value.Male.forEach(i => {
+            attendanceGroup.value.Male ? attendanceGroup.value.Male.forEach(i => {
             let maleIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let maleValue = Object.values(i)[maleIndex]
             maleData.value.unshift(maleValue)
             console.log(maleData)
-        })
+        }) : []
+
          categoryData.value.push({
                 name: 'male',
                 color: '#a207f0',
-                data: maleData
+                data: maleData.value
             })
-            attendanceGroup.value.Boy.forEach(i => {
+
+            attendanceGroup.value.Boy ? attendanceGroup.value.Boy.forEach(i => {
             let boyIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let boyValue = Object.values(i)[boyIndex]
             boyData.value.unshift(boyValue)
-            console.log(boyData)
-        })
+        }) : []
+
          categoryData.value.push({
                 name: 'Boy',
                 color: '#e7f20c',
-                data: boyData
+                data: boyData.value
             })
-            attendanceGroup.value.Girl.forEach(i => {
+            attendanceGroup.value.Girl ? attendanceGroup.value.Girl.forEach(i => {
             let girlIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let girlValue = Object.values(i)[girlIndex]
             girlData.value.unshift(girlValue)
-            console.log(girlData)
-        })
+            
+        }) : []
+
          categoryData.value.push({
                 name: 'Girl',
                 color: '#818182',
-                data: girlData
+                data: girlData.value
             })
-             attendanceGroup.value.Children.forEach(i => {
+
+             attendanceGroup.value.Children ?  attendanceGroup.value.Children.forEach(i => {
             let ChildrenIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let ChildrenValue = Object.values(i)[ChildrenIndex]
             ChildrenData.value.unshift(ChildrenValue)
             console.log(ChildrenData)
-        })
+        }) : []
          categoryData.value.push({
                 name: 'Children',
                 color: '#ed6109',
-                data: ChildrenData
+                data: ChildrenData.value
             })
-             attendanceGroup.value.Teenagers.forEach(i => {
+             attendanceGroup.value.Teenagers ? attendanceGroup.value.Teenagers.forEach(i => {
             let TeenagersIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let TeenagersValue = Object.values(i)[TeenagersIndex]
            TeenagersData.value.unshift(TeenagersValue)
-            console.log(TeenagersData)
-        })
+        }) : []
+
          categoryData.value.push({
                 name: 'Teenagers',
                 color: '#b01105',
-                data: TeenagersData
+                data: TeenagersData.value
             })
-            attendanceGroup.value.singles.forEach(i => {
+
+            attendanceGroup.value.singles ? attendanceGroup.value.singles.forEach(i => {
             let SinglesIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let SinglesValue = Object.values(i)[SinglesIndex]
            SinglesData.value.unshift(SinglesValue)
-            console.log(SinglesData)
-        })
+        }) : []
          categoryData.value.push({
                 name: 'Singles',
                 color: '#f7d68f',
-                data: SinglesData
+                data: SinglesData.value
             })
-            console.log(categoryData.value);
 
         return categoryData.value
-
       })
+
+      const formatDate = (date) => {
+        return dateFormatter.monthDayYear(date);
+      };
 
         return{
 
@@ -433,7 +447,8 @@ import Listbox from 'primevue/listbox';
           fileHeaderToExport,
           fileToExport,
           fileName,
-          showReport
+          showReport,
+          groupedActivityService
         }
 
     }
