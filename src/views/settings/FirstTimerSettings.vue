@@ -32,7 +32,7 @@
                         placeholder="Add Your New Guest Life Cycle"
                         v-model="firstTimerTypes"
                       />
-                      <div class="mt-3">
+                      <div class="mt-1">
                         <Checkbox v-model="isDefault" :binary="true" />
                         <span class="ml-3">Mark as default</span>
 
