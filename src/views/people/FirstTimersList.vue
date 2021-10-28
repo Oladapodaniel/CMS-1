@@ -1,7 +1,7 @@
 <template>
   <div class="container-wide">
     <div class="my-con">
-      <div class="summary px-3">
+      <!-- <div class="summary px-3">
         <p class="summary-header">Summary</p>
         <div class="boards">
           <div class="board">
@@ -41,7 +41,9 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
+
+          <FirstTimersChartArea/>
 
       <!-- tosin 1 -->
       <div class="table">
@@ -255,7 +257,7 @@
                   <p>Name</p>
                 </div>
                 <router-link
-                  :to="`/tenant/people/addfirsttimer/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}`"
                   class="itemroute-color"
                   >{{
                     person.fullName
@@ -272,7 +274,7 @@
                   <p>Phone</p>
                 </div>
                 <router-link
-                  :to="`/tenant/people/addfirsttimer/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}`"
                   class="data-value itemroute-color"
                   >{{ person.phoneNumber }}</router-link
                 >
@@ -285,7 +287,7 @@
                   <p>Source</p>
                 </div>
                 <router-link
-                  :to="`/tenant/people/addfirsttimer/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}`"
                   class="itemroute-color"
                   >{{ person.howDidYouAboutUsName }}</router-link
                 >
@@ -299,7 +301,7 @@
                   <p>Interested</p>
                 </div>
                 <router-link
-                  :to="`/tenant/people/addfirsttimer/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}`"
                   class="itemroute-color"
                   >{{
                     person.interestedInJoining === "Not_Specified"
@@ -317,7 +319,7 @@
                   <p>Date</p>
                 </div>
                 <router-link
-                  :to="`/tenant/people/addfirsttimer/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}`"
                   class="itemroute-color"
                   >{{
                     moment
@@ -333,7 +335,7 @@
 
             <div>
               <router-link
-                :to="`/tenant/people/addfirsttimer/${person.id}`"
+                :to="`/tenant/firsttimermanagement/${person.id}`"
                 class="data-value itemroute-color"
               ></router-link>
             </div>
@@ -457,8 +459,9 @@
 
 <script>
 import { ref, computed } from "vue";
-import ByGenderChart from "@/components/charts/PieChart.vue";
-import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
+// import ByGenderChart from "@/components/charts/PieChart.vue";
+// import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
+import FirstTimersChartArea from "./FirstTimersChartArea.vue"
 import axios from "@/gateway/backendapi";
 import Pagination from "../../components/pagination/PaginationButtons";
 import { useRoute } from "vue-router";
@@ -472,11 +475,12 @@ import loadingComponent from "@/components/loading/LoadingComponent"
 export default {
   props: ["list"],
   components: {
-    ByGenderChart,
-    ByMaritalStatusChart,
+    // ByGenderChart,
+    // ByMaritalStatusChart,
     Pagination,
     OverlayPanel,
-    loadingComponent
+    loadingComponent,
+    FirstTimersChartArea
   },
 
   setup() {

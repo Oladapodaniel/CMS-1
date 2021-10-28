@@ -4,9 +4,13 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Pagination from '@/components/payment/PaymentSuccessful.vue';
 
 
+
+
 import TermsOfUse from '../components/temp/PaymentPage';
 
 const routes = [
+
+
 
     {
         path: '/pagination',
@@ -112,6 +116,7 @@ const routes = [
         component: () =>
             import ( /* webpackChunkName: "emailsent" */ '../views/account/EmailSent.vue')
     },
+
     {
         path: '/tenant',
         name: 'Home',
@@ -384,16 +389,6 @@ const routes = [
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialActivitiesBalance.vue')
                     },
                     {
-                        path: 'financialexpense',
-                        name: "financialExpense",
-                        meta: {
-                            title: 'Churchplus - Reports',
-                        },
-                        component: () =>
-
-                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialExpense.vue')
-                    },
-                    {
                         path: 'weddinganniversaryreport',
                         name: "weddinganniversaryreport",
                         meta: {
@@ -656,6 +651,13 @@ const routes = [
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
             },
             {
+                path: '/chartpage',
+                name: 'FirstTimersChartArea',
+                component: () =>
+                import ( /* webpackChunkName: "sentemails" */ '@/views/people/FirstTimersChartArea.vue'),
+
+            },
+            {
                 path: 'report/:id',
                 name: 'Report',
                 meta: {
@@ -841,6 +843,25 @@ const routes = [
                         },
                         component: () =>
                             import ( /* webpackChunkName: "inbox" */ '@/views/communication/whatsapp/composeWhatsapp')
+                    }]
+            },
+            // voice
+            {
+                path: 'voice',
+                name: 'voice',
+                meta: {
+                    title: 'Churchplus - Voice Communication',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "scheduled" */ '@/components/Voice/Voice'),
+                    children: [{
+                        path: '',
+                        name: 'Record',
+                        meta: {
+                            title: 'Churchplus -Voice Record',
+                        },
+                        component: () =>
+                            import ( /* webpackChunkName: "inbox" */ '@/views/communication/Voice/composeVoice')
                     }]
             },
             {
@@ -1307,7 +1328,8 @@ const routes = [
                 },
                 component: () =>
                     import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/DonationSetup')
-            }
+            },
+
         ],
     },
     {
@@ -1492,6 +1514,15 @@ const routes = [
         ]
     },
     {
+        path: '/createmember/:id',
+        name: 'RegisterPersonID',
+        meta: {
+            title: 'RegisterPerson',
+        },
+        component: () =>
+            import ( /* webpackChunkName: "emailsent" */ '../views/people/RegisterPersonID.vue')
+    },
+    {
         path: '/errorpage',
         name: 'errorpage',
         component: () =>
@@ -1531,6 +1562,8 @@ const routes = [
             import ( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),
 
     },
+
+
 ]
 
 const router = createRouter({
@@ -1566,6 +1599,7 @@ router.beforeEach((to, from, next) => {
             to.name === "SignInPayment" ||
             to.name === "TransactionPage" ||
             to.name === "PublicResetPassword" ||
+            to.name === "RegisterPersonID" ||
             to.name === "EventRegistration") && !tokenIsValid) return next(true)
 
 

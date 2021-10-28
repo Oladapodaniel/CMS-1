@@ -37,11 +37,11 @@
         <div class="col-md-7 d-sm-flex">
           <div class="p-field p-col-12 p-md-4 mt-1">
             <!-- <label for="icon">Start Date</label> -->
-            <Calendar id="icon" v-model="startDate" :showIcon="true" />
+            <Calendar id="icon" v-model="startDate" :showIcon="true" dateFormat="dd/mm/yy"/>
           </div>
           <div class="p-field p-col-12 p-md-4 my-1">
             <!-- <label for="icon">End Date</label> -->
-            <Calendar id="endDate" v-model="endDate" :showIcon="true" />
+            <Calendar id="endDate" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/>
           </div>
         </div>
 
@@ -171,7 +171,7 @@ export default {
     const generateReport = () => {
 
       axios
-        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
         .then((res) => {
 
           console.log(res, "🎄🎄🎄");

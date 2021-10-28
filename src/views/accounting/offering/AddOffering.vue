@@ -911,7 +911,7 @@ import axios from "@/gateway/backendapi";
 import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import Dropdown from 'primevue/dropdown';
-import NewDonor from './NewDonor';
+import NewDonor from '../../../components/membership/NewDonor.vue';
 import membershipService from "../../../services/membership/membershipservice";
 import router from '../../../router';
 import { useStore } from 'vuex'

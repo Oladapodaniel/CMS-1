@@ -115,11 +115,11 @@
                 >Email</router-link
               >
             </li>
-            <!-- <li class="dd-list-item">
+            <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/whatsapp">Whatsapp</router-link>
-            </li> -->
-            <li class="dd-list-item" v-if="false">
-              <router-link class="dd-link-item routelink" to="">Voice</router-link>
+            </li>
+            <li class="dd-list-item" >
+              <router-link class="dd-link-item routelink" to="/tenant/Voice">Voice</router-link>
             </li>
           </ul>
           <!-- </a> -->
@@ -171,7 +171,7 @@
                 'tenant/accounting'
               ),
             }"
-          
+
           >
             <span @click="toggleAccDropDown">
               <img
@@ -192,7 +192,7 @@
           <ul
             class="dd-list acc-list"
             :class="{ 'dd-hide-list': !accLinkDropped }"
-           
+
           >
             <li class="dd-list-item"  v-if="false">
               <router-link class="dd-link-item routelink" to="">Dashboard</router-link>
@@ -233,7 +233,7 @@
               src="../../assets/dashboardlinks/reports-icon.svg"
               class="link-icon"
               alt=""
-              
+
             />
             Reports
           </a>
@@ -302,7 +302,7 @@
 
           <router-link class="link routelink" to="/tenant/settings"> Settings </router-link>
           <hr class="hr" />
-          <a href="https://churchplus.azurewebsites.net/Account/LogOn" target="_a" class="link routelink">Visit ChurchPlus Classic</a> 
+          <a href="https://churchplus.azurewebsites.net/Account/LogOn" target="_a" class="link routelink">Visit ChurchPlus Classic</a>
           <div class="link" @click="logout">Logout</div>
 
           <!-- Hidden -->
@@ -562,7 +562,7 @@ export default {
   transition: all 0.5s ease-in-out;
 }
 
-/* 
+/*
   Only Social and Mobile link active
 
   Increase height there are more links
@@ -570,7 +570,7 @@ export default {
   */
 .hide-more-links {
   transition: all 0.5s ease-in-out;
-  height: 160px; 
+  height: 160px;
 }
 
 .follow-up {
@@ -607,7 +607,7 @@ export default {
   margin-left: 20px !important;
   overflow: hidden;
   /* Change to 180px */
-  height: 80px;
+  height: 170px;
   transition: all 0.3s ease-in-out;
 }
 

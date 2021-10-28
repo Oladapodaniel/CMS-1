@@ -3,7 +3,7 @@
          <div class="row mt-5">
          <div class="col-md-12 col-12 text-center">
             <div class="row  table border-0 report d-flex justify-content-between p-2 p-md-4">
-                
+
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                     <h4 class="ju header4">Statement of activities</h4>
                     <p class="ju paragraph1">Have an Overview of your cash flow.</p>
@@ -24,8 +24,8 @@
                             <p class="ju mb-3 paragraph1">Snapshot of income statement activitites for your church</p>
                         </div>
                 </div>
-                
-                
+
+
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                 </div>
                 <div class="col-md-5 border-bottom col-12 mt-4">
@@ -51,10 +51,10 @@
                        <router-link to="/tenant/reports/expensereport"> <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
-                          <p class="ju mb-3 paragraph1">Snapshot of what your church owes to others.</p> 
+                          <p class="ju mb-3 paragraph1">Snapshot of what your church owes to others.</p>
                     </div>
                 </div>
-                
+
                  <!-- <div class="col-md-6 col-12 pr-md-4 p-0">
                 </div>
                 <div class="col-md-5 col-12 mt-4">
@@ -70,12 +70,12 @@
      </div>
     </div>
 
-       
+
         <!--border 2-->
         <div class="row mt-5">
          <div class="col-md-12 col-12 text-center">
             <div class="row  table border-0 report d-flex justify-content-between p-2 p-md-4">
-                
+
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                     <h4 class="ju header4">Contributions</h4>
                     <p class="ju paragraph1">See an overview of how contributions are made in your ministry</p>
@@ -101,7 +101,7 @@
            <div class="row mt-5 mb-5">
          <div class="col-md-12 col-12 text-center">
             <div class="row  table border-0 report d-flex justify-content-between p-2 p-md-4">
-                
+
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                     <h4 class="ju header4">Transactions</h4>
                     <p class="ju paragraph1">See an overflow of transactions performed in your church</p>
@@ -129,7 +129,7 @@
                     </div>
                 </div>
             </div>
-            
+
      </div>
     </div>
         <!--border 3-->

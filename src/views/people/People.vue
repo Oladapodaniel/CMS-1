@@ -18,6 +18,21 @@
             </router-link>
           </div>
         </div>
+        <div class="container-wide ">
+           <div class="row">
+            <div class="col-12">
+               <div class="p-col-12 p-md-4">
+                 <div class="font-weight-bold">Share the link to your members to enable them to add their details to your church .</div>
+                  <div class="p-inputgroup form-group mt-1">
+                      <Button icon="pi pi-check" class="p-button-success"/>
+                      <input placeholder="Link" class="form-control" ref="tttt" type="text" v-model="memberlink" style="height: 3rem;"  />
+                      <Button icon="pi pi-copy" @click="copylink" class="p-button-secondary"/>
+                  </div>
+                  <Toast />
+                </div>
+            </div> 
+          </div>
+        </div>
         <hr class="hr container-wide" />
 
         <!-- <transition name="fade" mode="out-in"> -->
@@ -29,25 +44,53 @@
 </template>
 
 <script>
+import { computed, ref } from "vue";
 // import store from "@/store/index";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
-import {  computed } from 'vue';
+// import {  computed } from 'vue';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import { useToast } from "primevue/usetoast";
 
 
 
 export default {
+  components : {
+    InputText,
+    Button
+  },
+
   setup() {
+    const toast = useToast();
+    const tttt = ref(null)
+    const memberlink = `${window.location.origin}/createmember/e9749fad-85e8-4130-b553-37acc8acde61`
     const route = useRoute();
     // const toast = useToast()
     // const importFile = ref("")
 
     // const displayModal = ref(false)
     // const memberData = ref([])
+    
     const isFormPage = computed(() => {
       if (route.path.includes("add")) return true;
       return false;
-    })
+    });
+
+    const copylink = () => {
+      console.log(tttt.value.value);
+          tttt.value.setSelectionRange(0, tttt.value.value.length); /* For mobile devices */
+        tttt.value.select();
+
+          /* Copy the text inside the text field */
+          document.execCommand("copy");
+       toast.add({
+              severity: "info",
+              summary: "Link Copied",
+              detail: "copied to your clipboard",
+              life: 3000,
+        });
+    }
 
 
     const addPersonClicked = () => {
@@ -128,7 +171,7 @@ export default {
     //   }
     // }
 
-    return { addPersonClicked, route, header, isFormPage, importMembers };
+    return { addPersonClicked, route, header, isFormPage, importMembers, memberlink, copylink, tttt };
   },
 };
 // transition method

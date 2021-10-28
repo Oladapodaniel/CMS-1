@@ -18,6 +18,7 @@
 import { onMounted, onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
 export default {
+  inheritAttrs: false,
   components: {},
 
   props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries", "seriesText", "yAxisText" ],

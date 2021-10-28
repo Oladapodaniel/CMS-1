@@ -11,7 +11,7 @@
           <p class="form-section-header">Bio:</p>
           <div class="bio-info">
             <div class="inputs">
-               <div class="input-field">
+               <!-- <div class="input-field">
                 <label for="" class="label">Membership</label>
                 <div class="cstm-select">
                   <div style="width: 330px">
@@ -22,10 +22,9 @@
                       placeholder="--Select membership--"
                       style="width: 100%"
                     />
-              <!-- <SelectElem :typ="'membership'" name="membership" :options="['--Select membership--', ...peopleClassifications]" value="--Select membership--" @input="itemSelected"/>-->
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="input-field">
                 <label for="" class="label"
                   >Firstname<span style="color: red"> *</span></label
@@ -535,6 +534,7 @@ import { useToast } from "primevue/usetoast";
 import { useStore } from "vuex";
 import membershipService from "../../services/membership/membershipservice";
 import grousService from "../../services/groups/groupsservice";
+import swal from "sweetalert";
 // import lookupService from "../../services/lookup/lookupservice";
 
 export default {
@@ -565,7 +565,6 @@ export default {
       "November",
       "December",
     ];
-
     const birthMonth = ref(1);
     const birthDay = ref(1);
     const birthYear = ref(1922);
@@ -657,11 +656,7 @@ export default {
     const errMessage = ref("");
     const showError = ref(false);
 
-    // const peopleInGroups = computed(() => {
-    //   if (!route.params.personId) return {
 
-    //   } 
-    // })
 
     const addPerson = async() => {
       const personObj = { ...person };
@@ -715,7 +710,6 @@ export default {
         }) ) : []
       );
       formData.append("homeAddress", personObj.address ? personObj.address : "");
-      // formData.append("picture", image.value ? image.value : "");
       formData.append(
         "maritalStatusID",
         selectedMaritalStatus.value ? selectedMaritalStatus.value.id : ""
@@ -731,76 +725,20 @@ export default {
       console.log(formData);
       /*eslint no-undef: "warn"*/
       NProgress.start();
-      if (route.params.personId) {
-        try {
-          loading.value = true;
-          const response =  await axios.put(
-            `/api/People/UpdatePerson/${route.params.personId}`,
-            formData
-          );
-          console.log(response, "response");
-          if (response.status === 200 || response.status === 201) {
-            membershipService.updatePersonInStore(
-              response.data.person,
-              route.params.personId
-            );
-            // store.dispatch("membership/getMembers")
-            loading.value = false;
-            router.push("/tenant/people");
-          }
-        } catch (err) {
-          console.log(err);
-          loading.value = false;
-          NProgress.done();
-          if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "You 're Offline",
-              detail: "Please ensure you have internet access",
-              life: 6000,
-            });
-          } else if (err.toString().toLowerCase().includes("timeout")) {
-            toast.add({
-                severity: "warn",
-                summary: "Request Delayed",
-                detail: "Request took too long to respond",
-                life: 6000,
-              });
-            }else {
-              showError.value = true;
-              errMessage.value =
-                err.response && err.response.data.messsage
-                  ? err.response.data.messsage
-                  : "Update operation was not succesfull";
-              toast.add({
-                severity: "warn",
-                summary: "Update Failed",
-                detail: errMessage.value
-                  ? errMessage.value
-                  : "Update operation failed",
-                life: 6000,
-              });
-          }
-          showError.value = true;
-          console.log(err.response);
-        }
-      } else {
-
         try {
           loading.value = true;
           let response = await axios.post(
-            "/api/people/createperson",
-            formData
-          );
+            `/PublicMemberRegister?tenantID=${route.params.id}`, formData );
           console.log(response)
 
 
           if (response.status === 200 || response.status === 201) {
-            // store.dispatch("membership/getMembers")
-            console.log(response, "response");
-            membershipService.addPersonToStore(response.data.person);
             loading.value = false;
-            router.push("/tenant/people");
+              swal(
+            "Registration Successful!",
+            "Your memberships detail has been added successfully!",
+            "success"
+          );
           } 
         } catch (err) {
           console.log(err)
@@ -830,7 +768,7 @@ export default {
             }
           }
         }
-      }
+      
     };
 
     let genders = ref(store.getters["lookups/genders"]);
@@ -918,7 +856,7 @@ export default {
     });
 
     const route = useRoute();
-    const memberToEdit = ref("");
+    const memberToEdit = ref({});
 
     const getPersonGenderId = () => {
       if (memberToEdit.value && memberToEdit.value.personId) {

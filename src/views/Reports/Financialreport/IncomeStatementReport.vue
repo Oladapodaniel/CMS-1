@@ -23,7 +23,7 @@
           </button>
         </div> -->
 
-              <!-- <div
+        <!-- <div
           class="default-btn font-weight-normal c-pointer"
           @click="() => (showExport = !showExport)"
           style="width: fixed; position:relative">
@@ -41,12 +41,15 @@
                     </div>
               </div> -->
       </div>
-       <div>
-                   <p class="ml-n3">A detailed report of all incomes and expenses of the ministry in a given period.</p>
-              </div>
+      <div>
+        <p class="ml-n3">
+          A detailed report of all incomes and expenses of the ministry in a
+          given period.
+        </p>
+      </div>
 
-<!-- name="fade" -->
-    <!-- <transition
+      <!-- name="fade" -->
+      <!-- <transition
       name="move" mode="out-in">
      <div class="row my-4" v-if="showExport">
         <div class="col-sm-5">
@@ -85,187 +88,224 @@
       </div>
 
     </transition> -->
-
-
     </div>
     <!--end of header area -->
     <!-- date area -->
-   <div class="container-fluid bg-area my-3">
-        <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3 ">
-              <div class="col-md-4 col-sm-12 px-md-0">
-                  <div class="p-field p-col-12 pt-md-2 pb-2">
-                    <div>
-                      <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
-                    </div>
-                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
-                  </div>
-              </div>
-              <div class="col-md-4 col-sm-12 pr-md-0">
-                  <div class="p-field p-col-12 pt-md-2">
-                    <div>
-                      <label for="icon" class="mb-0 font-weight-bold">End Date</label>
-                    </div>
-                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
-                  </div>
-              </div>
-            <div class="col-md-4 col-sm-12 pr-md-0">
-                  <div class="p-field p-col-12 pt-md-2">
-                    <button
-                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
-                            @click="generateReport">
-                            Generate Report
-                    </button>
-                  </div>
-              </div>
+    <div class="container-fluid bg-area my-3">
+      <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3">
+        <div class="col-md-4 col-sm-12 px-md-0">
+          <div class="p-field p-col-12 pt-md-2 pb-2">
+            <div>
+              <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+            </div>
+            <Calendar
+              class="w-100"
+              id="icon"
+              v-model="startDate"
+              :showIcon="true"
+              dateFormat="dd/mm/yy"
+            />
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-12 pr-md-0">
+          <div class="p-field p-col-12 pt-md-2">
+            <div>
+              <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+            </div>
+            <Calendar
+              class="w-100"
+              id="icon"
+              v-model="endDate"
+              :showIcon="true"
+              dateFormat="dd/mm/yy"
+            />
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-12 pr-md-0">
+          <div class="p-field p-col-12 pt-md-2">
+            <button
+              class="
+                default-btn
+                generate-report
+                c-pointer
+                font-weight-normal
+                mt-4
+              "
+              @click="generateReport"
+            >
+              Generate Report
+            </button>
+          </div>
         </div>
       </div>
+    </div>
     <!--end of date area -->
 
     <section>
       <!-- chart area -->
-      <!-- <div class="chart  row d-flex"
-      :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
+      <div
+        class="chart row d-flex"
+        :class="
+          incomeStatement && incomeStatement.length > 0 ? 'graph-area' : ''
+        "
+      >
         <div class="chart1 col-12 col-md-6">
           <IncomeStatementChart
             domId="chart"
-            title="Income Statement Report"
-            distance ="5"
+            title=""
+            distance="5"
             :titleMargin="10"
-            :summary="[ { name: 'Test', y: 50 }, { name: 'DEST', y: 50 }, ]"
+            :summary="groupofIcomeAndExpense"
           />
-      </div> -->
-      <!-- <div class="chart  row d-flex"
-      :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
-        <div class="chart1 col-12 col-md-6">
-          <IncomeStatementChart
-            domId="chart"
-            title="Income Statement Report"
-            distance ="5"
-            :titleMargin="10"
-            :summary="allIncomeAndExpenses"
-          />
-      </div>
-
-      <div class="chart1 col-12 col-md-6">
-        <IncomeStatmentColumnChart
-          domId="chart1"
-          title="Income Statement Report"
-          distance="5"
-          :titleMargin="10"
-          :data="incomeStatementDetail"
-          subtitle="c"
-          :series="['Income', 'Expense']"
-          yAxisText = "Amount"
-            />
-      </div>
-
-        <div class="chart row">
-            <div class="col-12 col-md-6">
-               <NegativeChart :data="incomeStatementDetail"/>
-            </div>
         </div>
 
-        </div> -->
+        <div class="chart1 col-12 col-md-6">
+          <IncomeStatmentColumnChart
+            domId="chart1"
+            title=""
+            distance="5"
+            :titleMargin="10"
+            :data="columnChart"
+            subtitle=""
+            :series="['Income', 'Expense']"
+            yAxisText="Amount"
+          />
+        </div>
+      </div>
       <!--end of chart area-->
     </section>
 
     <section>
       <!-- table header -->
-	<div v-if="groupedIncomeItemToDisplay.length > 0">
-         <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
-        <table id="table" class="table remove-styles mt-0  table-header-area">
-          <thead class="table-header-area-main">
-            <tr
-             class="small-text text-capitalize text-nowrap font-weight-bold"
-              style="border-bottom: 0; font-size:medium">
-              <!-- <th scope="col">Fund</th> -->
-              <th scope="col">Account Category</th>
-              <th scope="col">Account Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Date</th>
-            </tr>
-          </thead>
+      <div v-if="groupedIncomeItemToDisplay.length > 0">
+        <div
+          class="
+            mt-2
+            container-fluid
+            table-main
+            px-0
+            remove-styles2 remove-border
+            responsiveness
+          "
+        >
+          <table id="table" class="table remove-styles mt-0 table-header-area">
+            <thead class="table-header-area-main">
+              <tr
+                class="small-text text-capitalize text-nowrap font-weight-bold"
+                style="border-bottom: 0; font-size: medium"
+              >
+                <!-- <th scope="col">Fund</th> -->
+                <th scope="col">Account Category</th>
+                <th scope="col">Account Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
 
-          <tbody class="font-weight-bold text-nowrap"  style="
-    font-size: small" v-for="(row, index) in tableRows" :key="index">
-            <tr>
-              <td
-                 class="fundType-color"
-                 style="font-size: medium">{{ row }}
-              </td>
-              <!-- <td></td> -->
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr v-for="(account, indx) in tableData[row].expenses" :key="indx">
-              <!-- <td></td> -->
-              <td class="accounType-color">{{ indx === 0 ? account.accountCategory : '' }}</td>
-              <td>{{ account.accountName }}</td>
-              <td>{{ account.description }}</td>
-              <td>({{ Math.abs(account.amount).toLocaleString()}}.00)</td>
-              <td>{{ formatDate(account.date) }}</td>
-            </tr>
-            <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
-              <td class="subtotal">Subtotal</td>
-              <!-- <td></td> -->
-              <td></td>
-              <td></td>
-              <td class="subtotal">NGN{{ sum(tableData[row].expenses).toLocaleString() }}.00</td>
-              <td></td>
-            </tr>
-            <tr v-for="(account, indx) in tableData[row].incomes" :key="indx">
-              <!-- <td></td> -->
-              <td class="accounType-color">{{ indx === 0 ? account.accountCategory : '' }}</td>
-              <td>{{ account.accountName }}</td>
-              <td>{{ account.description }}</td>
-              <td>{{ Math.abs(account.amount).toLocaleString() }}.00</td>
-              <td>{{ formatDate(account.date) }}   </td>
-            </tr>
-            <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
-              <td class="subtotal">Subtotal</td>
-              <!-- <td></td> -->
-              <td></td>
-              <td></td>
-              <td class="subtotal">NGN{{ sum(tableData[row].incomes).toLocaleString() }}.00</td>
-              <td></td>
-            </tr>
-            <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
-              <td class="total-answer">Total</td>
-              <!-- <td></td> -->
-              <td></td>
-              <td></td>
-              <td class="total-answer">NGN{{ sumOfDiffAcctInFunds(tableData[row]).toLocaleString() }}.00</td>
-              <td></td>
-            </tr>
-             <tr  style="background-color: #fff;">
-                      <!-- <td>&nbsp;</td> -->
-                      <td>&nbsp;</td>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;</td>
-            </tr>
-          </tbody>
-          <tbody class="font-weight-bolder text-nowrap" style="
-                        font-size: small">
-           <tr class="answer-row2">
-              <td class="gross-total">Gross Total</td>
-              <!-- <td></td> -->
-              <td></td>
-              <td></td>
-              <td class="gross-total responsive-horizontalrule"> NGN{{ diffBtwIncomeAndExpenses.toLocaleString()  }}.00 <hr class="horizontal-rule"/></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="table-foot d-flex justify-content-end mt-3">
-          <!-- <PaginationButtons /> -->
+            <tbody
+              class="font-weight-bold text-nowrap"
+              style="font-size: small"
+              v-for="(row, index) in tableRows"
+              :key="index"
+            >
+              <tr>
+                <td class="fundType-color" style="font-size: medium">
+                  {{ row }}
+                </td>
+                <!-- <td></td> -->
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr
+                v-for="(account, indx) in tableData[row].expenses"
+                :key="indx"
+              >
+                <!-- <td></td> -->
+                <td class="accounType-color">
+                  {{ indx === 0 ? account.accountCategory : "" }}
+                </td>
+                <td>{{ account.accountName }}</td>
+                <td>{{ account.description }}</td>
+                <td>({{ Math.abs(account.amount).toLocaleString() }}.00)</td>
+                <td>{{ formatDate(account.date) }}</td>
+              </tr>
+              <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
+                <td class="subtotal">Subtotal</td>
+                <!-- <td></td> -->
+                <td></td>
+                <td></td>
+                <td class="subtotal">
+                  NGN{{ sum(tableData[row].expenses).toLocaleString() }}.00
+                </td>
+                <td></td>
+              </tr>
+              <tr v-for="(account, indx) in tableData[row].incomes" :key="indx">
+                <!-- <td></td> -->
+                <td class="accounType-color">
+                  {{ indx === 0 ? account.accountCategory : "" }}
+                </td>
+                <td>{{ account.accountName }}</td>
+                <td>{{ account.description }}</td>
+                <td>{{ Math.abs(account.amount).toLocaleString() }}.00</td>
+                <td>{{ formatDate(account.date) }}</td>
+              </tr>
+              <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
+                <td class="subtotal">Subtotal</td>
+                <!-- <td></td> -->
+                <td></td>
+                <td></td>
+                <td class="subtotal">
+                  NGN{{ sum(tableData[row].incomes).toLocaleString() }}.00
+                </td>
+                <td></td>
+              </tr>
+              <tr class="answer-row" v-if="tableData[row].incomes.length > 0">
+                <td class="total-answer">Total</td>
+                <!-- <td></td> -->
+                <td></td>
+                <td></td>
+                <td class="total-answer">
+                  NGN{{
+                    sumOfDiffAcctInFunds(tableData[row]).toLocaleString()
+                  }}.00
+                </td>
+                <td></td>
+              </tr>
+              <tr style="background-color: #fff">
+                <!-- <td>&nbsp;</td> -->
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </tbody>
+            <tbody
+              class="font-weight-bolder text-nowrap"
+              style="font-size: small"
+            >
+              <tr class="answer-row2">
+                <td class="gross-total">Gross Total</td>
+                <!-- <td></td> -->
+                <td></td>
+                <td></td>
+                <td class="gross-total responsive-horizontalrule">
+                  NGN{{
+                    Math.abs(diffBtwIncomeAndExpenses).toLocaleString()
+                  }}.00
+                  <hr class="horizontal-rule" />
+                </td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="table-foot d-flex justify-content-end mt-3">
+            <!-- <PaginationButtons /> -->
+          </div>
         </div>
       </div>
-
-	</div>
 
       <!--end table header -->
     </section>
@@ -273,17 +313,15 @@
 </template>
 
 <script>
-
-import { ref, computed} from "vue";
+import { ref, computed } from "vue";
 import Calendar from "primevue/calendar";
-// import IncomeStatementChart from "@/components/charts/ReportPieChart.vue";
+import IncomeStatementChart from "@/components/charts/ReportPieChart.vue";
+import IncomeStatmentColumnChart from "../../../components/charts/ReportColumnChart.vue";
 import axios from "@/gateway/backendapi";
-import dateFormatter from  "../../../services/dates/dateformatter";
-// import IncomeStatmentColumnChart from "../../../components/charts/ReportColumnChart.vue";
-// import NegativeChart from "../../../components/charts/NegativeColumnChart";
+import dateFormatter from "../../../services/dates/dateformatter";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforincomestatement.js";
-import groupResponse from '../../../services/groupArray/groupResponse.js'
+import groupResponse from "../../../services/groupArray/groupResponse.js";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import incomeExpenseHelper from "./Helper/Incomeexpenses-helper.js";
 // import Listbox from 'primevue/listbox';
@@ -291,10 +329,10 @@ import incomeExpenseHelper from "./Helper/Incomeexpenses-helper.js";
 export default {
   components: {
     Calendar,
-    // IncomeStatementChart,
-    // IncomeStatmentColumnChart,
+    IncomeStatementChart,
+    IncomeStatmentColumnChart,
     // NegativeChart,
-      // Dropdown,
+    // Dropdown,
     // InputText,
     // Listbox,
     // PaginationButtons,
@@ -303,113 +341,103 @@ export default {
     const startDate = ref("");
     const endDate = ref("");
     const incomeStatement = ref([]);
-    const groupedIncomeStatements = ref([])
-    const groupedExpenseStatements = ref([])
-    const groupedExpenseItemToDisplay = ref([])
-    const chartForIcomeAndExpense = ref([])
-    const groupofIcomeAndExpense =ref([])
+    const groupedIncomeStatements = ref([]);
+    const groupedExpenseStatements = ref([]);
+    const groupedExpenseItemToDisplay = ref([]);
+    const chartForIcomeAndExpense = ref([]);
+    const groupofIcomeAndExpense = ref([]);
     // const mappedIncomeAndExpense = ref([])
-    const allIncomeAndExpenses = ref([])
-    const incomeStatementData = ref([])
-     const showExport = ref(false);
+    const allIncomeAndExpenses = ref([]);
+    const incomeStatementData = ref([]);
+    const showExport = ref(false);
     const fileName = ref("");
-    const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
+    const bookTypeList = ref([
+      { name: "xlsx" },
+      { name: "csv" },
+      { name: "txt" },
+      { name: "" },
+    ]);
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const fundType = ref([]);
-      const funds = ref([]);
+    const funds = ref([]);
 
-      const tableData = ref({});
-      const tableRows = computed(() => {
-        if (!tableData.value) return [ ]
-        return Object.keys(tableData.value);
-      })
+    const tableData = ref({});
+    const tableRows = computed(() => {
+      if (!tableData.value) return [];
+      return Object.keys(tableData.value);
+    });
 
-      const sum = arr => {
-        if (!arr || arr.length <= 0) return 0;
-        const amounts = arr.map(account => account.amount);
-        return Math.abs(amounts.reduce((a, b) => a + b))
+    const sum = (arr) => {
+      if (!arr || arr.length <= 0) return 0;
+      const amounts = arr.map((account) => account.amount);
+      return Math.abs(amounts.reduce((a, b) => a + b));
+    };
+
+    const getSumOfIncomes = (type) => {
+      let total = 0;
+      for (let fund in tableData.value) {
+        if (fund === "null") break;
+        const amount = sum(tableData.value[fund][type]);
+        total += amount;
       }
+      return total;
+    };
 
-         const getSumOfIncomes = type => {
-        let total = 0;
-         for (let fund in tableData.value) {
-           if (fund === 'null') break;
-           const amount = sum(tableData.value[fund][type]);
-           total += amount;
-         }
-         return total;
-      }
+    const diffBtwIncomeAndExpenses = computed(() => {
+      if (!tableData.value) return 0;
+      const incomeTotal = getSumOfIncomes("incomes");
+      const expenseTotal = getSumOfIncomes("expenses");
 
-      const diffBtwIncomeAndExpenses = computed(() => {
-          if(!tableData.value) return 0
-          const incomeTotal = getSumOfIncomes('incomes');
-          const expenseTotal = getSumOfIncomes('expenses');
+      return incomeTotal - expenseTotal;
+    });
 
-          return incomeTotal - expenseTotal
-      })
+    const sumOfDiffAcctInFunds = (item) => {
+      let incomeres = item.incomes.reduce((a, b) => {
+        return { amount: +a.amount + +b.amount };
+      });
+      console.log(incomeres.amount);
 
+      let expenseres =
+        item.expenses.length > 0
+          ? item.expenses.reduce((a, b) => {
+              return { amount: +a.amount + +b.amount };
+            })
+          : 0;
+      console.log(expenseres.amount);
 
-          // const dataInFundTypeOne = tableData.value.incomes
-          // // const dataInFundTypeTwo = tableData
-          // console.log(dataInFundTypeOne, '❤️🤣👍')
-          // // console.log(dataInFundTypeTwo, '👍🥁🎁')
-
-
-      const sumOfDiffAcctInFunds = (item) => {
-        let incomeres = item.incomes.reduce((a, b) => {
-          return { amount: +a.amount + +b.amount }
-        })
-        console.log(incomeres.amount)
-
-       let expenseres = item.expenses.length > 0 ? item.expenses.reduce((a, b) => {
-          return { amount: +a.amount + +b.amount }
-        }) : 0
-        console.log(expenseres.amount)
-        const summedValue = Math.abs(incomeres.amount) + Math.abs(expenseres.amount)
-        console.log(summedValue)
-        return summedValue   //     if(tableData.value.length === 0) return 0
-      //     const dataInFundTypeOne  = [];
-      //     for(let groupedItem of tableData.value) {
-      //       console.log(groupedItem)
-      //       dataInFundTypeOne.push(...groupedItem.value)
-      //     }
-      //     console.log(dataInFundTypeOne, "💐😀🎉")
-      //     return dataInFundTypeOne.reduce((arr, cur) => {
-      //           return arr + cur[type]
-      //     }, 0)
-      }
-
-      // console.log(sumOfDiffAcctInFunds(tableData), '❤️❤️❤️❤️')
-
-      // const data = {
-      //    code: 42,
-      //    items: [{ id: 1, name: 'foo'},
-      //            {id: 2, name: 'bar'} ]
-      //                };
-      //   const item_name = data['items'][1]['name'];
-      //     console.log(item_name, "🎁🎁")
+      const subtractValue =
+        Math.abs(incomeres.amount || 0) - Math.abs(expenseres.amount || 0);
+      console.log(subtractValue);
+      return subtractValue;
+    };
 
     const generateReport = () => {
       axios
-        .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(
+          `/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(
+            startDate.value
+          ).toLocaleDateString("en-US")}&endDate=${new Date(
+            endDate.value
+          ).toLocaleDateString("en-US")}`
+        )
         .then((res) => {
           console.log(res, "🎄🎄🎄");
-          tableData.value = incomeExpenseHelper.formatAccounts(res.data)
-          incomeStatement.value = res.data.filter(i => i !== null)
+          tableData.value = incomeExpenseHelper.formatAccounts(res.data);
+          incomeStatement.value = res.data.filter((i) => i !== null);
           console.log(incomeStatement.value);
           console.log(tableData.value, "TABLE DATA");
           console.log(tableRows.value, "TABLE ROWS");
-          let response = res.data
-           chartForIcomeAndExpense.value = response ;
-          churchIncomes(incomeStatement.value, 'accountCategory');
-          churchExpense(incomeStatement.value, 'accountCategory');
-          pieChart(incomeStatement.value, 'accountCategory')
-          groupedFundType()
-          groupAccountCategoery()
+          let response = res.data;
+          chartForIcomeAndExpense.value = response;
+          churchIncomes(incomeStatement.value, "accountCategory");
+          churchExpense(incomeStatement.value, "accountCategory");
+          pieChart(incomeStatement.value, "accountCategory");
+          groupedFundType();
+          groupAccountCategoery();
 
-              /* function to call service and populate table */
+          /* function to call service and populate table */
           setTimeout(() => {
             fileHeaderToExport.value = exportService.tableHeaderToJson(
               document.getElementsByTagName("th")
@@ -425,35 +453,31 @@ export default {
         });
     };
 
-        const groupedFundType = () => {
-      fundType.value = groupResponse.groupData(incomeStatement.value, 'fund')
-        for (const prop in fundType.value) {
-          funds.value.push({name:prop,
-          value: fundType.value[prop]
-          })
+    const groupedFundType = () => {
+      fundType.value = groupResponse.groupData(incomeStatement.value, "fund");
+      for (const prop in fundType.value) {
+        funds.value.push({ name: prop, value: fundType.value[prop] });
       }
-      console.log(funds.value,"🎼🎼🎉🎉");
+      console.log(funds.value, "🎼🎼🎉🎉");
     };
-    groupedFundType()
-
-
+    groupedFundType();
 
     const groupAccountCategoery = (arr) => {
-      if (!arr || arr.length === 0) return
+      if (!arr || arr.length === 0) return;
       const category = [];
-       const categoryType = groupResponse.groupData(arr, 'accountCategory')
-        for (const prop in categoryType) {
-          category.push({
-            name:prop,
-            value:categoryType[prop]
-          })
-        }
-        console.log(category, "🎵🎵");
-        return category
-    }
-    groupAccountCategoery()
+      const categoryType = groupResponse.groupData(arr, "accountCategory");
+      for (const prop in categoryType) {
+        category.push({
+          name: prop,
+          value: categoryType[prop],
+        });
+      }
+      console.log(category, "🎵🎵");
+      return category;
+    };
+    groupAccountCategoery();
 
-                /* Code For Exporting File */
+    /* Code For Exporting File */
     const downloadFile = () => {
       exportService.downLoadExcel(
         selectedFileType.value,
@@ -465,126 +489,110 @@ export default {
     };
     /* End Code For Exporting File */
 
-/* Chart Area */
+    /* Chart Area */
     const pieChart = (array, key) => {
-            let result = array.reduce((result, currentValue) => {
-                // If an array already present for key, push it to the array. Else create an array and push the object
-                (result[currentValue[key]] = result[currentValue[key]] || []).push(
-                currentValue
-                );
-                // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
-                return result;
-            }, {}); // empty object is the initial value for result object
-            console.log(result)
-            groupofIcomeAndExpense.value = []
-            for (const prop in result) {
-                console.log(prop, result[prop])
-                groupofIcomeAndExpense.value.push({
-                name: prop,
-                value: result[prop].reduce((acc, cur) => {
-                  return acc + cur.amount
-                }, 0),
-                })
-            }
+      let result = array.reduce((result, currentValue) => {
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+          currentValue
+        );
+        // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
+        return result;
+      }, {}); // empty object is the initial value for result object
+      console.log(result);
+      groupofIcomeAndExpense.value = [];
+      for (const prop in result) {
+        console.log(prop, result[prop]);
+        groupofIcomeAndExpense.value.push({
+          name: prop,
+          value: result[prop].reduce((acc, cur) => {
+            return Math.abs(acc + cur.amount);
+          }, 0),
+        });
+      }
 
-            console.log(groupofIcomeAndExpense.value)
-        };
+      console.log(groupofIcomeAndExpense.value);
+    };
 
-// Negative Column Chart Area
-         const incomeStatementDetail = computed(() => {
-         if (groupofIcomeAndExpense.value.length === 0) return []
-         allIncomeAndExpenses.value.push({
-             name: 'Income',
-            //  color: '#002044',
-             data: [Math.abs(groupofIcomeAndExpense.value[0].value)]
-         })
+    const columnChart = computed(() => {
+      if (groupofIcomeAndExpense.value.length === 0)   return [];
+        allIncomeAndExpenses.value.push({
+          name: "Income",
+          //  color: '#002044',
+          data: [groupofIcomeAndExpense.value[0].value],
+        });
 
-         allIncomeAndExpenses.value.push({
-             name: 'Expense',
-            //  color: '#002044',
-             data: [groupofIcomeAndExpense.value[1].value]
-         })
-         console.log(allIncomeAndExpenses.value)
-         return allIncomeAndExpenses.value
-     })
-     // Negative Column Chart Area
-/*End of Chart Area */
+        allIncomeAndExpenses.value.push({
+          name: "Expense",
+          //  color: '#002044',
+          data: [groupofIcomeAndExpense.value[1].value],
+        });
 
-    let groupedIncomeItemToDisplay = ref([])
+      console.log(allIncomeAndExpenses.value);
+      return allIncomeAndExpenses.value;
+    });
+    /*End of Chart Area */
+
+    let groupedIncomeItemToDisplay = ref([]);
     const churchIncomes = (array, key) => {
-            let result = array.reduce((result, currentValue) => {
-                // If an array already present for key, push it to the array. Else create an array and push the object
-                (result[currentValue[key]] = result[currentValue[key]] || []).push(
-                currentValue
-                );
-                // console.log(result, currentValue, key)
-                // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
+      let result = array.reduce((result, currentValue) => {
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+          currentValue
+        );
+        // console.log(result, currentValue, key)
+        // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
 
-                return result;
-            }, {}); // empty object is the initial value for result object
-            console.log(result)
-             groupedIncomeStatements.value = []
-            for (const prop in result) {
-                console.log(prop, result[prop])
-                groupedIncomeStatements.value.push({
-                name: prop,
-                value: result[prop]
-                })
-            }
-            // console.log(groupedIncomeStatements.value)
-            // console.log(groupedIncomeStatements.value.[1])
+        return result;
+      }, {}); // empty object is the initial value for result object
+      console.log(result);
+      groupedIncomeStatements.value = [];
+      for (const prop in result) {
+        console.log(prop, result[prop]);
+        groupedIncomeStatements.value.push({
+          name: prop,
+          value: result[prop],
+        });
+      }
+      groupedIncomeItemToDisplay.value = groupedIncomeStatements.value[0].value;
 
-             groupedIncomeItemToDisplay.value = groupedIncomeStatements.value[0].value
-
-            // console.log(groupedIncomeItemToDisplay.value, "💐💐")
-        };
-
-
-
+      console.log(groupedIncomeItemToDisplay.value, "💐💐")
+    };
 
     const churchExpense = (array, key) => {
-            let result = array.reduce((result, currentValue) => {
-                (result[currentValue[key]] = result[currentValue[key]] || []).push(
-                currentValue
-                );
-                return result;
-            }, {});
-            console.log(result)
-             groupedExpenseStatements.value = []
-            for (const prop in result) {
-                console.log(prop, result[prop])
-                groupedExpenseStatements.value.push({
-                name: prop,
-                value: result[prop]
-                })
-            }
-            // console.log(groupedExpenseStatements.value)
-            // console.log(groupedExpenseStatements.value.[1])
+      let result = array.reduce((result, currentValue) => {
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+          currentValue
+        );
+        return result;
+      }, {});
+      console.log(result);
+      groupedExpenseStatements.value = [];
+      for (const prop in result) {
+        console.log(prop, result[prop]);
+        groupedExpenseStatements.value.push({
+          name: prop,
+          value: result[prop],
+        });
+      }
+      groupedExpenseItemToDisplay.value =
+        groupedExpenseStatements.value[1].value;
 
-            groupedExpenseItemToDisplay.value = groupedExpenseStatements.value[1].value
-
-            // console.log(groupedExpenseItemToDisplay.value, "💐💐")
-        };
-
-
+      console.log(groupedExpenseItemToDisplay.value, "💐💐")
+    };
 
     const fundSum = computed(() => {
-      if (incomeStatement.value.length === 0) return 0
+      if (incomeStatement.value.length === 0) return 0;
       return incomeStatement.value.reduce((a, b) => {
-          return a + b.amount
-        }, 0)
-    })
+        return a + b.amount;
+      }, 0);
+    });
 
-     const formatDate = (activityDate) => {
+    const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
     };
 
-
-
     return {
-      // dataInFundTypeOne,
-      // dataInFundTypeTwo,
-      // data,
       sumOfDiffAcctInFunds,
       groupAccountCategoery,
       fundSum,
@@ -603,10 +611,9 @@ export default {
       chartForIcomeAndExpense,
       groupofIcomeAndExpense,
       pieChart,
-      incomeStatementDetail,
       incomeStatementData,
       printJS,
-       showExport,
+      showExport,
       fileName,
       bookTypeList,
       selectedFileType,
@@ -618,6 +625,7 @@ export default {
       tableData,
       sum,
       diffBtwIncomeAndExpenses,
+      columnChart,
       // incomeAndExpenseChart,
       // groupedExpenseAndIncomeStatements
     };
@@ -627,18 +635,18 @@ export default {
 
 <style scoped>
 .default-btn {
-    font-weight: 600;
-    white-space: initial;
-    font-size: 1rem;
-    border-radius: 3rem;
-    border: 1px solid #002044;
-    padding: .5rem 1.25rem;
-    width: auto;
-	/* border:none; */
-    /* outline: transparent !important; */
-    max-height: 40px;
-    /* background: #6c757d47 !important; */
-    min-width: 121px;
+  font-weight: 600;
+  white-space: initial;
+  font-size: 1rem;
+  border-radius: 3rem;
+  border: 1px solid #002044;
+  padding: 0.5rem 1.25rem;
+  width: auto;
+  /* border:none; */
+  /* outline: transparent !important; */
+  max-height: 40px;
+  /* background: #6c757d47 !important; */
+  min-width: 121px;
 }
 
 .generate-report {
@@ -679,32 +687,32 @@ export default {
 }
 
 .table-main {
-    width: 100% !important;
-    box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
-    border: 0.063rem solid #dde2e6 !important;
-    /* border-radius: 30px !important; */
-    text-align: left !important;
-    margin-bottom: auto !important;
-    padding-bottom: 0.5rem !important;
+  width: 100% !important;
+  box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
+  border: 0.063rem solid #dde2e6 !important;
+  /* border-radius: 30px !important; */
+  text-align: left !important;
+  margin-bottom: auto !important;
+  padding-bottom: 0.5rem !important;
 }
 
-.remove-styles{
-    border: none !important;
-    box-shadow: none !important;
-    border-bottom: 0 !important;
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
+.remove-styles {
+  border: none !important;
+  box-shadow: none !important;
+  border-bottom: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
-.remove-styles2{
-padding-right: 0;
-padding-left: 0;
-border-top-left-radius: 0 !important;
-border-top-right-radius: 0 !important;
+.remove-styles2 {
+  padding-right: 0;
+  padding-left: 0;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
 }
 
-.remove-border{
-    box-shadow: none !important;
+.remove-border {
+  box-shadow: none !important;
 }
 
 .tablerow-style {
@@ -712,70 +720,66 @@ border-top-right-radius: 0 !important;
   border-bottom: 0px;
 }
 
-.graph-area{
-    border: 1px solid #dde2e6;
-    border-radius: 0.5rem;
-    padding: 1rem 0rem;
-    margin: 2rem 0rem;
+.graph-area {
+  border: 1px solid #dde2e6;
+  border-radius: 0.5rem;
+  padding: 1rem 0rem;
+  margin: 2rem 0rem;
 }
 
-.responsiveness{
+.responsiveness {
   max-width: 100%;
   overflow-x: scroll;
   /* overflow-y: scroll; */
 }
 
-
-.subtotal{
+.subtotal {
   font-weight: 700;
-  font-size:large;
-    color: #136acd;
+  font-size: large;
+  color: #136acd;
 }
 
-.total-answer{
+.total-answer {
   font-weight: 900;
-  font-size:large;
-   color: #136acd;
+  font-size: large;
+  color: #136acd;
 }
 
-.answer-row{
+.answer-row {
   background-color: #ebeff4;
 }
 
-.answer-row:hover{
-  background-color:none;
+.answer-row:hover {
+  background-color: none;
 }
 
-
-.fundType-color{
-  color:#136acd;
+.fundType-color {
+  color: #136acd;
   font-size: larger;
 }
-.accounType-color{
-  font-size:medium;
+.accounType-color {
+  font-size: medium;
 }
 
-.horizontal-rule{
- border: 0.1875rem solid #FFE50F;
+.horizontal-rule {
+  border: 0.1875rem solid #ffe50f;
   border-radius: 5px;
   margin: 0.125rem 0;
 }
 
-.responsive-horizontalrule{
-  display:inline-block;
+.responsive-horizontalrule {
+  display: inline-block;
 }
 
-
-.answer-row2{
-  background-color: #136ACD;
+.answer-row2 {
+  background-color: #136acd;
 }
 
-.gross-total{
-    font-weight: bolder;
-  font-size:large;
-   color: #fff;
+.gross-total {
+  font-weight: bolder;
+  font-size: large;
+  color: #fff;
 }
-
 
 /* .move-enter-active {
   animation: move-in .8s;

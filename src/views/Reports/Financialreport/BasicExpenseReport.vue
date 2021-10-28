@@ -1,4 +1,4 @@
-<template>
+<template>{{itemName}}
   <div class="container-fluid px-5">
     <!-- header area -->
     <div class="container">
@@ -92,7 +92,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true" />
+                    <Calendar class="w-100" id="icon" v-model="startDate" :showIcon="true"  dateFormat="dd/mm/yy"/>
                   </div>
               </div>
               <div class="col-md-4 col-sm-12 pr-md-0">
@@ -100,7 +100,7 @@
                     <div>
                       <label for="icon" class="mb-0 font-weight-bold">End Date</label>
                     </div>
-                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true" />
+                    <Calendar class="w-100" id="icon" v-model="endDate" :showIcon="true"  dateFormat="dd/mm/yy"/>
                   </div>
               </div>
             <div class="col-md-4 col-sm-12 pr-md-0">
@@ -119,18 +119,31 @@
       <section>
         <!-- chart area -->
         <!-- d-flex justify-content-center -->
-        <!-- <div  class="chart row"
+        <div  class="chart row"
         :class=" accountTransaction &&  accountTransaction.length > 0 ? 'graph-area' : '' ">
         <div class="chart1 col-12 col-md-6 ">
-            <ByGenderChart
+            <BasicExpensePieChart
               domId="chart"
-              title="Funds"
+              title=""
               distance="5"
               :titleMargin="10"
               :summary="mappedExpenses"
             />
           </div>
-        </div> -->
+
+           <div class="chart1 col-12 col-md-6">
+          <BasicExpenseColumnChart
+            domId="chart1"
+            title=""
+            distance="5"
+            :titleMargin="10"
+            :data="itemName"
+            subtitle=""
+            :series= "columnChartArray"
+            yAxisText="Amount"
+          />
+        </div>
+        </div>
         <!--end of chart area -->
       </section>
 
@@ -187,47 +200,6 @@
               <td></td>
             </tr>
           </tbody>
-
-            <!-- <tbody class="font-weight-normal text-nowrap">
-              <tr style="position: relative" v-for="(fund, index) in funds"
-              :key="index">
-                <td>{{fund.name}}
-                  <tr style="position: absolute;bottom:0">
-                    <td class="answer">SubTotal</td>
-                  </tr>
-                </td>
-                <td>
-                  <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
-                    {{item.accountName}}
-                  </tr>
-                </td>
-                <td>
-                  <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
-                    {{item.description}}
-                    </tr>
-                </td>
-                <td>
-                  <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
-                    {{item.amount}}
-                  </tr>
-                  <tr  class="mt-2 answer">
-                    {{total(fund.value).toLocaleString()}}
-                  </tr>
-                </td>
-                <td>
-                  <tr v-for="(item, index) in fund.value" :key="index" class="mt-2">
-                    {{ formatDate(item.date) }}
-                  </tr>
-                </td>
-              </tr>
-              <tr class="answer-row">
-                <td class="answer">Total</td>
-                <td></td>
-                <td></td>
-                <td  class="answer"> {{fundSum.toLocaleString() }}</td>
-                <td></td>
-              </tr>
-            </tbody> -->
           </table>
           <div class="table-foot d-flex justify-content-end mt-3">
             <!-- <PaginationButtons /> -->
@@ -244,23 +216,23 @@
 <script>
 import { ref, computed } from "vue";
 import Calendar from "primevue/calendar";
-// import ByGenderChart from "@/components/charts/PieChart.vue";
-// import PaginationButtons from "../../../components/pagination/PaginationButtons";
+import BasicExpensePieChart from "@/components/charts/ReportPieChart.vue";
+import BasicExpenseColumnChart from "../../../components/charts/ReportColumnChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
-// import Dropdown from "primevue/dropdown";
-// import InputText from "primevue/inputtext";
 // import Listbox from 'primevue/listbox';
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportserviceforbasicexpense.js";
 import groupResponse from '../../../services/groupArray/groupResponse.js';
 // import numbers_formatter from "../../../services/numbers/numbers_formatter.js"
 // import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
+// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 
 export default {
   components: {
-    Calendar,
-    // ByGenderChart,
+  Calendar,
+  BasicExpensePieChart,
+  BasicExpenseColumnChart,
     // Listbox,
     // PerformanceColumnChart,
     // PaginationButtons,
@@ -271,8 +243,11 @@ export default {
     const accountTransaction = ref([]);
     const acccountType = ref();
     const groupedAccountName = ref([]);
+    const columnChartArray = ref([]);
     const fundType = ref([]);
     const funds = ref([]);
+    const mappedExpensesCol = ref([]);
+    const expencesDetails = ref([]);
     const showExport = ref(false);
     const fileName = ref("");
     const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "pdf" }]);
@@ -281,7 +256,7 @@ export default {
     const fileToExport = ref([]);
     const generateReport = () => {
       axios
-        .get(`/api/Reports/financials/getAccountTypeReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&acccountType=${3}`)
+        .get(`/api/Reports/financials/getAccountTypeReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&acccountType=${3}`)
         .then((res) => {
 
           console.log(res, "🎄🎄🎄");
@@ -330,22 +305,45 @@ export default {
                 return result;
             }, {}); // empty object is the initial value for result object
             console.log(result)
-            groupedAccountName.value = []
             for (const prop in result) {
                 console.log(prop, result[prop])
                 groupedAccountName.value.push({
                 name: prop,
                 value: result[prop].reduce((acc, cur) => {
-                  return acc + cur.amount
+                  return Math.abs(acc + cur.amount)
+                }, 0),
+                })
+                console.log(groupedAccountName.value)
+            }
+
+            for (const prop in result) {
+                console.log(prop, result[prop])
+                columnChartArray.value.push({
+                name: prop,
+                data: result[prop].reduce((acc, cur) => {
+                  return Math.abs(acc + cur.amount)
                 }, 0),
                 })
             }
-            console.log(groupedAccountName.value)
+            console.log(columnChartArray.value)
         };
 
         const mappedExpenses = computed(() => {
           if (groupedAccountName.value.length === 0) return []
           return groupedAccountName.value.map(i => i)
+        })
+
+        const itemName = computed(() => {
+           if (columnChartArray.value.length === 0) return []
+          return columnChartArray.value.map(i => i)
+        })
+
+        const expenseChart = ref([]);
+        const ExpenseDetails = computed(() => {
+           expenseChart.value.push({
+             name: "itemName",
+             data:columnChartArray.value
+           })
         })
 
 
@@ -405,7 +403,12 @@ export default {
       downloadFile,
       total,
       fundSum,
-      mappedExpenses
+      mappedExpenses,
+      ExpenseDetails,
+      mappedExpensesCol,
+      expencesDetails,
+      itemName,
+      expenseChart,
     };
   },
 };
@@ -420,10 +423,7 @@ export default {
     border: 1px solid #002044;
     padding: .5rem 1.25rem;
     width: auto;
-	/* border:none; */
-    /* outline: transparent !important; */
     max-height: 40px;
-    /* background: #6c757d47 !important; */
     min-width: 121px;
 }
 

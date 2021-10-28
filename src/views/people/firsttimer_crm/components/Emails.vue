@@ -6,7 +6,8 @@
             <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;{{ item.person ? `${item.typeText} task assigned to` : `${item.typeText} logged` }}</span>  {{ item.person }}</div>
+                        <!-- <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;{{ item.person ? `${item.typeText} task assigned to` : `${item.typeText} logged` }}</span>  {{ item.person }}</div> -->
+                        <div class="col align-self-center"><span class="font-weight-700 c-pointer"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.logIcon, 'unroll-note-icon' : !item.logIcon}" @click="toggleLogIcon(index)"></i>&nbsp;&nbsp;{{ item.person ? `${item.typeText} task assigned to` : `${item.typeText} logged` }}</span> {{ item.person }} </div>
                         
                             <div class="col mt-4 enlargen-font">{{ condenseEmailText(item.description) }}</div>
                         
@@ -15,6 +16,21 @@
                         <div class="col text-right"><span class="ml-2 small-text">{{ formatDate(item.date) }} {{ item.time }}</span></div>
                     </div>
                 </div>
+                <transition name="fade">
+                    <div class="row" v-if="item.logIcon">
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                            <div class="col-6">
+                                <div class="label-text">Contacted</div>
+                                <div class="uniform-primary-color font-weight-700 mt-1 c-pointer">{{ `${personDetails.firstName} ${personDetails.lastName}` }}</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="label-text" v-if="item.outcomeText">{{ item.typeText }} Outcome</div>
+                                <div class="mt-1 uniform-primary-color font-weight-700 c-pointer">{{ item.outcomeText }}</div>
+                            </div>
+                    </div>
+                </transition>
                 <!-- <transition name="fade">
                     <div class="row mt-4">
                         <div class="col font-weight-700 uniform-primary-color">Add Comment</div>
@@ -29,8 +45,8 @@
 <script>
 import dateFormatter from '../../../../services/dates/dateformatter'
 export default {
-    emits: ['openemailmodal'],
-    props: ['emailList'],
+    emits: ['openemailmodal', 'emaillicon'],
+    props: ['emailList', 'personDetails'],
     setup(props, { emit }) {
         const openEmailModal = () => {
             emit('openemailmodal', true)
@@ -50,10 +66,15 @@ export default {
             return dateFormatter.monthDayYear(date)
         }
 
+        const toggleLogIcon = (index) => {
+            emit('emaillicon', index)
+        }
+
         return {
             openEmailModal,
             condenseEmailText,
-            formatDate
+            formatDate,
+            toggleLogIcon
         }
     }
 }
@@ -63,7 +84,7 @@ export default {
 .card-bg {
     background-color: rgb(255, 255, 255);
     box-shadow: rgb(45 62 80 / 12%) 0px 1px 5px 0px;
-    border-radius: 3px;
+    border-radius: 8px;
 }
 
 .roll-note-icon {
@@ -98,9 +119,9 @@ export default {
 }
 
 .btn-btn {
-    font-size: 17px;
+    font-size: 15px;
     line-height: 14px;
-    padding: 11px 16px;
+    padding: 9px 15px;
     border-radius: 3px;
     -webkit-font-smoothing: auto;
     -moz-osx-font-smoothing: auto;

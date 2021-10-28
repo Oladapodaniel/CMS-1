@@ -31,14 +31,14 @@
                     <div class=""><label for="icon" class=" ml-2 font-weight-bold">Start Date</label></div>
                     <div>
                         <div>
-                            <Calendar id="icon" v-model="startDate" class="calendar1" :showIcon="true" />
+                            <Calendar dateFormat="dd/mm/yy" id="icon" v-model="startDate" class="calendar1" :showIcon="true" />
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
                     <div><label for="icon" class="font-weight-bold">End Date</label></div>
                      <div>
-                            <Calendar id="icon" v-model="endDate" :showIcon="true" />
+                            <Calendar dateFormat="dd/mm/yy" id="icon" v-model="endDate" :showIcon="true" />
                         </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
@@ -75,19 +75,28 @@
               <td>{{ AccountList.accountName }}</td>
               <td>{{ AccountList.refNumber }}</td>
               <td>{{ AccountList.description }}</td>
-              <td>{{Math.abs(AccountList.debit).toLocaleString()}}.00</td>
-              <td>{{Math.abs(AccountList.credit).toLocaleString()}}.00</td>
-              <td>({{Math.abs(AccountList.balance).toLocaleString()}}.00)</td>
+              <td class="text-success">{{Math.abs(AccountList.debit).toLocaleString()}}.00</td>
+              <td class="text-danger">{{Math.abs(AccountList.credit).toLocaleString()}}.00</td>
+              <td class="text-dark font-weight-bolder ">({{Math.abs(AccountList.balance).toLocaleString()}}.00)</td>
               <!-- <td>{{parseFloat(AccountList.balance).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</td> -->
             </tr>
             <tr class="answer-row">
-              <td class="answer">Total</td>
-              <td></td>
-              <td></td>
-              <td class="answer">{{amountTotal.toLocaleString()}}</td>
+              <td class="answer"></td>
               <td></td>
               <td></td>
               <td></td>
+              <td class="answer text-success ">NGN {{sumDebit ? sumDebit.toLocaleString() : 0}}.00</td>
+              <td class="answer text-danger ">NGN {{sumCredit ? Math.abs(sumCredit).toLocaleString() : 0}}.00</td>
+              <td></td>
+            </tr>
+            <tr class="answer-row">
+              <td class="answer font-weight-bolder ">Account Balance</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="answer text-dark">NGN {{sumBalance.toLocaleString()}}.00</td>
             </tr>
           </tbody>
         </table>
@@ -136,13 +145,49 @@
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);
 
+
+
+    const sumDebit = computed (()=>{
+          if(accountInChurch.value.length === 0) return 0
+
+           let sumAllDebit = 0
+           accountInChurch.value.forEach(i => {
+              sumAllDebit += i.debit
+           })
+            // console.log(summed)
+            return  sumAllDebit
+          
+        })
+    const sumCredit = computed (()=>{
+          if(accountInChurch.value.length === 0) return 0
+           let sumAllCredit = 0
+           accountInChurch.value.forEach(i => {
+             sumAllCredit += i.credit
+           })
+            // console.log(summed)
+            return sumAllCredit
+          //  return accountInChurch.value.reduce((a,b) => {
+          //    return  (+a.credit || 0) + (+b.credit || 0)
+          //   })  
+        })
+
+    const sumBalance = computed (()=>{
+          if(accountInChurch.value.length === 0) return 0
+           let sumAllBalance = 0
+           accountInChurch.value.forEach(i => {
+             sumAllBalance += i.balance
+           })
+            // console.log(summed)
+            return sumAllBalance
+          
+        })
      const downloadFile = () => {
         exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
       }
 
 
         const generateReport = () => {
-          axios.get(`/api/Reports/financials/getAccountActivityReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&accountID=${selectedAccount.value.id}`)
+          axios.get(`/api/Reports/financials/getAccountActivityReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&accountID=${selectedAccount.value.id}`)
           .then((res) => {
             accountInChurch.value = res.data;
             console.log(accountInChurch.value, "✌️✌️");
@@ -209,7 +254,10 @@
             fileName,
             printJS,
             // offeringInChurch,
-            acountID
+            acountID,
+            sumBalance, 
+            sumDebit,
+            sumCredit
             
         }
         

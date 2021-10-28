@@ -384,7 +384,7 @@ import FamilyWards from "./FamilyWards";
 // import MemberForm from "../ChildCheckinPortal/FormMember.vue"
 import membershipService from "../../services/membership/membershipservice";
 import Dialog from "primevue/dialog";
-import NewPerson from '../accounting/offering/NewDonor.vue';
+import NewPerson from '../../components/membership/NewDonor.vue';
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import { useRoute } from "vue-router"
