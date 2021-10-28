@@ -4,9 +4,13 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Pagination from '@/components/payment/PaymentSuccessful.vue';
 
 
+
+
 import TermsOfUse from '../components/temp/PaymentPage';
 
 const routes = [
+
+
 
     {
         path: '/pagination',
@@ -385,16 +389,6 @@ const routes = [
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialActivitiesBalance.vue')
                     },
                     {
-                        path: 'financialexpense',
-                        name: "financialExpense",
-                        meta: {
-                            title: 'Churchplus - Reports',
-                        },
-                        component: () =>
-
-                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialExpense.vue')
-                    },
-                    {
                         path: 'weddinganniversaryreport',
                         name: "weddinganniversaryreport",
                         meta: {
@@ -657,6 +651,13 @@ const routes = [
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
             },
             {
+                path: '/chartpage',
+                name: 'FirstTimersChartArea',
+                component: () =>
+                import ( /* webpackChunkName: "sentemails" */ '@/views/people/FirstTimersChartArea.vue'),
+
+            },
+            {
                 path: 'report/:id',
                 name: 'Report',
                 meta: {
@@ -842,6 +843,25 @@ const routes = [
                         },
                         component: () =>
                             import ( /* webpackChunkName: "inbox" */ '@/views/communication/whatsapp/composeWhatsapp')
+                    }]
+            },
+            // voice
+            {
+                path: 'voice',
+                name: 'voice',
+                meta: {
+                    title: 'Churchplus - Voice Communication',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "scheduled" */ '@/components/Voice/Voice'),
+                    children: [{
+                        path: '',
+                        name: 'Record',
+                        meta: {
+                            title: 'Churchplus -Voice Record',
+                        },
+                        component: () =>
+                            import ( /* webpackChunkName: "inbox" */ '@/views/communication/Voice/composeVoice')
                     }]
             },
             {
@@ -1308,7 +1328,8 @@ const routes = [
                 },
                 component: () =>
                     import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/DonationSetup')
-            }
+            },
+
         ],
     },
     {
@@ -1541,6 +1562,8 @@ const routes = [
             import ( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),
 
     },
+
+
 ]
 
 const router = createRouter({
