@@ -4,9 +4,19 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Pagination from '@/components/payment/PaymentSuccessful.vue';
 
 
+
+
 import TermsOfUse from '../components/temp/PaymentPage';
 
 const routes = [
+
+    {
+        path: '/chartpage',
+        name: 'FirstTimersChartArea',
+        component: () =>
+        import ( /* webpackChunkName: "sentemails" */ '@/views/people/FirstTimersChartArea.vue'),
+
+    },
 
     {
         path: '/pagination',
@@ -382,16 +392,6 @@ const routes = [
                         component: () =>
 
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialActivitiesBalance.vue')
-                    },
-                    {
-                        path: 'financialexpense',
-                        name: "financialExpense",
-                        meta: {
-                            title: 'Churchplus - Reports',
-                        },
-                        component: () =>
-
-                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialExpense.vue')
                     },
                     {
                         path: 'weddinganniversaryreport',
@@ -1307,7 +1307,8 @@ const routes = [
                 },
                 component: () =>
                     import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/DonationSetup')
-            }
+            },
+
         ],
     },
     {
@@ -1531,6 +1532,8 @@ const routes = [
             import ( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),
 
     },
+
+
 ]
 
 const router = createRouter({
