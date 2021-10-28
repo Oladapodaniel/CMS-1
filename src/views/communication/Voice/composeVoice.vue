@@ -467,7 +467,7 @@
                     <header>Upload File</header>
                     <!-- <span>OR</span> -->
                     <button class="btn btn-outline-dark m-3" @click="uploadVoice">Browse File</button>
-                    <input type="file" hidden ref="uploadButton" @change="audioSelected"> 
+                    <input type="file" hidden ref="uploadButton" @change="audioSelected" accept=".mp3, .wav"> 
                 </div>
                 <!-- <div class="d-flex">
                     <div class="vl"></div><span>OR</span><div class="vl"></div>
@@ -813,12 +813,13 @@ export default {
     onMounted(() => {
       setTimeout(() => {
         audio(canvas.value)
-      },10000)   
+      },3000)   
     });
 
     // function that selects the file
     const audioSelected = (e) => {
       voice.value = e.target.files[0];
+      // console.log(voice.value, "www");
       voiceName.value = e.target.files[0].name;
       url.value = URL.createObjectURL(voice.value);
       console.log(voice.value, 'url display');
@@ -896,8 +897,8 @@ handleAction();
     }
 
       const detailsForVoice = async(file) => {
-        const testing = blobMethod()
-        console.log(testing, 'blobMethod');
+        // const testing = blobMethod()
+        // console.log(testing, 'blobMethod');
       let formData = new FormData()
       formData.append("VoiceMessageFile", file)
       formData.append('Contacts', [])
@@ -907,6 +908,7 @@ handleAction();
       formData.append('ToOthers', formatPhoneNumber(phoneNumber.value))
 
       try {
+        // alert('checking the error')
         let { data } = await axios.post('/api/Messaging/SendVoiceMessage', formData)
         console.log(data, 'voice test')
         toast.add({
