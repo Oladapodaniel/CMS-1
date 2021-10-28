@@ -26,7 +26,7 @@
                 </div>
               </div> -->
               <div class="input-field">
-                <label for="" class="label"
+                <label for="" class=" label"
                   >Firstname<span style="color: red"> *</span></label
                 >
                 <input

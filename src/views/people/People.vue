@@ -25,7 +25,7 @@
                  <div class="font-weight-bold">Share the link to your members to enable them to add their details to your church .</div>
                   <div class="p-inputgroup form-group mt-1">
                       <Button icon="pi pi-check" class="p-button-success"/>
-                      <input placeholder="Link" class="form-control" ref="tttt" type="text" v-model="memberlink" style="height: 3rem;"  />
+                      <input placeholder="Link" class="form-control" ref="selectedLink" type="text" v-model="memberlink" style="height: 3rem;"  />
                       <Button icon="pi pi-copy" @click="copylink" class="p-button-secondary"/>
                   </div>
                   <Toast />
@@ -45,6 +45,7 @@
 
 <script>
 import { computed, ref } from "vue";
+import axios from "@/gateway/backendapi";
 // import store from "@/store/index";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
@@ -63,8 +64,8 @@ export default {
 
   setup() {
     const toast = useToast();
-    const tttt = ref(null)
-    const memberlink = `${window.location.origin}/createmember/e9749fad-85e8-4130-b553-37acc8acde61`
+    const selectedLink = ref(null)
+    const tenantID = ref('')
     const route = useRoute();
     // const toast = useToast()
     // const importFile = ref("")
@@ -76,11 +77,26 @@ export default {
       if (route.path.includes("add")) return true;
       return false;
     });
+    const getCurrentlySignedInUser = async () => {
+      try {
+        const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+        tenantID.value = res.data.tenantId
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getCurrentlySignedInUser();
+
+    const memberlink = computed(() => {
+      if (!tenantID.value) return ""
+      return `${window.location.origin}/createmember/${tenantID.value}`
+    })
 
     const copylink = () => {
-      console.log(tttt.value.value);
-          tttt.value.setSelectionRange(0, tttt.value.value.length); /* For mobile devices */
-        tttt.value.select();
+      console.log(selectedLink.value.value);
+          selectedLink.value.setSelectionRange(0, selectedLink.value.value.length); /* For mobile devices */
+        selectedLink.value.select();
 
           /* Copy the text inside the text field */
           document.execCommand("copy");
@@ -171,7 +187,7 @@ export default {
     //   }
     // }
 
-    return { addPersonClicked, route, header, isFormPage, importMembers, memberlink, copylink, tttt };
+    return { addPersonClicked, tenantID, route, header, isFormPage, importMembers, memberlink, copylink, selectedLink };
   },
 };
 // transition method
