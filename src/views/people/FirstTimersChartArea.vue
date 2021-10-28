@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <div class="container">
-      <div class="row header1 mt-2 mb-4 page-header">
+    <!-- <div class="container">
+      <div class="row mt-2 mb-4 page-header">
         First Timers Analytics
       </div>
-    </div>
+    </div> -->
 
     <div class="container-fluid">
       <div class="row mb-4">
@@ -14,8 +14,7 @@
         <div class="col-md-6"></div>
       </div>
 
-      <div class="row justify-content-between">
-
+      <div class="row justify-content-between mother-row">
          <div class="col-md-4 order-md-4 mb-4 px-0 ">
            <Dropdown class="w-100"
                      v-model="selectedPeriod"
@@ -79,7 +78,7 @@
 
 
 
-      <div class="row mt-5">
+      <div class="row mt-5 mother-row">
           <div class="col-md-6 col-12 mb-5">
             <div class="card">
                  <!-- <h5 class="p-2">Lifecycle Summary</h5> -->
@@ -94,7 +93,7 @@
            </div>
       </div>
 
-      <div class="row my-5">
+      <div class="row my-3 mother-row">
           <div class="col-md-6 col- mb-5">
             <div class="card">
                  <!-- <h5 class="p-2">Interested Visitors</h5> -->
@@ -195,22 +194,26 @@ export default {
 
 <style scoped>
 
-.header1{
+/* .header1{
 text-align: left;
 font: normal normal bold 34px/46px Nunito Sans;
 letter-spacing: 0px;
 color: #02172e;
 opacity: 1;
-}
+} */
 
 .sub-header{
     color: #136acd !important;
     /* margin: 0 10px; */
-    margin-left: -1rem;
+    margin-left: -1.75rem;
     color: #02172e;
     opacity: 0.8;
     font-size: 22px;
     font-weight: 600;
+}
+
+.mother-row{
+      margin-left: -1.75rem!important;
 }
 
 .overview-Area{
@@ -259,7 +262,7 @@ border-radius: 50%;
 font-size: 1.5rem;
 }
 
-@media screen and (max-width: 500px) {
+/* @media screen and (max-width: 500px) {
   .header1{
 text-align: left;
 font: normal normal bold 24px/36px Nunito Sans;
@@ -268,5 +271,5 @@ color: #02172e;
 opacity: 1;
 }
 
-}
+} */
 </style>

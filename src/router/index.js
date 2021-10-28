@@ -10,13 +10,7 @@ import TermsOfUse from '../components/temp/PaymentPage';
 
 const routes = [
 
-    {
-        path: '/chartpage',
-        name: 'FirstTimersChartArea',
-        component: () =>
-        import ( /* webpackChunkName: "sentemails" */ '@/views/people/FirstTimersChartArea.vue'),
 
-    },
 
     {
         path: '/pagination',
@@ -654,6 +648,13 @@ const routes = [
                 },
                 component: () =>
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
+            },
+            {
+                path: '/chartpage',
+                name: 'FirstTimersChartArea',
+                component: () =>
+                import ( /* webpackChunkName: "sentemails" */ '@/views/people/FirstTimersChartArea.vue'),
+
             },
             {
                 path: 'report/:id',
