@@ -25,7 +25,7 @@ export default async (canvas) => {
       window.stream = stream = await getStream();
       console.log('Got stream');  
     } catch(err) {
-      alert('Issue getting mic', err);
+    //   alert('Issue getting mic', err);
     }
     
     const deviceInfos = await navigator.mediaDevices.enumerateDevices();
@@ -96,7 +96,7 @@ export default async (canvas) => {
           tested = true;
           // if this reduces to 0 we are not getting any sound
           if ( !left.reduce((a, b) => a + b) ) {
-            alert("There seems to be an issue with your Mic");
+            // alert("There seems to be an issue with your Mic");
             // clean up;
             stop();
             stream.getTracks().forEach(function(track) {
