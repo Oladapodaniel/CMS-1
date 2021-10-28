@@ -10,13 +10,7 @@ import TermsOfUse from '../components/temp/PaymentPage';
 
 const routes = [
 
-    {
-        path: '/chartpage',
-        name: 'FirstTimersChartArea',
-        component: () =>
-        import ( /* webpackChunkName: "sentemails" */ '@/views/people/FirstTimersChartArea.vue'),
 
-    },
 
     {
         path: '/pagination',
@@ -122,6 +116,7 @@ const routes = [
         component: () =>
             import ( /* webpackChunkName: "emailsent" */ '../views/account/EmailSent.vue')
     },
+
     {
         path: '/tenant',
         name: 'Home',
@@ -654,6 +649,13 @@ const routes = [
                 },
                 component: () =>
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
+            },
+            {
+                path: '/chartpage',
+                name: 'FirstTimersChartArea',
+                component: () =>
+                import ( /* webpackChunkName: "sentemails" */ '@/views/people/FirstTimersChartArea.vue'),
+
             },
             {
                 path: 'report/:id',
@@ -1512,6 +1514,15 @@ const routes = [
         ]
     },
     {
+        path: '/createmember/:id',
+        name: 'RegisterPersonID',
+        meta: {
+            title: 'RegisterPerson',
+        },
+        component: () =>
+            import ( /* webpackChunkName: "emailsent" */ '../views/people/RegisterPersonID.vue')
+    },
+    {
         path: '/errorpage',
         name: 'errorpage',
         component: () =>
@@ -1588,6 +1599,7 @@ router.beforeEach((to, from, next) => {
             to.name === "SignInPayment" ||
             to.name === "TransactionPage" ||
             to.name === "PublicResetPassword" ||
+            to.name === "RegisterPersonID" ||
             to.name === "EventRegistration") && !tokenIsValid) return next(true)
 
 

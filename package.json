@@ -47,6 +47,7 @@
     "vue-lazyload-next": "^0.0.2",
     "vue-paystack": "^2.0.4",
     "vue-router": "^4.0.0-0",
+    "vuedraggable": "^4.1.0",
     "vuex": "^4.0.0-0",
     "xlsx": "^0.17.1"
   },
