@@ -11,6 +11,19 @@ import axios from "./gateway/backendapi";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import Toaster from '@meforma/vue-toaster';
 
+
+
+// Vue.prototype.$http = axios
+
+// Vue.use(AudioRecorder)
+
+// vue 2-3 conversion
+// import toVue2 from 'vue-2-3/to-vue-2';
+// import Vue2 from 'vue2';
+// import * as Vue3 from 'vue@next';
+ 
+// toVue2.register(Vue2, Vue3);
+
 import PrimeVue from 'primevue/config';
 import Toast from 'primevue/toast'
 import Skeleton from 'primevue/skeleton';
@@ -102,6 +115,7 @@ loadFunnel(Highcharts);
 
 
 app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).mount('#app')
+
 // createApp(App).use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).mount('#app')
 app.component("Toast", Toast);
 app.component("Skeleton", Skeleton);

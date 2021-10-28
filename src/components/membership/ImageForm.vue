@@ -4,14 +4,14 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-6 offset-3 col-md-10 offset-md-1 upl-img-box border" style="border: 2px solid red;">
-                        <img v-if="url" class="w-100" :src="url" alt="Uploaded Image" />
+                        <img v-if="url" class="img-style" :src="url" alt="Uploaded Image" />
                           <img
                             v-else-if="!pictureUrl"
-                            src="../../../../assets/people/phone-import.svg"
+                            src="../../assets/people/phone-import.svg"
                             alt="Uploaded Image"
-                            class="w-100"
+                            class="img-style"
                           />
-                          <img v-else :src="pictureUrl" class="w-100" alt="Uploaded Image" />
+                          <img v-else :src="pictureUrl" class="img-style" alt="Uploaded Image" />
                     </div>
                 </div>
             </div>
@@ -47,9 +47,10 @@
 </template>
 
 <script>
-import { onUpdated, ref } from 'vue'
-// import axios from "@/gateway/backendapi"
+import { ref, watchEffect } from 'vue'
+import axios from "@/gateway/backendapi"
     export default {
+        emits: ['image', 'pictureurl'],
         props: ['editPicture', 'resetImage', 'memberDetails'],
         setup (props, { emit }) {
             // const disabled =ref(true)
@@ -64,29 +65,30 @@ import { onUpdated, ref } from 'vue'
                 // disabled.value = false
                 url.value = URL.createObjectURL(image.value);
                 emit("image", image.value)
+                uploadImage()
             }
 
-            // const uploadImage = () => {
-            //     loading.value = true
-            //     let formData = new FormData()
-            //     formData.append("mediaFileImage", image.value)
+            const uploadImage = () => {
+                loading.value = true
+                let formData = new FormData()
+                formData.append("mediaFileImage", image.value)
 
-            //     axios.post("/api/Media/UploadProfilePicture", formData)
-            //     .then(res => {
-            //         loading.value = false
-            //     console.log(res)
-            //     pictureUrl.value = res.data.pictureUrl
-            //     // url.value = URL.createObjectURL(image.value);
+                axios.post("/api/Media/UploadProfilePicture", formData)
+                .then(res => {
+                    loading.value = false
+                console.log(res)
+                pictureUrl.value = res.data.pictureUrl
+                // url.value = URL.createObjectURL(image.value);
 
-            //     emit("picture-url", pictureUrl.value)
-            //     })
-            //     .catch(err => {
-            //         loading.value = false
-            //         console.log(err)
-            //     })
-            // }
+                emit("pictureurl", pictureUrl.value)
+                })
+                .catch(err => {
+                    loading.value = false
+                    console.log(err)
+                })
+            }
 
-            onUpdated(() => {
+            watchEffect(() => {
                 if (props.editPicture) {
                     pictureUrl.value = props.editPicture
                     console.log('hereeeee')
@@ -101,18 +103,6 @@ import { onUpdated, ref } from 'vue'
                     url.value = ""
                 }
             })
-
-            // onUpdated(() => {
-            //     if(!props.resetImage && pictureUrl.value) {
-            //         pictureUrl.value = props.resetImage
-            //         console.log('here111')
-            //     }
-                // if (!props.resetImage && url.value) {
-                //     url.value = props.resetImage
-                //     console.log('here222')
-                // }
-                // console.log(props.resetImage, 'reset hereee')
-            // })
 
             return {
                 // disabled,
@@ -158,5 +148,12 @@ import { onUpdated, ref } from 'vue'
     width: 135px;
     border: none;
     outline: none;
+  }
+
+  .img-style {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
   }
 </style>

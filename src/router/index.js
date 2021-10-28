@@ -843,6 +843,25 @@ const routes = [
                             import ( /* webpackChunkName: "inbox" */ '@/views/communication/whatsapp/composeWhatsapp')
                     }]
             },
+            // voice
+            {
+                path: 'voice',
+                name: 'voice',
+                meta: {
+                    title: 'Churchplus - Voice Communication',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "scheduled" */ '@/components/Voice/Voice'),
+                    children: [{
+                        path: '',
+                        name: 'Record',
+                        meta: {
+                            title: 'Churchplus -Voice Record',
+                        },
+                        component: () =>
+                            import ( /* webpackChunkName: "inbox" */ '@/views/communication/Voice/composeVoice')
+                    }]
+            },
             {
                 path: 'peoplegroups',
                 name: 'Groups',

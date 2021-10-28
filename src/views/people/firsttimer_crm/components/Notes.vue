@@ -1,22 +1,22 @@
 <template>
    <div class="d-flex justify-content-end mx-3">
-        <div class="col-3 mt-3 save-btn btn-btn pointer-cursor" @click="openNoteEditor">Create</div>
+        <div class="col-3 mt-3 save-btn btn-btn c-pointer" @click="openNoteEditor">Create</div>
    </div>
-    <div class="col-12 mt-4" v-for="(note, index) in addNotes" :key="index">
+    <div class="col-12 mt-4" v-for="(item, index) in addNotes" :key="index">
             <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : note.noteIcon, 'unroll-note-icon' : !note.noteIcon}" @click="toggleNoteIcon(index)"></i>Note</span></div>
-                        
-                            <div class="col mt-4 enlargen-font">{{ note.description }}</div>
-                        
+                        <div class="col align-self-center font-weight-700">Note</div>
                     </div>
                     <div>
-                        <div class="col text-right"><span class="ml-2 small-text">{{ formatDate(note.date) }} {{ note.time }}</span></div>
+                        <div class="col text-right"><span class="ml-2 small-text">{{ formatDate(item.date) }} {{ item.time }}</span></div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col mt-4 enlargen-font">{{ item.description }}</div>
+                </div>
                 <transition name="fade">
-                    <div class="row mt-4" v-if="note.noteIcon">
+                    <div class="row mt-4" v-if="item.noteIcon">
                         <div class="col font-weight-700 uniform-primary-color">Add Comment</div>
                         <div class="col text-right font-weight-700 uniform-primary-color">1 Association</div>
                     </div>
@@ -99,9 +99,9 @@ export default {
 }
 
 .btn-btn {
-    font-size: 17px;
+    font-size: 15px;
     line-height: 14px;
-    padding: 11px 16px;
+    padding: 9px 15px;
     border-radius: 3px;
     -webkit-font-smoothing: auto;
     -moz-osx-font-smoothing: auto;

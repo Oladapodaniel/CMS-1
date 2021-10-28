@@ -208,7 +208,7 @@
                                   <td class="answer">Total</td>
                                   <td></td>
                                   <td></td>
-                                  <td class="answer">NGN{{sumTotal && sumTotal.amount ? sumTotal.amount.toLocaleString() : 0}}.00</td>
+                                  <td class="answer">NGN {{sumTotal && sumTotal.amount ? sumTotal.amount.toLocaleString() : 0}}.00</td>
                                   <td></td>
                                   <td></td>
                                   <td></td>
@@ -377,7 +377,9 @@ export default {
           });
        }
        else{
-         axios.get(`/api/Reports/financials/getAllContactsAllContributionsReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
+         let OfferingCateringId = selectedCategories.value.map(i => i.id)
+        //  console.log(OfferingPeopleId, 'Category id');
+         axios.get(`/api/Reports/financials/getAllContactsAllContributionsReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&categories=${OfferingCateringId.join(',')}`)
          .then((res) =>{
            console.log(res);
            offeringInChurch.value = res.data;
