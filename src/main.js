@@ -24,6 +24,7 @@ import Editor from 'primevue/editor';
 import SelectButton from 'primevue/selectbutton';
 import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
+// import party from "party-js";
 // import SinchClient from 'sinch-rtc/sinch.min.js'
 
 

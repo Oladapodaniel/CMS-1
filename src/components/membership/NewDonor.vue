@@ -128,7 +128,7 @@
                                             <div id="dropdownMenuButton"  class="w-100   " data-toggle="dropdown">{{ birthDay ? birthDay: 'Days'}}</div>
                                             <div class="dropdown-menu flowY  w-100" aria-labelledby="dropdownMenuButton" >
                                                 <a
-                                                        class="dropdown-item  " href="#"
+                                                        class="dropdown-item"
                                                         v-for="(birthDays, index) in birthDaysArr" :key="index" 
                                                             @click="addbirthDays(birthDays)">
                                                     
@@ -143,7 +143,7 @@
                                             <div id="dropdownMenuButton"  class=" w-100  " data-toggle="dropdown">{{ birthMonth ? birthMonth : 'Month'}}</div>
                                             <div class="dropdown-menu flowY w-100"  aria-labelledby="dropdownMenuButton" >
                                                 <a
-                                                        class="dropdown-item   " href="#"
+                                                        class="dropdown-item"
                                                         v-for="(month, index) in months" :key="index" 
                                                             @click="addBirthMonth(month)">
                                                     
@@ -159,7 +159,7 @@
                                             <!-- <i class="pi pi-angle-down arrow-icon  "></i> -->
                                             <div class="dropdown-menu flowY  w-100"  aria-labelledby="dropdownMenuButton" >
                                                 <a
-                                                        class="dropdown-item  " href="#"
+                                                        class="dropdown-item"
                                                         v-for="(birthYears, index) in birthYearsArr" :key="index" 
                                                             @click="addBirthYears(birthYears)">
                                                     
@@ -355,8 +355,13 @@ import Dropdown from "primevue/dropdown";
                         axios.post("/api/People/createPerson", formData)
                             .then(res => {
                                 console.log(res)
-                                emit('person-id', {personId: res.data.personId, personFirstName: donor.firstName, personEmail: donor.email, personNumber: donor.mobilePhone})
-                                // emit('persondetails', res.data)
+                                emit('person-id', {
+                                    personId: res.data.personId, 
+                                    personFirstName: donor.firstName, 
+                                    personLastName: donor.lastName, 
+                                    personEmail: donor.email, 
+                                    personNumber: donor.mobilePhone
+                                })
                                 resolve(res.data);
                                 
                             })

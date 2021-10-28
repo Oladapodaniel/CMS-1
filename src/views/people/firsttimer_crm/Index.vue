@@ -1,8 +1,9 @@
 <template>
+<canvas ref="confeti" width="300" height="300" class="active canvas-style" v-show="displayAnim"></canvas>
     <div class="container-top container adjust-font">
         <div class="row">
             <div class="col-4 p-0 side-bar">
-                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails" @calllogdesc="setCallLogDesc" :callLog="callLog" @resetlog="resetLog" @allcontact="setAllContacts" :activityType="activityType" @updatelogtoview="updateLogToView"/>
+                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails" @calllogdesc="setCallLogDesc" :callLog="callLog" @resetlog="resetLog" @allcontact="setAllContacts" :activityType="activityType" @updatelogtoview="updateLogToView" @displayanim="setDisplayAnim"/>
             </div>
             <div class="col-8 main-view">
                 <div class="row">
@@ -49,7 +50,7 @@
               
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
-                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp"  :loader="loader" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :allContacts="allContacts" :personDetails="personDetails" @commentindex="pushToComment" @removecommetfromview="removeCommentFromView" @editcommentinview="editCommentInView"/>
+                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp"  :loader="loader" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :allContacts="allContacts" :personDetails="personDetails" @commentindex="pushToComment" @removecommetfromview="removeCommentFromView" @editcommentinview="editCommentInView" @setduedate="setDueDateTask"/>
                     </div>
                     <div class="col-12" v-if="showNotes" transition="bounce">
                         <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
@@ -61,7 +62,7 @@
                         <Calls :personDetails="personDetails" :logList="logList" @individualcallicon="setCallLogIcon" @opencalllogpane="openCallLogPane" @hoverLog="setHoverLogProp" @outhoverLog="setOutHoverLogProp"/>
                     </div>
                     <div class="col-12" v-if="showTasks" transition="bounce">
-                        <Tasks :addTask="taskList" @individualtoggletask="setIconMainTask" :taskTime="taskTime" @opentaskeditor="openTaskEditor" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :allContacts="allContacts" :personDetails="personDetails" />
+                        <Tasks :addTask="taskList" @individualtoggletask="setIconMainTask" :taskTime="taskTime" @opentaskeditor="openTaskEditor" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :allContacts="allContacts" :personDetails="personDetails" @hovertask="setHoverPropForTask" @outhovertask="setOutHoverPropForTask" @edittask="displayEditTaskField" @hidetaskfield="hideTaskField" @removecommetfromview="removeCommentFromViewTask" @editcommentinview="editCommentInViewTask"/>
                     </div>
                 </div>
             </div>
@@ -233,7 +234,7 @@
                             </div>
                             <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
                                 <div class="container-fluid p-0">
-                                    <div class="py-2 px-3">Search from your members to whom you want to assign this task.</div>
+                                    <div class="py-2 px-3">Search whom you want to assign this task</div>
                                     <div class="py-2 px-3">
                                         <SearchMember @memberdetail="chooseContact"/>
                                     </div>
@@ -255,7 +256,7 @@
 </template>
 
 <script>
-import { computed, onUpdated, ref, watchEffect } from "vue"
+import { computed, onMounted, ref } from "vue"
 import SideActions from "./components/SideActions"
 import Activity from "./components/Activity"
 import Notes from "./components/Notes"
@@ -275,6 +276,8 @@ import groupResponse from '../../../services/groupArray/groupResponse'
 import dateFormatter from '../../../services/dates/dateformatter'
 // import SelectButton from 'primevue/selectbutton';
 import SearchMember from "../../../components/membership/MembersSearch.vue"
+import celebAnim from "../../../services/celebration-animation/party"
+import router from '../../../router'
 export default {
     inheritAttrs: false,
     components: {
@@ -339,6 +342,8 @@ export default {
         const groupedActivities = ref([])
         const searchActivitiesText = ref("")
         // const inputFocus = ref(false)
+        const confeti = ref()
+        const displayAnim = ref(false)
 
         
 
@@ -799,27 +804,52 @@ export default {
             searchActivities.value[payload.parentIndex].value[payload.mainIndex].loggedTask.comments.splice(payload.index, 1, payload.body)
         }
 
+        const removeCommentFromViewTask = ({ parentIndex, index }) => {
+            taskList.value[parentIndex].loggedTask.comments.splice(index, 1)
+        }
+
+        const editCommentInViewTask = ({ parentIndex, index, body }) => {
+            taskList.value[parentIndex].loggedTask.comments.splice(index, 1, body)
+        }
+
         const toggleEmailIcon = (payload) => {
             emailList.value[payload].logIcon = !emailList.value[payload].logIcon
         }
 
-        onUpdated(() => {
-            // let r = () => Math.random() * 256 >> 0;
-            // let color = `rgb(${r()}, ${r()}, ${r()}, 0.2)`;
-            // taskList.value = taskList.value.map(i => {
-            //     i.color = color
-            //     return i
-            // })  
-        })
+        const setHoverPropForTask = (payload) => {
+            taskList.value[payload].hoverTask = true
+        }
 
-        watchEffect(() => {
-            // let r = () => Math.random() * 256 >> 0;
-            // let color = `rgb(${r()}, ${r()}, ${r()}, 0.2)`;
-            // taskList.value = taskList.value.map(i => {
-            //     i.color = color
-            //     return i
-            // }) 
+        const setOutHoverPropForTask = (payload) => {
+            taskList.value[payload].hoverTask = false
+        }
+
+        const displayEditTaskField = (payload) => {
+            taskList.value[payload].editTask = true
+        }
+        
+        const hideTaskField = (payload) => {
+            taskList.value[payload].editTask = false
+        }
+
+        const setDueDateTask = ({ parentIndex, mainIndex, body }) => {
+            // console.log(parentIndex, mainIndex, body, searchActivities.value)
+            searchActivities.value[parentIndex].value[mainIndex].selectedDueDate =  body
+            // console.log(payload)
+        }
+
+        onMounted(() => {
+            celebAnim.party(confeti.value)
         })
+        
+        const setDisplayAnim = () => {
+            displayAnim.value = true
+            setTimeout(() => {
+                displayAnim.value = false
+                router.push('/tenant/firsttimerslist')
+            }, 8000);
+        }
+    
 
         return {
             toggleActivity,
@@ -913,7 +943,16 @@ export default {
             editCommentInView,
             toggleEmailIcon,
             setIconMainTask,
-            // inputFocus
+            setHoverPropForTask,
+            setOutHoverPropForTask,
+            displayEditTaskField,
+            hideTaskField,
+            removeCommentFromViewTask,
+            editCommentInViewTask,
+            setDueDateTask,
+            confeti,
+            displayAnim,
+            setDisplayAnim   
         }
     }
 }
@@ -1040,6 +1079,16 @@ export default {
     background: rgba(249, 148, 239, 0.524);
     cursor: pointer
 }
+
+.canvas-style {
+      position: absolute;
+      z-index: 1;
+}
+
+/* canvas {
+  width:100%;
+  height:100%;
+} */
 
 /* .make-scrollable {
     height: 800px;
