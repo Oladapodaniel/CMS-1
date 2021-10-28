@@ -24,7 +24,6 @@
                <div class="p-col-12 p-md-4">
                  <div class="font-weight-bold">Share the link to your members to enable them to add their details to your church .</div>
                   <div class="p-inputgroup form-group mt-1">
-                      <Button icon="pi pi-check" class="p-button-success"/>
                       <input placeholder="Link" class="form-control" ref="tttt" type="text" v-model="memberlink" style="height: 3rem;"  />
                       <Button icon="pi pi-copy" @click="copylink" class="p-button-secondary"/>
                   </div>

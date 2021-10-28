@@ -1,4 +1,4 @@
-<template>{{itemName}}
+<template>
   <div class="container-fluid px-5">
     <!-- header area -->
     <div class="container">
