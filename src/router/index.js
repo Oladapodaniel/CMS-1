@@ -116,6 +116,7 @@ const routes = [
         component: () =>
             import ( /* webpackChunkName: "emailsent" */ '../views/account/EmailSent.vue')
     },
+
     {
         path: '/tenant',
         name: 'Home',
@@ -1513,6 +1514,15 @@ const routes = [
         ]
     },
     {
+        path: '/createmember/:id',
+        name: 'RegisterPersonID',
+        meta: {
+            title: 'RegisterPerson',
+        },
+        component: () =>
+            import ( /* webpackChunkName: "emailsent" */ '../views/people/RegisterPersonID.vue')
+    },
+    {
         path: '/errorpage',
         name: 'errorpage',
         component: () =>
@@ -1589,6 +1599,7 @@ router.beforeEach((to, from, next) => {
             to.name === "SignInPayment" ||
             to.name === "TransactionPage" ||
             to.name === "PublicResetPassword" ||
+            to.name === "RegisterPersonID" ||
             to.name === "EventRegistration") && !tokenIsValid) return next(true)
 
 
