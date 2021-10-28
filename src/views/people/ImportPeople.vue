@@ -14,7 +14,7 @@
         </div>
       </router-link>
 
-      <div class="option" @click="fileUpload">
+      <div class="option" @click="importMembers">
         <div class="option-img">
           <img src="../../assets/people/file-import.svg" alt="File Import" />
         </div>
@@ -25,7 +25,7 @@
         <input type="file" ref="importFile" @change="imageSelected" hidden>
       </div>
 
-      <div class="option">
+      <!-- <div class="option">
         <div class="option-img">
           <img src="../../assets/people/file-import.svg" alt="File Import" />
         </div>
@@ -33,7 +33,7 @@
           <p class="option-header">Import from Other Source</p>
           <p class="option-text">Stay compliant by keeping accurate records</p>
         </div>
-      </div>
+      </div> -->
       <Dialog header="Members to import from file" v-model:visible="displayModal" :style="{width: '80vw'}" :modal="true">
           <div class="container">
               <div class="row">
@@ -69,6 +69,7 @@ import axios from "@/gateway/backendapi";
 import Dialog from 'primevue/dialog';
 import finish from '../../services/progressbar/progress'
 import { useToast } from "primevue/usetoast";
+import router from "@/router/index";
 export default {
   components: {
     Dialog
@@ -83,9 +84,9 @@ export default {
       const importFile = ref("")
       const loading = ref(false)
 
-      const fileUpload = () => {
-        importFile.value.click()
-      }
+      // const fileUpload = () => {
+      //   importFile.value.click()
+      // }
 
       const imageSelected = async(e) => {
         image.value = e.target.files[0];
@@ -193,10 +194,15 @@ export default {
         }
       }
 
+      const importMembers = () => {
+            // <router-link :to="{ name: 'ImportInstruction' }">
+            router.push({ name: 'ImportInstruction', query: { query: 'importpeople' } })
+      }
+
     return {
       // addPerson,
       // userId,
-      fileUpload,
+      // fileUpload,
       imageSelected,
       memberData, 
       image,
@@ -204,7 +210,8 @@ export default {
       importFile,
       addToMembers,
       closeModal,
-      loading
+      loading,
+      importMembers
     };
   },
 };
