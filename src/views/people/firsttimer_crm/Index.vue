@@ -1,6 +1,6 @@
 <template>
-<canvas ref="confeti" width="300" height="300" class="active canvas-style" v-show="displayAnim"></canvas>
     <div class="container-top container adjust-font">
+    <canvas ref="confeti" width="300" height="300" class="active canvas-style" v-show="displayAnim"></canvas>
         <div class="row">
             <div class="col-4 p-0 side-bar">
                 <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails" @calllogdesc="setCallLogDesc" :callLog="callLog" @resetlog="resetLog" @allcontact="setAllContacts" :activityType="activityType" @updatelogtoview="updateLogToView" @displayanim="setDisplayAnim"/>
@@ -839,7 +839,8 @@ export default {
         }
 
         onMounted(() => {
-            celebAnim.party(confeti.value)
+            console.log(confeti.value)
+            celebAnim.party1(confeti.value)
         })
         
         const setDisplayAnim = () => {
