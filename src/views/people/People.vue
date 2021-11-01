@@ -18,7 +18,7 @@
             </router-link>
           </div>
         </div>
-        <div class="container-wide ">
+        <div class="container-wide" v-if="route.fullPath == '/tenant/people'">
            <div class="row">
             <div class="col-12">
                <div class="p-col-12 p-md-4">
