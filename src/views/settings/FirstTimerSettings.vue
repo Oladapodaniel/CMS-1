@@ -32,16 +32,15 @@
                         placeholder="Add Your New Guest Life Cycle"
                         v-model="firstTimerTypes"
                       />
+                      <div class="mt-1">
+                        <Checkbox v-model="isDefault" :binary="true" />
+                        <span class="ml-3">Mark as default</span>
+
+                      </div>
                     </div>
                     <div class="col-md-3 d-flex justify-content-end">
                       <button class="btn primary-btn text-white px-md-5 px-4 py-1 bold  mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3" @click="saveFirstTimer">Save</button>
                     </div>
-                  </div>
-                  <div class="row ml-4 mt-2">
-                    <Checkbox v-model="isDefault" :binary="true" />
-                      <label for="binary">{{isDefault}}</label>
-                    <span class="ml-4">Default</span>
-
                   </div>
                 </div>
               </div>

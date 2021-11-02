@@ -5,10 +5,15 @@
             <div class="col font-weight-700 text-right uniform-primary-color">Actions <i class="pi pi-angle-down"></i></div>
         </div>
         <div class="row mt-5">
-            <div class="col-6 offset-3 d-flex justify-content-center profile-overlay">
-                <img :src="personDetails.pictureUrl" class="contact-image w-100 h-100" v-if="personDetails.pictureUrl"/>
+            <div class="col-6 offset-3 d-flex justify-content-center c-pointer profile-overlay" @click="uploadPicture" @mouseover="setHover" @mouseleave="setLeave">
+                <img :src="url" class="contact-image " v-if="url"/>
+                <!-- :class="{ 'profile-overlay' : hoverImage }"  -->
+                <img :src="personDetails.pictureUrl" class="contact-image " v-else-if="personDetails.pictureUrl"/>
                 <img src="../../../../assets/people/phone-import.svg" class="contact-image" v-else/>
+                <i class="pi pi-upload" :class="{ 'adjust-icon' : !hoverImage, 'fade-icon' : hoverImage }"></i>
+                
             </div>
+            <input type="file" @change="choosePicture" ref="image" hidden/>
             <div class="col-12 text-center">
                 <div class="contact-name">{{ `${personDetails.firstName ? personDetails.firstName : ""} ${personDetails.lastName ? personDetails.lastName : ""}` }}</div>
                 <div>{{ personDetails.email }}</div>
@@ -111,7 +116,34 @@
             <div class="row">
                 <div class="col-12 mt-4 label-text">Lifecycle stage</div>
                 <div class="col-12">
-                    <Dropdown v-model="selectedLifeCycle" :options="lifeCycle" class="w-100 phone-input" optionLabel="name" placeholder="Select Contact" @change="updateLifeCycle"/>
+                    <!-- <Dropdown v-model="selectedLifeCycle" :options="lifeCycle" class="w-100 phone-input" optionLabel="name" placeholder="Select Contact" @change="updateLifeCycle"/> -->
+                    <div class="dropdown">
+                        <div  class="phone-input form-control d-flex justify-content-between c-pointer"
+                                id="dropdownMenuButton"
+                                data-toggle="dropdown">
+                            <div
+                               
+                            >{{  selectedLifeCycle && Object.keys(selectedLifeCycle).length > 0 ? selectedLifeCycle.name : "Select lifecycle" }}</div>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div
+                        class="dropdown-menu w-100 dropdown-height border-0"
+                        aria-labelledby="dropdownMenuButton"
+                        >
+                        <a
+                            class="dropdown-item c-pointer"
+                            v-for="(item, index) in lifeCycle"
+                            :key="index"
+                            @click="updateLifeCycle(item)"
+                            >{{ item.name }}</a
+                        >
+                        <a
+                            class="dropdown-item font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
+                            style="border-top: 1px solid rgb(0, 32, 68); color: rgb(19, 106, 205);" @click="openConfirm"
+                            >Convert to member</a
+                        >
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -440,6 +472,15 @@
            </div>
         </Dialog>
     <Toast />
+    <Dialog header="Confirm" v-model:visible="displayConfirm" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :modal="true">
+            <p>You are about to convert this first timer to a member, this action cannot be undone, do you want to continue?</p>
+            <template #footer>
+                <div class="d-flex justify-content-end">
+                    <div class="default-btn text-center c-pointer" @click="() => displayConfirm = false">No</div>
+                    <div class="primary-bg default-btn border-0 text-white text-center ml-3 c-pointer" @click="convertToMember($event)"><i class="pi pi-spin pi-spinner" v-if="loading"></i> Yes</div>
+                </div>
+            </template>
+    </Dialog>
 </template>
 
 <script>
@@ -457,6 +498,8 @@ import { useStore } from "vuex";
 // import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import SearchMember from "../../../../components/membership/MembersSearch.vue"
+import party from "party-js";
+import swal from "sweetalert";
 export default {
     components: {
         Dropdown,
@@ -466,7 +509,7 @@ export default {
     directives: {
         'tooltip': Tooltip
     },
-    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog", "allcontact","updatelogtoview"],
+    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog", "allcontact","updatelogtoview", "displayanim"],
     props: ["personDetails", "callLog", "activityType"],
     setup (props, { emit }) {
         // const confirm = useConfirm()
@@ -476,7 +519,7 @@ export default {
         const selectedContact = ref({})
         const contacts = ref([])
         const lifeCycle = ref([])
-        const selectedLifeCycle = ref("")
+        const selectedLifeCycle = ref({})
         const leadStatus = ref(frmservice.leadStatus())
         const outcomeList = ref([])
         const selectedLeadStatus = ref("")
@@ -529,6 +572,14 @@ export default {
         const selectedSender = ref({})
         const senderIDs = ref([])
         const subject = ref("")
+        const image = ref('')
+        const pictureUrl = ref("")
+        const url = ref("")
+        const hoverImage = ref(false)
+        const confeti = ref()
+        const membershipCategory = ref([])
+        const displayConfirm = ref(false)
+        const loading = ref(false)
 
 
         const selectedContactLog = computed(() => {
@@ -813,7 +864,8 @@ export default {
         }
         getLifeCycle()
 
-        const updateLifeCycle = async() => {
+        const updateLifeCycle = async(item) => {
+            selectedLifeCycle.value = item
             const payload = {
                 firstTimerID: route.params.personId,
                 stageID: selectedLifeCycle.value.id
@@ -905,7 +957,8 @@ export default {
                 birthday: selectedBirthday.value ? selectedBirthday.value : props.personDetails.birthday,
                 birthMonth: selectedBirthMonth.value ? month.value.findIndex(i => i == selectedBirthMonth.value) + 1 : props.personDetails.birthMonth,
                 birthYear: selectedBirthYear.value ? selectedBirthYear.value : props.personDetails.birthYear,
-                firstTimerId: route.params.personId
+                firstTimerId: route.params.personId,
+                pictureUrl: pictureUrl.value
             }
             console.log(selectedBirthMonth.value)
             console.log(payload)
@@ -952,6 +1005,142 @@ export default {
             }
         }
         getSenderId()
+
+        const uploadPicture = () => {
+            console.log(image.value)
+            image.value.click()
+        }
+
+        const choosePicture = (e) => {
+            let formData = new FormData()
+            formData.append("mediaFileImage", e.target.files[0])
+            url.value = URL.createObjectURL(e.target.files[0]);
+
+            axios.post("/api/Media/UploadProfilePicture", formData)
+            .then(res => {
+                console.log(res)
+                pictureUrl.value = res.data.pictureUrl
+                emit("pictureurl", pictureUrl.value)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+
+        const setHover = () => {
+            hoverImage.value = true
+        }
+
+        const setLeave = () => {
+            hoverImage.value = false
+        }
+        
+
+        const convertToMember = async(element) => {
+            loading.value = true
+            try {
+                let { data } = await axios.post(
+                `/api/People/ConvertFirstTimerToMember?personId=${route.params.personId}&membershipCategoryId=${membershipCategory.value[0].id}`
+                );
+                console.log(data);
+                party.confetti(element);
+                emit("displayanim", true)
+                swal(
+                    "Congratulations!",
+                    `${props.personDetails.firstName ? props.personDetails.firstName : ""} ${props.personDetails.lastName ? props.personDetails.lastName : ""} is now a member of your church.`,
+                    "success"
+                );
+                displayConfirm.value = false;
+                loading.value = false
+
+                if (data.response) {
+                toast.add({
+                    severity: "success",
+                    summary: "Confirmed",
+                    detail: data.response,
+                    life: 4000,
+                });
+                } else {
+                toast.add({
+                    severity: "success",
+                    summary: "Confirmed",
+                    detail: "Moved successfully",
+                    life: 4000,
+                });
+                }
+            } catch (err) {
+                console.log(err);
+                if (err.response) {
+                toast.add({
+                    severity: "warn",
+                    summary: "Moving failed",
+                    detail: err.response,
+                    life: 4000,
+                });
+                } else if (err.toString().toLowerCase().includes("timeout")) {
+                toast.add({
+                    severity: "warn",
+                    summary: "Request Delayed",
+                    detail: "Request took too long to respond",
+                    life: 4000,
+                });
+                } else if (err.toString().toLowerCase().includes("network error")) {
+                toast.add({
+                    severity: "warn",
+                    summary: "Network Error",
+                    detail: "Please ensure that you havve a strong internet",
+                    life: 4000,
+                });
+                } else {
+                toast.add({
+                    severity: "warn",
+                    summary: "Unable to move",
+                    detail:
+                    "Couldn't move successfully, check your connection and try again",
+                    life: 4000,
+                });
+                }
+            }
+        }
+
+        const getMembershipCategory = async () => {
+            try {
+                let { data } = await axios.get(
+                "/api/Settings/GetTenantPeopleClassification"
+                );
+                membershipCategory.value = data;
+                console.log(data)
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        getMembershipCategory();
+
+        const openConfirm = () => {
+            displayConfirm.value = true
+            // confirm.require({
+            //     message: `You are about to convert this first timer to a member, this action cannot be undone, do you want to continue?`,
+            //     header: 'Confirm',
+            //     icon: 'pi pi-info-circle',
+            //     accept: () => {
+            //         party.confetti(element);
+            //         emit("displayanim", true)
+            //             swal(
+            //                 "Congratulations!",
+            //                 `${props.personDetails.firstName ? props.personDetails.firstName : ""} ${props.personDetails.lastName ? props.personDetails.lastName : ""} is now a member of your church.`,
+            //                 "success"
+            //             );
+            //             // convertToMember()
+            //     },
+            //     reject: () => {
+            //         toast.add({
+            //             severity:'error', 
+            //             summary:'Rejected', 
+            //             detail:'You have rejected', 
+            //             life: 3000});
+            //     }
+            // });
+        }
 
 
         return {
@@ -1046,7 +1235,21 @@ export default {
             selectedSender,
             senderIDs,
             setIdToSubject,
-            subject
+            subject,
+            uploadPicture,
+            image,
+            choosePicture,
+            pictureUrl,
+            url,
+            hoverImage,
+            setLeave,
+            setHover,
+            convertToMember,
+            confeti,
+            membershipCategory,
+            openConfirm,
+            displayConfirm,
+            loading
         }
             
     }
@@ -1060,8 +1263,8 @@ export default {
 }
 
 .contact-image {
-    width: 100px;
-    height: 100px;
+    width: 130px;
+    height: 130px;
     object-fit: cover;
     border-radius: 50%
 }
@@ -1181,7 +1384,7 @@ export default {
 }
 
 .dropdown-menu {
-    height: 300px;
+    max-height: 300px;
     overflow: scroll;
     box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%);
 }
@@ -1196,12 +1399,83 @@ export default {
   color: rgb(15, 71, 134)
 }
 
-/* .profile-overlay img {
-    position: absolute;
-    z-index: -2;
+.profile-overlay {
+    overflow: hidden;
+    position: relative;
+    transition: all 3s ease-in-out
+}
+
+.profile-overlay img {
+    position: relative;
+    z-index: 0;
     inset: 0;
-    width: 100%;
-    height: 100%;
+    width: 130;
+    height: 130px;
     object-fit: cover;
+    transition: all 3s ease-in-out
+}
+
+.profile-overlay::before,
+.profile-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transition: all 3s ease-in-out
+}
+
+.profile-overlay:before {
+    z-index: 1;
+    background: black;
+    border-radius: 50%;
+    position: absolute;
+    margin: 0 auto;
+    opacity: .3;
+    width: 130px;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    transition:  opacity 0.3s ease-in-out;
+    /* mix-blend-mode: soft-light */
+}
+
+.profile-overlay:hover:before {
+    opacity: .6;
+}
+
+/* .profile-overlay::after {
+    z-index: 1;
+    background: blue;
+    border-radius: 50%;
+    mix-blend-mode: screen;
 } */
+
+.adjust-icon {
+    position: absolute;
+    margin-top: 44px;
+    font-size: 34px;
+    color: white;
+    z-index: 1;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    transition:  opacity 0.3s ease-in-out;
+}
+
+.fade-icon {
+    position: absolute;
+    margin-top: 44px;
+    font-size: 34px;
+    color: white;
+    z-index: 1;
+    opacity: .6;
+    -webkit-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    transition:  opacity 0.3s ease-in-out;
+}
 </style>

@@ -20,6 +20,7 @@ import router from "@/router/index";
 // import Multiselect from '@vueform/multiselect'
 import ConnectionBar from "@/components/connectivity/ConnectionStatus.vue";
 import setupService from "./services/setup/setupservice"
+// import celebAnim from "./services/celebration-animation/party"
 
 export default {
   name: "App",
@@ -65,9 +66,9 @@ export default {
 
       setupService.setup();
     }
-
+  
     
-  },
+  }
 
   // mounted() {
   //   window.addEventListener('DOMContentLoaded', () => {
