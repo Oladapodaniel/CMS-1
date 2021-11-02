@@ -34,7 +34,7 @@
               placeholder=""
             />
              <div class="mt-3 normal-text text-right text-md-left italic pl-md-0">
-            Membership: {{ selectedPlan.membershipSize}}
+            Membership: {{ selectedPlan ? selectedPlan.membershipSize : ""}}
           </div>
           </div>
           <div class="col-md-6 col-lg-6 col-12">
@@ -342,12 +342,15 @@ export default {
     const selectedCurrency = ref("");
     const currentUser = ref(store.getters.currentUser);
     const tenantId = ref(currentUser.tenantId);
+    const userEmail = ref("")
+    const churchName = ref("")
+    const userCurrency = ref("")
 
     const getUserEmail = async () => {
       userService.getCurrentUser()
         .then(res => {
           currentUser.value = res
-          console.log(res.tenantId, 'tenanatId logged');
+          console.log(res, 'logged');
           userEmail.value = res.userEmail;
           churchName.value = res.churchName;
           tenantId.value = res.tenantId;
@@ -369,7 +372,7 @@ export default {
     const isChecked = ref(false);
     const checkedBoxArr = ref([]);
     const selectCurrencyArr = ref([]);
-    const Plans = ref("");
+    const Plans = ref({});
     const close = ref(null);
 
     const display = ref(false);
@@ -429,19 +432,21 @@ export default {
         // );
         // subSelectedAmount.value = selectedPlan.value.amountInNaira
         // selectedPlan.value = res.data.returnObject.description;
+
         selectedPlan.value = subscriptionPlans.value.find(
-          (i) => i.id === Plans.value.id
+          (i) => i.id == Plans.value.id
         );
+        console.log(selectedPlan.value)
         currentAmount.value = res.data.amountInNaira;
         currentPlan.value = existingPlan.value.description;
         productsList.value = res.data.productsList;
         expiryDate.value = formatDate.monthDayYear(
           Plans.value.subscriptionExpiration
         );
-        emailPrice.value = productsList.value.find(
+        emailPrice.value = productsList.value && productsList.value.length > 0 ? productsList.value.find(
           (i) => i.name === "Email"
-        ).price;
-        smsPrice.value = productsList.value.find((i) => i.name === "SMS").price;
+        ).price : [];
+        smsPrice.value = productsList.value && productsList.value.length > 0 ? productsList.value.find((i) => i.name === "SMS").price : [];
        
         // console.log(plans.value.subscriptionExpiration, 'qwer');
 
@@ -559,7 +564,7 @@ export default {
     const subselectedDuratn = computed(() => {
       let multiValue = 1;
       // if (daysToEndOfSubscription.value > 0) multiValue += existingPlan.value.amount * daysToEndOfSubscription.value;
-      if (selectedPlan.value.amount)
+      if (selectedPlan.value && selectedPlan.value.amount)
         multiValue *= selectedPlan.value.amount;
       if (selectMonth.value.name) multiValue *= +selectMonth.value.name;
       return multiValue;
@@ -861,7 +866,9 @@ export default {
       subscriptionDuration,
       initializePayment,
       tenantId,
-      initializedOrder 
+      initializedOrder ,
+      userEmail,
+      userCurrency
     };
   },
 };
