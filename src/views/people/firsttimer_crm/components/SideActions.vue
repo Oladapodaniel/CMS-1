@@ -139,7 +139,7 @@
                         >
                         <a
                             class="dropdown-item font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
-                            style="border-top: 1px solid rgb(0, 32, 68); color: rgb(19, 106, 205);" @click="confirmPosition($event)"
+                            style="border-top: 1px solid rgb(0, 32, 68); color: rgb(19, 106, 205);" @click="openConfirm"
                             >Convert to member</a
                         >
                         </div>
@@ -472,7 +472,15 @@
            </div>
         </Dialog>
     <Toast />
-    <ConfirmDialog />
+    <Dialog header="Confirm" v-model:visible="displayConfirm" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :modal="true">
+            <p>You are about to convert this first timer to a member, this action cannot be undone, do you want to continue?</p>
+            <template #footer>
+                <div class="d-flex justify-content-end">
+                    <div class="default-btn text-center c-pointer" @click="() => displayConfirm = false">No</div>
+                    <div class="primary-bg default-btn border-0 text-white text-center ml-3 c-pointer" @click="convertToMember($event)"><i class="pi pi-spin pi-spinner" v-if="loading"></i> Yes</div>
+                </div>
+            </template>
+    </Dialog>
 </template>
 
 <script>
@@ -487,7 +495,7 @@ import frmservice from "@/services/FRM/firsttimermanagement"
 import { useStore } from "vuex";
 // import MultiSelect from 'primevue/multiselect';
 // import SinchClient from 'sinch-rtc/sinch.min.js'
-import { useConfirm } from "primevue/useConfirm";
+// import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import SearchMember from "../../../../components/membership/MembersSearch.vue"
 import party from "party-js";
@@ -504,7 +512,7 @@ export default {
     emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog", "allcontact","updatelogtoview", "displayanim"],
     props: ["personDetails", "callLog", "activityType"],
     setup (props, { emit }) {
-        const confirm = useConfirm()
+        // const confirm = useConfirm()
         const toast = useToast()
         const route = useRoute()
         const store = useStore()
@@ -570,6 +578,8 @@ export default {
         const hoverImage = ref(false)
         const confeti = ref()
         const membershipCategory = ref([])
+        const displayConfirm = ref(false)
+        const loading = ref(false)
 
 
         const selectedContactLog = computed(() => {
@@ -1026,12 +1036,22 @@ export default {
         }
         
 
-        const convertToMember = async() => {
+        const convertToMember = async(element) => {
+            loading.value = true
             try {
                 let { data } = await axios.post(
                 `/api/People/ConvertFirstTimerToMember?personId=${route.params.personId}&membershipCategoryId=${membershipCategory.value[0].id}`
                 );
                 console.log(data);
+                party.confetti(element);
+                emit("displayanim", true)
+                swal(
+                    "Congratulations!",
+                    `${props.personDetails.firstName ? props.personDetails.firstName : ""} ${props.personDetails.lastName ? props.personDetails.lastName : ""} is now a member of your church.`,
+                    "success"
+                );
+                displayConfirm.value = false;
+                loading.value = false
 
                 if (data.response) {
                 toast.add({
@@ -1096,29 +1116,30 @@ export default {
         };
         getMembershipCategory();
 
-        const confirmPosition = (element) => {
-            confirm.require({
-                message: `You are about to convert this first timer to a member, this action cannot be undone, do you want to continue?`,
-                header: 'Confirm',
-                icon: 'pi pi-info-circle',
-                accept: () => {
-                    convertToMember()
-                    party.confetti(element);
-                    emit("displayanim", true)
-                        swal(
-                            "Congratulations!",
-                            `${props.personDetails.firstName ? props.personDetails.firstName : ""} ${props.personDetails.lastName ? props.personDetails.lastName : ""} is now a member of your church.`,
-                            "success"
-                        );
-                },
-                reject: () => {
-                    toast.add({
-                        severity:'error', 
-                        summary:'Rejected', 
-                        detail:'You have rejected', 
-                        life: 3000});
-                }
-            });
+        const openConfirm = () => {
+            displayConfirm.value = true
+            // confirm.require({
+            //     message: `You are about to convert this first timer to a member, this action cannot be undone, do you want to continue?`,
+            //     header: 'Confirm',
+            //     icon: 'pi pi-info-circle',
+            //     accept: () => {
+            //         party.confetti(element);
+            //         emit("displayanim", true)
+            //             swal(
+            //                 "Congratulations!",
+            //                 `${props.personDetails.firstName ? props.personDetails.firstName : ""} ${props.personDetails.lastName ? props.personDetails.lastName : ""} is now a member of your church.`,
+            //                 "success"
+            //             );
+            //             // convertToMember()
+            //     },
+            //     reject: () => {
+            //         toast.add({
+            //             severity:'error', 
+            //             summary:'Rejected', 
+            //             detail:'You have rejected', 
+            //             life: 3000});
+            //     }
+            // });
         }
 
 
@@ -1226,7 +1247,9 @@ export default {
             convertToMember,
             confeti,
             membershipCategory,
-            confirmPosition
+            openConfirm,
+            displayConfirm,
+            loading
         }
             
     }

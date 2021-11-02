@@ -508,7 +508,7 @@ export default {
           console.log(response)
           
         },
-        { scope: "user_birthday" }
+        { scope: ["email", "public_profile"] }
       );
     };
 
