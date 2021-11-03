@@ -342,7 +342,7 @@
           </div>
         </div>
       </div>
-      <Dialog header="Connected Successfully" v-model:visible="display" :modal="true" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" >
+      <Dialog header="Connected Successfully" v-model:visible="display" :modal="true" :breakpoints="{'960px': '75vw'}" :style="{width: '60vw'}" >
            <div class="container">
              <div class="row">
                <div class="col-12">
@@ -354,8 +354,22 @@
                <div class="col-12">
                    Below are the pages you manage, select the one you will like to post.
                </div>
+               
                <div class="col-12">
-                   {{ userPages }}
+                 <div v-for="(userPage, index) in userPages" :key="index" class=" mt-5 row box box-shadow bordersocials">
+                   <div class="mb-4 mt-4 col-md-12 col-12">
+                     <span class="mt-3">{{userPage.name}}</span>
+                   </div>
+                   </div>
+                   <div class="row">
+                        <div class="col-md-6 mt-4 col-12">
+                        <button class="btn default-btn btnfb" @click="userRoute()">Create Post</button>
+                      </div>
+                        <div class="col-md-6 mt-4 col-12">
+                        <button class="btn default-btn" @click="closeModal()">Cancel</button>
+                      </div>
+                   </div>
+
                </div>
 
              </div>
@@ -466,14 +480,16 @@
 import { ref } from "vue";
 import Dialog from "primevue/dialog";
 import axios from "@/gateway/backendapi";
-import {useToast} from 'primevue/usetoast'
+import {useToast} from 'primevue/usetoast';
+import { useRouter } from "vue-router"
 
 export default {
   components: { Dialog},
   setup() {
+    const router = useRouter();
     const toast = useToast()
-    const display = ref(false);
-    const display1 = ref(false)
+    const display = ref(true);
+    const display1 = ref(true);
     const userPages = ref([])
     const showDisplay =() =>{
       return display.value= true
@@ -482,6 +498,14 @@ export default {
       return display1.value = true
 
     }
+    const userRoute =()=>{
+      router.push('/tenant/social/post')
+    }
+    const closeModal =()=>{
+      return display.value = false
+    }
+    //Local storage
+    
   //   //Login facebook New
   //    const statusChangeCallback =(response) => {  // Called with the results from FB.getLoginStatus().
   //   console.log('statusChangeCallback');
@@ -497,9 +521,10 @@ export default {
     FB.api(`https://graph.facebook.com/v12.0/${response.authResponse.userID}/accounts`, (res) => {
        display.value = true;
       console.log(res);
-      userPages.value = res
+      userPages.value = res.data;
+      let objParsed = JSON.stringify(userPages.value)
+      localStorage.setItem('authResponse', objParsed)
     })
-   
   }
     const facebookLogin = () => {
       FB.login(
@@ -743,7 +768,9 @@ export default {
       getPageAccessToken,
       getSocialMediaContact,
       showPageList,
-      userPages
+      userPages,
+      userRoute,
+      closeModal,
     };
   },
 };
@@ -792,6 +819,12 @@ export default {
   background-color: #0f529f;
   color: #fff;
   border: none;
+  outline: 0;
+}
+.btnfc {
+  background-color: #f8f7f7;
+  color: rgb(19, 17, 17);
+  border: black;
   outline: 0;
 }
 

@@ -81,8 +81,8 @@
                 <p class="text-center"
                     v-if="description && description.id === 6"
                 >
-                    <span>A member of </span>
-                    <span class="text-success">{{ description.selectedGroups.join(', ') }}</span> group
+                    <span>A Firstimer is added to </span>
+                    <span class="text-success">{{ description.selectedGroups.includes('Entire ministry') ? 'the Church' : `${description.selectedGroups.join(', ')} group` }}</span> 
                     
                 </p>
                 <p class="text-center"
