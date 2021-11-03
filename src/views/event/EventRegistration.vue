@@ -254,11 +254,11 @@
         <!-- Button code -->
           <div title="Add to Calendar" class="addeventatc w-100">
               Add to Calendar
-              <span class="start">2021-11-03T10:34:29.746Z</span>
-              <span class="end">2021-11-04T10:34:29.746Z</span>
-              <span class="timezone">America/Los_Angeles</span>
-              <span class="title">The Experience Season 9</span>
-              <span class="description">Experience of the party</span>
+              <span class="start">{{ fullEventData.eventDate }}</span>
+              <!-- <span class="end">2021-11-04T10:34:29.746Z</span> -->
+              <span class="timezone">{{ Intl.DateTimeFormat().resolvedOptions().timeZone }}</span>
+              <span class="title">{{ eventData.name }}</span>
+              <span class="description">{{ fullEventData.eventDetails }}</span>
           </div>
       </div>
     </div>
@@ -319,7 +319,7 @@ import PaymentOptionModal from "../../components/paymentoption/EventRegPayment.v
 import finish from '../../services/progressbar/progress';
 import store from '../../store/store';
 import FamilyWards from './component/EventRegFamilyWards.vue'
-import Calendarjs from "../../services/google/calendarAPI"
+// import Calendarjs from "../../services/google/calendarAPI"
 // import Dialog from 'primevue/dialog';
 
 export default {
@@ -1067,10 +1067,10 @@ console.log(payload)
 
     /*end of masking functions */
 
-   onMounted(() => {
-      console.log(authorizebutton.value)
-      Calendarjs.calendarApi(authorizebutton.value, signout.value, content.value)
-    })
+  //  onMounted(() => {
+  //     console.log(authorizebutton.value)
+  //     Calendarjs.calendarApi(authorizebutton.value, signout.value, content.value)
+  //   })
     // authCalendar()
 
     // const callIt = () => {
