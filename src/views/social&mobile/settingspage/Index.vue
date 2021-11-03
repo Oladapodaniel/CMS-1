@@ -363,10 +363,10 @@
                    </div>
                    <div class="row">
                         <div class="col-md-6 mt-4 col-12">
-                        <button class="btn default-btn btnfb">Create Post</button>
+                        <button class="btn default-btn btnfb" @click="userRoute()">Create Post</button>
                       </div>
                         <div class="col-md-6 mt-4 col-12">
-                        <button class="btn default-btn">Cancel</button>
+                        <button class="btn default-btn" @click="closeModal()">Cancel</button>
                       </div>
                    </div>
 
@@ -480,14 +480,16 @@
 import { ref } from "vue";
 import Dialog from "primevue/dialog";
 import axios from "@/gateway/backendapi";
-import {useToast} from 'primevue/usetoast'
+import {useToast} from 'primevue/usetoast';
+import { useRouter } from "vue-router"
 
 export default {
   components: { Dialog},
   setup() {
+    const router = useRouter();
     const toast = useToast()
     const display = ref(true);
-    const display1 = ref(false)
+    const display1 = ref(true);
     const userPages = ref([])
     const showDisplay =() =>{
       return display.value= true
@@ -495,6 +497,12 @@ export default {
     const showDisplay1 =()=>{
       return display1.value = true
 
+    }
+    const userRoute =()=>{
+      router.push('/tenant/social/post')
+    }
+    const closeModal =()=>{
+      return display.value = false
     }
     //Local storage
     
@@ -761,6 +769,8 @@ export default {
       getSocialMediaContact,
       showPageList,
       userPages,
+      userRoute,
+      closeModal,
     };
   },
 };
