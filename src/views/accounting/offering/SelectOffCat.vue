@@ -73,7 +73,7 @@
             <div class="">Account</div>
             <!-- <h5>Responsive</h5> -->
             <!-- <Button label="Show" icon="pi pi-external-link" @click="openResponsive" /> -->
-          <Dropdown v-model="item.account" class="w-100  mt-2" :options="incomeAccount" optionLabel="text" :filter="false" placeholder="Select" :showClear="false">
+          <Dropdown v-model="item.account" class="w-100  mt-2" :options="remittanceAccounts" optionLabel="text" :filter="false" placeholder="Select" :showClear="false">
           </Dropdown>
           </div>
 
@@ -162,6 +162,7 @@ export default {
     const name = ref("")
     const toast = useToast();
     const displayResponsive = ref(false);
+    const remittanceAccounts = ref([])
 
 
     const toggleRem = () => {
@@ -233,6 +234,7 @@ export default {
             /*eslint no-undef: "warn"*/
             NProgress.done();
             console.log(res)
+            remittanceAccounts.value = res.data
 
         })
         .catch(err => {
@@ -347,7 +349,7 @@ export default {
     getOffItems()
 
     return {
-      applyRem, toggleRem, cashBankAccount, remitance, addRemittance, incomeAccount, save, selectedIncomeAccount, name, selectedCashAccount, toast, deleteItem, sumPercentage, openResponsive, closeResponsive, displayResponsive, createOfferingItems, editOfferingItems
+      applyRem, toggleRem, cashBankAccount, remitance, addRemittance, incomeAccount, save, selectedIncomeAccount, name, selectedCashAccount, toast, deleteItem, sumPercentage, openResponsive, closeResponsive, displayResponsive, createOfferingItems, editOfferingItems, remittanceAccounts
     };
   },
 };
