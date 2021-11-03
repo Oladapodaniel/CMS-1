@@ -242,20 +242,20 @@
       </div>
     </div>
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="offset-5">
         <div ref="authorizebutton" style="display: none" class="default-btn text-center"><img src="../../assets/preview.jpeg" style="width: 30px"/>Add event to google calendar</div>
         <div ref="signout" style="display: none" class="default-btn">Sign Out</div>
       </div>
-    </div>
+    </div> -->
     
     <div class="row">
-      <div class="offset-5">
+      <div class="col-3 offset-5">
         <!-- Button code -->
-          <div title="Add to Calendar" class="addeventatc">
+          <div title="Add to Calendar" class="addeventatc w-100">
               Add to Calendar
-              <span class="start">11/17/2021 08:00 AM</span>
-              <span class="end">11/17/2021 10:00 AM</span>
+              <span class="start">2021-11-03T10:34:29.746Z</span>
+              <span class="end">2021-11-04T10:34:29.746Z</span>
               <span class="timezone">America/Los_Angeles</span>
               <span class="title">The Experience Season 9</span>
               <span class="description">Experience of the party</span>
