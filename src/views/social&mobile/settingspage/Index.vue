@@ -342,7 +342,7 @@
           </div>
         </div>
       </div>
-      <Dialog header="Connected Successfully" v-model:visible="display" :modal="true" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" >
+      <Dialog header="Connected Successfully" v-model:visible="display" :modal="true" :breakpoints="{'960px': '75vw'}" :style="{width: '60vw'}" >
            <div class="container">
              <div class="row">
                <div class="col-12">
@@ -354,8 +354,25 @@
                <div class="col-12">
                    Below are the pages you manage, select the one you will like to post.
                </div>
+               
                <div class="col-12">
-                   {{ userPages }}
+                 <div v-for="(userPage, index) in userPages" :key="index" class=" mt-5 row box box-shadow bordersocials">
+                   <div class="mb-4 mt-4 col-md-2 col-12">
+                     {{'Page name'}}
+                     <span class="mt-3">{{userPage.name}}</span>
+                   </div>
+                   <div class="col-md-3 mt-4 col-12">
+                     {{'Page id'}}
+                     <span class="mt-3">{{userPage.id}}</span>
+                   </div>
+                   <div class="col-md-3 mt-4 col-12">
+                     {{'Page Token'}}
+                     <span class="mt-3">{{userPage.access_token}}</span>
+                   </div>
+                   <div class="col-md-4 mt-4 col-12">
+                     <button class="btn default-btn btnfb">Create Post</button>
+                   </div>
+                   </div>
                </div>
 
              </div>
@@ -481,6 +498,14 @@ export default {
     const showDisplay1 =()=>{
       return display1.value = true
 
+    }
+    //Local storage
+    const getPages=()=> {
+      if(localStorage.getItem('userPages')){
+          userPages.value = JSON.parse(localStorage.getItem('userPages'));
+          localStorage.removeItem('userPages')
+       
+      }
     }
   //   //Login facebook New
   //    const statusChangeCallback =(response) => {  // Called with the results from FB.getLoginStatus().
@@ -743,7 +768,8 @@ export default {
       getPageAccessToken,
       getSocialMediaContact,
       showPageList,
-      userPages
+      userPages,
+      getPages
     };
   },
 };
