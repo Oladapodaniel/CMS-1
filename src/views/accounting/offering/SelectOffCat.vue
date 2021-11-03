@@ -226,6 +226,21 @@ export default {
         })
     }
     getIncomeAccount()
+   
+   const getRemittanceAccount = ()=> {
+      axios.get('/api/Financials/Accounts/GetRemittanceAccounts')
+        .then(res => {
+            /*eslint no-undef: "warn"*/
+            NProgress.done();
+            console.log(res)
+
+        })
+        .catch(err => {
+            NProgress.done();
+            console.log(err)
+        })
+    }
+    getRemittanceAccount()
 
     const createOfferingItems = (contributionCategory) => {
       axios.post('/api/financials/contributions/items/save', contributionCategory)
