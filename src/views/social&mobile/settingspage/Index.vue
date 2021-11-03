@@ -361,14 +361,14 @@
                      {{'Page name'}}
                      <span class="mt-3">{{userPage.name}}</span>
                    </div>
-                   <div class="col-md-3 mt-4 col-12">
+                   <!-- <div class="col-md-3 mt-4 col-12">
                      {{'Page id'}}
                      <span class="mt-3">{{userPage.id}}</span>
                    </div>
                    <div class="col-md-3 mt-4 col-12">
                      {{'Page Token'}}
                      <span class="mt-3">{{userPage.access_token}}</span>
-                   </div>
+                   </div> -->
                    <div class="col-md-4 mt-4 col-12">
                      <button class="btn default-btn btnfb">Create Post</button>
                    </div>
