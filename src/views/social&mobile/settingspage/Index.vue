@@ -357,22 +357,19 @@
                
                <div class="col-12">
                  <div v-for="(userPage, index) in userPages" :key="index" class=" mt-5 row box box-shadow bordersocials">
-                   <div class="mb-4 mt-4 col-md-2 col-12">
-                     {{'Page name'}}
+                   <div class="mb-4 mt-4 col-md-12 col-12">
                      <span class="mt-3">{{userPage.name}}</span>
                    </div>
-                   <!-- <div class="col-md-3 mt-4 col-12">
-                     {{'Page id'}}
-                     <span class="mt-3">{{userPage.id}}</span>
                    </div>
-                   <div class="col-md-3 mt-4 col-12">
-                     {{'Page Token'}}
-                     <span class="mt-3">{{userPage.access_token}}</span>
-                   </div> -->
-                   <div class="col-md-4 mt-4 col-12">
-                     <button class="btn default-btn btnfb">Create Post</button>
+                   <div class="row">
+                        <div class="col-md-6 mt-4 col-12">
+                        <button class="btn default-btn btnfb">Create Post</button>
+                      </div>
+                        <div class="col-md-6 mt-4 col-12">
+                        <button class="btn default-btn">Cancel</button>
+                      </div>
                    </div>
-                   </div>
+
                </div>
 
              </div>
@@ -489,7 +486,7 @@ export default {
   components: { Dialog},
   setup() {
     const toast = useToast()
-    const display = ref(false);
+    const display = ref(true);
     const display1 = ref(false)
     const userPages = ref([])
     const showDisplay =() =>{
@@ -516,11 +513,10 @@ export default {
     FB.api(`https://graph.facebook.com/v12.0/${response.authResponse.userID}/accounts`, (res) => {
        display.value = true;
       console.log(res);
-      userPages.value = res;
+      userPages.value.data = res;
       let objParsed = JSON.stringify(res)
       localStorage.setItem('authResponse', objParsed)
     })
-   
   }
     const facebookLogin = () => {
       FB.login(
@@ -813,6 +809,12 @@ export default {
   background-color: #0f529f;
   color: #fff;
   border: none;
+  outline: 0;
+}
+.btnfc {
+  background-color: #f8f7f7;
+  color: rgb(19, 17, 17);
+  border: black;
   outline: 0;
 }
 
