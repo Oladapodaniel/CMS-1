@@ -343,7 +343,7 @@
         </div>
       </div>
     <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pagesModal" ref="pagesBtn">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pagesModal" ref="pagesBtn" hidden>
   Launch demo modal
 </button>
 
@@ -383,10 +383,10 @@
         
         <div class="row d-flex justify-content-between">
                         <div class="p-0 mt-4 mb-4">
-                        <button class="btn default-btn btnfb" @click="userRoute()">Create Post</button>
+                        <button class="btn default-btn btnfb" data-dismiss="modal" @click="userRoute()">Create Post</button>
                       </div>
                         <div class="p-0 mt-4 mb-4">
-                        <button class="btn default-btn" @click="closeModal()">Cancel</button>
+                        <button data-dismiss="modal" type="button" class="btn default-btn">Cancel</button>
                       </div>
                    </div>
         </div>
@@ -563,9 +563,6 @@ export default {
     }
     const userRoute =()=>{
       router.push('/tenant/social/post')
-    }
-    const closeModal =()=>{
-      return display.value = false
     }
     const pagesBtn = ref()
     //Local storage
@@ -837,7 +834,6 @@ export default {
       showPageList,
       userPages,
       userRoute,
-      closeModal,
       saveSelectedPage,
       selectedPage,
       pagesBtn
