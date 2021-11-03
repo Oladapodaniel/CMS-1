@@ -381,11 +381,11 @@
                     />
           </div>
         
-        <div class="row d-flex justify-content-start">
-                        <div class="p-0 col-md-6 di mt-4 mb-4 col-12 d-flex justify-content-start">
+        <div class="row d-flex justify-content-between">
+                        <div class="p-0 mt-4 mb-4">
                         <button class="btn default-btn btnfb" @click="userRoute()">Create Post</button>
                       </div>
-                        <div class="p-0 col-md-6 mt-4 mb-4 col-12 d-flex justify-content-end">
+                        <div class="p-0 mt-4 mb-4">
                         <button class="btn default-btn" @click="closeModal()">Cancel</button>
                       </div>
                    </div>
