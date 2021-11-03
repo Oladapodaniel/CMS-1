@@ -521,8 +521,8 @@ export default {
     FB.api(`https://graph.facebook.com/v12.0/${response.authResponse.userID}/accounts`, (res) => {
        display.value = true;
       console.log(res);
-      userPages.value.data = res;
-      let objParsed = JSON.stringify(res)
+      userPages.value = res.data;
+      let objParsed = JSON.stringify(userPages.value)
       localStorage.setItem('authResponse', objParsed)
     })
   }
