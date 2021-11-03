@@ -212,7 +212,6 @@ export default {
         localStorage.setItem("token", data.token);
         localStorage.setItem("expiryDate", data.expiryTime);
         console.log(data, "Church data");
-        
         // i.toLowerCase() == "admin" || i.toLowerCase() == "basicuser" || i.toLowerCase() == "canaccessfirsttimers" || i.toLowerCase() == "canaccessfollowups" || i.toLowerCase() == "centerleader" || i.toLowerCase() == "financialaccount" || i.toLowerCase() == "mobileadmin" || i.toLowerCase() == "reports"
         if(data.roles.length > 0){
         let roleIndex = data.roles.findIndex(i => {
@@ -226,12 +225,14 @@ export default {
               detail:'You do not have access to this page, contact your church admin', 
               life: 10000}) 
             router.push('/')
-            console.log('ya ya ya')
           } else {
             console.log( data.roles.indexOf("FirsttimerFollowUp"))
             if (data.roles.indexOf("FirsttimerFollowUp") !== -1) {
-              console.log('folowup here')
-            } else {console.log('wooow')
+              router.push("/tenant/firsttimerslist");
+            } else {
+              setTimeout(() => {
+                setupService.setup();
+              }, 5000);
               if (data.churchSize > 0) {
                 router.push("/tenant");
               } else {
@@ -241,8 +242,6 @@ export default {
           }
         }
         loading.value = false
-        
-         
       } catch (err) {
         /*eslint no-undef: "warn"*/
         console.log(err.response, "login error");
