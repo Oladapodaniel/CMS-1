@@ -361,14 +361,14 @@
                      {{'Page name'}}
                      <span class="mt-3">{{userPage.name}}</span>
                    </div>
-                   <div class="col-md-3 mt-4 col-12">
+                   <!-- <div class="col-md-3 mt-4 col-12">
                      {{'Page id'}}
                      <span class="mt-3">{{userPage.id}}</span>
                    </div>
                    <div class="col-md-3 mt-4 col-12">
                      {{'Page Token'}}
                      <span class="mt-3">{{userPage.access_token}}</span>
-                   </div>
+                   </div> -->
                    <div class="col-md-4 mt-4 col-12">
                      <button class="btn default-btn btnfb">Create Post</button>
                    </div>
@@ -500,13 +500,7 @@ export default {
 
     }
     //Local storage
-    const getPages=()=> {
-      if(localStorage.getItem('userPages')){
-          userPages.value = JSON.parse(localStorage.getItem('userPages'));
-          localStorage.removeItem('userPages')
-       
-      }
-    }
+    
   //   //Login facebook New
   //    const statusChangeCallback =(response) => {  // Called with the results from FB.getLoginStatus().
   //   console.log('statusChangeCallback');
@@ -522,7 +516,9 @@ export default {
     FB.api(`https://graph.facebook.com/v12.0/${response.authResponse.userID}/accounts`, (res) => {
        display.value = true;
       console.log(res);
-      userPages.value = res
+      userPages.value = res;
+      let objParsed = JSON.stringify(res)
+      localStorage.setItem('authResponse', objParsed)
     })
    
   }
@@ -769,7 +765,6 @@ export default {
       getSocialMediaContact,
       showPageList,
       userPages,
-      getPages
     };
   },
 };
