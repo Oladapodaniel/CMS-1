@@ -7,23 +7,27 @@
     </div> -->
 
     <div class="container-fluid">
-      <div class="row mb-4">
+      <div class="row mb-4 px-0">
         <div class="col-md-6 sub-header">
           Overview
         </div>
-        <div class="col-md-6"></div>
-      </div>
 
-      <div class="row justify-content-between mother-row">
-         <div class="col-md-4 order-md-4 mb-4 px-0 ">
-           <Dropdown class="w-100"
+        <div class="col-md-3"></div>
+        <div class="col-md-3">
+               <div class="mb-4 px-0 mr-n5">
+           <Dropdown class="w-100 border-0"
                      v-model="selectedPeriod"
                      :options="periodRange"
                      optionLabel="name"
-                     placeholder="Select Period"
+                     placeholder="Last 30days"
                      @change="getAllDatePeriods"
           />
         </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-between mother-row">
+
 
         <div class="col-md-2 item-Area mb-4">
           <div class="row p-2 mb-2 d-flex justify-content-between">
@@ -61,18 +65,17 @@
           </div>
         </div>
 
-
-
-        <!-- <div class="col-md-4">
-           <Dropdown class="w-100"
-                     v-model="selectedPeriod"
-                     :options="periodRange"
-                     optionLabel="name"
-                     placeholder="Select Period"
-                     @change="getAllDatePeriods"
-          />
-        </div> -->
-
+        <div class="col-md-2 item-Area mb-4">
+          <div class="row p-2 mb-2 d-flex justify-content-between">
+              <div class="top-icon-div d-flex justify-content-center align-items-center ml-2">
+                <i class="pi pi-list text-center"></i>
+              </div>
+              <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">{{analyticsData.averageActivity}}</div>
+          </div>
+          <div class="row p-2">
+              <p class="item-text ml-2 text-truncate">Activity Involved</p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -145,14 +148,12 @@ export default {
 
 
       const getAllDatePeriods = () => {
-        console.log(selectedPeriod.value, "🤡🤡");
               let startDate = selectedPeriod.value.code
               let endDate = new Date().toLocaleDateString("en-US")
 
              axios.get(`/api/FirsttimerManager/analytics?startDate=${startDate}&endDate=${endDate}`).then((res)=> {
                analyticsData.value = res.data.returnObject;
                console.log(analyticsData.value)
-            // console.log(res, "🤡🤡🤡");
           }).catch((err)=> {
             console.log(err, "✔️✔️✔️")
           })
@@ -164,12 +165,10 @@ export default {
              axios.get(`/api/FirsttimerManager/analytics?startDate=${defaultStartDate}&endDate=${defaultEndDate}`).then((res)=> {
                analyticsData.value = res.data.returnObject;
                console.log(analyticsData.value)
-            // console.log(res, "🤡🤡🤡");
           }).catch((err)=> {
             console.log(err, "✔️✔️✔️")
           })
       }
-      // showItem()
 
       onMounted(() => {
          showItem()

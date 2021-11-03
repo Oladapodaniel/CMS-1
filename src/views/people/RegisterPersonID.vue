@@ -26,7 +26,7 @@
                 </div>
               </div> -->
               <div class="input-field">
-                <label for="" class="label"
+                <label for="" class=" label"
                   >Firstname<span style="color: red"> *</span></label
                 >
                 <input
@@ -1121,11 +1121,11 @@ export default {
     height: 113px;
   }
 }
-@media (max-width: 676px) and (max-width: 768px) {
+/* @media (max-width: 676px) and (max-width: 768px) {
   .submit-div {
     float: right;
   }
-}
+} */
 
 @media (min-width: 663px) and (max-width: 667px) {
   /* .bio-info.celeb-info {

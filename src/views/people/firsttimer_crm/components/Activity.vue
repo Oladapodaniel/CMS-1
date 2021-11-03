@@ -55,7 +55,7 @@
                 <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <div class="col align-self-center"><span class="font-weight-700 c-pointer"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.taskIcon, 'unroll-note-icon' : !item.taskIcon}" @click="toggleTaskIcon(index, indx)"></i>&nbsp;&nbsp;{{ item.typeText }} {{ item.person ? 'task' : 'logged' }}</span> {{ item.person ? `assigned to ` : '' }} <span class="font-weight-700">{{ item.person ? item.person : "" }}</span></div>
+                        <div class="col align-self-center"><span class="font-weight-700 c-pointer"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.taskIcon, 'unroll-note-icon' : !item.taskIcon}" @click="toggleTaskIcon(index, indx)"></i>&nbsp;&nbsp;{{ item.selectedActivity && Object.keys(item.selectedActivity).length > 0 ? item.selectedActivity.value : item.loggedTask && item.loggedTask.type && activityType.find(i => i.id === item.loggedTask.type) ? activityType.find(i => i.id === item.loggedTask.type).value : item.typeText }} {{ item.person ? 'task' : 'logged' }}</span> {{ item.person ? `assigned to ` : '' }} <span class="font-weight-700">{{ item.person ? item.person : "" }}</span></div>
                         
                     </div>
                     <div>
@@ -78,27 +78,27 @@
                                 <div v-else>{{ item.loggedTask.instructions }}</div>
                                 <div><i class="pi pi-pencil" :class="{ 'uniform-primary-color' : item.hoverTask, 'text-white' : !item.hoverTask }"></i></div>
                             </div>
-                            <input type="text" class="form-control col-10" v-model="item.loggedTask.instructions" v-if="item.editTask"/>
-                            <div class="offset-1 p-2 col-2 mt-3 save-btn btn-btn c-pointer" @click="saveTask(index, indx)" v-if="item.editTask">Save</div>
-                            <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3 c-pointer" v-if="item.editTask" @click="cancelTaskEdit(index, indx)">Cancel</div>
+                            <input type="text" class="form-control col-10" v-model="item.loggedTask.instructions" v-if="item.editTask" @blur="saveTask(index, indx)"/>
+                            <!-- <div class="offset-1 p-2 col-2 mt-3 save-btn btn-btn c-pointer" @click="saveTask(index, indx)" v-if="item.editTask">Save</div>
+                            <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3 c-pointer" v-if="item.editTask" @click="cancelTaskEdit(index, indx)">Cancel</div> -->
                             <div class="col-12">
                                 <hr />
                             </div>
                             <div class="col-6 label-text mt-3">Due date</div>
-                            <div class="col-6 label-text mt-3">Reminder</div>
+                            <div class="col-6 label-text mt-3"></div>
                             <div class="col-6 mt-2">
                                 <div @click="toggleDueDate" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                    {{ getDueDate(item.loggedTask.dueDate) }}&nbsp; <i class="pi pi-sort-down"></i>
+                                     {{ item.selectedDueDate && Object.keys(item.selectedDueDate).length > 0 ? item.selectedDueDate.name : getDueDate(item.loggedTask.dueDate) }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
                                 <OverlayPanel ref="dueDateOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                     <div class="container-fluid p-0">
-                                        <div class="row hover-log" v-for="(item, index) in dueDate" :key="index">
-                                            <div class="py-2 px-3">{{ item.name }}</div>
+                                        <div class="row hover-log" v-for="(item, dueDateIndex) in dueDate" :key="dueDateIndex">
+                                            <div class="py-2 px-3" @click="setDueDate(index, indx, item)">{{ item.name }}</div>
                                         </div>
                                     </div>
                                 </OverlayPanel>
                             </div>
-                            <div class="col-6 mt-2">
+                            <!-- <div class="col-6 mt-2">
                                 <div @click="toggleReminder" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
                                     {{ item.loggedTask.reminder }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
@@ -109,7 +109,7 @@
                                         </div>
                                     </div>
                                 </OverlayPanel>
-                            </div>
+                            </div> -->
                             <div class="col-12 mt-3">
                                 <hr />
                             </div>
@@ -118,7 +118,7 @@
                             <div class="col-4 label-text">Assigned to</div>
                             <div class="col-4 mt-2">
                                 <div @click="toggleTodo" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                    {{ item.selectedActivity ? item.selectedActivity.value : activityType.find(i => i.id === item.type).value }}&nbsp; <i class="pi pi-sort-down"></i>
+                                    {{ item.selectedActivity && Object.keys(item.selectedActivity).length > 0 ? item.selectedActivity.value : item.loggedTask && item.loggedTask.type ? activityType.find(i => i.id === item.loggedTask.type).value : "" }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
                                 <OverlayPanel ref="todoOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                     <div class="container-fluid p-0">
@@ -152,16 +152,16 @@
                                     </div>
                                 </OverlayPanel> -->
                                 <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                {{ item.selectedContact ? `${item.selectedContact.name}` : item.person }}&nbsp; <i class="pi pi-sort-down"></i>
-                            </div>
-                            <OverlayPanel ref="contactOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
-                                <div class="container-fluid p-0">
-                                    <div class="py-2 px-3">Assign this task to</div>
-                                    <div class="py-2 px-3">
-                                        <SearchMember @memberdetail="chooseContact($event, index, indx)"/>
-                                    </div>
+                                    {{ item.selectedContact ? `${item.selectedContact.name}` : item.person }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
-                            </OverlayPanel>
+                                <OverlayPanel ref="contactOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
+                                    <div class="container-fluid p-0">
+                                        <div class="py-2 px-3">Search whom you want to assign this task</div>
+                                        <div class="py-2 px-3">
+                                            <SearchMember @memberdetail="chooseContact($event, index, indx)"/>
+                                        </div>
+                                    </div>
+                                </OverlayPanel>
                             </div>
 
                             <div class="col-12">
@@ -224,7 +224,7 @@
                             <textarea class="form-control comment-bg" rows="7" placeholder="Write a comment..." v-model="taskComment" ref="taskCommentRef"></textarea>
                         </div>
                         <div class="p-2 col-2 mt-3 save-btn btn-btn c-pointer" @click="postComment(item, index, indx)">Post</div>
-                        <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3 c-pointer">Cancel</div>
+                        <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3 c-pointer" @click="() => displayComment = false">Cancel</div>
                     </div>
                 </div>
             </transition>
@@ -309,15 +309,17 @@ import dateFormatter from '../../../../services/dates/dateformatter';
 import frmservice from "@/services/FRM/firsttimermanagement";
 import { useRoute } from "vue-router"
 import SearchMember from "../../../../components/membership/MembersSearch.vue"
+import { useToast } from "primevue/usetoast";
 export default {
     components: {
         Dropdown,
         SearchMember
     },
     props: ['personDetails', 'addNotes', 'addTask', 'dueDate', 'activities', 'loader', 'getReminder', 'activityType', 'taskPriority', 'allContacts'],
-    emits: ['individualtoggle', 'individualtoggletask', 'individualcallicon', 'edittask', 'edittask2', 'savetask', 'hovertask', 'outhovertask', "commentindex", "removecommetfromview", "editcommentinview"],
+    emits: ['individualtoggle', 'individualtoggletask', 'individualcallicon', 'edittask', 'edittask2', 'savetask', 'hovertask', 'outhovertask', "commentindex", "removecommetfromview", "editcommentinview", "setduedate"],
     setup(props, { emit }) {
         const route = useRoute()
+        const toast = useToast()
         const noteIcon = ref(false)
         const taskIcon = ref(false)
         // const meetIcon = ref(false)
@@ -541,9 +543,6 @@ export default {
         }
 
         const chooseContact = (payload, index, indx) => {
-            // console.log(payload)
-            // console.log(index)
-            // console.log(indx)
             props.activities[index].value[indx].selectedContact = payload
             contactOp.value.hide()
         }
@@ -555,7 +554,7 @@ export default {
                 id: props.activities[index].value[indx].loggedTask.id,
                 instructions: props.activities[index].value[indx].loggedTask.instructions,
                 reminder: props.activities[index].value[indx].loggedTask.reminder, // Still hard coded
-                dueDate: props.activities[index].value[indx].loggedTask.dueDate, // Still hard coded
+                dueDate: props.activities[index].value[indx].selectedDueDate ? props.activities[index].value[indx].selectedDueDate.value : props.activities[index].value[indx].loggedTask.dueDate,
                 note: props.activities[index].value[indx].loggedTask.note,
                 type: props.activities[index].value[indx].selectedActivity ? props.activities[index].value[indx].selectedActivity.id : props.activities[index].value[indx].type,
                 priority: props.activities[index].value[indx].selectedPriority ? props.activities[index].value[indx].selectedPriority.id : props.activities[index].value[indx].loggedTask.priority,
@@ -567,10 +566,27 @@ export default {
                 try {
                     const res = await frmservice.editTask(props.activities[index].value[indx].loggedTask.id, body)
                     console.log(res)
+                    toast.add({
+                        severity: "success",
+                        summary: "Success",
+                        detail: "Task updated successfully",
+                        life: 5000,
+                    });
                 }
                 catch (err) {
                     console.log(err)
                 }
+        }
+
+        const setDueDate = (index, indx, item) => {
+            let body = {
+                parentIndex: index,
+                mainIndex: indx,
+                body: item
+            }
+            console.log(body)
+            emit("setduedate", body)
+            dueDateOp.value.hide();
         }
 
     
@@ -618,7 +634,8 @@ export default {
             resetPriority,
             chooseContact,
             editTask,
-            reminders
+            reminders,
+            setDueDate
 
         }
     }

@@ -102,16 +102,18 @@ export default {
                 console.log(props.currentMember)
                 userSearchString.value = `${props.currentMember.firstName} ${props.currentMember.lastName}`
             }
-
-            // if (props.focus) {
-            //     console.log('reaching.here')
-            //     console.log(searchRef.value)
-            //     searchRef.value.focus()
-            // }
         })
 
-        const getPersonId = (payload) => {
-            console.log(payload)
+        const getPersonId = ({ personEmail, personFirstName, personLastName, personId, personNumber }) => {
+            // console.log(payload)
+            const formatPayload = {
+                email: personEmail,
+                id: personId,
+                name: `${personFirstName} ${personLastName}`,
+                nameResult: `${personFirstName} ${personLastName} - ${personNumber}`,
+                phone: personNumber
+            }
+            emit("memberdetail", formatPayload)
         }
 
         return {
