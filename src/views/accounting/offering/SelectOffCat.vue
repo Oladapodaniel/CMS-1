@@ -73,8 +73,29 @@
             <div class="">Account</div>
             <!-- <h5>Responsive</h5> -->
             <!-- <Button label="Show" icon="pi pi-external-link" @click="openResponsive" /> -->
-          <Dropdown v-model="item.account" class="w-100  mt-2" :options="remittanceAccounts" optionLabel="text" :filter="false" placeholder="Select" :showClear="false">
-          </Dropdown>
+          <!-- <Dropdown v-model="item.account" class="w-100  mt-2" :options="remittanceResult" optionLabel="name" optionGroupLabel="text" optionGroupChildren="value" :filter="false" placeholder="Select" :showClear="false">
+          </Dropdown> -->
+         
+      <div class="dropdown">
+          <div class="d-flex justify-content-between align-items-center c-pointer border p-2 w-100  mt-2" id="dropdownMenuButton" data-toggle="dropdown" style="border-radius: 4px">
+            <div>{{ item.account ? item.account.text : "Select account" }}</div>
+            <i class="pi pi-chevron-down"></i>
+          </div>
+          <div
+          class="dropdown-menu w-100 dropdown-height"
+          aria-labelledby="dropdownMenuButton"
+          >
+          <div
+              
+              v-for="(remitance, indexRemit) in remittanceResult"
+              :key="indexRemit"
+              >
+              <div class="pl-2 py-2 font-weight-700 border-bottom">{{ remitance.name }}</div>
+              <div v-for="(value, indexValue) in remitance.value" :key="indexValue" class="dropdown-item c-pointer py-2" @click="setRemittance(value, index)">{{ value.text }}</div>
+              </div>
+              
+          </div>
+      </div>
           </div>
 
           <div class="col-5 col-sm-4 pl-sm-0">
@@ -146,6 +167,7 @@ import Toast from 'primevue/toast';
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router"
 import { useRoute } from "vue-router"
+import groupData from "../../../services/groupArray/groupResponse"
 export default {
   components: {
     Dropdown, Toast, Dialog
@@ -163,6 +185,7 @@ export default {
     const toast = useToast();
     const displayResponsive = ref(false);
     const remittanceAccounts = ref([])
+    const remittanceResult = ref([])
 
 
     const toggleRem = () => {
@@ -234,7 +257,18 @@ export default {
             /*eslint no-undef: "warn"*/
             NProgress.done();
             console.log(res)
-            remittanceAccounts.value = res.data
+            // remittanceAccounts.value = res.data
+            let groupedRemittance = groupData.groupData(res.data, 'accountType')
+            // console.log(groupedRemittance)
+
+
+            for (const prop in groupedRemittance) {
+              remittanceResult.value.push({
+                name: prop,
+                value: groupedRemittance[prop]
+              })
+              console.log(remittanceResult.value)
+            }
 
         })
         .catch(err => {
@@ -280,6 +314,7 @@ export default {
       }
         if (remitance.value[0].account || remitance.value[0].percentage) {
                 contributionCategory.incomeRemittance = remitance.value.map(i => {
+                  if (!i.account.financialFundID) delete i.account.financialFundID
                   return {
                     financialFundID: i.account.financialFundID,
                     distinationIncomeAccount: i.account.id,
@@ -289,11 +324,14 @@ export default {
               } else {
                 contributionCategory.incomeRemittance = null
               }
-      console.log(contributionCategory)
+              console.log(contributionCategory)
        if (selectedIncomeAccount.value && selectedCashAccount.value) {
          if (route.params.offId) {
                editOfferingItems(contributionCategory)
-         } else { createOfferingItems(contributionCategory)}
+         } else { 
+           createOfferingItems(contributionCategory)
+           console.log(remitance.value)
+           }
        }  else {
           toast.add({
             severity: "error",
@@ -348,8 +386,12 @@ export default {
     }
     getOffItems()
 
+    const setRemittance = (data, index) => {
+      remitance.value[index].account = data
+    }
+
     return {
-      applyRem, toggleRem, cashBankAccount, remitance, addRemittance, incomeAccount, save, selectedIncomeAccount, name, selectedCashAccount, toast, deleteItem, sumPercentage, openResponsive, closeResponsive, displayResponsive, createOfferingItems, editOfferingItems, remittanceAccounts
+      applyRem, toggleRem, cashBankAccount, remitance, addRemittance, incomeAccount, save, selectedIncomeAccount, name, selectedCashAccount, toast, deleteItem, sumPercentage, openResponsive, closeResponsive, displayResponsive, createOfferingItems, editOfferingItems, remittanceAccounts, remittanceResult, setRemittance
     };
   },
 };
@@ -431,6 +473,11 @@ export default {
 .error-message {
   margin-bottom: 0;
   font-size: 0.9em;
+}
+
+.dropdown-height {
+  max-height: 300px;
+  overflow: scroll;
 }
 
 

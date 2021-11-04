@@ -206,18 +206,32 @@ export default {
             name: "EmailSent",
             params: { email: state.credentials.userName },
           });
-          console.log('noooooo')
           return false;
         }
         localStorage.setItem("token", data.token);
         localStorage.setItem("expiryDate", data.expiryTime);
         console.log(data, "Church data");
+
         // i.toLowerCase() == "admin" || i.toLowerCase() == "basicuser" || i.toLowerCase() == "canaccessfirsttimers" || i.toLowerCase() == "canaccessfollowups" || i.toLowerCase() == "centerleader" || i.toLowerCase() == "financialaccount" || i.toLowerCase() == "mobileadmin" || i.toLowerCase() == "reports"
         if(data.roles.length > 0){
         let roleIndex = data.roles.findIndex(i => {
           return i.toLowerCase() == "family" || i.toLowerCase() == "mobileuser"
         })
-        if (roleIndex !== -1) {
+
+        let adminIndex = data.roles.findIndex(i => {
+          return i.toLowerCase() == "admin"
+        })
+        localStorage.setItem('roles', JSON.stringify(data.roles))
+        if (adminIndex !== -1) {
+          setTimeout(() => {
+            setupService.setup();
+              }, 5000);
+              if (data.churchSize > 0) {
+                router.push("/tenant");
+              } else {
+                router.push("/next");
+              }
+        } else if (adminIndex === -1 && roleIndex !== -1) {
             localStorage.clear()
             toast.add({
               severity:'info', 
@@ -226,8 +240,8 @@ export default {
               life: 10000}) 
             router.push('/')
           } else {
-            console.log( data.roles.indexOf("FirsttimerFollowUp"))
-            if (data.roles.indexOf("FirsttimerFollowUp") !== -1) {
+            console.log( data.roles.indexOf("FollowUp"))
+            if (data.roles.indexOf("FollowUp") !== -1) {
               router.push("/tenant/firsttimerslist");
             } else {
               setTimeout(() => {
