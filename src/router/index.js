@@ -9,9 +9,6 @@ import Pagination from '@/components/payment/PaymentSuccessful.vue';
 import TermsOfUse from '../components/temp/PaymentPage';
 
 const routes = [
-
-
-
     {
         path: '/pagination',
         name: 'Pagination',

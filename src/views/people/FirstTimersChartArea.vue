@@ -100,14 +100,14 @@
           <div class="col-md-6 col- mb-5">
             <div class="card">
                  <!-- <h5 class="p-2">Interested Visitors</h5> -->
-                        <PieChart domId="piechart" :piedata1="analyticsData.interestedSummary" />
+                        <PieChart domId="piechart" :piedata1="analyticsData.interestedSummary" :data='name1' />
             </div>
           </div>
           <div class="col-md-6 col-12">
              <div class="card">
                 <!-- <h5 class="p-2">Source Summary</h5> -->
                       <!-- <BarChart domId="barchart1"/> -->
-                      <PieChart domId="piechart2" :piedata1="analyticsData.sourceSummary"/>
+                      <PieChart domId="piechart2" :piedata1="analyticsData.sourceSummary" :data="name2"/>
             </div>
            </div>
       </div>
@@ -132,6 +132,8 @@ export default {
         // BarChart,
     },
     setup() {
+      const name1 = ref('Interested Visitors')
+      const name2 = ref('How Did You Hear About Us')
       const startDate = ref("");
       const endDate = ref("");
       const analyticsData = ref([]);
@@ -175,6 +177,8 @@ export default {
       })
 
         return{
+          name1,
+          name2,
           startDate,
           endDate,
           analyticsData,
