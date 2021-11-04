@@ -39,7 +39,7 @@ export default {
 
         const description = computed(() => {
             return {
-                selectedGroups: selectedGroups.value ? selectedGroups.value.map(i => i.name) : ['_____'],
+                selectedGroups: selectedGroups.value && selectedGroups.value.length > 0 ? selectedGroups.value.map(i => i.name) : ['_____'],
                 id: 6,
             };            
         })
