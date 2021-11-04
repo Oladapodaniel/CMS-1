@@ -38,7 +38,7 @@
                   <div class="row mt-2 d-flex justify-content-around">
                     <div class="col-md-7">
                     <Checkbox v-model="isDefault" :binary="true" />
-                    <span class="ml-4 mt-2">Default</span>
+                    <span class="ml-4 mt-2">Mark As Default</span>
                       
                     </div>
                     <div class="col-md-3">
@@ -118,6 +118,10 @@
                   <label for="" class="d-flex mt-4">
                     <span class="mr-2">Name</span>
                     <input type="text" class="form-control" v-model="element.name">
+                  </label>
+                  <label for="" class="d-flex mt-4">
+                    <span class="mr-2">Mark As Default</span>
+                    <Checkbox v-model="element.isDefault" :binary="true" />
                   </label>
                 </div>
                 <div
@@ -247,7 +251,7 @@ export default {
     async updateFirstTimer(item){
       try{
         console.log(item, "item")
-        await axios.put(`/firsttimercycle/${item.id}/edit`, {...item, name : item.name});
+        await axios.put(`/firsttimercycle/${item.id}/edit`, {...item, name : item.name, isDefault: item.isDefault});
         // this.firstTimerData[index].name = item.name
         this.discard()
         this.$toast.add({severity:'success', summary: '', detail:'New Guest Life Cycle Updated Successfully', life: 3000});
