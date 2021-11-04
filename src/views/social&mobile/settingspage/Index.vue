@@ -539,14 +539,13 @@
 <script>
 // import firebase from "../../../services/firebase/firebase";
 import { ref } from "vue";
-import Dialog from "primevue/dialog";
 import axios from "@/gateway/backendapi";
 import {useToast} from 'primevue/usetoast';
 import { useRouter } from "vue-router";
 import Dropdown from "primevue/dropdown";
 
 export default {
-  components: { Dialog, Dropdown},
+  components: { Dropdown},
   setup() {
     const router = useRouter();
     const toast = useToast()
