@@ -342,7 +342,64 @@
           </div>
         </div>
       </div>
-      <Dialog header="Connected Successfully" v-model:visible="display" :modal="true" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" >
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pagesModal" ref="pagesBtn" hidden>
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="pagesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="exampleModalLabel">Connected Successfully</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="container">
+        <div class="row">
+               <div class="col-12">
+                 <h2>Congratulations</h2> 
+               </div>
+               <div class="col-12 mt-1">
+                  <h6>Your facebook account has been connected to churchplus.</h6> 
+               </div>
+               <div class="col-12 mt-1">
+                  <h6>Select from the dropdown below, the page you will like to post.</h6> 
+               </div>
+        </div>       
+        <div class="col-12 mt-4">
+          <div class="row">
+                    <Dropdown
+                      v-model="selectedPage"
+                      class="w-100"
+                      :options="userPages"
+                      optionLabel="name"
+                      placeholder="Select page"
+                      @change="saveSelectedPage"
+                    />
+          </div>
+        
+        <div class="row d-flex justify-content-between">
+                        <div class="p-0 mt-4 mb-4">
+                        <button class="btn default-btn btnfb" data-dismiss="modal" @click="userRoute()">Create Post</button>
+                      </div>
+                        <div class="p-0 mt-4 mb-4">
+                        <button data-dismiss="modal" type="button" class="btn default-btn">Cancel</button>
+                      </div>
+                   </div>
+        </div>
+      </div>
+      
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+      <!-- <Dialog header="Connected Successfully" v-model:visible="display" :modal="true" :breakpoints="{'960px': '75vw'}" :style="{width: '60vw'}" >
            <div class="container">
              <div class="row">
                <div class="col-12">
@@ -352,15 +409,33 @@
                    Your facebook account has been connected to churchplus.
                </div>
                <div class="col-12">
-                   Below are the pages you manage, select the one you will like to post.
+                   Select from the dropdown below, the page you will like to post.
                </div>
+               
                <div class="col-12">
-                   {{ userPages }}
+                    <Dropdown
+                      v-model="selectedPage"
+                      class="w-100"
+                      :options="userPages"
+                      optionLabel="name"
+                      placeholder="Select page"
+                      @change="saveSelectedPage"
+                    />
+                   <div class="row">
+                        <div class="col-md-6 mt-4 col-12">
+                        <button class="btn default-btn btnfb" @click="userRoute()">Create Post</button>
+                      </div>
+                        <div class="col-md-6 mt-4 col-12">
+                        <button class="btn default-btn" @click="closeModal()">Cancel</button>
+                      </div>
+                   </div>
+
                </div>
 
              </div>
            </div>
-      </Dialog>
+      </Dialog> -->
+      <!--End -->
       <!--facebook area ended  -->
       <!--instagram area  -->
       <!-- <div class="row mx-2 mx-md-0 my-4">
@@ -464,17 +539,20 @@
 <script>
 // import firebase from "../../../services/firebase/firebase";
 import { ref } from "vue";
-import Dialog from "primevue/dialog";
 import axios from "@/gateway/backendapi";
-import {useToast} from 'primevue/usetoast'
+import {useToast} from 'primevue/usetoast';
+import { useRouter } from "vue-router";
+import Dropdown from "primevue/dropdown";
 
 export default {
-  components: { Dialog},
+  components: { Dropdown},
   setup() {
+    const router = useRouter();
     const toast = useToast()
-    const display = ref(false);
-    const display1 = ref(false)
+    const display = ref(true);
+    const display1 = ref(false);
     const userPages = ref([])
+    const selectedPage = ref({})
     const showDisplay =() =>{
       return display.value= true
     }
@@ -482,6 +560,12 @@ export default {
       return display1.value = true
 
     }
+    const userRoute =()=>{
+      router.push('/tenant/social/post')
+    }
+    const pagesBtn = ref()
+    //Local storage
+    
   //   //Login facebook New
   //    const statusChangeCallback =(response) => {  // Called with the results from FB.getLoginStatus().
   //   console.log('statusChangeCallback');
@@ -495,11 +579,10 @@ export default {
   // }
   const showPageList = async(response) => {
     FB.api(`https://graph.facebook.com/v12.0/${response.authResponse.userID}/accounts`, (res) => {
-       display.value = true;
       console.log(res);
-      userPages.value = res
+      userPages.value = res.data;
+      pagesBtn.value.click()
     })
-   
   }
     const facebookLogin = () => {
       FB.login(
@@ -511,6 +594,11 @@ export default {
         { scope: ["email", "public_profile"] }
       );
     };
+
+    const saveSelectedPage = () => {
+      let objParsed = JSON.stringify(selectedPage.value)
+      localStorage.setItem('authResponse', objParsed)
+    }
 
     // const testAPI = () => {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
     //   console.log('Welcome!  Fetching your information.... ');
@@ -743,7 +831,11 @@ export default {
       getPageAccessToken,
       getSocialMediaContact,
       showPageList,
-      userPages
+      userPages,
+      userRoute,
+      saveSelectedPage,
+      selectedPage,
+      pagesBtn
     };
   },
 };
@@ -792,6 +884,12 @@ export default {
   background-color: #0f529f;
   color: #fff;
   border: none;
+  outline: 0;
+}
+.btnfc {
+  background-color: #f8f7f7;
+  color: rgb(19, 17, 17);
+  border: black;
   outline: 0;
 }
 

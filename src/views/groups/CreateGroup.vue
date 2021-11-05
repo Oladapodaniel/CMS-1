@@ -367,6 +367,27 @@
                                   />
                                 </div>
                               </div>
+                                          <!-- check box start -->
+                              <div class="row ml-4">
+                                  <div class="col-4 d-flex mt-2" v-if="true">
+                                    <!-- <div class="mt-n3"> -->
+                                      <label for="description" class="font-weight-600">
+                                        Is Group Leader
+                                      </label>
+                                      <Checkbox v-model="groupData.isGroupLeader" :binary="true" class="ml-3"/>
+                                    <!-- </div> -->
+                                  </div>
+
+                                  <div class="col-4 d-flex mt-2">
+                                    <!-- <div class="mt-n3"> -->
+                                      <label for="description" class="font-weight-600">
+                                        Enable Login
+                                      </label>
+                                      <Checkbox v-model="groupData.enableLogin" :binary="true" class="ml-3"/>
+                                    <!-- </div> -->
+                                  </div>
+                              </div>
+                              <!-- check box end -->
                             </div>
                           </div>
                         </div>

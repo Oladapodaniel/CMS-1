@@ -260,6 +260,16 @@ import { useRoute } from "vue-router"
                          console.log(err)
                          display.value = false;
                     })
+                    const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
+                    console.log(pageDetail);
+                         axios.post(`https://graph.facebook.com/${pageDetail.id}/feed?message=Hello Fans!&access_token=${pageDetail.access_token}`).then((res)=>{
+                             console.log(res);
+                         }).catch((error)=>{
+                             console.log(error);
+                             console.log('Good');
+                         })
+
+                    
             }
 
             const updatePost = async (body) => {
