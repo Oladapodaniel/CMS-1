@@ -874,6 +874,15 @@ const routes = [
                     import ( /* webpackChunkName: "groups" */ '@/views/groups/GroupsList')
             },
             {
+                path: 'sidemodal',
+                name: 'SideModal',
+                meta: {
+                    title: 'Churchplus - Groups',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "groups" */ '@/views/groups/sidemodal/SideModal.vue')
+            },
+            {
                 path: 'createpeoplegroup/:groupId?',
                 name: 'CreateGroup',
                 meta: {
