@@ -9,7 +9,7 @@ import { onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
-  props: ["domId", "piedata1"],
+  props: ["domId", "piedata1", "data"],
   setup(props) {
     const chart = ref(null);
 
@@ -23,7 +23,7 @@ export default {
               height: 400,
         },
         title: {
-          text: "Interested Visitors"
+          text: props.data,
         },
 
         accessibility: {

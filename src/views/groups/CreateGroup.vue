@@ -2,6 +2,40 @@
   <div class="container-slim" @click="closeDropdownIfOpen">
     <div class="container-fluid">
       <div class="row mt-3">
+            <!-- <div class="col-12"> -->
+                <div class="col-12 col-sm-5  c-pointer "  @click="groupDetail">
+                    <div class="font-weight-bold h5 ">Group Detail</div>
+                    <div :class="{ 'baseline' : showGroup, 'hide-base' : !showGroup }"></div>
+                </div>
+                <div class="col-12 col-sm-5  c-pointer "  @click="attendanceCheckin">
+                    <div class="font-weight-bold h5 ">Attendance & Checkin</div>
+                    <div :class="{ 'baseline' : showAttendanceCheckin, 'hide-base' : !showAttendanceCheckin }"></div>
+                </div>
+            <!-- </div> -->
+        </div>
+        <div class="row">
+             <div class="col-12" v-if="showAttendanceCheckin">
+                <!-- <div><Attendance/></div>  -->
+            <!-- <div class="col-sm-12"> -->
+                <div class="top mt-3 pl-0">
+                    <div class="events">
+                        <div>Attendance & Check-in
+                        </div>
+                    </div>
+                </div>
+            <!-- </div> -->
+                <div>
+                  <div v-if="selectedAttendanceId">
+                    <Attendancecheckin :attendanceID="selectedAttendanceId"  />
+                  </div>
+                  <div v-else>
+                    No checkin attendance for this group
+                  </div>
+                </div>  
+            </div>
+        </div>
+        
+      <div class="row mt-3" v-if="showGroup">
         <div class="col-md-12">
           <h2 v-if="!route.params.groupId">Add Group</h2>
           <h2 v-else>Update Group</h2>
@@ -9,12 +43,16 @@
           <Toast />
           <ConfirmDialog />
         </div>
+        <!-- <div class=" col-md-4 mt-2 ">
+          <router-link class=" text-decoration-none text-white font-weight-bold primary-btn  default-btn primary-bg border-0 " :to="{ name: 'MarkAttendance', query: { id: route.query.id }, }"
+            >Attendance Checkin</router-link>
+        </div> -->
         <div class="col-md-12 my-3 px-0">
           <hr class="hr" />
         </div>
       </div>
 
-      <div class="row py-3">
+      <div class="row py-3" v-if="showGroup">
         <div class="col-md-12">
           <div class="row group-form pt-3 my-4">
             <div class="col-md-12">
@@ -816,7 +854,7 @@
         </div>
       </div>
 
-      <div class="row py-3 my-3">
+      <div class="row py-3 my-3" v-if="showGroup">
         <div class="col-md-12">
           <p
             class="text-right text-danger font-weight-bold pr-2"
@@ -875,12 +913,14 @@ import NewPerson from '../../components/membership/NewDonor.vue';
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress.js";
 import smsComponent from "./component/smsComponent.vue";
+import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
+import attendanceservice from '../../services/attendance/attendanceservice';
 
 export default {
   directives: {
     tooltip: Tooltip,
   },
-  components: { Dropdown, Dialog, NewPerson, smsComponent },
+  components: { Dropdown, Dialog, NewPerson, smsComponent, Attendancecheckin },
   setup() {
      const display = ref(false);
     //  const showWardModal = ref(false)
@@ -903,6 +943,10 @@ export default {
     const copyGroupTo = ref({});
     const awaitingApprovals = ref([])
     const contacts = ref([])
+    const showGroup = ref(true)
+    const attendanceData = ref([])
+    const showAttendanceCheckin = ref(false)
+    
     // const moveMembers =() =>{
     //   let memberChange = convert(marked.value);
     //   console.log(memberChange,'wisdom')
@@ -924,11 +968,27 @@ export default {
         alert('No phone number')
       }
     }
+    const selectedAttendanceId = ref('')
      const showAddMemberForm = () => {
 
           display.value = true;
 
         };
+        const attendanceCheckin = async () => {
+             const response = await attendanceservice.getItems();
+            attendanceData.value = response
+            const attendanceItem = response.find((i) => i.groupID === route.params.groupId);
+            if(attendanceItem && attendanceItem.id) selectedAttendanceId.value = attendanceItem.id;
+             showGroup.value = false;
+            showAttendanceCheckin.value = true;
+
+            return attendanceItem;
+        }
+         const groupDetail = async () => {
+            showGroup.value = true;
+            showAttendanceCheckin.value = false;
+           
+        }
     //   const setGroupModal = (payload) => {
     //     showWardModal.value = payload
     // }
@@ -1422,6 +1482,7 @@ export default {
 
     return {
       groupData,
+      selectedAttendanceId,
       searchForMembers,
       searchText,
       loading,
@@ -1465,9 +1526,13 @@ export default {
       modalBtn,
       contacts,
       test,
+      attendanceCheckin,
+      groupDetail,
+      showGroup,
+      showAttendanceCheckin, 
       // wardSearchString,
-      // showWardModal
-     getWardId
+     getWardId,
+     attendanceData
     //  wardSearchedMembers,
     // wardSearchForUsers
 
@@ -1486,6 +1551,50 @@ export default {
   border-bottom: 1px solid #dde2e6;
 }
 
+.events {
+        font: normal normal 800 29px Nunito sans;
+    }
+
+.baseline {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    /* background-color: #33475b; */
+    /* color: #136acd" */
+    border-radius: 24px;
+    bottom: -2.5px;
+    height: 6px;
+    left: 0px;
+    width: 50%;
+    opacity: 1;
+}
+
+.hide-base {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    /* background-color: #33475b; */
+    border-radius: 24px;
+    bottom: -2.5px;
+    height: 6px;
+    left: 0px;
+    width: 50%;
+    opacity: 0;
+}
+    @media screen and (max-width: 767px ){
+        .baseline {
+            width: 40%;
+        }
+        .hide-base {
+            width: 40%;
+        }
+    }
+    @media screen and (max-width: 575px ){
+        .baseline {
+            width: 20%;
+        }
+        .hide-base {
+            width: 20%;
+        }
+    }
 .remove-btn {
   background: red !important;
   padding: 10px 20px;

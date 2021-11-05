@@ -9,9 +9,6 @@ import Pagination from '@/components/payment/PaymentSuccessful.vue';
 import TermsOfUse from '../components/temp/PaymentPage';
 
 const routes = [
-
-
-
     {
         path: '/pagination',
         name: 'Pagination',
@@ -872,6 +869,15 @@ const routes = [
                 },
                 component: () =>
                     import ( /* webpackChunkName: "groups" */ '@/views/groups/GroupsList')
+            },
+            {
+                path: 'sidemodal',
+                name: 'SideModal',
+                meta: {
+                    title: 'Churchplus - Groups',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "groups" */ '@/views/groups/sidemodal/SideModal.vue')
             },
             {
                 path: 'createpeoplegroup/:groupId?',
