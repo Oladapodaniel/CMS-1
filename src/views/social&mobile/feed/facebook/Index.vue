@@ -75,7 +75,7 @@
                   {{ post.postCategoryName }}
                 </h5>
                 <p class="mb-0 text-justify">
-                  <span v-if="post.showFullMessage || post.content.length < previewLenth">{{ post.content }}</span>
+                  <span v-if="post.showFullMessage || post.content.length < previewLenth">{{ post.message }}</span>
                   <span v-else>{{ post.briefMessage }}...</span>
                   <span v-if="post.content.length > previewLenth" class="font-weight-700 primary-text c-pointer ml-3" @click="() => post.showFullMessage = !post.showFullMessage">{{ post.showFullMessage ? 'See less' : 'See more' }}</span>
                   </p>
@@ -324,32 +324,38 @@
 import { ref } from "@vue/reactivity";
 import Skeleton from "primevue/skeleton";
 import social_service from '../../../../services/social/social_service';
-import membershipService from '../../../../services/membership/membershipservice';
+// import membershipService from '../../../../services/membership/membershipservice';
 import dateFormatter from '../../../../services/dates/dateformatter';
+import axios from 'axios';
 
 export default {
   components: { Skeleton },
   setup() {
     const feed = ref([]);
-    const tenantId = ref("");
+    // const tenantId = ref("");
     const previewLenth = 300;
-    membershipService
-      .getSignedInUser()
-      .then((res) => {
-        tenantId.value = res.tenantId;
-        getFeed(res.tenantId);
-      })
-      .catch((err) => console.log(err));
+    // membershipService
+    //   .getSignedInUser()
+    //   .then((res) => {
+    //     tenantId.value = res.tenantId;
+    //     getFeed(res.tenantId);
+    //   })
+    //   .catch((err) => console.log(err));
 
     const loaded = ref(true);
-    const getFeed = async (tenantId) => {
+    const getFeed = async () => {
       try {
-        const response = await social_service.getFeed(tenantId);
-        feed.value = response.map(i => {
-          i.showFullMessage = false;
-          i.briefMessage = i.content.slice(0, previewLenth);
-          return i;
-        })
+        // const response = await social_service.getFeed(tenantId);
+        // feed.value = response.map(i => {
+        //   i.showFullMessage = false;
+        //   i.briefMessage = i.content.slice(0, previewLenth);
+        //   return i;
+        // })
+            const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
+            console.log(pageDetail);
+            const {data} = await axios.get(`https://graph.facebook.com/${pageDetail.id}/feed?access_token=${pageDetail.access_token}`)
+        feed.value = data
+
         loaded.value = false;
         console.log(feed.value);
       } catch (error) {
@@ -357,6 +363,7 @@ export default {
         loaded.value = false;
       }
     };
+    getFeed()
 
     const comment = ref({});
     const postComment = async (e, postId, index) => {
@@ -377,6 +384,17 @@ export default {
         }
       }
     };
+    // const getPagePost = async() =>{
+    //   try{
+    //     const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
+    //     console.log(pageDetail);
+    //     const {data} = await axios.get(`https://graph.facebook.com/${pageDetail.id}/feed
+    //  ?access_token=${pageDetail.access_token}`)
+    //  feed.value = data
+    //   }catch(error){
+    //     console.log(error);
+    //   }
+    // }
 
     const formatDate = (date) => {
       return dateFormatter.monthDayTime(date);

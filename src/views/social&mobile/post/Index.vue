@@ -262,7 +262,7 @@ import { useRoute } from "vue-router"
                     })
                     const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
                     console.log(pageDetail);
-                         axios.post(`https://graph.facebook.com/${pageDetail.id}/feed?message=Hello Fans!&access_token=${pageDetail.access_token}`).then((res)=>{
+                         axios.post(`https://graph.facebook.com/${pageDetail.id}/feed?message=${message.value}&access_token=${pageDetail.access_token}`).then((res)=>{
                              console.log(res);
                          }).catch((error)=>{
                              console.log(error);
