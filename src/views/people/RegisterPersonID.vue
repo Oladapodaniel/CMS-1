@@ -1,5 +1,5 @@
 <template>
-  <div class="my-con">
+  <div class="container container-top container-wide">
     <div class="header mt-2">
       <h3 class="header-text font-weight-bold">Add Contact</h3>
       <Toast />
