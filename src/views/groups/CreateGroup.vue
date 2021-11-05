@@ -5,6 +5,7 @@
         <div class="col-md-12">
           <h2 v-if="!route.params.groupId">Add Group</h2>
           <h2 v-else>Update Group</h2>
+          <smsComponent :phoneNumbers="contacts"/>
           <Toast />
           <ConfirmDialog />
         </div>
@@ -673,10 +674,11 @@
                           class="dropdown-menu"
                           aria-labelledby="dropdownMenuButton"
                         >
-                          <a class="dropdown-item" v-if="member.phone">
-                            <router-link
-                              :to="`/tenant/sms/compose?phone=${member.phone}`"
-                              >Send SMS</router-link
+                          <a class="dropdown-item" >
+                          <!-- <a class="dropdown-item" v-if="member.phoneNumber"> -->
+                            <a 
+                              @click="test(member)"
+                              >Send SMS</a
                             >
                           </a>
                           <a class="dropdown-item" v-if="member.email">
@@ -709,7 +711,9 @@
                 v-for="(member, index) in awaitingApprovals"
                 :key="index"
               >
+             
                 <div class="col-md-12">
+                   {{member}}
                   <div class="row">
                     <div
                       class="col-md-1 d-flex justify-content-between align-items-center"
@@ -870,12 +874,13 @@ import store from "../../store/store";
 import NewPerson from '../../components/membership/NewDonor.vue';
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress.js";
+import smsComponent from "./component/smsComponent.vue";
 
 export default {
   directives: {
     tooltip: Tooltip,
   },
-  components: { Dropdown, Dialog, NewPerson },
+  components: { Dropdown, Dialog, NewPerson, smsComponent },
   setup() {
      const display = ref(false);
     //  const showWardModal = ref(false)
@@ -897,6 +902,7 @@ export default {
     const selectGroupTo = ref({});
     const copyGroupTo = ref({});
     const awaitingApprovals = ref([])
+    const contacts = ref([])
     // const moveMembers =() =>{
     //   let memberChange = convert(marked.value);
     //   console.log(memberChange,'wisdom')
@@ -910,6 +916,14 @@ export default {
         console.log(error);
       }
     });
+
+    const test = (member) => {
+      if (member.phone) {
+        contacts.value.push(member.phone)
+      }else {
+        alert('No phone number')
+      }
+    }
      const showAddMemberForm = () => {
 
           display.value = true;
@@ -1302,7 +1316,7 @@ export default {
             address: i.person.address,
             email: i.person.email,
             name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
-            phone: i.person.mobilePhone,
+            phone: i.person.phoneNumber,
             position: i.position
           };
 
@@ -1449,6 +1463,8 @@ export default {
       requestApproval,
       setGroupModal,
       modalBtn,
+      contacts,
+      test,
       // wardSearchString,
       // showWardModal
      getWardId
