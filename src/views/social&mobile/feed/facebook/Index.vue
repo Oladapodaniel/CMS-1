@@ -54,17 +54,17 @@
             <div class="row">
               <div class="col-2 d-md-flex justify-content-center">
                 <div class="img-holder bg-secondary">
-                    <img :src="post.posterDetails.posterImageUrl" alt="User Image" style="height:40px;width:100%">
+                    <!-- <img :src="post.posterDetails.posterImageUrl" alt="User Image" style="height:40px;width:100%"> -->
                 </div>
               </div>
               <div class="col-10 pl-md-0">
                 <p
                   class="mb-0 font-weight-700 mb-n2 d-flex justify-content-between"
                 >
-                  <span>{{ post.posterDetails.posterName }}</span>
+                  <!-- <span>{{ post.posterDetails.posterName }}</span> -->
                   <span><i class="pi pi-ellipsis-h c-pointer"></i></span>
                 </p>
-                <small class="mb-0">{{ formatDate(post.date) }}</small>
+                <small class="mb-0">{{ formatDate(post.created_time) }}</small>
               </div>
             </div>
 
@@ -72,18 +72,19 @@
             <div class="row">
               <div class="col-md-12 pt-3">
                 <h5 class="font-weight-bold mb-0">
-                  {{ post.postCategoryName }}
+                  <!-- {{ post.postCategoryName }} -->
                 </h5>
                 <p class="mb-0 text-justify">
-                  <span v-if="post.showFullMessage || post.content.length < previewLenth">{{ post.message }}</span>
-                  <span v-else>{{ post.briefMessage }}...</span>
-                  <span v-if="post.content.length > previewLenth" class="font-weight-700 primary-text c-pointer ml-3" @click="() => post.showFullMessage = !post.showFullMessage">{{ post.showFullMessage ? 'See less' : 'See more' }}</span>
+                  <span>{{ post.message }}</span>
+                   <!-- v-if="post.showFullMessage || post.content.length < previewLenth" -->
+                  <!-- <span v-else>{{ post.briefMessage }}...</span> -->
+                  <!-- <span v-if="post.content.length > previewLenth" class="font-weight-700 primary-text c-pointer ml-3" @click="() => post.showFullMessage = !post.showFullMessage">{{ post.showFullMessage ? 'See less' : 'See more' }}</span> -->
                   </p>
               </div>
             </div>
 
             <!-- Post media -->
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-md-12">
                 <img
                   v-if="post.type === 'Picture'"
@@ -98,11 +99,11 @@
                   controls
                 >
                   <source :src="post.mediaUrl" />
-                  <!-- <source src="movie.mp4" type="video/mp4"> -->
+                
                   Your browser does not support the video tag.
                 </video>
               </div>
-            </div>
+            </div> -->
 
             <!-- Post Extras -->
             <!-- <div class="row my-3">
@@ -129,16 +130,14 @@
                 >
                   <span><i class="pi pi-thumbs-up mr-2"></i></span>
                   <span>Like</span>
-                  <span class="ml-2">{{ post.likeCount }}</span>
+                  <span class="ml-2">post.likeCount</span>
                 </a>
                 <a
                   class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
                 >
                   <span><i class="pi pi-comment mr-2"></i></span>
                   <span>Comment</span>
-                  <span class="ml-2">{{
-                    post.comments ? post.comments.length : 0
-                  }}</span>
+                  <span class="ml-2">com</span>
                 </a>
                 <a
                   class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
@@ -149,7 +148,7 @@
               </div>
             </div>
 
-            <div
+            <!-- <div
               class="row my-3"
               v-for="(comment, indx) in post.comments"
               :key="indx"
@@ -177,9 +176,9 @@
                   </p>
                 </div>
               </div>
-            </div>
+            </div> -->
 
-            <div class="row my-2">
+            <!-- <div class="row my-2">
               <div class="col-2 d-md-flex justify-content-center">
                 <div class="img-holder bg-secondary"></div>
               </div>
@@ -196,7 +195,7 @@
                   </p>
                 </form>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
 
