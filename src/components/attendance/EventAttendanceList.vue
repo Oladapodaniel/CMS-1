@@ -1,5 +1,6 @@
 <template>
     <div class="container-fluid">
+        <!-- <div>{{attendanceId}}iughyuibui</div> -->
         <div class="row">
             <DataRow :isKioskMode="isKiosk" v-for="(person, index) in listOfPeople" :key="index" :person="person" @togglecheckout="toggleCheckout" @togglecheckin="toggleCheckin" />
         </div>
@@ -22,28 +23,31 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import DataRow from "./MarkAttendanceRow";
 import attendanceservice from '../../services/attendance/attendanceservice';
     
     export default {
-        props: [ "isKiosk", "searchText", "fetchUsers" ],
+        props: [ "isKiosk", "searchText", "fetchUsers","attendanceId" ],
         components: { DataRow },
         async setup(props, { emit }) {
             const route = useRoute();
             const people = ref([ ])
-            const response = await attendanceservice.getReport(route.query.id);
+            const id = ref(route.query.id ? route.query.id : props.attendanceId)
+            const response = await attendanceservice.getReport(id.value);
             people.value = response ? response.peopoleAttendancesDTOs : [ ];
             
             const listOfPeople = computed(() => {
                 if (props.fetchUsers === true) {
-                    attendanceservice.getReport(route.query.id)
+                    
+                    attendanceservice.getReport(id.value)
                     .then(res => {
                         people.value = res.peopoleAttendancesDTOs;
                         emit("refreshed")
                     })
                     .catch(err => console.log(err));
+
                 }
                 if (!props.searchText) return people.value;
                 return people.value.filter(i => i.name.toLowerCase().includes(props.searchText.toLowerCase()))
