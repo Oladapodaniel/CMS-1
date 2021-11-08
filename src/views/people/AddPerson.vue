@@ -524,7 +524,7 @@
 
 <script>
 import moment from "moment";
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, onUpdated } from "vue";
 import router from "@/router/index";
 // import store from "../../store/store"
 import axios from "@/gateway/backendapi";
@@ -551,6 +551,7 @@ export default {
     const peopleInGroupIDs = ref([])
 
     const loading = ref(false);
+    const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
     const months = [
       "January",
       "February",
@@ -575,14 +576,16 @@ export default {
 
     const birthDate = moment();
     const daysInBirthMonth = ref(birthDate.daysInMonth());
+    const daysinMonth = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
     const birthDaysArr = computed(() => {
-      console.log(birthDate.month(), "month");
-      const arrOfDays = [];
-      console.log(daysInBirthMonth.value, "dm");
-      for (let i = 1; i <= daysInBirthMonth.value; i++) {
-        arrOfDays.push(i);
-      }
-      return arrOfDays;
+      // console.log(birthDate.month(), "month");
+      // const arrOfDays = [];
+      // console.log(daysInBirthMonth.value, "dm");
+      // for (let i = 1; i <= daysInBirthMonth.value; i++) {
+      //   arrOfDays.push(i);
+      // }
+      // return arrOfDays;
+      return daysinMonth.value
     });
     const birthYearsArr = computed(() => {
       const arrOfYears = [];
@@ -613,12 +616,17 @@ export default {
     const anniversaryDate = moment();
     const daysInAnnMonth = ref(anniversaryDate.daysInMonth());
     const annDaysArr = computed(() => {
-      const arrOfDays = [];
-      for (let i = 1; i <= daysInAnnMonth.value; i++) {
-        arrOfDays.push(i);
-      }
-      return arrOfDays;
+      // const arrOfDays = [];
+      // for (let i = 1; i <= daysInAnnMonth.value; i++) {
+      //   arrOfDays.push(i);
+      // }
+      // return arrOfDays;
+      return daysinMonth.value
     });
+
+    onUpdated(() => {
+      console.log(moment().daysInMonth())
+    })
 
     const editAnnDateValue = (unit, val) => {
       anniversaryDate.set(unit, val);
@@ -1116,6 +1124,7 @@ export default {
       birthDaysArr,
       birthYearsArr,
       annDaysArr,
+      daysinMonth,
       errMessage,
       hideCelebTab,
       showCelebTab,

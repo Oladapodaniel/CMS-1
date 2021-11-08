@@ -1,10 +1,10 @@
 <template>
 <div class="d-flex justify-content-end mx-3">
-        <div class="col-2 mt-3 mr-4 log-btn btn-btn c-pointer" @click="openCallLogPane">Log call</div>
-        <div class="col-3 mt-3 save-btn btn-btn c-pointer" >Make a phone call</div>
+        <!-- <div class="col-2 mt-3 mr-4 log-btn btn-btn c-pointer" @click="openCallLogPane">Log call</div> -->
+        <div class="col-12 col-sm-6 col-md-3 mt-3 save-btn btn-btn c-pointer" @click="toggleSMSPane">Send an SMS</div>
    </div>
     <div class="col-12 mt-4" v-for="(item, index) in logList" :key="index">
-            <div class="col-12 card-bg p-4">
+            <!-- <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
                         <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.logIcon, 'unroll-note-icon' : !item.logIcon}" @click="toggleLogIcon(index)"></i>&nbsp;&nbsp;Logged {{ item.type }}</span> by Oladapo Daniel <span class="font-weight-700 uniform-primary-color">Actions&nbsp;<i class="pi pi-sort-down"></i></span></div>
@@ -67,28 +67,53 @@
                                         </div>
                                     </OverlayPanel>
                             </div>
-        
-                        <!-- <div class="row">
-                            <div class="col-12">
-                                <hr />
-                            </div>
-                        </div> -->
-    
                             <div class="col-12 mt-3">
                                 <textarea name="" placeholder="Describe the call..." class="w-100 form-control" rows="6"></textarea>
                             </div>
       
                     </div>
                 </transition>
-            </div>
+            </div> -->
+            <div class="col-12 card-bg p-4">
+                    <div class="row d-flex justify-content-between">
+                        <div>
+                            <div class="col align-self-center"><span class="font-weight-700 c-pointer"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.logIcon, 'unroll-note-icon' : !item.logIcon}" @click="toggleLogIcon(index, indx)"></i>&nbsp;&nbsp;{{ item.person ? `${item.typeText} task assigned to` : `${item.typeText} logged` }}</span> {{ item.person }} </div>
+                        </div>
+                        <div>
+                            <div class="col text-right"><span class="ml-2 small-text">{{ formatDate(item.date) }} {{ item.time }}</span></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mt-4 enlargen-font"  :class="{ 'hover-border' : item.hoverLog, 'log-border' : !item.hoverLog }" v-if="!item.editLog">
+                            <div>{{ item.description }}</div>
+                        </div>
+
+                    </div>
+                    <transition name="fade">
+                        <div class="row" v-if="item.logIcon">
+                            <div class="col-12">
+                                <hr />
+                            </div>
+                                <div class="col-6">
+                                    <div class="label-text">Contacted</div>
+                                    <div class="uniform-primary-color font-weight-700 mt-1 c-pointer">{{ `${personDetails.firstName} ${personDetails.lastName}` }}</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="label-text">{{ item.typeText }} Outcome</div>
+                                    <div class="mt-1 uniform-primary-color font-weight-700 c-pointer">{{ item.outcomeText }}</div>
+                                </div>
+                        </div>
+                    </transition>
+                </div>
         </div>
 </template>
 
 
 <script>
-import { ref } from "vue"
+import { ref } from "vue";
+import dateFormatter from '../../../../services/dates/dateformatter';
 export default {
-    emits: ['individualcallicon', 'opencalllogpane', 'hoverlog', 'outHoverLog'],
+    emits: ['individualcallicon', 'opensmslogpane', 'hoverlog', 'outHoverLog'],
     props: ['personDetails', 'logList'],
     setup(props, { emit }) {
         const hoverLog = ref(false)
@@ -135,8 +160,12 @@ export default {
             emit('individualcallicon', index)
         }
 
-        const openCallLogPane = () => {
-            emit('opencalllogpane', true)
+        const toggleSMSPane = () => {
+            emit('opensmslogpane', true)
+        }
+
+        const formatDate = (date) => {
+            return dateFormatter.monthDayYear(date)
         }
 
         return {
@@ -156,7 +185,8 @@ export default {
             date,
             logIcon,
             toggleLogIcon,
-            openCallLogPane
+            formatDate,
+            toggleSMSPane
         }
     }
 }
@@ -166,7 +196,7 @@ export default {
 .card-bg {
     background-color: rgb(255, 255, 255);
     box-shadow: rgb(45 62 80 / 12%) 0px 1px 5px 0px;
-    border-radius: 3px;
+    border-radius: 8px;
 }
 
 .roll-note-icon {

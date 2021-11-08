@@ -2,10 +2,10 @@
     <div class="container-top container adjust-font">
     <canvas ref="confeti" width="300" height="300" class="active canvas-style" v-show="displayAnim"></canvas>
         <div class="row">
-            <div class="col-4 p-0 side-bar">
-                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails" @calllogdesc="setCallLogDesc" :callLog="callLog" @resetlog="resetLog" @allcontact="setAllContacts" :activityType="activityType" @updatelogtoview="updateLogToView" @displayanim="setDisplayAnim"/>
+            <div class="col-12 col-md-4 p-0 side-bar">
+                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails" @calllogdesc="setCallLogDesc" :smsLog="smsLog" @resetlog="resetLog" @allcontact="setAllContacts" :activityType="activityType" @updatelogtoview="updateLogToView" @displayanim="setDisplayAnim"/>
             </div>
-            <div class="col-8 main-view">
+            <div class="col-12 col-md-8 main-view">
                 <div class="row">
                     <div class="col-6 mt-3">
                         <span class="p-input-icon-right">
@@ -18,23 +18,23 @@
                     </div> -->
                 </div>
                 <div class="row">
-                    <div class="col-2 pr-0 c-pointer" @click="toggleActivity">
+                    <div class="col-6 col-md-2 pr-0 c-pointer" @click="toggleActivity">
                         <div class="p-3">Activity</div>
                         <div :class="{ 'baseline' : showActivity, 'hide-base' : !showActivity }"></div>
                     </div>
-                    <div class="col-2 pr-0 c-pointer" @click="toggleNotes">
+                    <div class="col-6 col-md-2 pr-0 c-pointer" @click="toggleNotes">
                         <div class="p-3">Notes</div>
                         <div :class="{ 'baseline' : showNotes, 'hide-base' : !showNotes }"></div>
                     </div>
-                    <div class="col-2 pr-0 c-pointer" @click="toggleEmails">
+                    <div class="col-6 col-md-2 pr-0 c-pointer" @click="toggleEmails">
                         <div class="p-3">Emails</div>
                         <div :class="{ 'baseline' : showEmails, 'hide-base' : !showEmails }"></div>
                     </div>
-                    <div class="col-2 pr-0 c-pointer" @click="toggleCalls">
-                        <div class="p-3">Calls</div>
+                    <div class="col-6 col-md-2 pr-0 c-pointer" @click="toggleCalls">
+                        <div class="p-3">SMS</div>
                         <div :class="{ 'baseline' : showCalls, 'hide-base' : !showCalls }"></div>
                     </div>
-                    <div class="col-2 pr-0 c-pointer" @click="toggleTasks">
+                    <div class="col-6 col-md-2 pr-0 c-pointer" @click="toggleTasks">
                         <div class="p-3">Tasks</div>
                         <div :class="{ 'baseline' : showTasks, 'hide-base' : !showTasks }"></div>
                     </div>
@@ -42,26 +42,26 @@
                 <div class="row">
                     <div class="border-top col-12 push-border-up"></div>
                 </div>
-                <div class="row mt-3">
+                <!-- <div class="row mt-3">
                     <div class="col-2">Filter by:</div>
                     <div class="col-7 font-weight-700 uniform-primary-color">Filter activity (19/21)</div>
                     <div class="col-3 font-weight-700 uniform-primary-color">All Users <span><i class="pi pi-sort-down"></i></span></div>
-                </div>
+                </div> -->
               
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
                         <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp"  :loader="loader" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :allContacts="allContacts" :personDetails="personDetails" @commentindex="pushToComment" @removecommetfromview="removeCommentFromView" @editcommentinview="editCommentInView" @setduedate="setDueDateTask"/>
                     </div>
-                    <div class="col-12" v-if="showNotes" transition="bounce">
+                    <div class="col-12 px-0" v-if="showNotes" transition="bounce">
                         <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
                     </div>
                     <div class="col-12 px-0" v-if="showEmails" transition="bounce">
                         <Emails @openemailmodal="openEmailModal" :emailList="emailList" @emaillicon="toggleEmailIcon" :personDetails="personDetails"/>
                     </div>
-                    <div class="col-12" v-if="showCalls" transition="bounce">
-                        <Calls :personDetails="personDetails" :logList="logList" @individualcallicon="setCallLogIcon" @opencalllogpane="openCallLogPane" @hoverLog="setHoverLogProp" @outhoverLog="setOutHoverLogProp"/>
+                    <div class="col-12 px-0" v-if="showCalls" transition="bounce">
+                        <SMS :personDetails="personDetails" :logList="logList" @individualcallicon="setCallLogIcon" @opensmslogpane="opensmslogpane" @hoverLog="setHoverLogProp" @outhoverLog="setOutHoverLogProp"/>
                     </div>
-                    <div class="col-12" v-if="showTasks" transition="bounce">
+                    <div class="col-12 px-0" v-if="showTasks" transition="bounce">
                         <Tasks :addTask="taskList" @individualtoggletask="setIconMainTask" :taskTime="taskTime" @opentaskeditor="openTaskEditor" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :allContacts="allContacts" :personDetails="personDetails" @hovertask="setHoverPropForTask" @outhovertask="setOutHoverPropForTask" @edittask="displayEditTaskField" @hidetaskfield="hideTaskField" @removecommetfromview="removeCommentFromViewTask" @editcommentinview="editCommentInViewTask"/>
                     </div>
                 </div>
@@ -261,7 +261,7 @@ import SideActions from "./components/SideActions"
 import Activity from "./components/Activity"
 import Notes from "./components/Notes"
 import Emails from "./components/Emails"
-import Calls from "./components/Calls"
+import SMS from "./components/SMS"
 import Tasks from "./components/Tasks"
 import InputText from 'primevue/inputtext'
 import Dialog from 'primevue/dialog';
@@ -285,7 +285,7 @@ export default {
         Activity,
         Notes,
         Emails,
-        Calls,
+        SMS,
         Tasks,
         InputText,
         Dialog,
@@ -323,7 +323,7 @@ export default {
         const logList = ref([])
         const emailList = ref([])
         const activities = ref([])
-        const callLog = ref(false)
+        const smsLog = ref(false)
         const activityType = ref([])
         const selectedTodo = ref({})
         const taskPriority = ref(frmservice.priority())
@@ -585,12 +585,12 @@ export default {
             logList.value[payload].logIcon = !logList.value[payload].logIcon
         }
 
-        const openCallLogPane = (payload) => {
-            callLog.value = payload
+        const opensmslogpane = (payload) => {
+            smsLog.value = payload
         }
 
         const resetLog = (payload) => {
-            callLog.value = payload
+            smsLog.value = payload
         }
 
         const setIconPropLog = (payload) => {
@@ -732,6 +732,7 @@ export default {
             noteList.value = type[96]
             taskList.value = activities.value.filter(i => i.person)
             emailList.value = type[90]
+            logList.value = type[92]
             
             let colors = ['rgba(148, 249, 192, 0.4)', 'rgba(148, 211, 249, 0.4)', 'rgba(232, 249, 148, 0.4)', 'rgba(249, 219, 148, 0.4)', 'rgba(249, 148, 239, 0.4)']
             let index = 0
@@ -894,8 +895,8 @@ export default {
             logList,
             activities,
             setCallLogIcon,
-            openCallLogPane,
-            callLog,
+            opensmslogpane,
+            smsLog,
             resetLog,
             setIconPropLog,
             setEditTaskProp,
