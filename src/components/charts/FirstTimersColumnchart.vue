@@ -40,7 +40,7 @@ export default {
         renderTo: props.domId,
     },
     title: {
-        text: 'Retention Summary'
+        text: 'Inflow Summary'
     },
     // subtitle: {
     //     text: 'Source: WorldClimate.com'
