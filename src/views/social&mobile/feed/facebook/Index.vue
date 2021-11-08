@@ -353,7 +353,7 @@ export default {
             const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
             console.log(pageDetail);
             const {data} = await axios.get(`https://graph.facebook.com/${pageDetail.id}/feed?access_token=${pageDetail.access_token}`)
-        feed.value = data
+        feed.value = data.data
 
         loaded.value = false;
         console.log(feed.value);
