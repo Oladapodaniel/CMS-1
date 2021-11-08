@@ -1,10 +1,8 @@
 <template>
-  <div>
+  <div class="d-flex align-items-center adjust-content" style="justify-content: space-evenly; height: 100vh">
     <div class="main-section">
-      <div class="logo-con">
-        <a class="logo-link"
-          ><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"
-        /></a>
+      <div class="logo-con justify-content-center font-weight-700" style="font-size: 1.2em">
+        Mountain of Fire and Miracle Ministries
       </div>
       <div class="header">
         <h1>Sign in</h1>
@@ -137,6 +135,14 @@
           </div>
         </template>
       </Dialog>
+      <div class="logo-con">
+        <a class="logo-link"
+          ><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"
+        /></a>
+      </div>
+    </div>
+    <div class="first-order">
+      <img src="../../assets/mfm_logo.jpeg" class="img-logo-pane"/>
     </div>
   </div>
 </template>
@@ -381,9 +387,10 @@ export default {
 }
 
 .main-section {
-  max-width: 400px;
-  margin: auto;
-  padding: 10px;
+  width: 453px;
+  /* margin: auto; */
+  padding: 45px;
+  background: aliceblue;
 }
 
 .input {
@@ -557,9 +564,28 @@ export default {
   width: 100%;
 }
 
+.img-logo-pane {
+  width: 400px
+}
+
 @media (max-width: 273px) {
   .fb_iframe_widget {
     top: -173px;
+  }
+}
+
+@media (max-width: 880px) {
+  .first-order {
+    order: -1
+  }
+
+  .adjust-content {
+    flex-direction: column;
+  }
+
+  .img-logo-pane {
+    width: 100px;
+    margin-top: 65px
   }
 }
 </style>
