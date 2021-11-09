@@ -74,7 +74,7 @@
                     </div>
                 </transition>
             </div> -->
-            <div class="col-12 card-bg p-4">
+            <div class="col-12 card-bg p-4" v-if="!item.loggedTask">
                     <div class="row d-flex justify-content-between">
                         <div>
                             <div class="col align-self-center"><span class="font-weight-700 c-pointer"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.logIcon, 'unroll-note-icon' : !item.logIcon}" @click="toggleLogIcon(index, indx)"></i>&nbsp;&nbsp;{{ item.person ? `${item.typeText} task assigned to` : `${item.typeText} logged` }}</span> {{ item.person }} </div>

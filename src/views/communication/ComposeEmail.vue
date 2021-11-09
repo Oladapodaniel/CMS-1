@@ -962,7 +962,7 @@ export default {
               </style>
             </head>
             <body>
-              <div id="email-body" style="max-width: 1000px; margin: auto"> {${editorData.value}} </div>
+              <div id="email-body" style="max-width: 1000px; margin: auto">${editorData.value}</div>
             </body>
           </html>`,
         // contacts: [],
