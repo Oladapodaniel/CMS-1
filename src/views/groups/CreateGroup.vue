@@ -27,8 +27,6 @@
                           <div> Attendance & Check-in </div>
                         </div>
                         <div class="actions col-md-6 d-flex justify-content-md-end">
-                          {{groupId}}
-                          
                             <router-link :to="{ name: 'AddCheckin' }" v-if="showAttendanceCheckin">
                               <button class="buttonn add-person-btn">
                                 Add New Attendance
