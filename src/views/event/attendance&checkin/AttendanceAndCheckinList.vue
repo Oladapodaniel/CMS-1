@@ -356,6 +356,7 @@ export default {
   setup(props, { emit }) {
     let toast = useToast();
     const expose = ref(false);
+    const loading = ref(false)
 
     const toggleEllips = () => {
       toggleEllips.value = !toggleEllips.value;
@@ -456,6 +457,7 @@ export default {
     }
 
     return {
+      loading,
       expose,
       toggleEllips,
       formatDate,
