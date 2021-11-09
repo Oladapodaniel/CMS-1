@@ -35,10 +35,27 @@ export default {
 <style scoped>
 
 .hide-Times{
-    display: none;
+    /* display: none; */
+    position: fixed;
+    overflow: hidden;
+    width: 0;
+    right: -0px;
+    /* top: -50px; */
+    /* z-index: 9; */
+    transition: all  0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
+
 .show-Times{
-    display: block;
+    /* display: block; */
+    width: 1066px;
+    overflow: hidden;
+    position: fixed;
+    right: -266px;
+    top: -50px;
+    z-index: 9;
+    /* transform: translateX(-20%); */
+    transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+ 
 }
 
 .mydiv{

@@ -19,7 +19,7 @@
             <!-- <div class="col-sm-12"> -->
             <!-- </div> -->
                 <div>
-                  <div v-if="selectedAttendanceId">
+                  <div >
                     <div class="main-body container-wide">
                       <div class=" row">
                       <div class="top my-3 col-sm-12 col-md-12 d-flex flex-wrap pl-0">
@@ -27,12 +27,13 @@
                           <div> Attendance & Check-in </div>
                         </div>
                         <div class="actions col-md-6 d-flex justify-content-md-end">
+                          {{groupId}}
                           
-                            <!-- <router-link :to="{ name: 'AddCheckin' }" v-if="route.path === '/tenant/attendancecheckin'"> -->
+                            <router-link :to="{ name: 'AddCheckin' }" v-if="showAttendanceCheckin">
                               <button class="buttonn add-person-btn">
                                 Add New Attendance
                               </button>
-                            <!-- </router-link> -->
+                            </router-link>
                         </div>
                       </div>
                     </div>
@@ -44,10 +45,10 @@
                           </div>
                       </div> -->
                   </div>
-                    <Attendancecheckin   />
+                    <Attendancecheckin :list="attendanceData"  />
                     <!-- <Attendancecheckin :attendanceID="selectedAttendanceId"  /> -->
                   </div>
-                  <div v-else>
+                  <div >
                     No checkin attendance for this group
                   </div>
                 </div>  
