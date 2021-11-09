@@ -154,9 +154,9 @@
                 <!-- loadding -->
 
 
-                  <div class="sidemenu" :class="{ 'show-side' : showSide, 'hide-side' : !showSide }">
-                    <SideBar />
-                    <!-- <SideBar :show="true" /> -->
+                  <div >
+                    <!-- <SideBar /> -->
+                    <SideBar :show="true" />
                   </div>
                 <div class="row w-100 c-pointer text-dark border-top hover d-flex align-items-center" style="margin: 0" v-for="(group, index) in searchGroup" :key="index">
 
@@ -213,7 +213,7 @@
                               aria-expanded="false"
                             ></i>
 
-                            <div @click="sendSms"
+                            <div
                               class="dropdown-menu"
                               aria-labelledby="dropdownMenuButton"
                             >
@@ -223,7 +223,7 @@
                                   >Send SMS</router-link
                                 >
                               </a>
-                              <a class="dropdown-item" @click="sendEmail">
+                              <a class="dropdown-item">
                                 <router-link
                                   :to="`/tenant/email/compose?group=${group.name}&groupId=${group.id}`"
                                   >Send Email</router-link
@@ -275,11 +275,11 @@ export default {
     const groups = ref(store.getters["groups/groups"]);
     const toast = useToast();
     const confirm = useConfirm();
-    const showSide = ref(false);
+    // const showSide = ref(false);
 
-    const sendSms = () =>{
-      showSide.value = !showSide.value
-    }
+    // const sendSms = () =>{
+    //   showSide.value = !showSide.value
+    // }
     const confirmDelete = (id, index) => {
       confirm.require({
         message: "Do you want to delete this group?",
@@ -357,8 +357,8 @@ export default {
 
 
     return {
-      showSide,
-      sendSms,
+      // showSide,
+      // sendSms,
       groups,
       loading,
       displayConfirmModal,
