@@ -1579,8 +1579,8 @@ export default {
     background-color: #136acd;
     /* background-color: #33475b; */
     /* color: #136acd" */
-    border-radius: 24px;
-    bottom: -2.5px;
+    border-radius: 20px;
+    /* bottom: -2.5px; */
     height: 6px;
     left: 0px;
     width: 50%;
@@ -1591,8 +1591,8 @@ export default {
     transition: all 150ms ease-in-out;
     background-color: #136acd;
     /* background-color: #33475b; */
-    border-radius: 24px;
-    bottom: -2.5px;
+    border-radius: 20px;
+    /* bottom: -2.5px; */
     height: 6px;
     left: 0px;
     width: 50%;
