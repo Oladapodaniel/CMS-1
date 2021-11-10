@@ -10,16 +10,18 @@
           <div class="col-md-12 pt-3 pt-2 main-post">
             <div class="row">
               <div class="col-2 d-md-flex justify-content-center">
-                <div class="img-holder bg-secondary"></div>
+                <img :src="churchData.logoUrl" alt="Uploaded Image" class="img-holder bg-secondary"/>
               </div>
+              
               <div class="col-10 pl-md-0 d-flex align-items-center">
                 <textarea
                   name=""
                   id=""
                   rows="4"
                   class="w-100 border-0 textarea"
-                  placeholder="What's on your mind, Complustech?"
-                ></textarea>
+                  :value= "churchData.churchName"
+                >
+                </textarea>
               </div>
             </div>
           </div>
@@ -325,11 +327,32 @@ import Skeleton from "primevue/skeleton";
 import social_service from '../../../../services/social/social_service';
 // import membershipService from '../../../../services/membership/membershipservice';
 import dateFormatter from '../../../../services/dates/dateformatter';
-import axios from 'axios';
+import axios from "@/gateway/backendapi";
+import fb from 'axios';
+// import store from '@/store/store';
 
 export default {
   components: { Skeleton },
   setup() {
+    // const getCurrentUser= ref([store.getters.currentUser.churchName]);
+    // console.log(getCurrentUser);
+    //Get AllChurchProfile
+  const churchData =ref('')
+    const getChurchProfile= async()=>{
+      try{
+        const {data} = await axios.get("/mobile/v1/Profile/GetChurchProfile");
+        churchData.value =  data.returnObject;
+        console.log(churchData);
+        console.log(churchData);
+        console.log(churchData);
+        console.log(churchData);
+        
+
+      }catch(error){
+        console.log(error)
+      }
+    }
+     getChurchProfile()
     const feed = ref([]);
     // const tenantId = ref("");
     const previewLenth = 300;
@@ -352,7 +375,7 @@ export default {
         // })
             const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
             console.log(pageDetail);
-            const {data} = await axios.get(`https://graph.facebook.com/${pageDetail.id}/feed?access_token=${pageDetail.access_token}`)
+            const {data} = await fb.get(`https://graph.facebook.com/${pageDetail.id}/feed?access_token=${pageDetail.access_token}`)
         feed.value = data.data
 
         loaded.value = false;
@@ -406,6 +429,7 @@ export default {
       formatDate,
       loaded,
       previewLenth,
+      churchData,
     };
   },
 };
