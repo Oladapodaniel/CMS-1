@@ -17,18 +17,36 @@
              <div class="col-12" v-if="showAttendanceCheckin">
                 <!-- <div><Attendance/></div>  -->
             <!-- <div class="col-sm-12"> -->
-                <div class="top mt-3 pl-0">
-                    <div class="events">
-                        <div>Attendance & Check-in
-                        </div>
-                    </div>
-                </div>
             <!-- </div> -->
                 <div>
-                  <div v-if="selectedAttendanceId">
-                    <Attendancecheckin :attendanceID="selectedAttendanceId"  />
+                  <div >
+                    <div class="main-body container-wide">
+                      <div class=" row">
+                      <div class="top my-3 col-sm-12 col-md-12 d-flex flex-wrap pl-0">
+                        <div class="events col-md-6 ">
+                          <div> Attendance & Check-in </div>
+                        </div>
+                        <div class="actions col-md-6 d-flex justify-content-md-end">
+                            <router-link :to="{ name: 'AddCheckin' }" v-if="showAttendanceCheckin">
+                              <button class="buttonn add-person-btn">
+                                Add New Attendance
+                              </button>
+                            </router-link>
+                        </div>
+                      </div>
+                    </div>
+                    <hr class="hr" />
+
+                      <!-- <div class="row">
+                          <div class="col-md-12">
+                              <router-view></router-view>
+                          </div>
+                      </div> -->
                   </div>
-                  <div v-else>
+                    <Attendancecheckin :list="attendanceData"  />
+                    <!-- <Attendancecheckin :attendanceID="selectedAttendanceId"  /> -->
+                  </div>
+                  <div >
                     No checkin attendance for this group
                   </div>
                 </div>  
@@ -914,16 +932,26 @@ import store from "../../store/store";
 import NewPerson from '../../components/membership/NewDonor.vue';
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress.js";
+<<<<<<< HEAD
 import smsComponent from "./component/smsComponent.vue";
 import emailComponent from "./component/emailComponent.vue";
 import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
+=======
+import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinList.vue"
+import Attendancevue from "../event/attendance&checkin/Attendance.vue"
+// import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
+>>>>>>> e6b43df547d3ef32fd83f81d69e57af16f5fc4eb
 import attendanceservice from '../../services/attendance/attendanceservice';
 
 export default {
   directives: {
     tooltip: Tooltip,
   },
+<<<<<<< HEAD
   components: { Dropdown, Dialog, NewPerson, smsComponent, emailComponent, Attendancecheckin },
+=======
+  components: { Dropdown, Dialog, NewPerson, Attendancecheckin, Attendancevue },
+>>>>>>> e6b43df547d3ef32fd83f81d69e57af16f5fc4eb
   setup() {
      const display = ref(false);
     //  const showWardModal = ref(false)
@@ -1560,6 +1588,21 @@ export default {
 * {
   box-sizing: border-box;
 }
+.add-person-btn {
+        background: #136acd;
+        color: #fff;
+        }
+ .buttonn {
+        padding: 8px 20px;
+        border: none;
+        border-radius: 22px;
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0 8px;
+        outline: none;
+        text-decoration: none;
+        box-sizing: border-box;
+        }
 
 .mid-header-row {
   border-bottom: 1px solid #dde2e6;
@@ -1609,6 +1652,14 @@ export default {
             width: 20%;
         }
     }
+    
+@media (max-width: 399px) {
+    .actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
 .remove-btn {
   background: red !important;
   padding: 10px 20px;

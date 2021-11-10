@@ -157,6 +157,11 @@
 
              
 
+
+                  <div >
+                    <!-- <SideBar /> -->
+                    <SideBar :show="true" />
+                  </div>
                 <div class="row w-100 c-pointer text-dark border-top hover d-flex align-items-center" style="margin: 0" v-for="(group, index) in searchGroup" :key="index">
                  
                   <div class="col-md-1 d-flex d-md-block px-3 justify-content-end"></div>
@@ -219,14 +224,10 @@
                               <a class="dropdown-item">
                                 <a
                                   @click="sendGroupSms(group)"
-                                  >Send SMS</a
-                                >
-                              </a>
+                                  >Send SMS</a>
+                           
                               <a class="dropdown-item">
-                                <router-link
-                                  :to="`/tenant/email/compose?group=${group.name}&groupId=${group.id}`"
-                                  >Send Email</router-link
-                                >
+                                  Send Email
                               </a>
                               <a
                                 class="dropdown-item"
@@ -239,9 +240,10 @@
                       </div>
                     </div>
                   </div>
-
+               
                 </div>
               </div>
+              
             </div>
           </div>
           <!-- <div class="text-danger" v-else>No records found</div> -->
@@ -249,6 +251,7 @@
       </div>
       <!-- tosin working on tables -->
     </div>
+    
   </div>
 </template>
 
@@ -259,9 +262,14 @@ import { useStore } from "vuex";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import smsComponent from "./component/smsComponent.vue";
+import SideBar from "./sidemodal/SideModal.vue";
 
 export default {
-  components: {smsComponent},
+  components : {
+    SideBar,
+    smsComponent
+  },
+
   setup() {
     //   const $confirm = getCurrentInstance().ctx.$confirm;
     const loading = ref(false);
@@ -271,6 +279,11 @@ export default {
     const groupListDetails = ref([]);
     const toast = useToast();
     const confirm = useConfirm();
+    // const showSide = ref(false);
+
+    // const sendSms = () =>{
+    //   showSide.value = !showSide.value
+    // }
     const confirmDelete = (id, index) => {
       confirm.require({
         message: "Do you want to delete this group?",
@@ -353,6 +366,8 @@ export default {
 
 
     return {
+      // showSide,
+      // sendSms,
       groups,
       sendGroupSms,
       groupListDetails,
@@ -372,6 +387,36 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+}
+.show-side{
+  /* display: block; */
+   width: 1066px;
+   overflow: hidden;
+    position: fixed;
+    right: -266px;
+    top: -50px;
+    z-index: 9;
+    /* transform: translateX(-20%); */
+    transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.hide-side{
+  /* display: none; */
+   position: fixed;
+   overflow: hidden;
+   width: 0;
+    right: -0px;
+    /* top: -50px; */
+    /* z-index: 9; */
+    transition: all  0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.sidemenu {
+  /* display: none; */
+  /* width: 1066px; */
+  /* min-height: 100%; */
+  /* background: #ebeff4; */
+  /* height: inherit; */
+  /* overflow: auto; */
+  /* transition: all 3000ms ease-in-out; */
 }
 .row-bg-color {
   background-color: #f1f3f9;
