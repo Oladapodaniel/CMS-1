@@ -2,10 +2,12 @@
   <div class="container-slim">
     <div class="container-fluid">
       <div class="row d-md-flex yu mt-5">
+        <smsComponent :groupData ="groupListDetails"/>
         <div class="col-md-6 col-4">
           <div class="events">Groups</div>
           <Toast />
           <ConfirmDialog />
+          
         </div>
         <div class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link">
           <router-link
@@ -153,13 +155,15 @@
                 </div>
                 <!-- loadding -->
 
+             
+
 
                   <div >
                     <!-- <SideBar /> -->
                     <SideBar :show="true" />
                   </div>
                 <div class="row w-100 c-pointer text-dark border-top hover d-flex align-items-center" style="margin: 0" v-for="(group, index) in searchGroup" :key="index">
-
+                 
                   <div class="col-md-1 d-flex d-md-block px-3 justify-content-end"></div>
 
                   <div class="col-md-2 col-sm-2 d-md-flex align-items-center">
@@ -217,17 +221,13 @@
                               class="dropdown-menu"
                               aria-labelledby="dropdownMenuButton"
                             >
-                              <a class="dropdown-item" >
-                                <router-link
-                                  :to="`/tenant/sms/compose?group=${group.name}&groupId=${group.id}`"
-                                  >Send SMS</router-link
-                                >
-                              </a>
                               <a class="dropdown-item">
-                                <router-link
-                                  :to="`/tenant/email/compose?group=${group.name}&groupId=${group.id}`"
-                                  >Send Email</router-link
-                                >
+                                <a
+                                  @click="sendGroupSms(group)"
+                                  >Send SMS</a>
+                           
+                              <a class="dropdown-item">
+                                  Send Email
                               </a>
                               <a
                                 class="dropdown-item"
@@ -261,10 +261,13 @@ import groupsService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
-import SideBar from "./sidemodal/SideModal.vue"
+import smsComponent from "./component/smsComponent.vue";
+import SideBar from "./sidemodal/SideModal.vue";
+
 export default {
   components : {
-    SideBar
+    SideBar,
+    smsComponent
   },
 
   setup() {
@@ -273,6 +276,7 @@ export default {
     const displayConfirmModal = ref(false);
     const store = useStore();
     const groups = ref(store.getters["groups/groups"]);
+    const groupListDetails = ref([]);
     const toast = useToast();
     const confirm = useConfirm();
     // const showSide = ref(false);
@@ -354,12 +358,19 @@ export default {
     const removeSearchText = () => {
         searchText = "";
     }
+    const sendGroupSms = (group) => {
+      if (group.id) {
+        groupListDetails.value = [{data:`group_${group.id}`}]
+      }
+    }
 
 
     return {
       // showSide,
       // sendSms,
       groups,
+      sendGroupSms,
+      groupListDetails,
       loading,
       displayConfirmModal,
       confirmDelete,

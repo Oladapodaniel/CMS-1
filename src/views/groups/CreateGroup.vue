@@ -57,6 +57,8 @@
         <div class="col-md-12">
           <h2 v-if="!route.params.groupId">Add Group</h2>
           <h2 v-else>Update Group</h2>
+          <emailComponent :selectedGroupMembers="selectedGroupMembers" />
+          <smsComponent :phoneNumbers="contacts"/>
           <Toast />
           <ConfirmDialog />
         </div>
@@ -729,18 +731,20 @@
                           class="dropdown-menu"
                           aria-labelledby="dropdownMenuButton"
                         >
-                          <a class="dropdown-item" v-if="member.phone">
-                            <router-link
-                              :to="`/tenant/sms/compose?phone=${member.phone}`"
-                              >Send SMS</router-link
+                          <a class="dropdown-item" >
+                          <!-- <a class="dropdown-item" v-if="member.phoneNumber"> -->
+                            <a 
+                              @click="test(member)"
+                              >Send SMS</a
                             >
                           </a>
-                          <a class="dropdown-item" v-if="member.email">
-                            <router-link
-                              :to="`/tenant/email/compose?phone=${member.email}`"
-                              >Send Email</router-link
-                            >
+                          <!-- <a class="dropdown-item" v-if="member.email" href=""> -->
+                          <a class="dropdown-item">
+                            <a 
+                              @click="testEmail(member)"
+                            >Send Email</a>
                           </a>
+                              <!-- :to="`/tenant/email/compose?phone=${member.email}`" -->
                           <a
                             class="dropdown-item c-pointer"
                             @click="confirmDelete(member.personID, index)"
@@ -765,7 +769,9 @@
                 v-for="(member, index) in awaitingApprovals"
                 :key="index"
               >
+             
                 <div class="col-md-12">
+                   {{member}}
                   <div class="row">
                     <div
                       class="col-md-1 d-flex justify-content-between align-items-center"
@@ -926,16 +932,26 @@ import store from "../../store/store";
 import NewPerson from '../../components/membership/NewDonor.vue';
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress.js";
+<<<<<<< HEAD
+import smsComponent from "./component/smsComponent.vue";
+import emailComponent from "./component/emailComponent.vue";
+import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
+=======
 import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinList.vue"
 import Attendancevue from "../event/attendance&checkin/Attendance.vue"
 // import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
+>>>>>>> e6b43df547d3ef32fd83f81d69e57af16f5fc4eb
 import attendanceservice from '../../services/attendance/attendanceservice';
 
 export default {
   directives: {
     tooltip: Tooltip,
   },
+<<<<<<< HEAD
+  components: { Dropdown, Dialog, NewPerson, smsComponent, emailComponent, Attendancecheckin },
+=======
   components: { Dropdown, Dialog, NewPerson, Attendancecheckin, Attendancevue },
+>>>>>>> e6b43df547d3ef32fd83f81d69e57af16f5fc4eb
   setup() {
      const display = ref(false);
     //  const showWardModal = ref(false)
@@ -957,9 +973,12 @@ export default {
     const selectGroupTo = ref({});
     const copyGroupTo = ref({});
     const awaitingApprovals = ref([])
+    const contacts = ref([])
     const showGroup = ref(true)
     const attendanceData = ref([])
     const showAttendanceCheckin = ref(false)
+    const selectedGroupMembers = ref([])
+
     
     // const moveMembers =() =>{
     //   let memberChange = convert(marked.value);
@@ -974,6 +993,21 @@ export default {
         console.log(error);
       }
     });
+
+    const test = (member) => {
+      if (member.phone) {
+        contacts.value.push(member.phone)
+      }else {
+        alert('No phone number')
+      }
+    }
+    const testEmail = (member) => {
+      if (member.email) {
+        selectedGroupMembers.value.push({id:member.personID})
+      }else {
+        alert('No phone number')
+      }
+    }
     const selectedAttendanceId = ref('')
      const showAddMemberForm = () => {
 
@@ -1382,7 +1416,7 @@ export default {
             address: i.person.address,
             email: i.person.email,
             name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
-            phone: i.person.mobilePhone,
+            phone: i.person.phoneNumber,
             position: i.position
           };
 
@@ -1530,13 +1564,17 @@ export default {
       requestApproval,
       setGroupModal,
       modalBtn,
+      contacts,
+      test,
       attendanceCheckin,
       groupDetail,
       showGroup,
       showAttendanceCheckin, 
       // wardSearchString,
      getWardId,
-     attendanceData
+     attendanceData,
+     testEmail,
+     selectedGroupMembers,
     //  wardSearchedMembers,
     // wardSearchForUsers
 
