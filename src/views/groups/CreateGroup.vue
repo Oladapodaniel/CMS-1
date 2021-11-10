@@ -932,26 +932,18 @@ import store from "../../store/store";
 import NewPerson from '../../components/membership/NewDonor.vue';
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress.js";
-<<<<<<< HEAD
 import smsComponent from "./component/smsComponent.vue";
 import emailComponent from "./component/emailComponent.vue";
-import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
-=======
+// import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
 import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinList.vue"
 import Attendancevue from "../event/attendance&checkin/Attendance.vue"
-// import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
->>>>>>> e6b43df547d3ef32fd83f81d69e57af16f5fc4eb
 import attendanceservice from '../../services/attendance/attendanceservice';
 
 export default {
   directives: {
     tooltip: Tooltip,
   },
-<<<<<<< HEAD
-  components: { Dropdown, Dialog, NewPerson, smsComponent, emailComponent, Attendancecheckin },
-=======
-  components: { Dropdown, Dialog, NewPerson, Attendancecheckin, Attendancevue },
->>>>>>> e6b43df547d3ef32fd83f81d69e57af16f5fc4eb
+  components: { Dropdown, Dialog, NewPerson, smsComponent, emailComponent,Attendancevue, Attendancecheckin },
   setup() {
      const display = ref(false);
     //  const showWardModal = ref(false)
