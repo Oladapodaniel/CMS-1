@@ -940,31 +940,32 @@ export default {
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width,initial-scale=1.0">
               <style>
-                #email-body img {
-                  width: 100% !important;
-                  max-width: 1000px !important;
-                  margin-left: auto;
-                  margin-right: auto;
-                  max-height: 300px;
-                  object-fit: contain;
-                  display: flex;
-                  justify-content: center;
-                }
                 
-                #email-body img {
-                  display: flex;
-                  justify-content: center;
-                }
-                
-                #email-body figure {
-                  margin: auto;
-                }
               </style>
             </head>
             <body>
-              <div id="email-body" style="max-width: 1000px; margin: auto">${editorData.value}</div>
+              <div id="email-body">${editorData.value}</div>
             </body>
           </html>`,
+          // #email-body img {
+          //         width: 100% !important;
+          //         max-width: 1000px !important;
+          //         margin-left: auto;
+          //         margin-right: auto;
+          //         max-height: 300px;
+          //         object-fit: contain;
+          //         display: flex;
+          //         justify-content: center;
+          //       }
+                
+          //       #email-body img {
+          //         display: flex;
+          //         justify-content: center;
+          //       }
+                
+          //       #email-body figure {
+          //         margin: auto;
+          //       }
         // contacts: [],
         // contacts: selectedMembers.value.map(i => {
         //   return { email: i.email }
