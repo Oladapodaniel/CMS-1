@@ -19,7 +19,7 @@
             <!-- <a  class="user-link">Grace... <span class="user-link-icon"> ></span></a> -->
             <a class="user-link"
               >{{ tenantDisplayName }}
-              <span class="user-link-icon" @click="toggleNavFlyOver"
+              <span class="user-link-icon c-pointer" @click="toggleNavFlyOver"
                 ><i class="pi pi-angle-right"></i></span
             ></a>
           </div>
@@ -298,17 +298,30 @@
               </a>
             </div>
           </div>
+        
           <hr class="hr" />
-
-          <router-link class="link routelink" to="/tenant/settings"> Settings </router-link>
-          <hr class="hr" />
-          <a href="https://churchplus.azurewebsites.net/Account/LogOn" target="_a" class="link routelink">Visit ChurchPlus Classic</a>
+         
           <div class="link" @click="logout">Logout</div>
 
           <!-- Hidden -->
           <a class="link routelink" v-if="false"> Integration </a>
-          <OverlayPanel ref="flyOverRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-              <div class="container-fluid p-0">Dapo here</div>
+          <OverlayPanel ref="flyOverRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
+              <div class="container-fluid p-0 my-3">
+                <router-link class="link routelink text-dark" to="/tenant/settings"> 
+                <div class="row py-2 px-3 hover-flyover">
+                  Settings
+                  
+                </div>
+                </router-link>
+                
+                <a href="https://churchplus.azurewebsites.net/Account/LogOn" target="_a" class="link routelink text-dark">
+                <div class="row py-2 px-3 hover-flyover">
+                  
+                  Visit ChurchPlus Classic
+                  
+                </div>
+                </a>
+              </div>
         </OverlayPanel>
         </div>
       </div>
@@ -430,7 +443,7 @@ export default {
     }
 
     const toggleNavFlyOver = (event) => {
-      // flyOverRef.value.toggle(event)
+      flyOverRef.value.toggle(event)
     }    
 
     return {
@@ -671,5 +684,11 @@ export default {
   /* .nav .link {
     opacity: 1;
   } */
+}
+
+.hover-flyover:hover {
+    background: rgba(202, 202, 202, 0.356);
+    cursor: pointer;
+    text-decoration: none;
 }
 </style>
