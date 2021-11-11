@@ -359,6 +359,16 @@ export default {
         searchText = "";
     }
     const sendGroupSms = (group) => {
+      showEmail.value = false;
+      showSMS.value = true
+      if (group.id) {
+        groupListDetails.value = [{data:`group_${group.id}`}]
+      }
+    }
+    const sendGroupEmail = (group) => {
+      showSMS.value = false;
+      showEmail.value = true
+      // showEmail.value = true
       if (group.id) {
         groupListDetails.value = [{data:`group_${group.id}`}]
       }
@@ -370,6 +380,7 @@ export default {
       // sendSms,
       groups,
       sendGroupSms,
+      sendGroupEmail,
       groupListDetails,
       loading,
       displayConfirmModal,
