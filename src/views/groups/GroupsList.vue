@@ -230,7 +230,7 @@
                                   >Send SMS</a>
                               </a>
                               <a class="dropdown-item" @click="sendGroupEmail(group)">
-                               
+                               <!-- tgtgtg -->
                                   Send Email
                               </a>
                               <a
