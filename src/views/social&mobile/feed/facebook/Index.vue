@@ -344,9 +344,6 @@ export default {
         const {data} = await axios.get("/mobile/v1/Profile/GetChurchProfile");
         churchData.value =  data.returnObject;
         console.log(churchData);
-        console.log(churchData);
-        console.log(churchData);
-        console.log(churchData);
         
 
       }catch(error){
@@ -369,8 +366,8 @@ export default {
     const getFeed = async (pId, accTkn) => {
       try {
         
-            const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
-            console.log(pageDetail);
+            // const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
+            // console.log(pageDetail);
             const {data} = await fb.get(`https://graph.facebook.com/${pId}/feed?access_token=${accTkn}`)
         feed.value = data.data
 
