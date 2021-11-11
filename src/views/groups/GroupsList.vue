@@ -409,15 +409,7 @@ export default {
     /* z-index: 9; */
     transition: all  0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
-.sidemenu {
-  /* display: none; */
-  /* width: 1066px; */
-  /* min-height: 100%; */
-  /* background: #ebeff4; */
-  /* height: inherit; */
-  /* overflow: auto; */
-  /* transition: all 3000ms ease-in-out; */
-}
+
 .row-bg-color {
   background-color: #f1f3f9;
   border-radius: 30px 30px 0 0;
