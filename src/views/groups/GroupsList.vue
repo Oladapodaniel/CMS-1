@@ -230,7 +230,6 @@
                                   >Send SMS</a>
                               </a>
                               <a class="dropdown-item" @click="sendGroupEmail(group)">
-                               <!-- tgtgtg -->
                                   Send Email
                               </a>
                               <a
@@ -261,6 +260,7 @@
     </SideBar>
     <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
       <emailComponent :groupData ="groupListDetails" />
+      <!-- <emailComponent :groupData ="groupListDetails" /> -->
     </SideBar>
     
   </div>
