@@ -158,10 +158,6 @@
              
 
 
-                  <div >
-                    <!-- <SideBar /> -->
-                    <SideBar :show="true" />
-                  </div>
                 <div class="row w-100 c-pointer text-dark border-top hover d-flex align-items-center" style="margin: 0" v-for="(group, index) in searchGroup" :key="index">
                  
                   <div class="col-md-1 d-flex d-md-block px-3 justify-content-end"></div>
