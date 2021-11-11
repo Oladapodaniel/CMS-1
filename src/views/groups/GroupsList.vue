@@ -383,6 +383,7 @@ export default {
     const sendGroupEmail = (group) => {
       showSMS.value = false;
       showEmail.value = true
+      // showEmail.value = true
       if (group.id) {
         groupListDetails.value = [{data:`group_${group.id}`}]
       }
