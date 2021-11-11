@@ -384,7 +384,7 @@ export default {
         let {data} = await axios.get('/api/SocialMedia/getSocialDetails?handle=facebook')
         facebookAuth.value = data.returnObject;
         console.log(data);
-        getFeed(facebookAuth.pageId, facebookAuth.accessToken)
+        getFeed(facebookAuth.value.pageId, facebookAuth.value.accessToken)
       }catch(error){
         console.log(error);
       }
