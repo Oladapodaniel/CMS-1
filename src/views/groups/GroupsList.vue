@@ -251,7 +251,6 @@
       </div>
       <!-- tosin working on tables -->
     </div>
-<<<<<<< HEAD
 
     <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
       <smsComponent :groupData ="groupListDetails" />
@@ -260,8 +259,6 @@
       <emailComponent :groupData ="groupListDetails" />
       <!-- <emailComponent :groupData ="groupListDetails" /> -->
     </SideBar>
-=======
->>>>>>> a93cfa87ee8fecf3e7bd885811cd39cd28382bba
     
   </div>
 </template>
