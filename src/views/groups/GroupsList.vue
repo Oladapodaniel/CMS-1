@@ -225,14 +225,8 @@
                                 <a
                                   @click="sendGroupSms(group)"
                                   >Send SMS</a>
-<<<<<<< HEAD
-                           
-                              <a class="dropdown-item">
-=======
                               </a>
                               <a class="dropdown-item" @click="sendGroupEmail(group)">
-                               <!-- tgtgtg -->
->>>>>>> 76056c54771e1035aa3a07e86d186aca1ef52343
                                   Send Email
                               </a>
                               <a
