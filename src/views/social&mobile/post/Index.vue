@@ -260,17 +260,31 @@ import { useRoute } from "vue-router"
                          console.log(err)
                          display.value = false;
                     })
-                    const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
-                    console.log(pageDetail);
-                         axios.post(`https://graph.facebook.com/${pageDetail.id}/feed?message=${message.value}&access_token=${pageDetail.access_token}`).then((res)=>{
+                    // const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
+                    // console.log(pageDetail);
+                         if (socialData.value.pageId && socialData.value.accessToken){
+                             axios.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=${message.value}&access_token=${socialData.value.accessToken}`).then((res)=>{
                              console.log(res);
                          }).catch((error)=>{
                              console.log(error);
                              console.log('Good');
                          })
+                         }
 
                     
             }
+            //get facebookDetail
+    //         const getSocialDetails = async() =>{
+    //   try{
+    //     let {data} = await axios.get('/api/SocialMedia/getSocialDetails?handle=facebook')
+    //     facebookDetail.value = data;
+    //     console.log(data);
+    //     getFeed(data.pageId, data.accessToken)
+    //   }catch(error){
+    //     console.log(error);
+    //   }
+    // }
+    // getSocialDetails()
 
             const updatePost = async (body) => {
                 try {

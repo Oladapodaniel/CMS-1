@@ -257,7 +257,6 @@
     </SideBar>
     <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
       <emailComponent :groupData ="groupListDetails" />
-      <!-- <emailComponent :groupData ="groupListDetails" /> -->
     </SideBar>
     
   </div>
