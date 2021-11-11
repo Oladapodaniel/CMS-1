@@ -940,18 +940,28 @@ import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress.js";
 import smsComponent from "./component/smsComponent.vue";
 import emailComponent from "./component/emailComponent.vue";
+<<<<<<< HEAD
 import SideBar from "./sidemodal/SideModal.vue";
 // import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
 import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinList.vue"
 import Attendancevue from "../event/attendance&checkin/Attendance.vue"
 // import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
+=======
+// import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
+import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinList.vue"
+import Attendancevue from "../event/attendance&checkin/Attendance.vue"
+>>>>>>> 8b087efdbd82e5e49fcbc14e59fc69a5e8d11188
 import attendanceservice from '../../services/attendance/attendanceservice';
 
 export default {
   directives: {
     tooltip: Tooltip,
   },
+<<<<<<< HEAD
   components: { Dropdown, Dialog, NewPerson, Attendancecheckin, Attendancevue, smsComponent, SideBar, emailComponent },
+=======
+  components: { Dropdown, Dialog, NewPerson, smsComponent, emailComponent,Attendancevue, Attendancecheckin },
+>>>>>>> 8b087efdbd82e5e49fcbc14e59fc69a5e8d11188
   setup() {
      const display = ref(false);
     //  const showWardModal = ref(false)
@@ -1621,8 +1631,8 @@ export default {
     background-color: #136acd;
     /* background-color: #33475b; */
     /* color: #136acd" */
-    border-radius: 24px;
-    bottom: -2.5px;
+    border-radius: 20px;
+    /* bottom: -2.5px; */
     height: 6px;
     left: 0px;
     width: 50%;
@@ -1633,8 +1643,8 @@ export default {
     transition: all 150ms ease-in-out;
     background-color: #136acd;
     /* background-color: #33475b; */
-    border-radius: 24px;
-    bottom: -2.5px;
+    border-radius: 20px;
+    /* bottom: -2.5px; */
     height: 6px;
     left: 0px;
     width: 50%;

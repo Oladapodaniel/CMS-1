@@ -377,13 +377,14 @@
                       :options="userPages"
                       optionLabel="name"
                       placeholder="Select Page"
-                      @change="saveSelectedPage"
+                     
                     />
           </div>
+           <!-- @change="saveSelectedPage" -->
         
         <div class="row d-flex justify-content-between mb-4">
                         <div class="p-0 mt-4 mb-4">
-                        <button class="btn default-btn btnfb" data-dismiss="modal" @click="userRoute()">Create Post</button>
+                        <button class="btn default-btn btnfb" data-dismiss="modal" @click="saveFacbookDetail()">Continue</button>
                       </div>
                         <div class="p-0 mt-4 mb-4">
                         <button data-dismiss="modal" type="button" class="btn default-btn">Cancel</button>
@@ -544,7 +545,7 @@ import {useToast} from 'primevue/usetoast';
 import { useRouter } from "vue-router";
 import Dropdown from "primevue/dropdown";
 
-export default {
+export default { 
   components: { Dropdown},
   setup() {
     const router = useRouter();
@@ -595,10 +596,10 @@ export default {
       );
     };
 
-    const saveSelectedPage = () => {
-      let objParsed = JSON.stringify(selectedPage.value)
-      localStorage.setItem('authResponse', objParsed)
-    }
+    // const saveSelectedPage = () => {
+    //   let objParsed = JSON.stringify(selectedPage.value)
+    //   localStorage.setItem('authResponse', objParsed)
+    // }
 
     // const testAPI = () => {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
     //   console.log('Welcome!  Fetching your information.... ');
@@ -703,6 +704,7 @@ export default {
     const pageaccessToken = ref("");
     const pageId1 = ref("");
     const name = ref("facebook");
+    const pageUrl = ref('pageurl')
     
 
     const getPageAccessToken = async () => {
@@ -740,7 +742,26 @@ export default {
   }catch(error){
     console.log(error);
   }
-}    //getSocialDetails
+}  
+//save facebookdetail to Database
+const saveFacbookDetail = async()=>{
+  const facebookDetail={
+    name: name.value,
+    url:pageUrl.value ,
+    pageId:selectedPage.value.id,
+    accessToken:selectedPage.value.access_token
+  }
+  try{
+    const response= await axios.post('/api/SocialMedia/connect', facebookDetail);
+    console.log(response);
+    toast.add({severity:'success', summary: '', detail:'Successfully', life: 3000});
+    setTimeout(function () {
+     userRoute()
+    }, 1500);
+  }catch(error){
+    console.log(error);
+  }
+}
    
 
     /*eslint no-undef: "warn"*/
@@ -833,9 +854,11 @@ export default {
       showPageList,
       userPages,
       userRoute,
-      saveSelectedPage,
+      // saveSelectedPage,
       selectedPage,
-      pagesBtn
+      pagesBtn,
+      pageUrl,
+      saveFacbookDetail
     };
   },
 };
