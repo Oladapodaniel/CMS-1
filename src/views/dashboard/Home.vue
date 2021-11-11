@@ -1,7 +1,7 @@
 <template>
 <div> 
   <div class="whole-page">
-    <div class="links-menu" :class="{ show: menuShouldShow }">
+    <div class="links-menu" :class="{ show: menuShouldShow }" v-if="followUpUser">
       <MenuLinks @linkclicked="hideNav" />
     </div>
     <div :class="{ 'main-con dim' :  !route.fullPath.includes('/mobileonboarding') && !route.fullPath.includes('/onboardingsuccessful'), 'top-router': route.query.fw }" @click="hideMenu">
@@ -51,6 +51,7 @@ export default {
   setup() {
     const menuShouldShow = ref(false);
     const fullPath = ref("")
+    const followUpUser = ref(true)
 
     const toggleMenu = () => (menuShouldShow.value = !menuShouldShow.value);
 
@@ -71,6 +72,17 @@ export default {
     }
     getRoute()
 
+    const getRole =  () => {
+      const getRoles = JSON.parse(localStorage.getItem('roles'));
+      if (getRoles && getRoles.length === 1 && getRoles[0] === "FollowUp") {
+        followUpUser.value = false
+      } else {
+        followUpUser.value = true
+      }
+      console.log(getRoles)
+    }
+    getRole()
+
     return {
       menuShouldShow,
       toggleMenu,
@@ -78,6 +90,7 @@ export default {
       hideNav,
       fullPath,
       route,
+      followUpUser
     };
   },
 };

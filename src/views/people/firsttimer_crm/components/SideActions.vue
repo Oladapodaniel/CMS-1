@@ -439,10 +439,11 @@
                <div class="row mt-3">
                    <div class="p-0 col-md-12">
                         <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle small-text border w-100 text-left" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                            <div class="btn btn-default small-text border w-100 d-flex justify-content-between align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                             <!-- @click="closeDropdownIfOpen" -->
-                            {{ Object.keys(selectedSender).length > 0 ? selectedSender.mask : "Select Sender Id" }}
-                            </button>
+                            <div>{{ Object.keys(selectedSender).length > 0 ? selectedSender.mask : "Select Sender Id" }}</div>
+                            <i class="pi pi-chevron-down"></i>
+                            </div>
                             <div
                             class="dropdown-menu w-100 pb-0 border-0"
                             aria-labelledby="dropdownMenuButton"
@@ -481,6 +482,39 @@
                 </div>
             </template>
     </Dialog>
+    <!-- Create sender id modal -->
+        <div class="modal fade" id="senderIdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Create sender id</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-12">Enter sender id</div>
+                    <div class="col-12 mt-2">
+                      <input type="text" class="form-control" placeholder="Enter sender id" v-model="senderIdText" @input="validateSenderId" ref="senderIdRef"/>
+                      <div class="invalid-feedback text-danger pl-2">
+                        <ul>
+                          <li>Should not contain any special characters</li>
+                          <li>Should not be less than 3 characters and more than 11 characters</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="button" class="btn default-btn " data-dismiss="modal">Close</button>
+                <button type="button" class="btn default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="saveSenderId" :disabled="requestbtn">Request sender id</button>
+              </div>
+            </div>
+          </div>
+        </div>
 </template>
 
 <script>
@@ -580,6 +614,10 @@ export default {
         const membershipCategory = ref([])
         const displayConfirm = ref(false)
         const loading = ref(false)
+        const senderIdText = ref("")
+        const senderIdRef = ref()
+        const requestbtn = ref(false)
+        const tenantId = ref("")
 
 
         const selectedContactLog = computed(() => {
@@ -731,11 +769,14 @@ export default {
         const getIsoCode = () => {
             if (store.getters.currentUser && store.getters.currentUser.isoCode) {
             isoCode.value = store.getters.currentUser.isoCode;
+            tenantId.value = store.getters.currentUser.tenantId
             } else {
             axios
                 .get("/api/Membership/GetCurrentSignedInUser")
                 .then((res) => {
                 isoCode.value = res.data.isoCode;
+                tenantId.value = res.data.tenantId
+                console.log(res.data)
                 })
                 .catch((err) => console.log(err));
             }
@@ -948,7 +989,7 @@ export default {
                 phoneNumber: props.personDetails.phoneNumber,
                 address: props.personDetails.address,
                 activityID: selectedEventAttended.value && Object.keys(selectedEventAttended.value).length > 0 ? selectedEventAttended.value.activityID : props.personDetails.activityID,
-                howDidYouAboutUsId: selectedAboutUsSource.value ? selectedAboutUsSource.value.id : 0,
+                howDidYouAboutUsId: selectedAboutUsSource.value ? selectedAboutUsSource.value.id : "00000000-0000-0000-0000-000000000000",
                 communicationMeans: selectedCommunicationMeans.value ? selectedCommunicationMeans.value.id : 0,
                 interestedInJoining: selectedJoinInterest.value ? selectedJoinInterest.value.id : 0,
                 wantsToBeVisited: selectedVisitOption.value ? selectedVisitOption.value.id : 0,
@@ -1142,6 +1183,71 @@ export default {
             // });
         }
 
+        const validateSenderId = (e) => {
+            var regExp = /^[a-zA-Z0-9]{3,11}$/;
+            var testString = e.target.value;
+                        
+            if(regExp.test(testString)){
+                /* do something if letters are found in your string */
+                senderIdRef.value.classList.add('is-valid')
+                senderIdRef.value.classList.remove('is-invalid')
+                requestbtn.value = false
+            } else {
+                /* do something if letters are not found in your string */
+                senderIdRef.value.classList.add('is-invalid')
+                senderIdRef.value.classList.remove('is-valid')
+                requestbtn.value = true
+            }
+        }
+
+        const saveSenderId = async() => {
+            let payload = {
+                tenantID: tenantId.value,
+                mask: senderIdText.value
+            }
+            try {
+                let { data } = await axios.post(`/api/Messaging/RequestSenderID`, payload)
+                console.log(data)
+                if(data.status === 0) {
+                toast.add({
+                    severity: "warn",
+                    summary: "Pending",
+                    detail: "Sender id is pending for approval, when it is approved, you will see it among the sender id list",
+                    life: 5000
+                });
+                } else if (data.status === 1) {
+                toast.add({
+                    severity: "warn",
+                    summary: "Processing",
+                    detail: "Sender id is processing for approval, when it is approved, you will see it among the sender id list",
+                    life: 5000
+                });
+                } else if (data.status === 2) {
+                    selectedSender.value = payload
+                toast.add({
+                    severity: "success",
+                    summary: "Approved",
+                    detail: "Sender id is approved!",
+                    life: 6000
+                });
+                } else {
+                toast.add({
+                    severity: "warn",
+                    summary: "Not Approved",
+                    detail: "Sender id is not approved, create another one.",
+                    life: 4000
+                })
+                }
+                senderIdText.value = ""
+                senderIdRef.value.classList.remove('is-invalid')
+                senderIdRef.value.classList.remove('is-valid')
+                getSenderId()
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
 
         return {
             selectedContact,
@@ -1249,7 +1355,13 @@ export default {
             membershipCategory,
             openConfirm,
             displayConfirm,
-            loading
+            loading,
+            validateSenderId,
+            senderIdText,
+            senderIdRef,
+            saveSenderId,
+            requestbtn,
+            tenantId
         }
             
     }
