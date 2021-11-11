@@ -2,7 +2,7 @@
   <div class="container-slim">
     <div class="container-fluid">
       <div class="row d-md-flex yu mt-5">
-        <!-- <smsComponent :groupData ="groupListDetails"/> -->
+        <smsComponent :groupData ="groupListDetails"/>
         <div class="col-md-6 col-4">
           <div class="events">Groups</div>
           <Toast />
@@ -158,13 +158,10 @@
              
 
 
-                  <!-- <div > -->
+                  <div >
                     <!-- <SideBar /> -->
-                    <!-- <SideBar :show="true">
-                      <smsComponent /> -->
-                      <!-- <emailComponent /> -->
-                    <!-- <SideBar />
-                  </div> -->
+                    <SideBar :show="true" />
+                  </div>
                 <div class="row w-100 c-pointer text-dark border-top hover d-flex align-items-center" style="margin: 0" v-for="(group, index) in searchGroup" :key="index">
                  
                   <div class="col-md-1 d-flex d-md-block px-3 justify-content-end"></div>
@@ -254,6 +251,7 @@
       </div>
       <!-- tosin working on tables -->
     </div>
+<<<<<<< HEAD
 
     <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
       <smsComponent :groupData ="groupListDetails" />
@@ -262,6 +260,8 @@
       <emailComponent :groupData ="groupListDetails" />
       <!-- <emailComponent :groupData ="groupListDetails" /> -->
     </SideBar>
+=======
+>>>>>>> a93cfa87ee8fecf3e7bd885811cd39cd28382bba
     
   </div>
 </template>
@@ -273,14 +273,12 @@ import { useStore } from "vuex";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import smsComponent from "./component/smsComponent.vue";
-import emailComponent from "./component/emailComponent.vue";
 import SideBar from "./sidemodal/SideModal.vue";
 
 export default {
   components : {
     SideBar,
-    smsComponent,
-    emailComponent
+    smsComponent
   },
 
   setup() {
@@ -292,9 +290,7 @@ export default {
     const groupListDetails = ref([]);
     const toast = useToast();
     const confirm = useConfirm();
-    const showSMS = ref(false);
-    const showEmail = ref(false);
-
+    // const showSide = ref(false);
 
     // const sendSms = () =>{
     //   showSide.value = !showSide.value
@@ -405,8 +401,6 @@ export default {
       toggleSearch,
       searchGroup,
       removeSearchText,
-      showSMS,
-      showEmail,
     };
   },
 };
@@ -437,15 +431,7 @@ export default {
     /* z-index: 9; */
     transition: all  0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
-.sidemenu {
-  /* display: none; */
-  /* width: 1066px; */
-  /* min-height: 100%; */
-  /* background: #ebeff4; */
-  /* height: inherit; */
-  /* overflow: auto; */
-  /* transition: all 3000ms ease-in-out; */
-}
+
 .row-bg-color {
   background-color: #f1f3f9;
   border-radius: 30px 30px 0 0;
