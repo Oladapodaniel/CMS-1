@@ -960,13 +960,23 @@
                   <label for="address" class="col-sm-3 text-sm-right col-form-label"
                     >Address</label
                   >
-                  <div class="col-sm-6 mb-4">
+                  <div class="col-sm-6">
                     <input
                       type="text"
                       v-model="firstTimersObj.address"
                       class="form-control input-first"
                       id="address"
                     />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="address" class="col-sm-3 text-sm-right col-form-label"
+                    >Contact owner</label
+                  >
+                  <div class="col-sm-6">
+                    <div class="p-0 border-0">
+                    <SearchMembers @memberdetail="setContact"/>
+                  </div>
                   </div>
                 </div>
 
@@ -1204,13 +1214,24 @@
                   <label for="address" class="col-sm-3 text-sm-right col-form-label"
                     >Address</label
                   >
-                  <div class="col-sm-6 mb-4">
+                  <div class="col-sm-6">
                     <input
                       type="text"
                       v-model="newConvertsObj.address"
                       class="form-control input-first"
                       id="address"
                     />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="address" class="col-sm-3 text-sm-right col-form-label"
+                    >Contact owner</label
+                  >
+                  <div class="col-sm-6">
+                    <div class="p-0 border-0">
+                    <SearchMembers @memberdetail="setContactNewConvert"/>
+                  </div>
                   </div>
                 </div>
 
@@ -1562,23 +1583,19 @@
 </template>
 
 <script>
-// import { onMounted, ref } from "vue";
-// import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
 import store from "@/store/store.js"
-// import { useConfirm } from "primevue/useConfirm";
-
 import Toast from 'primevue/usetoast';
-
 import membershipService from "../../services/membership/membershipservice";
 import CurrencyConverter from "./CurrencyConverter"
 import Dropdown from 'primevue/dropdown';
 import CurrencyConverterService from '../../services/currency-converter/currencyConverter'
 import finish from "../../services/progressbar/progress";
+import SearchMembers from "../../components/membership/MembersSearch.vue"
 
 export default {
   components: {
-    CurrencyConverter, Dropdown, Toast
+    CurrencyConverter, Dropdown, Toast, SearchMembers
   },
   data() {
     return {
@@ -2993,6 +3010,28 @@ export default {
                     console.log(error);
             }
         },
+        setContact (payload) {
+        if (!payload.email) {
+          this.$toast.add({
+            severity: "warn",
+            summary: "No email associate with the person",
+            detail: "This contact does not have any email, communicate with this person to create him as a user",
+            life: 15000,
+          });
+        }
+        this.firstTimersObj.contactOwnerId = payload.id
+      },
+      setContactNewConvert (payload) {
+        if (!payload.email) {
+          this.$toast.add({
+            severity: "warn",
+            summary: "No email associate with the person",
+            detail: "This contact does not have any email, communicate with this person to create him as a user",
+            life: 15000,
+          });
+        }
+        this.firstTimersObj.contactOwnerId = payload.id
+      }
         
   },
   async created() {

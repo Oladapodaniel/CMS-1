@@ -19,7 +19,7 @@
             <!-- <a  class="user-link">Grace... <span class="user-link-icon"> ></span></a> -->
             <a class="user-link"
               >{{ tenantDisplayName }}
-              <span class="user-link-icon"
+              <span class="user-link-icon" @click="toggleNavFlyOver"
                 ><i class="pi pi-angle-right"></i></span
             ></a>
           </div>
@@ -307,6 +307,9 @@
 
           <!-- Hidden -->
           <a class="link routelink" v-if="false"> Integration </a>
+          <OverlayPanel ref="flyOverRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+              <div class="container-fluid p-0">Dapo here</div>
+        </OverlayPanel>
         </div>
       </div>
     </div>
@@ -320,12 +323,17 @@ import store from "@/store/store";
 import axios from "@/gateway/backendapi";
 import { useRouter } from 'vue-router'
 import setupService from '../../services/setup/setupservice';
+import OverlayPanel from 'primevue/overlaypanel';
 export default {
+  components: {
+    OverlayPanel
+  },
   setup(props, { emit }) {
     const route = useRoute();
     const router = useRouter()
     const moreShown = ref(false);
     const churchLogo = ref("");
+    const flyOverRef = ref(false)
     const showMore = () => {
       moreShown.value = !moreShown.value;
     };
@@ -368,18 +376,32 @@ export default {
 
     const tenantInfo = ref({});
 
-    if (!store.getters.currentUser || !store.getters.currentUser.churchName) {
-      axios
-        .get("/dashboard")
-        .then((res) => {
-          tenantInfo.value = res.data;
-          console.log(res.data)
-        })
-        .catch((err) => console.log(err.respone));
-    } else {
-      tenantInfo.value.churchName = store.getters.currentUser.churchName;
-      tenantInfo.value.tenantId = store.getters.currentUser.tenantId;
+    const getChurchProfile = async() => {
+            try {
+                let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantInfo.value.tenantId}`)
+                churchLogo.value = res.data.returnObject.logo
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
+    const currentUser = () => {
+      if (!store.getters.currentUser || !store.getters.currentUser.churchName) {
+        axios
+          .get("/api/Membership/GetCurrentSignedInUser")
+          .then((res) => {
+            tenantInfo.value = res.data;
+            getChurchProfile()
+          })
+          .catch((err) => console.log(err.respone));
+      } else {
+        tenantInfo.value.churchName = store.getters.currentUser.churchName;
+        tenantInfo.value.tenantId = store.getters.currentUser.tenantId;
+        getChurchProfile()
+      }
     }
+    currentUser()
 
     const tenantDisplayName = computed(() => {
       if (!tenantInfo.value.churchName) return "";
@@ -396,18 +418,6 @@ export default {
       }
     }
 
-    const getChurchProfile = async() => {
-            try {
-                let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantInfo.value.tenantId}`)
-                console.log(res)
-                churchLogo.value = res.data.returnObject.logo
-            }
-            catch (err) {
-                console.log(err)
-            }
-        }
-        getChurchProfile()
-
     const logout = () => {
       localStorage.clear()
       router.push('/')
@@ -418,6 +428,10 @@ export default {
     const goToReport = () => {
       router.push('/tenant/reports')
     }
+
+    const toggleNavFlyOver = (event) => {
+      // flyOverRef.value.toggle(event)
+    }    
 
     return {
       route,
@@ -436,7 +450,9 @@ export default {
       linkClicked,
       churchLogo,
       logout,
-      goToReport
+      goToReport,
+      flyOverRef,
+      toggleNavFlyOver
     };
   },
 };
@@ -513,9 +529,10 @@ export default {
 }
 
 .link-image {
-  width: 40px;
-  height: 23px;
+  width: 25px;
+  height: 24px;
   padding-right: 0;
+  object-fit: cover;
 }
 
 .hr {

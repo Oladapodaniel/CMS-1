@@ -1301,7 +1301,7 @@ export default {
             personID: i.person.id,
             address: i.person.address,
             email: i.person.email,
-            name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
+            name: `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""}`,
             phone: i.person.mobilePhone,
             position: i.position
           };
@@ -1314,7 +1314,7 @@ export default {
               personID: i.person.id,
               address: i.person.address,
               email: i.person.email,
-              name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
+              name:  `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""}`,
               phone: i.person.mobilePhone,
               position: i.position,
               groupID: i.groupID

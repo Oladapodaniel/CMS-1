@@ -74,15 +74,6 @@
                   v-model="person.address"
                 />
               </div>
-              <div class="input-field">
-                <label for="" class="label">Address</label>
-                <input
-                  type="text"
-                  class="input"
-                  placeholder=""
-                  v-model="person.address"
-                />
-              </div>
                <div class="input-field">
                 <label for="" class="label">Choose contact owner</label>
                 <div class="input p-0 border-0">
