@@ -2,7 +2,7 @@
   <div class="container-slim">
     <div class="container-fluid">
       <div class="row d-md-flex yu mt-5">
-        <smsComponent :groupData ="groupListDetails"/>
+        <!-- <smsComponent :groupData ="groupListDetails"/> -->
         <div class="col-md-6 col-4">
           <div class="events">Groups</div>
           <Toast />
@@ -158,10 +158,6 @@
              
 
 
-                  <div >
-                    <!-- <SideBar /> -->
-                    <SideBar :show="true" />
-                  </div>
                 <div class="row w-100 c-pointer text-dark border-top hover d-flex align-items-center" style="margin: 0" v-for="(group, index) in searchGroup" :key="index">
                  
                   <div class="col-md-1 d-flex d-md-block px-3 justify-content-end"></div>
@@ -269,12 +265,14 @@ import { useStore } from "vuex";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import smsComponent from "./component/smsComponent.vue";
+import emailComponent from "./component/emailComponent.vue";
 import SideBar from "./sidemodal/SideModal.vue";
 
 export default {
   components : {
     SideBar,
-    smsComponent
+    smsComponent,
+    emailComponent
   },
 
   setup() {
@@ -286,6 +284,9 @@ export default {
     const groupListDetails = ref([]);
     const toast = useToast();
     const confirm = useConfirm();
+    const showSMS = ref(false)
+    const showEmail = ref(false)
+
     // const showSide = ref(false);
 
     // const sendSms = () =>{
@@ -375,7 +376,6 @@ export default {
     const sendGroupEmail = (group) => {
       showSMS.value = false;
       showEmail.value = true
-      // showEmail.value = true
       if (group.id) {
         groupListDetails.value = [{data:`group_${group.id}`}]
       }
@@ -385,6 +385,8 @@ export default {
     return {
       // showSide,
       // sendSms,
+      showSMS,
+      showEmail,
       groups,
       sendGroupSms,
       sendGroupEmail,
