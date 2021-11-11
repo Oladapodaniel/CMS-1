@@ -337,7 +337,8 @@ export default {
     // const getCurrentUser= ref([store.getters.currentUser.churchName]);
     // console.log(getCurrentUser);
     //Get AllChurchProfile
-  const churchData =ref('')
+  const churchData =ref('');
+  const facebookDetail =ref({});
     const getChurchProfile= async()=>{
       try{
         const {data} = await axios.get("/mobile/v1/Profile/GetChurchProfile");
@@ -365,17 +366,12 @@ export default {
     //   .catch((err) => console.log(err));
 
     const loaded = ref(true);
-    const getFeed = async () => {
+    const getFeed = async (pId, accTkn) => {
       try {
-        // const response = await social_service.getFeed(tenantId);
-        // feed.value = response.map(i => {
-        //   i.showFullMessage = false;
-        //   i.briefMessage = i.content.slice(0, previewLenth);
-        //   return i;
-        // })
+        
             const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
             console.log(pageDetail);
-            const {data} = await fb.get(`https://graph.facebook.com/${pageDetail.id}/feed?access_token=${pageDetail.access_token}`)
+            const {data} = await fb.get(`https://graph.facebook.com/${pId}/feed?access_token=${accTkn}`)
         feed.value = data.data
 
         loaded.value = false;
@@ -385,7 +381,18 @@ export default {
         loaded.value = false;
       }
     };
-    getFeed()
+    
+    const getSocialDetails = async() =>{
+      try{
+        let {data} = await axios.get('/api/SocialMedia/getSocialDetails?handle=facebook')
+        facebookDetail.value = data;
+        console.log(data);
+        getFeed(data.pageId, data.accessToken)
+      }catch(error){
+        console.log(error);
+      }
+    }
+    getSocialDetails()
 
     const comment = ref({});
     const postComment = async (e, postId, index) => {
@@ -430,6 +437,7 @@ export default {
       loaded,
       previewLenth,
       churchData,
+      facebookDetail
     };
   },
 };

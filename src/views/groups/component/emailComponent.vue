@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="container" @click="closeDropdownIfOpen">
+          <!-- {{groupData}}groupData -->
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
         <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
@@ -726,7 +727,7 @@ import MyUploadAdapter from "../../../services/editor/editor_uploader"
 import DecoupledEditor from '@/components/RichEditor';
 
 export default {
-props: ['selectedGroupMembers'],
+props: ['selectedGroupMembers', 'groupData'],
   components: { 
     // Editor
     // ckeditor: CKEditor.component,
@@ -761,6 +762,10 @@ props: ['selectedGroupMembers'],
      watchEffect( () => {
         // alert(props.phoneNumbers)
          if (props.selectedGroupMembers) selectedMembers.value = props.selectedGroupMembers
+    } )
+     watchEffect( () => {
+        // alert(props.phoneNumbers)
+         if (props.groupData) selectedMembers.value = props.groupData
     } )
     const showSection = (index) => {
       if (index === 1) groupSelectionTab.value = true;
