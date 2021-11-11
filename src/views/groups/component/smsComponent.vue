@@ -5,7 +5,8 @@
       <div class="row">
         <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
           <h4 class="font-weight-bold">Compose SMS</h4>
-          {{groupData}} data
+          <!-- {{ phoneNumbers }}phoneNumbers -->
+          <!-- {{groupData}} data -->
           <Toast />
 
           <Dialog
@@ -48,13 +49,13 @@
         </div>
       </div>
 
-      <div class="row">
+      <div v-if="false" class="row">
         <div class="col-md-12 pr-0">
           <hr class="hr my-1" />
         </div>
       </div>
 
-      <div class="row">
+      <div v-if="false" class="row">
         <div class="col-md-2 pr-md-0 col-lg-2 align-self-center">
           <span class="small-text">Send to : </span>
         </div>
@@ -87,13 +88,13 @@
         </div>
       </div>
 
-      <div class="row mb-1">
+      <div v-if="false" class="row mb-1">
         <div class="col-md-12 pr-0">
           <hr class="hr my-1" />
         </div>
       </div>
 
-      <div class="row" v-if="sendToAll">
+      <div  class="row" v-if="sendToAll">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
           <span>
@@ -385,8 +386,8 @@
       </div>
 
       <!-- Enter phone numbers -->
-      <div class="col-md-12 my-1 px-0" v-if="phoneNumberSelectionTab">
-        <div class="row">
+      <div  class="col-md-12 my-1 px-0" v-if="phoneNumberSelectionTab">
+        <div v-if="false" class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0">
             <textarea

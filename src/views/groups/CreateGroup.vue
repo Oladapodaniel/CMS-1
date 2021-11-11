@@ -57,8 +57,8 @@
         <div class="col-md-12">
           <h2 v-if="!route.params.groupId">Add Group</h2>
           <h2 v-else>Update Group</h2>
-          <emailComponent :selectedGroupMembers="selectedGroupMembers" />
-          <smsComponent :phoneNumbers="contacts"/>
+          <!-- <emailComponent :selectedGroupMembers="selectedGroupMembers" /> -->
+          <!-- <smsComponent :phoneNumbers="contacts"/> -->
           <Toast />
           <ConfirmDialog />
         </div>
@@ -735,7 +735,7 @@
                           <!-- <a class="dropdown-item" v-if="member.phoneNumber"> -->
                             <a 
                               @click="test(member)"
-                              >Send SMS</a
+                              > Send SMS</a
                             >
                           </a>
                           <!-- <a class="dropdown-item" v-if="member.email" href=""> -->
@@ -914,6 +914,12 @@
             </div>
       </div>
     </Dialog>
+     <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
+      <smsComponent :phoneNumbers="contacts"/>
+    </SideBar>
+     <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
+      <emailComponent />
+    </SideBar>
   </div>
 </template>
 
@@ -932,26 +938,20 @@ import store from "../../store/store";
 import NewPerson from '../../components/membership/NewDonor.vue';
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress.js";
-<<<<<<< HEAD
 import smsComponent from "./component/smsComponent.vue";
 import emailComponent from "./component/emailComponent.vue";
-import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
-=======
+import SideBar from "./sidemodal/SideModal.vue";
+// import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
 import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinList.vue"
 import Attendancevue from "../event/attendance&checkin/Attendance.vue"
 // import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
->>>>>>> e6b43df547d3ef32fd83f81d69e57af16f5fc4eb
 import attendanceservice from '../../services/attendance/attendanceservice';
 
 export default {
   directives: {
     tooltip: Tooltip,
   },
-<<<<<<< HEAD
-  components: { Dropdown, Dialog, NewPerson, smsComponent, emailComponent, Attendancecheckin },
-=======
-  components: { Dropdown, Dialog, NewPerson, Attendancecheckin, Attendancevue },
->>>>>>> e6b43df547d3ef32fd83f81d69e57af16f5fc4eb
+  components: { Dropdown, Dialog, NewPerson, Attendancecheckin, Attendancevue, smsComponent, SideBar, emailComponent },
   setup() {
      const display = ref(false);
     //  const showWardModal = ref(false)
@@ -978,6 +978,8 @@ export default {
     const attendanceData = ref([])
     const showAttendanceCheckin = ref(false)
     const selectedGroupMembers = ref([])
+    const showSMS = ref(false)
+    const showEmail = ref(false)
 
     
     // const moveMembers =() =>{
@@ -996,6 +998,7 @@ export default {
 
     const test = (member) => {
       if (member.phone) {
+        showSMS.value = true;
         contacts.value.push(member.phone)
       }else {
         alert('No phone number')
@@ -1003,9 +1006,8 @@ export default {
     }
     const testEmail = (member) => {
       if (member.email) {
+        showEmail.value = true;
         selectedGroupMembers.value.push({id:member.personID})
-      }else {
-        alert('No phone number')
       }
     }
     const selectedAttendanceId = ref('')
@@ -1575,6 +1577,8 @@ export default {
      attendanceData,
      testEmail,
      selectedGroupMembers,
+     showSMS,
+     showEmail,
     //  wardSearchedMembers,
     // wardSearchForUsers
 
