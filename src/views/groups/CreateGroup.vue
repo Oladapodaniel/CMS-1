@@ -999,6 +999,7 @@ export default {
     const test = (member) => {
       if (member.phone) {
         showSMS.value = true;
+        showEmail.value = false;
         contacts.value.push(member.phone)
       }else {
         alert('No phone number')
@@ -1007,6 +1008,7 @@ export default {
     const testEmail = (member) => {
       if (member.email) {
         showEmail.value = true;
+        showSMS.value = false;
         selectedGroupMembers.value.push({id:member.personID})
       }
     }
