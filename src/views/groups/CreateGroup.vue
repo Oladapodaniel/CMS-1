@@ -3,11 +3,11 @@
     <div class="container-fluid">
       <div class="row mt-3">
             <!-- <div class="col-12"> -->
-                <div class="col-12 col-sm-5  c-pointer "  @click="groupDetail">
+                <div class="col-12 col-sm-3  c-pointer "  @click="groupDetail">
                     <div class="font-weight-bold h5 ">Group Detail</div>
                     <div :class="{ 'baseline' : showGroup, 'hide-base' : !showGroup }"></div>
                 </div>
-                <div class="col-12 col-sm-5  c-pointer "  @click="attendanceCheckin">
+                <div class="col-12 col-sm-3  c-pointer "  @click="attendanceCheckin">
                     <div class="font-weight-bold h5 ">Attendance & Checkin</div>
                     <div :class="{ 'baseline' : showAttendanceCheckin, 'hide-base' : !showAttendanceCheckin }"></div>
                 </div>
