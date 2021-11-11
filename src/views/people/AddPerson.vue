@@ -75,6 +75,21 @@
                 />
               </div>
               <div class="input-field">
+                <label for="" class="label">Address</label>
+                <input
+                  type="text"
+                  class="input"
+                  placeholder=""
+                  v-model="person.address"
+                />
+              </div>
+               <div class="input-field">
+                <label for="" class="label">Choose contact owner</label>
+                <div class="input p-0 border-0">
+                  <SearchMembers @memberdetail="setContact"/>
+                </div>
+              </div>
+              <div class="input-field">
                 <label for=""></label>
                 <div class="status-n-gender">
                   <div class="status cstm-select">
@@ -103,6 +118,7 @@
                   </div>
                 </div>
               </div>
+             
             </div>
             <div class="image-div other">
               <div class="grey-bg">
@@ -536,9 +552,13 @@ import { useStore } from "vuex";
 import membershipService from "../../services/membership/membershipservice";
 import grousService from "../../services/groups/groupsservice";
 // import lookupService from "../../services/lookup/lookupservice";
+import SearchMembers from "../../components/membership/MembersSearch.vue"
 
 export default {
-  components: { Dropdown },
+  components: {
+    Dropdown,
+    SearchMembers
+  },
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
     const toast = useToast();
@@ -551,21 +571,8 @@ export default {
     const peopleInGroupIDs = ref([])
 
     const loading = ref(false);
-    const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
+    // const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
+    const months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
     const birthMonth = ref(1);
     const birthDay = ref(1);
@@ -1098,6 +1105,18 @@ export default {
       
     };
 
+    const setContact = (payload) => {
+        if (!payload.email) {
+          toast.add({
+              severity: "warn",
+              summary: "No email associate with the person",
+              detail: "This contact does not have any email, communicate with this person to create him as a user",
+              life: 15000,
+            });
+        }
+        // firstTimersObj.value.contactOwnerId = payload.id
+      }
+
     return {
       months,
       numberofYears,
@@ -1149,7 +1168,8 @@ export default {
       addToGroupError,
       dismissAddToGroupModal,
       routeParams,
-      peopleInGroupIDs
+      peopleInGroupIDs,
+      setContact
     };
   },
 };
