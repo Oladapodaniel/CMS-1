@@ -1619,12 +1619,12 @@ export default {
 .events {
         font: normal normal 800 29px Nunito sans;
     }
-    hr{
+    /* hr{
       color: gainsboro;
       background-color: hotpink;
       height: 5px;
       width : 100%;
-    }
+    } */
 
 .baseline {
     transition: all 150ms ease-in-out;
