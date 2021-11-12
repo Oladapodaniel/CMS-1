@@ -338,7 +338,7 @@ export default {
     // console.log(getCurrentUser);
     //Get AllChurchProfile
   const churchData =ref('');
-  const facebookDetail =ref({});
+  const facebookAuth =ref({});
     const getChurchProfile= async()=>{
       try{
         const {data} = await axios.get("/mobile/v1/Profile/GetChurchProfile");
@@ -382,9 +382,9 @@ export default {
     const getSocialDetails = async() =>{
       try{
         let {data} = await axios.get('/api/SocialMedia/getSocialDetails?handle=facebook')
-        facebookDetail.value = data;
+        facebookAuth.value = data.returnObject;
         console.log(data);
-        getFeed(data.pageId, data.accessToken)
+        getFeed(facebookAuth.value.pageId, facebookAuth.value.accessToken)
       }catch(error){
         console.log(error);
       }
@@ -434,7 +434,7 @@ export default {
       loaded,
       previewLenth,
       churchData,
-      facebookDetail
+      facebookAuth
     };
   },
 };
