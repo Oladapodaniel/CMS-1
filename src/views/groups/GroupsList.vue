@@ -247,13 +247,17 @@
       </div>
       <!-- tosin working on tables -->
     </div>
-
-    <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
+    <div :class="{ 'show-Times' : showSMS, 'hide-Times' : !showSMS }">
+      <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
       <smsComponent :groupData ="groupListDetails" />
     </SideBar>
+    </div>
+    <div :class="{ 'show-Times' : showSMS, 'hide-Times' : !showSMS }">
     <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
       <emailComponent :groupData ="groupListDetails" />
     </SideBar>
+    </div>
+    
     
   </div>
 </template>
@@ -408,24 +412,29 @@ export default {
 * {
   box-sizing: border-box;
 }
-.show-side{
+.show-Times{
   /* display: block; */
-   width: 1066px;
-   overflow: hidden;
+   width: 875px;
+   height: 98%;
+   overflow: scroll;
+   overflow-x: hidden;
+   /* overflow-y: hidden; */
     position: fixed;
-    right: -266px;
-    top: -50px;
+    right: 0;
+    top: 0;
     z-index: 9;
-    /* transform: translateX(-20%); */
-    transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+    background: #fff;
+    box-shadow: 5px 10px 18px #888888;
+    border-radius: 10px;
+    transition: all .8s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
-.hide-side{
+.hide-Times{
   /* display: none; */
    position: fixed;
    overflow: hidden;
    width: 0;
-    right: -0px;
-    /* top: -50px; */
+    right: -800px;
+    top: -50px;
     /* z-index: 9; */
     transition: all  0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
