@@ -263,7 +263,7 @@ import { useRoute } from "vue-router"
                     // const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
                     // console.log(pageDetail);
                          if (socialData.value.pageId && socialData.value.accessToken){
-                             axios.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=${message.value}&access_token=${socialData.value.accessToken}&picture=https://churchplusstorage.blob.core.windows.net/mediacontainer/WhatsApp_Image_2021-08-06_at_11.28.16_e9749fad-85e8-4130-b553-37acc8acde61_06082021.jpeg`).then((res)=>{
+                             axios.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=${message.value}&access_token=${socialData.value.accessToken}&attached_media=[{media_fbid:{638397247537283}}]).then((res)=>{
                              console.log(res);
                          }).catch((error)=>{
                              console.log(error);
