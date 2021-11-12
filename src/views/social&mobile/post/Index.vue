@@ -263,7 +263,7 @@ import { useRoute } from "vue-router"
                     // const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
                     // console.log(pageDetail);
                          if (socialData.value.pageId && socialData.value.accessToken){
-                             axios.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=${message.value}&access_token=${socialData.value.accessToken}`).then((res)=>{
+                             axios.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=${message.value}&access_token=${socialData.value.accessToken}&link=https://www.pixsy.com/wp-content/uploads/2021/04/ben-sweet-2LowviVHZ-E-unsplash-1.jpeg`).then((res)=>{
                              console.log(res);
                          }).catch((error)=>{
                              console.log(error);
