@@ -1,17 +1,19 @@
 <template>
   <div class="container-slim" @click="closeDropdownIfOpen">
     <div class="container-fluid">
-      <div class="row mt-3">
+        <div class="row mt-3">
             <!-- <div class="col-12"> -->
-                <div class="col-12 col-sm-3  c-pointer "  @click="groupDetail">
-                    <div class="font-weight-bold h5 ">Group Detail</div>
-                    <div :class="{ 'baseline' : showGroup, 'hide-base' : !showGroup }"></div>
+                <div class="col-12 col-sm-3 c-pointer "  @click="groupDetail">
+                    <div  class="font-weight-bold h5 col-12  ">Group Detail</div>
+                    <div class="col-10 " :class="{ 'baseline' : showGroup, 'hide-base' : !showGroup }"></div>
                 </div>
-                <div class="col-12 col-sm-3  c-pointer "  @click="attendanceCheckin">
-                    <div class="font-weight-bold h5 ">Attendance & Checkin</div>
-                    <div :class="{ 'baseline' : showAttendanceCheckin, 'hide-base' : !showAttendanceCheckin }"></div>
+                <div class="col-12 col-sm-4  c-pointer "  @click="attendanceCheckin">
+                    <div class="font-weight-bold h5 col-12  ">Attendance & Checkin</div>
+                    <div class="col-10 mx-2 " :class="{ 'baselinetwo' : showAttendanceCheckin, 'hide-basetwo' : !showAttendanceCheckin }"></div>
                 </div>
+                <!-- <div class="hr"><hr /></div> -->
             <!-- </div> -->
+            
         </div>
         <div class="row">
              <div class="col-12" v-if="showAttendanceCheckin">
@@ -1617,6 +1619,12 @@ export default {
 .events {
         font: normal normal 800 29px Nunito sans;
     }
+    hr{
+      color: gainsboro;
+      background-color: hotpink;
+      height: 5px;
+      width : 100%;
+    }
 
 .baseline {
     transition: all 150ms ease-in-out;
@@ -1627,7 +1635,7 @@ export default {
     /* bottom: -2.5px; */
     height: 6px;
     left: 0px;
-    width: 50%;
+    /* width: 50%; */
     opacity: 1;
 }
 
@@ -1639,7 +1647,31 @@ export default {
     /* bottom: -2.5px; */
     height: 6px;
     left: 0px;
-    width: 50%;
+    /* width: 50%; */
+    opacity: 0;
+}
+.baselinetwo {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    /* background-color: #33475b; */
+    /* color: #136acd" */
+    border-radius: 20px;
+    /* bottom: -2.5px; */
+    height: 6px;
+    left: 0px;
+    /* width: 50%; */
+    opacity: 1;
+}
+
+.hide-basetwo {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    /* background-color: #33475b; */
+    border-radius: 20px;
+    /* bottom: -2.5px; */
+    height: 6px;
+    left: 0px;
+    /* width: 50%; */
     opacity: 0;
 }
     @media screen and (max-width: 767px ){
