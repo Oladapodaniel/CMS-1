@@ -35,6 +35,7 @@ export default {
 
         const closeModal = () => {
             emit('closesidemodal')
+            
         }
 
         return {
