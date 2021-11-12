@@ -306,16 +306,16 @@
           <!-- Hidden -->
           <a class="link routelink" v-if="false"> Integration </a>
           <OverlayPanel ref="flyOverRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
-              <div class="container-fluid p-0 my-3">
-                <router-link class="link routelink text-dark" to="/tenant/settings"> 
-                <div class="row py-2 px-3 hover-flyover">
+              <div class="container-fluid p-0 my-3" >
+                <router-link class="text-dark" to="/tenant/settings"> 
+                <div class="row py-2 px-3 hover-flyover" @click="closeOverlay">
                   Settings
                   
                 </div>
                 </router-link>
                 
-                <a href="https://churchplus.azurewebsites.net/Account/LogOn" target="_a" class="link routelink text-dark">
-                <div class="row py-2 px-3 hover-flyover">
+                <a href="https://churchplus.azurewebsites.net/Account/LogOn" target="_a" class="text-dark">
+                <div class="row py-2 px-3 hover-flyover" @click="closeOverlay">
                   
                   Visit ChurchPlus Classic
                   
@@ -444,7 +444,11 @@ export default {
 
     const toggleNavFlyOver = (event) => {
       flyOverRef.value.toggle(event)
-    }    
+    }  
+    
+    const closeOverlay = () => {
+      flyOverRef.value.hide()
+    }
 
     return {
       route,
@@ -465,7 +469,8 @@ export default {
       logout,
       goToReport,
       flyOverRef,
-      toggleNavFlyOver
+      toggleNavFlyOver,
+      closeOverlay
     };
   },
 };
