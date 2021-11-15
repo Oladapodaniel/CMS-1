@@ -263,7 +263,8 @@ import { useRoute } from "vue-router"
                     // const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
                     // console.log(pageDetail);
                          if (socialData.value.pageId && socialData.value.accessToken){
-                             axios.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=${message.value}&access_token=${socialData.value.accessToken}`).then((res)=>{
+                             let mediaFile = [{"media_fbid":"638397247537283"}]
+                             axios.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=${message.value}&access_token=${socialData.value.accessToken}&attached_media=${mediaFile}`).then((res)=>{
                              console.log(res);
                          }).catch((error)=>{
                              console.log(error);
