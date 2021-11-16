@@ -1559,8 +1559,13 @@ const routes = [
             import ( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),
 
     },
+    {
+        path: '/followup',
+        name: 'Index',
+        component: () =>
+            import ( /* webpackChunkName: "sentemails" */ '@/views/people/followup/Index'),
 
-
+    },
 ]
 
 const router = createRouter({
