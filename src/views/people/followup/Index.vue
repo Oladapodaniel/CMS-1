@@ -7,9 +7,9 @@
             </div>
 
             <div class="head-button">
-                <router-link to="/tenant/contributionCategory">
+                <!-- <router-link to="/tenant/contributionCategory">
                 <button class="default-btn mr-3">View Offering Items</button>
-                </router-link>
+                </router-link> -->
             </div>
             </div>
         </div>
@@ -17,21 +17,27 @@
             <div class="row">
                 <div class="col-12">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item" role="presentation">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
-  </li>
-  <li class="nav-item" role="presentation">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
-  </li>
-  <li class="nav-item" role="presentation">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
-  </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">..1.</div>
-  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...2</div>
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...3</div>
-</div>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">People</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Task</a>
+                    </li>
+                    <!-- <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">People</a>
+                    </li> -->
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <PeopleToFollowUp />
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <FollowUpTask />
+                    </div>
+                    <!-- <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                        
+                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -39,7 +45,13 @@
 </template>
 
 <script>
+import PeopleToFollowUp from './PeopleToFollowUp.vue'
+import FollowUpTask from './FollowUpTask.vue'
 export default {
+    components: {
+        PeopleToFollowUp: PeopleToFollowUp,
+        FollowUpTask
+    },
     setup () {
         return {}
     }
