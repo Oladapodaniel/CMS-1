@@ -396,7 +396,7 @@
                                       <label for="description" class="font-weight-600">
                                         Is Group Leader
                                       </label>
-                                      <Checkbox v-model="groupData.isGroupLeader" :binary="true" class="ml-3"/>
+                                      <Checkbox v-model="isGroupLeader" :binary="true" class="ml-3"/>
                                     <!-- </div> -->
                                   </div>
 
@@ -405,7 +405,7 @@
                                       <label for="description" class="font-weight-600">
                                         Enable Login
                                       </label>
-                                      <Checkbox v-model="groupData.enableLogin" :binary="true" class="ml-3"/>
+                                      <Checkbox v-model="enableLogin" :binary="true" class="ml-3"/>
                                     <!-- </div> -->
                                   </div>
                               </div>
@@ -981,8 +981,9 @@ export default {
     const showAttendanceCheckin = ref(false)
     const selectedGroupMembers = ref([])
     const showSMS = ref(false)
+    const isGroupLeader = ref(false)
+    const enableLogin = ref(false)
     const showEmail = ref(false)
-
     
     // const moveMembers =() =>{
     //   let memberChange = convert(marked.value);
@@ -1284,6 +1285,7 @@ export default {
         // };
 
     const addSelectedMembersToGroup = () => {
+      // alert('qwerty')
       if (selectedMembers.value.length === 0) {
         modalStatus.value = "modal";
         return false;
@@ -1292,8 +1294,12 @@ export default {
         i.position = position.value;
         i.personID = i.id;
         i.id = "";
+        i.enableLogin = enableLogin.value;
+        i.isGroupLeader = isGroupLeader.value;
         groupMembers.value.push(i);
+        // alert('qwerty')
       });
+      console.log(groupMembers.value, "groupMember");
       if (route.params.groupId) {
         groupData.value.peopleInGroups = groupMembers.value;
         updateGroup(groupData.value, false);
@@ -1424,6 +1430,7 @@ export default {
             name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
             phone: i.person.phoneNumber,
             position: i.position
+
           };
 
           groupMembers.value.push(person);
@@ -1583,6 +1590,8 @@ export default {
      selectedGroupMembers,
      showSMS,
      showEmail,
+     isGroupLeader,
+     enableLogin,
     //  wardSearchedMembers,
     // wardSearchForUsers
 
