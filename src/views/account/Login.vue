@@ -211,8 +211,15 @@ export default {
         localStorage.setItem("token", data.token);
         localStorage.setItem("expiryDate", data.expiryTime);
         console.log(data, "Church data");
-
-        // i.toLowerCase() == "admin" || i.toLowerCase() == "basicuser" || i.toLowerCase() == "canaccessfirsttimers" || i.toLowerCase() == "canaccessfollowups" || i.toLowerCase() == "centerleader" || i.toLowerCase() == "financialaccount" || i.toLowerCase() == "mobileadmin" || i.toLowerCase() == "reports"
+        setTimeout(() => {
+          setupService.setup();
+        }, 5000);
+        if (data.roles.length === 1 && data.roles[0] === 'GroupLeader') {
+          router.push( {
+            name: "Groups"
+          });
+          return false;
+        }
         if(data.roles.length > 0){
         let roleIndex = data.roles.findIndex(i => {
           return i.toLowerCase() == "family" || i.toLowerCase() == "mobileuser"
