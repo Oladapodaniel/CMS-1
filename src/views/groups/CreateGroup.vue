@@ -103,17 +103,25 @@
           </div>
 
            <div class="row">
-                    <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
-                      <button
-                        class="default-btn outline-none primary-text font-weight-bold border-0"
-                        data-toggle="modal"
-                        data-target="#exampleModal"
-                        ref="modalBtn"
-                      >
-                        Add member
-                      </button>
-                    </div>
-                  </div>
+              <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
+                <button
+                  class="default-btn outline-none primary-text font-weight-bold border-0"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                  ref="modalBtn"
+                >
+                  Import
+                </button>
+                <button
+                  class="default-btn outline-none primary-text font-weight-bold border-0"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                  ref="modalBtn"
+                >
+                  Add member
+                </button>
+              </div>
+            </div>
 
           <div class="row pb-4 bottom-box">
             <div class="col-md-12">

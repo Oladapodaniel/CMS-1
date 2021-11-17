@@ -60,7 +60,7 @@ export default {
 
         const getFollowUpContactDetails = async() => {
             try {
-                const data = await axios.get('/api/FirsttimerManager/contactstofollow')
+                const { data } = await axios.get('/api/FirsttimerManager/contactstofollow')
                 console.log(data)
                 contacts.value = data.people
                 tasks.value = data.tasks

@@ -1,5 +1,5 @@
 <template>
-    <div>{{ contacts }}
+    <div>
         <div class="row">
             <div class="col-sm-12">
                 <div class="table table-responsive">
@@ -174,7 +174,7 @@
                         <div>
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">First Name</span>
-                            <span class=" d-sm-flex small">
+                            <span class=" d-sm-flex">
                                 <div class="px-1">{{ item.firstName }}</div>
                             </span>
                             </span>
@@ -185,8 +185,8 @@
                         <div>
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Last Name</span>
-                            <span class=" d-sm-flex small">
-                                <div>gvsedfgv</div>
+                            <span class=" d-sm-flex">
+                                <div>{{ item.lastName }}</div>
                             </span>
                             </span>
                         </div>
@@ -196,8 +196,8 @@
                         <div>
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Phone</span>
-                            <span class=" d-sm-flex small">
-                            <div>sdfvsdfv</div>
+                            <span class=" d-sm-flex">
+                            <div>{{ item.mobilePhone }}</div>
                             </span>
                             </span>
                         </div>
@@ -207,8 +207,8 @@
                         <div>
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Email</span>
-                            <span class=" d-sm-flex small">
-                            <div>dfsbvsdfv</div>
+                            <span class=" d-sm-flex">
+                            <div>{{ item.email }}</div>
                             </span>
                             </span>
                         </div>
