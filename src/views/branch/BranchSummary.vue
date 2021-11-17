@@ -97,15 +97,6 @@
                 <div class="col-12 border " style="height: 70vh; border-radius: 5px"></div>
             </div>
         </div>
-         <div class="contanier-fluid">
-            <div class="row mb-3 ">
-                <div class="col-12 d-flex justify-content-end">
-                    <div>
-                        <Dropdown  v-model="selectedBranch" :options="branches" optionLabel="name" placeholder="Select branch" class="w-100" />
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </template>
 

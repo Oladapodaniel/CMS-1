@@ -2,22 +2,22 @@
     <div class="container container-top container-wide ">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12 border ">
+                <div class="col-12  ">
                     <div class="heading-text"> Add branch</div>
                     <div class="row my-2 pt-4">
                         <div class="col-md-6 offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class=""> Name</label>
+                                    <label for="" class="">Branch name</label>
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <input type="text" v-model="Name" class="form-control" />
+                                    <input type="text" v-model="branchName" class="form-control" />
                                 </div>
                             </div>
                         </div>
                     </div> 
-                    <div class="row my-2 pt-4">
+                    <!-- <div class="row my-2 pt-4">
                         <div class="col-md-6 offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
@@ -42,8 +42,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div> 
-                    <div class="row my-2 pt-4">
+                    </div>  -->
+                    <div class="row my-1 pt-4">
                         <div class="col-md-6 offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
@@ -56,7 +56,7 @@
                             </div>
                         </div>
                     </div> 
-                    <div class="row my-2 pt-4">
+                    <div class="row my-1 pt-4">
                         <div class="col-md-6 offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
@@ -68,8 +68,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div> 
-                    <div class="row my-2 pt-4">
+                    </div>
+                    <div class="heading-text"> Pastor</div> 
+                    <div class="row my-1 pt-4">
                         <div class="col-md-6 offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
@@ -82,7 +83,7 @@
                             </div>
                         </div>
                     </div> 
-                    <div class="row my-2 pt-4">
+                    <div class="row my-1 pt-4">
                         <div class="col-md-6 offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
@@ -95,7 +96,7 @@
                             </div>
                         </div>
                     </div> 
-                    <div class="row my-2 pt-4">
+                    <div class="row my-1 pt-4">
                         <div class="col-md-6 offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
@@ -105,6 +106,18 @@
                                 <div class="col-md-8">
                                     <input type="text" v-model="pastorPhone" class="form-control" />
                                 </div>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="row my-1 pt-4">
+                        <div class="col-md-6 d-flex border justify-content-end offset-md-2">
+                            <div class="col-md-5 mt-4">
+                                <button class="default-btn" data-dismiss="modal">Cancel</button>
+                            </div>
+                            <div class="col-md-5 mt-4">
+                                <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="addBranch">
+                                    Save
+                                </button>
                             </div>
                         </div>
                     </div> 
