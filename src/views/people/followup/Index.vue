@@ -29,10 +29,10 @@
                     </ul>
                     <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <PeopleToFollowUp />
+                        <PeopleToFollowUp :contacts="contacts"/>
                     </div>
                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <FollowUpTask />
+                        <FollowUpTask :tasks="tasks"/>
                     </div>
                     <!-- <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                         
@@ -45,15 +45,35 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 import PeopleToFollowUp from './PeopleToFollowUp.vue'
 import FollowUpTask from './FollowUpTask.vue'
+import axios from "@/gateway/backendapi";
 export default {
     components: {
         PeopleToFollowUp: PeopleToFollowUp,
         FollowUpTask
     },
     setup () {
-        return {}
+        const contacts = ref([])
+        const tasks = ref([])
+
+        const getFollowUpContactDetails = async() => {
+            try {
+                const data = await axios.get('/api/FirsttimerManager/contactstofollow')
+                console.log(data)
+                contacts.value = data.people
+                tasks.value = data.tasks
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        getFollowUpContactDetails()
+        return {
+            contacts,
+            tasks
+        }
     }
 }
 </script>

@@ -560,6 +560,7 @@ export default {
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
     const routeParams = ref("");
     const peopleInGroupIDs = ref([])
+    const followupPerson = ref({})
 
     const loading = ref(false);
     // const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
@@ -733,6 +734,10 @@ export default {
       formData.append(
         "ageGroupID",
         selectedAgeGroup.value ? selectedAgeGroup.value.id : ""
+      );
+      formData.append(
+        "followupPersonID",
+        followupPerson.value.id ? followupPerson.value.id : "00000000-0000-0000-0000-000000000000"
       );
       console.log(formData);
       /*eslint no-undef: "warn"*/
@@ -970,7 +975,7 @@ export default {
       }
     };
 
-    const populatePersonDetails = (data) => {
+    const populatePersonDetails = async (data) => {
       console.log(data, "🛒🛒🛒🛒🛒🛒")
       person.firstName = data.firstName;
       person.email = data.email;
@@ -1105,7 +1110,7 @@ export default {
               life: 15000,
             });
         }
-        // firstTimersObj.value.contactOwnerId = payload.id
+        followupPerson.value = payload
       }
 
     return {
@@ -1160,7 +1165,8 @@ export default {
       dismissAddToGroupModal,
       routeParams,
       peopleInGroupIDs,
-      setContact
+      setContact,
+      followupPerson
     };
   },
 };

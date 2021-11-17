@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div>{{ contacts }}
         <div class="row">
             <div class="col-sm-12">
                 <div class="table table-responsive">
@@ -140,26 +140,26 @@
                         </div>
                         
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 mt-3" v-for="(item, index) in contacts" :key="index">
                     <div class="row">
                         <div class="col-md-1 col-sm-12 p-2">
-                        <div class="row px-2">
-                            <!-- <div class="col-8 col-md-0 d-md-none">
+                        <!-- <div class="row px-2">
+                             <div class="col-8 col-md-0 d-md-none">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Tab</span>
-                            </div> -->
+                            </div>
                             <div class="col-4 col-md-12 ">
                             <span class="d-flex justify-content-end">
-                                <!-- ytygvghv -->
-                                <!-- <span class=" d-sm-flex small">
+                         
+                             <span class=" d-sm-flex small">
                                     <div class="td-first px-1">
                                     <input type="checkbox" name="" id="" data-v-65858e43="">
                                     </div>
-                                </span> -->
+                                </span>
                                 </span>
                             </div>
+                        </div> -->
                         </div>
-                        </div>
-                        <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
+                        <!-- <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
                         <div>
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">First Name</span>
@@ -169,13 +169,24 @@
                             </span>
                             </span>
                         </div>
+                        </div> -->
+                        <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
+                        <div>
+                            <span class="d-flex justify-content-between">
+                            <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">First Name</span>
+                            <span class=" d-sm-flex small">
+                                <div class="px-1">{{ item.firstName }}</div>
+                            </span>
+                            </span>
                         </div>
-                        <div class="col-md-3 col-sm-12 itemroute-color align-self-center">
+                        
+                        </div>
+                        <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
                         <div>
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Last Name</span>
                             <span class=" d-sm-flex small">
-                                <div class="px-1">gvsedfgv</div>
+                                <div>gvsedfgv</div>
                             </span>
                             </span>
                         </div>
@@ -186,7 +197,7 @@
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Phone</span>
                             <span class=" d-sm-flex small">
-                            <div class="px-1">sdfvsdfv</div>
+                            <div>sdfvsdfv</div>
                             </span>
                             </span>
                         </div>
@@ -197,7 +208,7 @@
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Email</span>
                             <span class=" d-sm-flex small">
-                            <div class="px-1">dfsbvsdfv</div>
+                            <div>dfsbvsdfv</div>
                             </span>
                             </span>
                         </div>
@@ -282,6 +293,7 @@
 
 <script>
 export default {
+    props: ["contacts"],
     setup () {
         return {}
     }
