@@ -1587,7 +1587,7 @@ router.beforeEach((to, from, next) => {
     //   }
 
     const token = localStorage.getItem("token")
-    const role = localStorage.getItem("roles")
+    const role = JSON.parse(localStorage.getItem("roles"))
     const tokenIsValid = token && token.length > 30 ? true : false;
     const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
 
@@ -1607,13 +1607,15 @@ router.beforeEach((to, from, next) => {
 
 
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
-    if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
+    if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next") 
 
-    if(role && role.length === 1 && role[1] === "FollowUp" && token) {
-        console.log('followup yaaaeaa')
-        // return next("/followup")
+    if((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/followup")) {
+        localStorage.removeItem('token')
+        next("/")
+        return
+    }   else {
+        next(true)
     }
-
     next(true)
 
 
