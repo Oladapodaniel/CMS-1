@@ -1,6 +1,6 @@
 <template>
    <div class="d-flex justify-content-end mx-3">
-        <div class="col-3 mt-3 save-btn btn-btn c-pointer" @click="openNoteEditor">Create</div>
+        <div class="mt-3 save-btn btn-btn c-pointer col-12 col-sm-6 col-md-3" @click="openNoteEditor">Create note</div>
    </div>
     <div class="col-12 mt-4" v-for="(item, index) in addNotes" :key="index">
             <div class="col-12 card-bg p-4">
@@ -23,7 +23,7 @@
                 </transition>
             </div>
         </div>
-        <div class="row" v-if="addNotes.length === 0">
+        <div class="row" v-if="!addNotes || addNotes.length === 0">
             <div class="col-12 mt-3 no-activity">
                 You have not added any note yet
             </div>
@@ -64,7 +64,7 @@ export default {
 .card-bg {
     background-color: rgb(255, 255, 255);
     box-shadow: rgb(45 62 80 / 12%) 0px 1px 5px 0px;
-    border-radius: 3px;
+    border-radius: 8px;
 }
 
 .roll-note-icon {

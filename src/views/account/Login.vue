@@ -220,6 +220,8 @@ export default {
           });
           return false;
         }
+
+        // i.toLowerCase() == "admin" || i.toLowerCase() == "basicuser" || i.toLowerCase() == "canaccessfirsttimers" || i.toLowerCase() == "canaccessfollowups" || i.toLowerCase() == "centerleader" || i.toLowerCase() == "financialaccount" || i.toLowerCase() == "mobileadmin" || i.toLowerCase() == "reports"
         if(data.roles.length > 0){
         let roleIndex = data.roles.findIndex(i => {
           return i.toLowerCase() == "family" || i.toLowerCase() == "mobileuser"
@@ -249,7 +251,7 @@ export default {
           } else {
             console.log( data.roles.indexOf("FollowUp"))
             if (data.roles.indexOf("FollowUp") !== -1) {
-              router.push("/tenant/firsttimerslist");
+              router.push("/followup");
             } else {
               setTimeout(() => {
                 setupService.setup();

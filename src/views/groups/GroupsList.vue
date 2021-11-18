@@ -1,5 +1,5 @@
 <template>
-  <div class="container-slim">
+  <div class="container-wide">
     <div class="container-fluid">
       <div class="row d-md-flex yu mt-5">
         <!-- <smsComponent :groupData ="groupListDetails"/> -->
@@ -77,12 +77,12 @@
                   <input class="my-2" type="checkbox" />
                 </div>
                 <div
-                  class="small-text text-capitalize col-md-3 font-weight-bold"
+                  class="small-text text-capitalize col-md-4 font-weight-bold"
                 >
                   Group Name
                 </div>
                 <div
-                  class="small-text text-capitalize col-md-3 font-weight-bold"
+                  class="small-text text-capitalize col-md-2 font-weight-bold"
                 >
                   Membership Size
                 </div>
@@ -169,7 +169,7 @@
                     />
                   </div>
 
-                  <div class="col-md-3 desc">
+                  <div class="col-md-4 desc">
                     <p class="mb-0 d-flex justify-content-between">
                       <span
                         class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
@@ -182,7 +182,7 @@
                     </p>
                   </div>
 
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <div class="d-flex small justify-content-between">
                       <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Membership Size</span>
                         <div class="desc small-text text-right text-md-center">

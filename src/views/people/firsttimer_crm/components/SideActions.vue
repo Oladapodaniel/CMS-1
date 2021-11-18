@@ -1,9 +1,9 @@
 <template>
     <div class="container">
-        <div class="row d-flex justify-content-between mt-3">
+        <!-- <div class="row d-flex justify-content-between mt-3">
             <div class="col font-weight-700 uniform-primary-color">Contacts</div>
             <div class="col font-weight-700 text-right uniform-primary-color">Actions <i class="pi pi-angle-down"></i></div>
-        </div>
+        </div> -->
         <div class="row mt-5">
             <div class="col-6 offset-3 d-flex justify-content-center c-pointer profile-overlay" @click="uploadPicture" @mouseover="setHover" @mouseleave="setLeave">
                 <img :src="url" class="contact-image " v-if="url"/>
@@ -30,9 +30,9 @@
                 <div>Email</div>
             </div>
             <!-- @click="call" -->
-            <div class="ml-4 c-pointer"  @click="toggleCallSms">
-                <div class="icon-bg" v-tooltip.top="'Make a phone call'"><i class="pi pi-phone"></i></div>
-                <div>Reach</div>
+            <div class="ml-4 c-pointer"  @click="toggleCallSmsPane($event)">
+                <div class="icon-bg" v-tooltip.top="'Send an sms'"><i class="pi pi-phone"></i></div>
+                <div>SMS</div>
             </div>
             <div class="ml-4 c-pointer" @click="openTaskEditor">
                 <div class="icon-bg" v-tooltip.top="'Create a task'"><i class="pi pi-calendar-plus"></i></div>
@@ -71,52 +71,17 @@
                         </div>
                 </div>
             </div>
-            <!-- <div class="row" @mouseover="toggleHoverPhone" @mouseleave="OutHoverPhone">
-                <div class="col-12 mt-4 label-text">Phone Number</div>
-                <div class="col-12 ml-2 mt-3" v-if="!hoverPhone">{{ personDetails.phoneNumber }}</div>
-                <div v-else class="col-12 mt-2">
-                    <input type="text" class="form-control phone-input" @blur="OutHoverPhone" v-model="personDetails.phoneNumber"/>
-                </div>
-                
-            </div> -->
+            
             <div class="row">
                 <div class="col-12 mt-4 label-text">Contact owner</div>
                 <div class="col-12 mt-2">
-                    <!-- <Contacts /> -->
-                    <!-- <Dropdown v-model="selectedContact" :options="contacts" :filter="true" class="w-100 phone-input" optionLabel="firstName" placeholder="Select Contact" /> -->
-                    <!-- <Dropdown v-model="selectedContact" :options="contacts" optionLabel="firstName" :filter="true" placeholder="Select a contact" :showClear="false" class="w-100 phone-input" @change="updateOwner">
-                        <template #value="slotProps">
-                            <div class="country-item country-item-value" v-if="slotProps.value">
-
-                                <div>{{slotProps.value.firstName}} {{slotProps.value.lastName}}</div>
-                            </div>
-                            <span v-else>
-                                {{slotProps.placeholder}}
-                            </span>
-                        </template>
-                        <template #option="slotProps">
-                            <div class="country-item">
-                             
-                                <div>{{slotProps.option.firstName}} {{slotProps.option.lastName}}</div>
-                            </div>
-                        </template>
-                    </Dropdown> -->
                     <SearchMember v-bind:currentMember="selectedContact" @memberdetail="updateOwner" :stylesidebarinput="true"/>
                 </div>
-                <!-- <div class="col-5 align-self-center">
-                    <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
-                </div> -->
             </div>
-            <!-- <div class="row">
-                <div class="col-12 mt-4 label-text">Last contacted</div>
-                <div class="col-12 mt-2">
-                    12/05/2012 11:59 PM GMT+1
-                </div>
-            </div> -->
+
             <div class="row">
                 <div class="col-12 mt-4 label-text">Lifecycle stage</div>
                 <div class="col-12">
-                    <!-- <Dropdown v-model="selectedLifeCycle" :options="lifeCycle" class="w-100 phone-input" optionLabel="name" placeholder="Select Contact" @change="updateLifeCycle"/> -->
                     <div class="dropdown">
                         <div  class="phone-input form-control d-flex justify-content-between c-pointer"
                                 id="dropdownMenuButton"
@@ -544,7 +509,7 @@ export default {
         'tooltip': Tooltip
     },
     emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog", "allcontact","updatelogtoview", "displayanim"],
-    props: ["personDetails", "callLog", "activityType"],
+    props: ["personDetails", "smsLog", "activityType"],
     setup (props, { emit }) {
         // const confirm = useConfirm()
         const toast = useToast()
@@ -807,6 +772,12 @@ export default {
             try {
                 let res = await frmservice.sendSms(route.params.personId, body)
                 console.log(res)
+                toast.add({
+                    severity: "success",
+                    summary: "Success",
+                    detail: "Message sent successfully",
+                    life: 5000,
+                });
                 displaySMSPane.value = false
                 emit("updatelogtoview")
             }
@@ -816,8 +787,8 @@ export default {
         }
 
         watchEffect(() => {
-            if (props.callLog) {
-                displayLogPane.value = true
+            if (props.smsLog) {
+                displaySMSPane.value = true
                 emit('resetlog', false)
             }
         })

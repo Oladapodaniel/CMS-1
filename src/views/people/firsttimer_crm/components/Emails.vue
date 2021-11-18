@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-content-end mx-3">
-        <div class="col-3 mt-3 save-btn btn-btn c-pointer" @click="openEmailModal">Compose</div>
+        <div class="col-12 col-sm-6 col-md-3 mt-3 save-btn btn-btn c-pointer" @click="openEmailModal">Compose email</div>
    </div>
     <div class="col-12 mt-4" v-for="(item, index) in emailList" :key="index">
             <div class="col-12 card-bg p-4">
