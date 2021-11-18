@@ -132,7 +132,7 @@
                 >
                   <span><i class="pi pi-thumbs-up mr-2"></i></span>
                   <span>Like</span>
-                  <span class="ml-2">{{ getLikes(post.id) }}</span>
+                  <span class="ml-2 text-primary" @click="viewLikes(post.id, index)">{{ item.like ? item.like : "view likes" }}</span>
                 </a>
                 <a
                   class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
@@ -390,12 +390,12 @@ export default {
       }
     }
 
-    const getLikes = async(objectId) => {
+    const viewLikes = async(objectId, index) => {
       try{
         const{data} = await fb.get(`https://graph.facebook.com/${objectId}?fields=likes.summary(true)&access_token=${facebookAuth.value.accessToken}`)
         postLike.value = data
-  console.log(postLike.value);
-        return data.likes.summary.total_count
+        console.log(postLike.value);
+        feed.value[index].like = data.likes.summary.total_count
       }catch(error){
         console.log(error);
       }
@@ -459,7 +459,7 @@ export default {
       churchData,
       facebookAuth,
       postLike,
-      getLikes
+      viewLikes
     };
   },
 };
