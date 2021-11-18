@@ -4,7 +4,6 @@
       <div class="col-md-12"></div>
     </div>
     <div class="row px-1">
-      how
       <!-- Feed -->
       <div class="col-md-12 mx-auto py-4">
         <div class="row bordered">
@@ -396,7 +395,7 @@ export default {
         const{data} = await fb.get(`https://graph.facebook.com/${objectId}?fields=likes.summary(true)&access_token=${facebookAuth.value.accessToken}`)
         postLike.value = data
   console.log(postLike.value);
-        return data
+        return data.likes.summary.total_count
       }catch(error){
         console.log(error);
       }
