@@ -1000,6 +1000,14 @@ export default {
           name: i.name
         }
       })
+
+      try {
+        let date = await axios.get(`/api/People/GetPersonInfoWithAssignments/${data.followupPersonID}`)
+        console.log(date)
+      }
+      catch (err) {
+        console.log(err)
+      }
     };
 
     const getMemberToEdit = () => {

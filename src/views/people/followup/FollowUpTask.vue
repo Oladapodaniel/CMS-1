@@ -10,11 +10,11 @@
                     <div class="font-weight-700">Due date</div>
                     <div>{{ item.dueDate }}</div>
                 </div>
-                <div class="col-6 mt-2">
+                <div class="col-6 mt-3">
                     <div class="font-weight-700">Priority</div>
                     <div>{{ item.priority }}</div>
                 </div>
-                <div class="col-6 mt-2">
+                <div class="col-6 mt-3">
                     <div class="font-weight-700">Due date</div>
                     <div>{{ item.type }}</div>
                 </div>
