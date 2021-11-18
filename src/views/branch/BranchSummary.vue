@@ -94,7 +94,9 @@
         </div>
         <div class="container-fluid mb-3 ">
             <div class="row">
-                <div class="col-12 border " style="height: 70vh; border-radius: 5px"></div>
+                <div class="col-12 border " style="height: 100%; border-radius: 5px">
+                    <Organisation/>
+                </div>
             </div>
         </div>
     </div>
@@ -103,8 +105,10 @@
 <script>
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
+import Organisation from "../../components/charts/OrgChart.vue"
 export default {
     components: {
+        Organisation,
         Dropdown
     },
     setup() {
