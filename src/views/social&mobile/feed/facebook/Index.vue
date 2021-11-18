@@ -396,7 +396,7 @@ export default {
         const{data} = await fb.get(`https://graph.facebook.com/${objectId}?fields=likes.summary(true)&access_token=${facebookAuth.value.accessToken}`)
         postLike.value = data
   console.log(postLike.value);
-        return data
+        return data.likes.summary.total_count
       }catch(error){
         console.log(error);
       }
