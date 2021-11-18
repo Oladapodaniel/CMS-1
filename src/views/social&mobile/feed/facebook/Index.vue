@@ -4,7 +4,6 @@
       <div class="col-md-12"></div>
     </div>
     <div class="row px-1">
-      how
       <!-- Feed -->
       <div class="col-md-12 mx-auto py-4">
         <div class="row bordered">
