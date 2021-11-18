@@ -415,6 +415,28 @@ const routes = [
                     },
                 ]
             },
+            {
+            
+                path: 'branchsummary',
+                name: "BranchSummary",
+                meta: {
+                    title: 'Churchplus - Branch',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/BranchSummary')
+                
+            },
+            {
+            
+                path: 'addbranch',
+                name: "AddBranch",
+                meta: {
+                    title: 'Churchplus - Branch',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/AddBranch')
+                
+            },
 
             // {
             //     path: 'attendanceservicereport',
@@ -869,6 +891,15 @@ const routes = [
                 },
                 component: () =>
                     import ( /* webpackChunkName: "groups" */ '@/views/groups/GroupsList')
+            },
+            {
+                path: 'sidemodal',
+                name: 'SideModal',
+                meta: {
+                    title: 'Churchplus - Groups',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "groups" */ '@/views/groups/sidemodal/SideModal.vue')
             },
             {
                 path: 'createpeoplegroup/:groupId?',
@@ -1559,8 +1590,13 @@ const routes = [
             import ( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),
 
     },
+    {
+        path: '/followup',
+        name: 'Index',
+        component: () =>
+            import ( /* webpackChunkName: "sentemails" */ '@/views/people/followup/Index'),
 
-
+    },
 ]
 
 const router = createRouter({
@@ -1582,6 +1618,7 @@ router.beforeEach((to, from, next) => {
     //   }
 
     const token = localStorage.getItem("token")
+    const role = JSON.parse(localStorage.getItem("roles"))
     const tokenIsValid = token && token.length > 30 ? true : false;
     const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
 
@@ -1601,8 +1638,14 @@ router.beforeEach((to, from, next) => {
 
 
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
-    if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
+    if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next") 
 
+    if((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/followup")) {
+        localStorage.removeItem('token')
+        next("/")
+    }   else {
+        next(true)
+    }
     next(true)
 
 

@@ -492,12 +492,22 @@ export default {
           churchMembers.value = churchMembers.value.filter(
             (item) => item.id !== id
           );
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Member Deleted",
-            life: 3000,
-          });
+          if (res.data.response.includes("@")) {
+            let disRes = res.data.response.split("@")
+            toast.add({
+              severity: "info",
+              summary: "Info",
+              detail: disRes[0],
+              life: 10000,
+            });
+          } else {
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: "Member Deleted",
+              life: 5000,
+            });
+          }
           store.dispatch("membership/removeMember", id);
           axios
             .get(`/api/People/GetMembershipSummary`)
@@ -631,7 +641,7 @@ export default {
         const response = await membershipservice.deletePeople(IDs);
         console.log(response, "RESPONSE");
 
-        if (response.response.toString().toLowerCase().includes("all")) {
+        if (response && response.response && response.response.toString().toLowerCase().includes("all")) {
           toast.add({
             severity: "success",
             summary: "Confirmed",
@@ -645,7 +655,7 @@ export default {
             return true;
           });
         } else {
-          let displayRes = response.response.split("@");
+          let displayRes = response && response.response ? response.response.split("@") : "";
           toast.add({
             severity: "info",
             detail: `${displayRes[0]}`,

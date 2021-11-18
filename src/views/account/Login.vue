@@ -211,6 +211,15 @@ export default {
         localStorage.setItem("token", data.token);
         localStorage.setItem("expiryDate", data.expiryTime);
         console.log(data, "Church data");
+        setTimeout(() => {
+          setupService.setup();
+        }, 5000);
+        if (data.roles.length === 1 && data.roles[0] === 'GroupLeader') {
+          router.push( {
+            name: "Groups"
+          });
+          return false;
+        }
 
         // i.toLowerCase() == "admin" || i.toLowerCase() == "basicuser" || i.toLowerCase() == "canaccessfirsttimers" || i.toLowerCase() == "canaccessfollowups" || i.toLowerCase() == "centerleader" || i.toLowerCase() == "financialaccount" || i.toLowerCase() == "mobileadmin" || i.toLowerCase() == "reports"
         if(data.roles.length > 0){
@@ -242,7 +251,7 @@ export default {
           } else {
             console.log( data.roles.indexOf("FollowUp"))
             if (data.roles.indexOf("FollowUp") !== -1) {
-              router.push("/tenant/firsttimerslist");
+              router.push("/followup");
             } else {
               setTimeout(() => {
                 setupService.setup();

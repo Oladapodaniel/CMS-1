@@ -636,9 +636,6 @@ export default {
         .get("/dashboard/basic")
         .then((res) => {
           tenantInfoBasic.value = res.data.returnObject;
-          console.log(tenantInfoBasic.value);
-          console.log(res.data);
-
           tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp;
           tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving;
           tenantInfoExtra.value.hasWebsite = res.data.returnObject.hasWebsite;
@@ -657,14 +654,12 @@ export default {
             sum += +i.value;
           });
           summed.value = sum;
-          // console.log(sum)
           // if (sum > 0) {
           //   firstTimerPieExist.value = true
           // }
         })
         .catch((err) => {
           stopProgressBar();
-          // console.log(err.response);
           if (err.response && err.response.status === 401) {
             localStorage.removeItem("token");
             setupService.clearStore();
@@ -677,7 +672,6 @@ export default {
     let getCelebDashboard = () => {
       axios.get("/dashboard/celebrations").then((res) => {
         celeb.value = res.data.returnObject.celebrations;
-        console.log(tenantInfoCeleb.value)
       });
     };
     getCelebDashboard();
@@ -692,7 +686,6 @@ export default {
       axios
         .get("/dashboard/attendance")
         .then((res) => {
-          console.log(res.data);
           attendanceLoading.value = false;
           tenantInfoAttendanceWeekly.value =
             res.data.returnObject.eventAttendanceChartDataWeekly;
@@ -725,7 +718,6 @@ export default {
           tenantInfoInterestedInJoining.value.forEach((i) => {
             sum += +i.value;
           });
-          console.log(sum);
           if (sum > 0) {
             firstTimerPieExist.value = true;
           } else {
@@ -748,15 +740,14 @@ export default {
       }
     });
 
-    const subPlan = () => {
-      axios.get("/api/GetAllSubscriptionPlans").then((res) => {
-        console.log(res.data);
-      });
-    };
-    subPlan();
+    // const subPlan = () => {
+    //   axios.get("/api/GetAllSubscriptionPlans").then((res) => {
+    //     console.log(res.data);
+    //   });
+    // };
+    // subPlan();
 
     const weeklyAttendance = () => {
-      console.log("weekly");
       attendanceSeries.value = "weekly";
       attendanceBoolean.value = true;
     };
@@ -773,7 +764,6 @@ export default {
     };
 
     const weeklyFirstTimer = () => {
-      console.log("weekly");
       firstTimerSeries.value = "weekly";
       firstTimerBoolean.value = true;
     };
@@ -891,7 +881,6 @@ export default {
       tenantInfoCeleb,
       moreLinksVissible,
       toggleMoreLinkVissibility,
-      subPlan,
       offering,
       moment,
       attendanceBoolean,
@@ -933,7 +922,8 @@ export default {
       calculatePercentage,
       checkRenewalDate,
       buttonTextCheck,
-      celeb
+      celeb,
+      attendanceSeries
     };
   },
 };

@@ -10,16 +10,18 @@
           <div class="col-md-12 pt-3 pt-2 main-post">
             <div class="row">
               <div class="col-2 d-md-flex justify-content-center">
-                <div class="img-holder bg-secondary"></div>
+                <img :src="churchData.logoUrl" alt="Uploaded Image" class="img-holder bg-secondary"/>
               </div>
+              
               <div class="col-10 pl-md-0 d-flex align-items-center">
                 <textarea
                   name=""
                   id=""
                   rows="4"
                   class="w-100 border-0 textarea"
-                  placeholder="What's on your mind, Complustech?"
-                ></textarea>
+                  :value= "churchData.churchName"
+                >
+                </textarea>
               </div>
             </div>
           </div>
@@ -54,17 +56,17 @@
             <div class="row">
               <div class="col-2 d-md-flex justify-content-center">
                 <div class="img-holder bg-secondary">
-                    <img :src="post.posterDetails.posterImageUrl" alt="User Image" style="height:40px;width:100%">
+                    <!-- <img :src="post.posterDetails.posterImageUrl" alt="User Image" style="height:40px;width:100%"> -->
                 </div>
               </div>
               <div class="col-10 pl-md-0">
                 <p
                   class="mb-0 font-weight-700 mb-n2 d-flex justify-content-between"
                 >
-                  <span>{{ post.posterDetails.posterName }}</span>
+                  <!-- <span>{{ post.posterDetails.posterName }}</span> -->
                   <span><i class="pi pi-ellipsis-h c-pointer"></i></span>
                 </p>
-                <small class="mb-0">{{ formatDate(post.date) }}</small>
+                <small class="mb-0">{{ formatDate(post.created_time) }}</small>
               </div>
             </div>
 
@@ -72,18 +74,19 @@
             <div class="row">
               <div class="col-md-12 pt-3">
                 <h5 class="font-weight-bold mb-0">
-                  {{ post.postCategoryName }}
+                  <!-- {{ post.postCategoryName }} -->
                 </h5>
                 <p class="mb-0 text-justify">
-                  <span v-if="post.showFullMessage || post.content.length < previewLenth">{{ post.content }}</span>
-                  <span v-else>{{ post.briefMessage }}...</span>
-                  <span v-if="post.content.length > previewLenth" class="font-weight-700 primary-text c-pointer ml-3" @click="() => post.showFullMessage = !post.showFullMessage">{{ post.showFullMessage ? 'See less' : 'See more' }}</span>
+                  <span>{{ post.message }}</span>
+                   <!-- v-if="post.showFullMessage || post.content.length < previewLenth" -->
+                  <!-- <span v-else>{{ post.briefMessage }}...</span> -->
+                  <!-- <span v-if="post.content.length > previewLenth" class="font-weight-700 primary-text c-pointer ml-3" @click="() => post.showFullMessage = !post.showFullMessage">{{ post.showFullMessage ? 'See less' : 'See more' }}</span> -->
                   </p>
               </div>
             </div>
 
             <!-- Post media -->
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-md-12">
                 <img
                   v-if="post.type === 'Picture'"
@@ -98,11 +101,11 @@
                   controls
                 >
                   <source :src="post.mediaUrl" />
-                  <!-- <source src="movie.mp4" type="video/mp4"> -->
+                
                   Your browser does not support the video tag.
                 </video>
               </div>
-            </div>
+            </div> -->
 
             <!-- Post Extras -->
             <!-- <div class="row my-3">
@@ -129,16 +132,14 @@
                 >
                   <span><i class="pi pi-thumbs-up mr-2"></i></span>
                   <span>Like</span>
-                  <span class="ml-2">{{ post.likeCount }}</span>
+                  <span class="ml-2 text-primary" @click="viewLikes(post.id, index)">{{ item && item.like ? item.like : "view likes" }}</span>
                 </a>
                 <a
                   class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
                 >
                   <span><i class="pi pi-comment mr-2"></i></span>
                   <span>Comment</span>
-                  <span class="ml-2">{{
-                    post.comments ? post.comments.length : 0
-                  }}</span>
+                  <span class="ml-2">com</span>
                 </a>
                 <a
                   class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
@@ -149,7 +150,7 @@
               </div>
             </div>
 
-            <div
+            <!-- <div
               class="row my-3"
               v-for="(comment, indx) in post.comments"
               :key="indx"
@@ -177,9 +178,9 @@
                   </p>
                 </div>
               </div>
-            </div>
+            </div> -->
 
-            <div class="row my-2">
+            <!-- <div class="row my-2">
               <div class="col-2 d-md-flex justify-content-center">
                 <div class="img-holder bg-secondary"></div>
               </div>
@@ -196,7 +197,7 @@
                   </p>
                 </form>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
 
@@ -324,41 +325,96 @@
 import { ref } from "@vue/reactivity";
 import Skeleton from "primevue/skeleton";
 import social_service from '../../../../services/social/social_service';
-import membershipService from '../../../../services/membership/membershipservice';
+// import membershipService from '../../../../services/membership/membershipservice';
 import dateFormatter from '../../../../services/dates/dateformatter';
+import axios from "@/gateway/backendapi";
+import fb from 'axios';
+// import store from '@/store/store';
 
 export default {
   components: { Skeleton },
   setup() {
+    // const getCurrentUser= ref([store.getters.currentUser.churchName]);
+    // console.log(getCurrentUser);
+    //Get AllChurchProfile
+  const churchData =ref('');
+  const postLike = ref([]);
+  const facebookAuth = ref({});
+  const comment = ref({});
+    const getChurchProfile= async()=>{
+      try{
+        const {data} = await axios.get("/mobile/v1/Profile/GetChurchProfile");
+        churchData.value =  data.returnObject;
+        console.log(churchData);
+        
+
+      }catch(error){
+        console.log(error)
+      }
+    }
+     getChurchProfile()
     const feed = ref([]);
-    const tenantId = ref("");
+    // const tenantId = ref("");
     const previewLenth = 300;
-    membershipService
-      .getSignedInUser()
-      .then((res) => {
-        tenantId.value = res.tenantId;
-        getFeed(res.tenantId);
-      })
-      .catch((err) => console.log(err));
+    // membershipService
+    //   .getSignedInUser()
+    //   .then((res) => {
+    //     tenantId.value = res.tenantId;
+    //     getFeed(res.tenantId);
+    //   })
+    //   .catch((err) => console.log(err));
 
     const loaded = ref(true);
-    const getFeed = async (tenantId) => {
-      try {
-        const response = await social_service.getFeed(tenantId);
-        feed.value = response.map(i => {
-          i.showFullMessage = false;
-          i.briefMessage = i.content.slice(0, previewLenth);
-          return i;
-        })
-        loaded.value = false;
-        console.log(feed.value);
-      } catch (error) {
-        console.log(error);
-        loaded.value = false;
-      }
-    };
+    // const getFeed = async (pId, accTkn) => {
+    //   try {
+        
+    //         // const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
+    //         // console.log(pageDetail);
+    //         const {data} = await fb.get(`https://graph.facebook.com/${pId}/feed?access_token=${accTkn}`)
+    //           feed.value = data.data
 
-    const comment = ref({});
+    //           loaded.value = false;
+    //           console.log(feed.value);
+    //         } catch (error) {
+    //           console.log(error);
+    //           loaded.value = false;
+    //         }
+    // };
+    const getFeed = async(pageId, accessToken) => {
+      try{
+        const{ data } = await fb.get(`https://graph.facebook.com/${pageId}/feed?fields=message,comments.limit(10).summary(true){message,from,likes.limit(0).summary(true)}&access_token=${accessToken}`)
+        feed.value = data.data
+        console.log(feed.value);
+      }catch(error){
+        console.log(error);
+      }
+    }
+
+    const viewLikes = async(objectId, index) => {
+      try{
+        const{data} = await fb.get(`https://graph.facebook.com/${objectId}?fields=likes.summary(true)&access_token=${facebookAuth.value.accessToken}`)
+        postLike.value = data
+        console.log(postLike.value);
+        feed.value[index].like = data.likes.summary.total_count
+      }catch(error){
+        console.log(error);
+      }
+
+    }
+    
+    const getSocialDetails = async() =>{
+      try{
+        let {data} = await axios.get('/api/SocialMedia/getSocialDetails?handle=facebook')
+        facebookAuth.value = data.returnObject;
+        console.log(data);
+        getFeed(facebookAuth.value.pageId, facebookAuth.value.accessToken)
+      }catch(error){
+        console.log(error);
+      }
+    }
+    getSocialDetails()
+
+    
     const postComment = async (e, postId, index) => {
       if (!comment.value.message) return false;
       if (e.keyCode == 13) {
@@ -377,6 +433,17 @@ export default {
         }
       }
     };
+    // const getPagePost = async() =>{
+    //   try{
+    //     const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
+    //     console.log(pageDetail);
+    //     const {data} = await axios.get(`https://graph.facebook.com/${pageDetail.id}/feed
+    //  ?access_token=${pageDetail.access_token}`)
+    //  feed.value = data
+    //   }catch(error){
+    //     console.log(error);
+    //   }
+    // }
 
     const formatDate = (date) => {
       return dateFormatter.monthDayTime(date);
@@ -389,6 +456,10 @@ export default {
       formatDate,
       loaded,
       previewLenth,
+      churchData,
+      facebookAuth,
+      postLike,
+      viewLikes
     };
   },
 };

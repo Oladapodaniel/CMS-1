@@ -1,11 +1,13 @@
 <template>
-  <div class="container-slim">
+  <div class="container-wide">
     <div class="container-fluid">
       <div class="row d-md-flex yu mt-5">
+        <!-- <smsComponent :groupData ="groupListDetails"/> -->
         <div class="col-md-6 col-4">
           <div class="events">Groups</div>
           <Toast />
           <ConfirmDialog />
+          
         </div>
         <div class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link">
           <router-link
@@ -75,12 +77,12 @@
                   <input class="my-2" type="checkbox" />
                 </div>
                 <div
-                  class="small-text text-capitalize col-md-3 font-weight-bold"
+                  class="small-text text-capitalize col-md-4 font-weight-bold"
                 >
                   Group Name
                 </div>
                 <div
-                  class="small-text text-capitalize col-md-3 font-weight-bold"
+                  class="small-text text-capitalize col-md-2 font-weight-bold"
                 >
                   Membership Size
                 </div>
@@ -153,10 +155,11 @@
                 </div>
                 <!-- loadding -->
 
+             
 
 
                 <div class="row w-100 c-pointer text-dark border-top hover d-flex align-items-center" style="margin: 0" v-for="(group, index) in searchGroup" :key="index">
-
+                 
                   <div class="col-md-1 d-flex d-md-block px-3 justify-content-end"></div>
 
                   <div class="col-md-2 col-sm-2 d-md-flex align-items-center">
@@ -166,7 +169,7 @@
                     />
                   </div>
 
-                  <div class="col-md-3 desc">
+                  <div class="col-md-4 desc">
                     <p class="mb-0 d-flex justify-content-between">
                       <span
                         class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
@@ -179,7 +182,7 @@
                     </p>
                   </div>
 
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <div class="d-flex small justify-content-between">
                       <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Membership Size</span>
                         <div class="desc small-text text-right text-md-center">
@@ -215,16 +218,12 @@
                               aria-labelledby="dropdownMenuButton"
                             >
                               <a class="dropdown-item">
-                                <router-link
-                                  :to="`/tenant/sms/compose?group=${group.name}&groupId=${group.id}`"
-                                  >Send SMS</router-link
-                                >
+                                <a
+                                  @click="sendGroupSms(group)"
+                                  >Send SMS</a>
                               </a>
-                              <a class="dropdown-item">
-                                <router-link
-                                  :to="`/tenant/email/compose?group=${group.name}&groupId=${group.id}`"
-                                  >Send Email</router-link
-                                >
+                              <a class="dropdown-item" @click="sendGroupEmail(group)">
+                                  Send Email
                               </a>
                               <a
                                 class="dropdown-item"
@@ -237,9 +236,10 @@
                       </div>
                     </div>
                   </div>
-
+               
                 </div>
               </div>
+              
             </div>
           </div>
           <!-- <div class="text-danger" v-else>No records found</div> -->
@@ -247,6 +247,18 @@
       </div>
       <!-- tosin working on tables -->
     </div>
+    <div :class="{ 'show-Times' : showSMS, 'hide-Times' : !showSMS }">
+      <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
+      <smsComponent :groupData ="groupListDetails" />
+    </SideBar>
+    </div>
+    <div :class="{ 'show-Times' : showSMS, 'hide-Times' : !showSMS }">
+    <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
+      <emailComponent :groupData ="groupListDetails" />
+    </SideBar>
+    </div>
+    
+    
   </div>
 </template>
 
@@ -256,15 +268,34 @@ import groupsService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
+import smsComponent from "./component/smsComponent.vue";
+import emailComponent from "./component/emailComponent.vue";
+import SideBar from "./sidemodal/SideModal.vue";
+
 export default {
+  components : {
+    SideBar,
+    smsComponent,
+    emailComponent
+  },
+
   setup() {
     //   const $confirm = getCurrentInstance().ctx.$confirm;
     const loading = ref(false);
     const displayConfirmModal = ref(false);
     const store = useStore();
     const groups = ref(store.getters["groups/groups"]);
+    const groupListDetails = ref([]);
     const toast = useToast();
     const confirm = useConfirm();
+    const showSMS = ref(false)
+    const showEmail = ref(false)
+
+    // const showSide = ref(false);
+
+    // const sendSms = () =>{
+    //   showSide.value = !showSide.value
+    // }
     const confirmDelete = (id, index) => {
       confirm.require({
         message: "Do you want to delete this group?",
@@ -339,10 +370,31 @@ export default {
     const removeSearchText = () => {
         searchText = "";
     }
+    const sendGroupSms = (group) => {
+      showEmail.value = false;
+      showSMS.value = true
+      if (group.id) {
+        groupListDetails.value = [{data:`group_${group.id}`}]
+      }
+    }
+    const sendGroupEmail = (group) => {
+      showSMS.value = false;
+      showEmail.value = true
+      if (group.id) {
+        groupListDetails.value = [{data:`group_${group.id}`}]
+      }
+    }
 
 
     return {
+      // showSide,
+      // sendSms,
+      showSMS,
+      showEmail,
       groups,
+      sendGroupSms,
+      sendGroupEmail,
+      groupListDetails,
       loading,
       displayConfirmModal,
       confirmDelete,
@@ -360,6 +412,33 @@ export default {
 * {
   box-sizing: border-box;
 }
+.show-Times{
+  /* display: block; */
+   width: 875px;
+   height: 98%;
+   overflow: scroll;
+   overflow-x: hidden;
+   /* overflow-y: hidden; */
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 9;
+    background: #fff;
+    box-shadow: 5px 10px 18px #888888;
+    border-radius: 10px;
+    transition: all .8s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.hide-Times{
+  /* display: none; */
+   position: fixed;
+   overflow: hidden;
+   width: 0;
+    right: -800px;
+    top: -50px;
+    /* z-index: 9; */
+    transition: all  0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
 .row-bg-color {
   background-color: #f1f3f9;
   border-radius: 30px 30px 0 0;

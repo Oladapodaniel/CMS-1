@@ -74,6 +74,12 @@
                   v-model="person.address"
                 />
               </div>
+               <div class="input-field">
+                <label for="" class="label">Choose contact owner</label>
+                <div class="input p-0 border-0">
+                  <SearchMembers @memberdetail="setContact" :currentMember="currentContact"/>
+                </div>
+              </div>
               <div class="input-field">
                 <label for=""></label>
                 <div class="status-n-gender">
@@ -103,6 +109,7 @@
                   </div>
                 </div>
               </div>
+             
             </div>
             <div class="image-div other">
               <div class="grey-bg">
@@ -536,9 +543,13 @@ import { useStore } from "vuex";
 import membershipService from "../../services/membership/membershipservice";
 import grousService from "../../services/groups/groupsservice";
 // import lookupService from "../../services/lookup/lookupservice";
+import SearchMembers from "../../components/membership/MembersSearch.vue"
 
 export default {
-  components: { Dropdown },
+  components: {
+    Dropdown,
+    SearchMembers
+  },
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
     const toast = useToast();
@@ -549,23 +560,12 @@ export default {
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
     const routeParams = ref("");
     const peopleInGroupIDs = ref([])
+    const followupPerson = ref({})
+    const currentContact = ref({})
 
     const loading = ref(false);
-    const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
+    // const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
+    const months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
     const birthMonth = ref(1);
     const birthDay = ref(1);
@@ -735,6 +735,10 @@ export default {
       formData.append(
         "ageGroupID",
         selectedAgeGroup.value ? selectedAgeGroup.value.id : ""
+      );
+      formData.append(
+        "followupPersonID",
+        followupPerson.value.id ? followupPerson.value.id : "00000000-0000-0000-0000-000000000000"
       );
       console.log(formData);
       /*eslint no-undef: "warn"*/
@@ -972,8 +976,7 @@ export default {
       }
     };
 
-    const populatePersonDetails = (data) => {
-      console.log(data, "🛒🛒🛒🛒🛒🛒")
+    const populatePersonDetails = async (data) => {
       person.firstName = data.firstName;
       person.email = data.email;
       person.lastName = data.lastName;
@@ -997,6 +1000,18 @@ export default {
           name: i.name
         }
       })
+
+      try {
+        let res = await axios.get(`/api/People/GetPersonInfoWithAssignments/${data.followupPersonID}`)
+        currentContact.value = {
+          firstName: res.data.firstName,
+          lastName: res.data.lastName,
+          id: res.data.personId
+        }
+      }
+      catch (err) {
+        console.log(err)
+      }
     };
 
     const getMemberToEdit = () => {
@@ -1098,6 +1113,18 @@ export default {
       
     };
 
+    const setContact = (payload) => {
+        if (!payload.email) {
+          toast.add({
+              severity: "warn",
+              summary: "No email associate with the person",
+              detail: "This contact does not have any email, communicate with this person to create him as a user",
+              life: 15000,
+            });
+        }
+        followupPerson.value = payload
+      }
+
     return {
       months,
       numberofYears,
@@ -1149,7 +1176,10 @@ export default {
       addToGroupError,
       dismissAddToGroupModal,
       routeParams,
-      peopleInGroupIDs
+      peopleInGroupIDs,
+      setContact,
+      followupPerson,
+      currentContact
     };
   },
 };
