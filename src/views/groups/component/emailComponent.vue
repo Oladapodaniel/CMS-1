@@ -47,7 +47,7 @@
           </Dialog>
         </div>
       </div>
-        <!-- {{ selectedGroupMembers  }} 'yytyytytyty' -->
+        {{ selectedGroupMembers  }} 'yytyytytyty'
       <div class="row">
         <div class="col-md-12 pr-0">
           <hr class="hr my-1" />
@@ -762,7 +762,7 @@ props: ['selectedGroupMembers', 'groupData'],
      watchEffect( () => {
         // alert(props.phoneNumbers)
          if (props.selectedGroupMembers) selectedMembers.value = props.selectedGroupMembers
-    } )
+    })
      watchEffect( () => {
         // alert(props.phoneNumbers)
          if (props.groupData) selectedMembers.value = props.groupData

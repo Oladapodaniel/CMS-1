@@ -579,6 +579,8 @@
                     >
                     </i>
                   </a>
+                  <a href="#" @click="sendMarkedMemberSms">Send SMS</a>
+                  <a href="#" @click="sendMarkedMemberEmail" class="pl-3">Send Email</a>
                 </div>
               </div>
 
@@ -673,11 +675,7 @@
                         name=""
                         id=""
                         @change="mark1Item(member)"
-                        :checked="
-                          marked.findIndex(
-                            (i) => i.personID === member.personID
-                          ) >= 0
-                        "
+                        :checked=" marked.findIndex( (i) => i.personID === member.personID ) >= 0 "
                       />
                     </div>
                     <div
@@ -920,7 +918,7 @@
       <smsComponent :phoneNumbers="contacts"/>
     </SideBar>
      <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
-      <emailComponent />
+      <emailComponent :selectedGroupMembers="selectedGroupMembers"/>
     </SideBar>
   </div>
 </template>
@@ -1003,7 +1001,7 @@ export default {
       if (member.phone) {
         showSMS.value = true;
         showEmail.value = false;
-        contacts.value.push(member.phone)
+        contacts.value = member.phone
       }else {
         alert('No phone number')
       }
@@ -1209,7 +1207,19 @@ export default {
         },
       });
     };
-
+    
+    const sendMarkedMemberSms = () => {
+     contacts.value = marked.value.filter( (i) => i.phone ).map( (i) => i.phone ).join()
+     showSMS.value = true;
+    }
+    const sendMarkedMemberEmail = () => {
+     selectedGroupMembers.value = marked.value.map( (i) => {
+       i.id = i.personID
+       return i
+     });
+     console.log(  selectedGroupMembers.value , 'rrrrr');
+     showEmail.value = true;
+    }
     const searchForMembers = (e) => {
       if (e.target.value.length >= 3) {
         memberSearchResults.value = [];
@@ -1592,6 +1602,8 @@ export default {
      showEmail,
      isGroupLeader,
      enableLogin,
+     sendMarkedMemberSms,
+     sendMarkedMemberEmail,
     //  wardSearchedMembers,
     // wardSearchForUsers
 
