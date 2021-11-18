@@ -1609,10 +1609,10 @@ router.beforeEach((to, from, next) => {
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
 
-    // if(to.path == '/tenant' && role.length === 1 && role[1] === "FollowUp" && token) {
-    //     console.log('followup yeaa')
-    //     return next("/followup")
-    // }
+    if(role && role.length === 1 && role[1] === "FollowUp" && token) {
+        console.log('followup yaaaeaa')
+        // return next("/followup")
+    }
 
     next(true)
 

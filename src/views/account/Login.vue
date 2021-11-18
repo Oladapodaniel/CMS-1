@@ -241,9 +241,9 @@ export default {
             router.push('/')
           } else {
             console.log( data.roles.indexOf("FollowUp"))
-            // if (data.roles.indexOf("FollowUp") !== -1) {
-            //   router.push("/followup");
-            // } else {
+            if (data.roles.indexOf("FollowUp") !== -1) {
+              router.push("/followup");
+            } else {
               setTimeout(() => {
                 setupService.setup();
               }, 5000);
@@ -252,7 +252,7 @@ export default {
               } else {
                 router.push("/next");
               }
-            // }
+            }
           }
         }
         loading.value = false
