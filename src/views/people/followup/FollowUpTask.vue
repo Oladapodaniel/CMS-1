@@ -18,16 +18,25 @@
                     <div class="font-weight-700">Due date</div>
                     <div>{{ item.type }}</div>
                 </div>
+                <div class="col-12 mt-3">
+                    <Checkbox id="binary" v-model="markAsCompleted" :binary="true"/>
+                    <div class="mt-1 font-weight-600">Mark as completed</div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { ref } from "vue"
 export default {
     props: ["tasks"],
     setup () {
-        return {}
+        const markAsCompleted = ref(false)
+
+        return {
+            markAsCompleted
+        }
     }
 }
 </script>

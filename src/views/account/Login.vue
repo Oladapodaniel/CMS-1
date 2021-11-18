@@ -242,7 +242,7 @@ export default {
           } else {
             console.log( data.roles.indexOf("FollowUp"))
             if (data.roles.indexOf("FollowUp") !== -1) {
-              router.push("/tenant/firsttimerslist");
+              router.push("/followup");
             } else {
               setTimeout(() => {
                 setupService.setup();

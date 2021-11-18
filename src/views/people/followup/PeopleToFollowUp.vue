@@ -233,19 +233,11 @@
                             class="dropdown-menu"
                             aria-labelledby="dropdownMenuButton"
                             >
-                            <router-link
-                                :to="`/tenant/report/`"
-                                class="text-decoration-none"
-                            >
-                                <a class="dropdown-item elipsis-items"> View Report </a>
-                            </router-link>
+    
 
-                            <router-link
-                                :to="`/tenant/event/`"
-                                class="text-decoration-none"
-                            >
+                     
                                 <a class="dropdown-item elipsis-items"> Edit </a>
-                            </router-link>
+                        
                             <!-- <router-link :to="`/tenant/event/${event.activityId}`"> -->
                             <a
                                 class="dropdown-item elipsis-items cursor-pointer"
@@ -292,10 +284,21 @@
 </template>
 
 <script>
+import { ref } from "vue"
 export default {
     props: ["contacts"],
     setup () {
-        return {}
+        const searchIsVisible = ref(false)
+        const searchText = ref("")
+
+        const toggleSearch = () => {
+            searchIsVisible.value = !searchIsVisible.value;
+        };
+        return {
+            toggleSearch,
+            searchIsVisible,
+            searchText
+        }
     }
 }
 </script>

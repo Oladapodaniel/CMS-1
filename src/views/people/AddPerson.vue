@@ -77,7 +77,7 @@
                <div class="input-field">
                 <label for="" class="label">Choose contact owner</label>
                 <div class="input p-0 border-0">
-                  <SearchMembers @memberdetail="setContact"/>
+                  <SearchMembers @memberdetail="setContact" :currentMember="currentContact"/>
                 </div>
               </div>
               <div class="input-field">
@@ -561,6 +561,7 @@ export default {
     const routeParams = ref("");
     const peopleInGroupIDs = ref([])
     const followupPerson = ref({})
+    const currentContact = ref({})
 
     const loading = ref(false);
     // const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
@@ -976,7 +977,6 @@ export default {
     };
 
     const populatePersonDetails = async (data) => {
-      console.log(data, "🛒🛒🛒🛒🛒🛒")
       person.firstName = data.firstName;
       person.email = data.email;
       person.lastName = data.lastName;
@@ -1002,8 +1002,12 @@ export default {
       })
 
       try {
-        let date = await axios.get(`/api/People/GetPersonInfoWithAssignments/${data.followupPersonID}`)
-        console.log(date)
+        let res = await axios.get(`/api/People/GetPersonInfoWithAssignments/${data.followupPersonID}`)
+        currentContact.value = {
+          firstName: res.data.firstName,
+          lastName: res.data.lastName,
+          id: res.data.personId
+        }
       }
       catch (err) {
         console.log(err)
@@ -1174,7 +1178,8 @@ export default {
       routeParams,
       peopleInGroupIDs,
       setContact,
-      followupPerson
+      followupPerson,
+      currentContact
     };
   },
 };
