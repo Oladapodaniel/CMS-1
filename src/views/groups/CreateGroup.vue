@@ -1,5 +1,5 @@
 <template>
-  <div class="container-slim" @click="closeDropdownIfOpen">
+  <div class="container-wide" @click="closeDropdownIfOpen">
     <div class="container-fluid">
         <div class="row mt-3">
             <!-- <div class="col-12"> -->
@@ -163,21 +163,30 @@
           </div>
 
            <div class="row">
-                    <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
-                      <button
-                        class="default-btn outline-none primary-text font-weight-bold border-0"
-                        data-toggle="modal"
-                        data-target="#exampleModal"
-                        ref="modalBtn"
-                      >
-                        Add member
-                      </button>
-                    </div>
-                  </div>
+              <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
+                <div
+                  class="border outline-none font-weight-bold mr-3 c-pointer"
+                  data-toggle="modal"
+                  data-target="#importgroup"
+                  ref="modalBtn"
+                  style="border-radius: 3rem; padding: 0.5rem 1.25rem;"
+                >
+                  Import
+                </div>
+                <button
+                  class="default-btn outline-none primary-text font-weight-bold border-0 c-pointer"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                  ref="modalBtn"
+                >
+                  Add member
+                </button>
+              </div>
+            </div>
 
-          <div class="row pb-4 bottom-box">
+          <div class="row pb-4 bottom-box group-form">
             <div class="col-md-12">
-              <div class="row mid-header-row py-1">
+              <div class="row mid-header-row py-3">
                 <div class="col-md-4 text-lg-center pl-0">
                   <span class="mid-header-text py-1 px-1"
                     >Members in group</span
@@ -188,7 +197,7 @@
               <div class="row py-2">
                 <div class="col-md-12">
 
-                  <!-- Modal -->
+                  <!-- Add Member To Group Modal -->
                   <div
                     class="modal fade"
                     id="exampleModal"
@@ -211,6 +220,7 @@
                             class="close"
                             data-dismiss="modal"
                             aria-label="Close"
+                            
                           >
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -430,6 +440,63 @@
                             Add member
                           </button>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  
+                  <!-- Import Member To Group Modal -->
+                  <div
+                    class="modal fade"
+                    id="importgroup"
+                    tabindex="-1"
+                    role="dialog"
+                    aria-labelledby="importgroupModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" ref="modal">
+                      <div class="modal-content pr-2">
+                        <div class="modal-header py-3">
+                          <h5
+                            class="modal-title font-weight-700"
+                            id="importgroupModalLabel"
+                          >
+                            Import to group
+                          </h5>
+                          <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                            ref="closeGroupModal"
+                          >
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <ImportToGroup @uploadtogroup="uploadToGroup"/>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- <div class="modal-footer mb-2">
+                          <button
+                            type="button"
+                            class="default-btn cancel bg-white text-dark"
+                            data-dismiss="modal"
+                          >
+                            Cancel
+                          </button>
+
+                          <button
+                            class="primary-btn default-btn primary-bg border-0 outline-none"
+                            @click="addSelectedMembersToGroup"
+                            :data-dismiss="modalStatus"
+                          >
+                            Add member
+                          </button>
+                        </div> -->
                       </div>
                     </div>
                   </div>
@@ -946,12 +1013,13 @@ import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinL
 // import Attendancevue from "../event/attendance&checkin/Attendance.vue"
 // import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
 import attendanceservice from '../../services/attendance/attendanceservice';
+import ImportToGroup from "../people/ImportInstruction"
 
 export default {
   directives: {
     tooltip: Tooltip,
   },
-  components: { Dropdown, Dialog, NewPerson, Attendancecheckin, smsComponent, SideBar, emailComponent },
+  components: { Dropdown, Dialog, NewPerson, Attendancecheckin, smsComponent, SideBar, emailComponent, ImportToGroup },
   setup() {
      const display = ref(false);
     //  const showWardModal = ref(false)
@@ -983,6 +1051,7 @@ export default {
     const enableLogin = ref(false)
     const showEmail = ref(false)
     
+    const closeGroupModal = ref()
     // const moveMembers =() =>{
     //   let memberChange = convert(marked.value);
     //   console.log(memberChange,'wisdom')
@@ -1437,8 +1506,8 @@ export default {
             personID: i.person.id,
             address: i.person.address,
             email: i.person.email,
-            name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
-            phone: i.person.phoneNumber,
+            name: `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""}`,
+            phone: i.person.mobilePhone,
             position: i.position
 
           };
@@ -1451,7 +1520,7 @@ export default {
               personID: i.person.id,
               address: i.person.address,
               email: i.person.email,
-              name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
+              name:  `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""}`,
               phone: i.person.mobilePhone,
               position: i.position,
               groupID: i.groupID
@@ -1543,6 +1612,20 @@ export default {
       }
     }
 
+    const uploadToGroup = (payload) => {
+      payload.forEach(i => {
+        groupMembers.value.push({
+            personID: i.person.id,
+            address: i.person.address,
+            email: i.person.email,
+            name: `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""}`,
+            phone: i.person.mobilePhone,
+            position: i.position
+          })
+      })
+      closeGroupModal.value.click();
+    }
+
     return {
       groupData,
       selectedAttendanceId,
@@ -1604,6 +1687,10 @@ export default {
      enableLogin,
      sendMarkedMemberSms,
      sendMarkedMemberEmail,
+      // showWardModal
+     getWardId,
+     uploadToGroup,
+     closeGroupModal
     //  wardSearchedMembers,
     // wardSearchForUsers
 
@@ -1796,10 +1883,6 @@ export default {
 .dropdown-toggle:focus {
   outline: none !important;
   border: none;
-}
-
-.modal-dialog {
-  max-width: 600px;
 }
 
 .cancel {

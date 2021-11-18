@@ -10,11 +10,9 @@ const expiredSubMixin = {
     created() {
         //  Route users to Expiry subscription page if subscription is expired
         const currentUser = store.getters.currentUser;
-        console.log(currentUser)
         if (!currentUser || !currentUser.subStatus) {
             membershipService.getSignedInUser()
                 .then(res => {
-                    console.log(res, 'Gideon')
                     if (res.subStatus === 'Expired'){
                         return router.push('/errorpage/expiredSubscription')
                     }

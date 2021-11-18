@@ -1,6 +1,6 @@
 <template>
    <div class="d-flex justify-content-end mx-3">
-        <div class="col-3 mt-3 save-btn btn-btn pointer-cursor" @click="openTaskEditor">Create</div>
+        <div class="col-12 col-sm-6 col-md-3 mt-3 save-btn btn-btn pointer-cursor" @click="openTaskEditor">Create task</div>
    </div>
             <div class="col-12 mt-4" v-for="(item, index) in addTask" :key="index">
                 <div class="col-12 card-bg p-4">
@@ -490,7 +490,7 @@ export default {
 .card-bg {
     background-color: rgb(255, 255, 255);
     box-shadow: rgb(45 62 80 / 12%) 0px 1px 5px 0px;
-    border-radius: 3px;
+    border-radius: 8px;
 }
 
 .roll-note-icon {

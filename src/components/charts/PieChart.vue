@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { onMounted, onUpdated, ref } from "vue";
+import { onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
@@ -22,8 +22,6 @@ export default {
   setup(props) {
     const chart = ref(null);
     const getSummary = ref([]);
-
-    console.log(props);
 
     onUpdated(() => {
       try {
@@ -93,26 +91,6 @@ var highchartsOptions = {
 
       chart.value = new Highcharts.chart(highchartsOptions);
     });
-    // Highcharts.setOptions({
-    //   colors: ["brown", "purple", "#DDDF00"],
-    // });
-    // })
-
-    onMounted(() => {
-    //   getSummary.value = [
-    //   {
-    //     name: "Male",
-    //     y: 50,
-    //   },
-    //   {
-    //     name: "Female",
-    //     y: 50,
-    //   },
-    // ];
-    // console.log(props.summary)
-    console.log(getSummary.value)
-    });
-
     return { chart, getSummary }
   },
 };
