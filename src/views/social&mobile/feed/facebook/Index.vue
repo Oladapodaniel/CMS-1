@@ -4,6 +4,7 @@
       <div class="col-md-12"></div>
     </div>
     <div class="row px-1">
+      how
       <!-- Feed -->
       <div class="col-md-12 mx-auto py-4">
         <div class="row bordered">
@@ -132,7 +133,7 @@
                 >
                   <span><i class="pi pi-thumbs-up mr-2"></i></span>
                   <span>Like</span>
-                  <span class="ml-2">post.likeCount</span>
+                  <span class="ml-2">getLikes(post.id)</span>
                 </a>
                 <a
                   class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
@@ -338,7 +339,9 @@ export default {
     // console.log(getCurrentUser);
     //Get AllChurchProfile
   const churchData =ref('');
-  const facebookAuth =ref({});
+  const postLike = ref([]);
+  const facebookAuth = ref({});
+  const comment = ref({});
     const getChurchProfile= async()=>{
       try{
         const {data} = await axios.get("/mobile/v1/Profile/GetChurchProfile");
@@ -363,21 +366,42 @@ export default {
     //   .catch((err) => console.log(err));
 
     const loaded = ref(true);
-    const getFeed = async (pId, accTkn) => {
-      try {
+    // const getFeed = async (pId, accTkn) => {
+    //   try {
         
-            // const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
-            // console.log(pageDetail);
-            const {data} = await fb.get(`https://graph.facebook.com/${pId}/feed?access_token=${accTkn}`)
-        feed.value = data.data
+    //         // const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
+    //         // console.log(pageDetail);
+    //         const {data} = await fb.get(`https://graph.facebook.com/${pId}/feed?access_token=${accTkn}`)
+    //           feed.value = data.data
 
-        loaded.value = false;
+    //           loaded.value = false;
+    //           console.log(feed.value);
+    //         } catch (error) {
+    //           console.log(error);
+    //           loaded.value = false;
+    //         }
+    // };
+    const getFeed = async(pageId, accessToken) => {
+      try{
+        const{ data } = await fb.get(`https://graph.facebook.com/${pageId}/feed?fields=message,comments.limit(10).summary(true){message,from,likes.limit(0).summary(true)}&access_token=${accessToken}`)
+        feed.value = data
         console.log(feed.value);
-      } catch (error) {
+      }catch(error){
         console.log(error);
-        loaded.value = false;
       }
-    };
+    }
+
+    const getLikes = async(objectId) => {
+      try{
+        const{data} = await fb.get(`https://graph.facebook.com/${objectId}?fields=likes.summary(true)&access_token=${facebookAuth.value.accessToken}`)
+        postLike.value = data
+  console.log(postLike.value);
+        return data
+      }catch(error){
+        console.log(error);
+      }
+
+    }
     
     const getSocialDetails = async() =>{
       try{
@@ -391,7 +415,7 @@ export default {
     }
     getSocialDetails()
 
-    const comment = ref({});
+    
     const postComment = async (e, postId, index) => {
       if (!comment.value.message) return false;
       if (e.keyCode == 13) {
@@ -434,7 +458,9 @@ export default {
       loaded,
       previewLenth,
       churchData,
-      facebookAuth
+      facebookAuth,
+      postLike,
+      getLikes
     };
   },
 };

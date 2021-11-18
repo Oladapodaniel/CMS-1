@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
           <h4 class="font-weight-bold">Compose SMS</h4>
-          <!-- {{ phoneNumbers }}phoneNumbers -->
+          {{ phoneNumbers }}phoneNumbers
           <!-- {{groupData}} data -->
           <Toast />
 

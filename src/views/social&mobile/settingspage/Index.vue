@@ -592,7 +592,7 @@ export default {
           console.log(response)
           
         },
-        { scope: ["email", "public_profile","user_likes"] }
+        { scope: ["email", "public_profile"] }
       );
     };
 
