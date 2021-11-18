@@ -7,9 +7,9 @@
             </div>
 
             <div class="head-button">
-                <!-- <router-link to="/tenant/contributionCategory">
-                <button class="default-btn mr-3">View Offering Items</button>
-                </router-link> -->
+                <router-link to="/">
+                <button class="default-btn mr-3" @click="logout">Logout</button>
+                </router-link>
             </div>
             </div>
         </div>
@@ -70,9 +70,15 @@ export default {
             }
         }
         getFollowUpContactDetails()
+
+        const logout = () => {
+            localStorage.removeItem('token')
+        
+        }
         return {
             contacts,
-            tasks
+            tasks,
+            logout
         }
     }
 }
