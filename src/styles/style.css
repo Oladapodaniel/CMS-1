@@ -1098,3 +1098,17 @@
       width: calc(62% - 336px);
     }
   }
+
+  /* Bootstrap Modal sizes */
+
+  @media (min-width: 992px) {
+    .modal-lg {
+      width: 900px;
+    }
+  }
+  @media (min-width: 768px) {
+    .modal-xl {
+      width: 90%;
+     max-width:1200px;
+    }
+  }
