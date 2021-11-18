@@ -1612,7 +1612,6 @@ router.beforeEach((to, from, next) => {
     if((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/followup")) {
         localStorage.removeItem('token')
         next("/")
-        return
     }   else {
         next(true)
     }

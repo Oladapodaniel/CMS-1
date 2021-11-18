@@ -9,8 +9,8 @@
                         <!-- <input type="checkbox" name="all" id="all" />
                         <label>SELECT ALL</label> -->
                     </div>
-                    <p @click="toggleSearch" class="search-text mt-2">
-                        <i class="pi pi-search"></i> &nbsp; &nbsp; SEARCH
+                    <p @click="toggleSearch" class="search-text mt-2 c-pointer">
+                        <i class="pi pi-search"></i> &nbsp; SEARCH
                     </p>
                     <div class="search d-flex">
                         <label
@@ -140,9 +140,9 @@
                         </div>
                         
                     </div>
-                    <div class="col-md-12 mt-3" v-for="(item, index) in contacts" :key="index">
-                    <div class="row">
-                        <div class="col-md-1 col-sm-12 p-2">
+                    <div class="col-md-12" v-for="(item, index) in searchContact" :key="index">
+                    <div class="row border-bottom p-2">
+                        <div class="col-md-1 col-sm-12">
                         <!-- <div class="row px-2">
                              <div class="col-8 col-md-0 d-md-none">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Tab</span>
@@ -174,7 +174,7 @@
                         <div>
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">First Name</span>
-                            <span class=" d-sm-flex">
+                            <span class=" d-sm-flex c-pointer">
                                 <div class="px-1">{{ item.firstName }}</div>
                             </span>
                             </span>
@@ -185,7 +185,7 @@
                         <div>
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Last Name</span>
-                            <span class=" d-sm-flex">
+                            <span class=" d-sm-flex c-pointer">
                                 <div>{{ item.lastName }}</div>
                             </span>
                             </span>
@@ -196,7 +196,7 @@
                         <div>
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Phone</span>
-                            <span class=" d-sm-flex">
+                            <span class=" d-sm-flex c-pointer">
                             <div>{{ item.mobilePhone }}</div>
                             </span>
                             </span>
@@ -207,7 +207,7 @@
                         <div>
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Email</span>
-                            <span class=" d-sm-flex">
+                            <span class=" d-sm-flex c-pointer">
                             <div>{{ item.email }}</div>
                             </span>
                             </span>
@@ -284,20 +284,28 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import { ref, computed } from "vue"
 export default {
     props: ["contacts"],
-    setup () {
+    setup (props) {
         const searchIsVisible = ref(false)
         const searchText = ref("")
 
         const toggleSearch = () => {
             searchIsVisible.value = !searchIsVisible.value;
         };
+
+        const searchContact = computed(() => {
+            if (searchText.value == "" && props.contacts.length === 0) return []
+            return props.contacts.filter(i => {
+                return i.firstName.toLowerCase().includes(searchText.value.toLowerCase())
+            })
+        })
         return {
             toggleSearch,
             searchIsVisible,
-            searchText
+            searchText,
+            searchContact
         }
     }
 }
