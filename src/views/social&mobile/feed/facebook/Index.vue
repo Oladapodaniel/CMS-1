@@ -133,7 +133,7 @@
                 >
                   <span><i class="pi pi-thumbs-up mr-2"></i></span>
                   <span>Like</span>
-                  <span class="ml-2">getLikes(post.id)</span>
+                  <span class="ml-2">{{ getLikes(post.id) }}</span>
                 </a>
                 <a
                   class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
@@ -384,7 +384,7 @@ export default {
     const getFeed = async(pageId, accessToken) => {
       try{
         const{ data } = await fb.get(`https://graph.facebook.com/${pageId}/feed?fields=message,comments.limit(10).summary(true){message,from,likes.limit(0).summary(true)}&access_token=${accessToken}`)
-        feed.value = data
+        feed.value = data.data
         console.log(feed.value);
       }catch(error){
         console.log(error);
