@@ -132,7 +132,7 @@
                 >
                   <span><i class="pi pi-thumbs-up mr-2"></i></span>
                   <span>Like</span>
-                  <span class="ml-2 text-primary" @click="viewLikes(post.id, index)">{{ item.like ? item.like : "view likes" }}</span>
+                  <span class="ml-2 text-primary" @click="viewLikes(post.id, index)">{{ item && item.like ? item.like : "view likes" }}</span>
                 </a>
                 <a
                   class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
