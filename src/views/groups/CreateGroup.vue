@@ -1,28 +1,28 @@
 <template>
-  <div class="container-wide" @click="closeDropdownIfOpen">
+  <div class="container-wide container-top" @click="closeDropdownIfOpen">
     <div class="container-fluid">
         <div class="row mt-3">
             <!-- <div class="col-12"> -->
-                <div class="col-12 col-sm-3 c-pointer "  @click="groupDetail">
+                <div class="col-12 col-sm-6 c-pointer "  @click="groupDetail">
                     <div  class="font-weight-bold h5 col-12  ">Group Detail</div>
-                    <div class="col-10 " :class="{ 'baseline' : showGroup, 'hide-base' : !showGroup }"></div>
+                    <div class="" :class="{ 'baseline' : showGroup, 'hide-base' : !showGroup }"></div>
                 </div>
-                <div class="col-12 col-sm-4  c-pointer "  @click="attendanceCheckin">
+                <div class="col-12 col-sm-6  c-pointer" @click="displayView">
                     <div class="font-weight-bold h5 col-12  ">Attendance & Checkin</div>
-                    <div class="col-10 mx-2 " :class="{ 'baselinetwo' : showAttendanceCheckin, 'hide-basetwo' : !showAttendanceCheckin }"></div>
+                    <div class="" :class="{ 'baseline' : showAttendanceCheckin, 'hide-base' : !showAttendanceCheckin }"></div>
                 </div>
                 <!-- <div class="hr"><hr /></div> -->
             <!-- </div> -->
             
         </div>
-        <div class="row">
+        <div class="row mt-3">
              <div class="col-12" v-if="showAttendanceCheckin">
                 <!-- <div><Attendance/></div>  -->
             <!-- <div class="col-sm-12"> -->
             <!-- </div> -->
                 <div>
                   <div >
-                    <div class="main-body container-wide">
+                    <div class="main-body">
                       <div class=" row">
                       <div class="top my-3 col-sm-12 col-md-12 d-flex flex-wrap pl-0">
                         <div class="events col-md-6 ">
@@ -671,7 +671,7 @@
                 <!-- <div class="col-md-2">
                   <span class="py-2 font-weight-bold">ADDRESS</span>
                 </div> -->
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <span class="py-2 font-weight-bold">EMAIL</span>
                 </div>
                 <div class="col-md-2">
@@ -1088,16 +1088,20 @@ export default {
           display.value = true;
 
         };
+
+        const  displayView = () => {
+           showGroup.value = false;
+            showAttendanceCheckin.value = true;
+        }
+
         const attendanceCheckin = async () => {
              const response = await attendanceservice.getItems();
             attendanceData.value = response
             const attendanceItem = response.find((i) => i.groupID === route.params.groupId);
             if(attendanceItem && attendanceItem.id) selectedAttendanceId.value = attendanceItem.id;
-             showGroup.value = false;
-            showAttendanceCheckin.value = true;
-
             return attendanceItem;
         }
+        attendanceCheckin()
          const groupDetail = async () => {
             showGroup.value = true;
             showAttendanceCheckin.value = false;
@@ -1507,7 +1511,7 @@ export default {
             address: i.person.address,
             email: i.person.email,
             name: `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""}`,
-            phone: i.person.mobilePhone,
+            phone: i.person.phoneNumber,
             position: i.position
 
           };
@@ -1521,7 +1525,7 @@ export default {
               address: i.person.address,
               email: i.person.email,
               name:  `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""}`,
-              phone: i.person.mobilePhone,
+              phone: i.person.phoneNumber,
               position: i.position,
               groupID: i.groupID
             }
@@ -1690,7 +1694,8 @@ export default {
       // showWardModal
      getWardId,
      uploadToGroup,
-     closeGroupModal
+     closeGroupModal,
+     displayView
     //  wardSearchedMembers,
     // wardSearchForUsers
 
@@ -1739,9 +1744,9 @@ export default {
     background-color: #136acd;
     /* background-color: #33475b; */
     /* color: #136acd" */
-    border-radius: 20px;
+    /* border-radius: 20px; */
     /* bottom: -2.5px; */
-    height: 6px;
+    height: 3px;
     left: 0px;
     /* width: 50%; */
     opacity: 1;
@@ -1751,9 +1756,9 @@ export default {
     transition: all 150ms ease-in-out;
     background-color: #136acd;
     /* background-color: #33475b; */
-    border-radius: 20px;
+    /* border-radius: 20px; */
     /* bottom: -2.5px; */
-    height: 6px;
+    height: 3px;
     left: 0px;
     /* width: 50%; */
     opacity: 0;

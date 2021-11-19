@@ -93,7 +93,7 @@
       </div>
     </div>
     <!-- group box area -->
-
+  
     <div class="table mx-0" :class="{ 'mt-0': marked.length > 0 }">
       <div class="table-top">
         <div class="select-all">
@@ -120,7 +120,9 @@
             style="font-size: 20px"
             v-if="marked.length > 0"
             @click="showConfirmModal1"
-          ></i>
+          ></i> &nbsp; &nbsp;
+          <span class="c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberSms">Send SMS</span> &nbsp; &nbsp;
+          <span class="c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberEmail">Send Email</span>
         </div>
         <div class="filter">
           <p @click="toggleFilterFormVissibility" class="">
@@ -436,6 +438,12 @@
       </div>
     </div>
   </div>
+  <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
+    <smsComponent :phoneNumbers="contacts"/>
+  </SideBar>
+  <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
+    <emailComponent :selectedGroupMembers="markedMembers"/>
+  </SideBar>
 </template>
 
 <script>
@@ -452,6 +460,9 @@ import membershipservice from "../../services/membership/membershipservice";
 import Tooltip from "primevue/tooltip";
 import Dropdown from "primevue/dropdown";
 import loadingComponent from "@/components/loading/LoadingComponent";
+import smsComponent from "../groups/component/smsComponent.vue";
+import emailComponent from "../groups/component/emailComponent.vue";
+import SideBar from "../groups/sidemodal/SideModal.vue";
 
 export default {
   props: ["list", "peopleCount"],
@@ -461,6 +472,9 @@ export default {
     PaginationButtons,
     Dropdown,
     loadingComponent,
+    smsComponent,
+    emailComponent,
+    SideBar
   },
 
   directives: {
@@ -477,6 +491,10 @@ export default {
     const noRecords = ref(false);
     const loading = ref(false);
     const searchText = ref("");
+    const showSMS = ref(false)
+    const showEmail = ref(false)
+    const contacts = ref([])
+    const markedMembers = ref([])
     // const store = useStore();
 
     const toggleFilterFormVissibility = () =>
@@ -874,6 +892,19 @@ export default {
         });
     };
 
+    const sendMarkedMemberSms = () => {
+     contacts.value = marked.value.filter( (i) => i.mobilePhone ).map( (i) => i.mobilePhone ).join()
+     showSMS.value = true;
+    }
+
+    const sendMarkedMemberEmail = () => {
+     markedMembers.value = marked.value.map( (i) => {
+       i.id = i.id
+       return i
+     });
+     showEmail.value = true;
+    }
+
     return {
       churchMembers,
       getPeopleByPage,
@@ -913,6 +944,12 @@ export default {
       listOfPeople,
       loading,
       searchMember,
+      sendMarkedMemberSms,
+      showSMS,
+      sendMarkedMemberEmail,
+      showEmail,
+      contacts,
+      markedMembers
     };
   },
 };
