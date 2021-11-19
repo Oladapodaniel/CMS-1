@@ -823,7 +823,6 @@ const routes = [
                     }
                 ]
             },
-            // whatsapp
             {
                 path: 'whatsapp',
                 name: 'Whatsapp',
@@ -842,7 +841,6 @@ const routes = [
                             import ( /* webpackChunkName: "inbox" */ '@/views/communication/whatsapp/composeWhatsapp')
                     }]
             },
-            // voice
             {
                 path: 'voice',
                 name: 'voice',
@@ -1238,12 +1236,12 @@ const routes = [
             },
             {
                 path: 'onlinedonation',
-                name: 'Index',
+                name: 'DonateOnline',
                 meta: {
                     title: 'Churchplus - Online Donations',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/churchdonation/onlinedonation/Index')
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/churchdonation/onlinedonation/Index.vue')
             },
             {
                 path: 'payments/:editPayment?',
@@ -1457,7 +1455,7 @@ const routes = [
         meta: {
             title: 'Churchplus - ChildSignin',
         },
-        beforeEnter(to, from, next) {
+        beforeEnter() {
             window.location.href = "https://child-checkin-seven.vercel.app/";
         },
     },
@@ -1561,7 +1559,7 @@ const routes = [
     },
     {
         path: '/followup',
-        name: 'Index',
+        name: 'Followup',
         component: () =>
             import ( /* webpackChunkName: "sentemails" */ '@/views/people/followup/Index'),
 

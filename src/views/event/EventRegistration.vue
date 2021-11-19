@@ -305,7 +305,7 @@
 
 
 <script>
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 // import router from "../../router/index";
 import InputText from "primevue/inputtext";

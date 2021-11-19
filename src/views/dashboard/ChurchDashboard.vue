@@ -533,7 +533,6 @@
 import ByMaritalStatusChart from "@/components/charts/PieChart";
 import ByGenderChart from "@/components/charts/PieChart";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
-import ColumnChart2 from "@/components/charts/ColumnChart2.vue";
 // import PieChart from "@/components/charts/PieChart"
 import { computed, onMounted, ref } from "vue";
 // import { useRoute } from 'vue-router';
@@ -551,7 +550,6 @@ export default {
    mixins: [mixin],
   components: {
     ColumnChart,
-    ColumnChart2,
     ByMaritalStatusChart,
     ByGenderChart,
     

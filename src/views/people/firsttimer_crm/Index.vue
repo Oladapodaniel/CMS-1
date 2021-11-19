@@ -267,7 +267,6 @@ import InputText from 'primevue/inputtext'
 import Dialog from 'primevue/dialog';
 import Editor from 'primevue/editor';
 import { useToast } from "primevue/usetoast";
-import Dropdown from "primevue/dropdown";
 import { useRoute } from "vue-router"
 import axios from "@/gateway/backendapi";
 import lookupTable from "../../../services/lookup/lookupservice"
@@ -290,7 +289,6 @@ export default {
         InputText,
         Dialog,
         Editor,
-        Dropdown,
         // SelectButton,
         SearchMember
     },
