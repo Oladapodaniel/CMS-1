@@ -1,19 +1,79 @@
 <template>
-  <div class="container-slim" @click="closeDropdownIfOpen">
+  <div class="container-wide" @click="closeDropdownIfOpen">
     <div class="container-fluid">
-      <div class="row mt-3">
+        <div class="row mt-3">
+            <!-- <div class="col-12"> -->
+                <div class="col-12 col-sm-3 c-pointer "  @click="groupDetail">
+                    <div  class="font-weight-bold h5 col-12  ">Group Detail</div>
+                    <div class="col-10 " :class="{ 'baseline' : showGroup, 'hide-base' : !showGroup }"></div>
+                </div>
+                <div class="col-12 col-sm-4  c-pointer "  @click="attendanceCheckin">
+                    <div class="font-weight-bold h5 col-12  ">Attendance & Checkin</div>
+                    <div class="col-10 mx-2 " :class="{ 'baselinetwo' : showAttendanceCheckin, 'hide-basetwo' : !showAttendanceCheckin }"></div>
+                </div>
+                <!-- <div class="hr"><hr /></div> -->
+            <!-- </div> -->
+            
+        </div>
+        <div class="row">
+             <div class="col-12" v-if="showAttendanceCheckin">
+                <!-- <div><Attendance/></div>  -->
+            <!-- <div class="col-sm-12"> -->
+            <!-- </div> -->
+                <div>
+                  <div >
+                    <div class="main-body container-wide">
+                      <div class=" row">
+                      <div class="top my-3 col-sm-12 col-md-12 d-flex flex-wrap pl-0">
+                        <div class="events col-md-6 ">
+                          <div> Attendance & Check-in </div>
+                        </div>
+                        <div class="actions col-md-6 d-flex justify-content-md-end">
+                            <router-link :to="{ name: 'AddCheckin' }" v-if="showAttendanceCheckin">
+                              <button class="buttonn add-person-btn">
+                                Add New Attendance
+                              </button>
+                            </router-link>
+                        </div>
+                      </div>
+                    </div>
+                    <hr class="hr" />
+
+                      <!-- <div class="row">
+                          <div class="col-md-12">
+                              <router-view></router-view>
+                          </div>
+                      </div> -->
+                  </div>
+                    <Attendancecheckin :list="attendanceData"  />
+                    <!-- <Attendancecheckin :attendanceID="selectedAttendanceId"  /> -->
+                  </div>
+                  <div >
+                    No checkin attendance for this group
+                  </div>
+                </div>  
+            </div>
+        </div>
+        
+      <div class="row mt-3" v-if="showGroup">
         <div class="col-md-12">
           <h2 v-if="!route.params.groupId">Add Group</h2>
           <h2 v-else>Update Group</h2>
+          <!-- <emailComponent :selectedGroupMembers="selectedGroupMembers" /> -->
+          <!-- <smsComponent :phoneNumbers="contacts"/> -->
           <Toast />
           <ConfirmDialog />
         </div>
+        <!-- <div class=" col-md-4 mt-2 ">
+          <router-link class=" text-decoration-none text-white font-weight-bold primary-btn  default-btn primary-bg border-0 " :to="{ name: 'MarkAttendance', query: { id: route.query.id }, }"
+            >Attendance Checkin</router-link>
+        </div> -->
         <div class="col-md-12 my-3 px-0">
           <hr class="hr" />
         </div>
       </div>
 
-      <div class="row py-3">
+      <div class="row py-3" v-if="showGroup">
         <div class="col-md-12">
           <div class="row group-form pt-3 my-4">
             <div class="col-md-12">
@@ -346,7 +406,7 @@
                                       <label for="description" class="font-weight-600">
                                         Is Group Leader
                                       </label>
-                                      <Checkbox v-model="groupData.isGroupLeader" :binary="true" class="ml-3"/>
+                                      <Checkbox v-model="isGroupLeader" :binary="true" class="ml-3"/>
                                     <!-- </div> -->
                                   </div>
 
@@ -355,7 +415,7 @@
                                       <label for="description" class="font-weight-600">
                                         Enable Login
                                       </label>
-                                      <Checkbox v-model="groupData.enableLogin" :binary="true" class="ml-3"/>
+                                      <Checkbox v-model="enableLogin" :binary="true" class="ml-3"/>
                                     <!-- </div> -->
                                   </div>
                               </div>
@@ -586,6 +646,8 @@
                     >
                     </i>
                   </a>
+                  <a href="#" @click="sendMarkedMemberSms">Send SMS</a>
+                  <a href="#" @click="sendMarkedMemberEmail" class="pl-3">Send Email</a>
                 </div>
               </div>
 
@@ -680,11 +742,7 @@
                         name=""
                         id=""
                         @change="mark1Item(member)"
-                        :checked="
-                          marked.findIndex(
-                            (i) => i.personID === member.personID
-                          ) >= 0
-                        "
+                        :checked=" marked.findIndex( (i) => i.personID === member.personID ) >= 0 "
                       />
                     </div>
                     <div
@@ -740,18 +798,20 @@
                           class="dropdown-menu"
                           aria-labelledby="dropdownMenuButton"
                         >
-                          <a class="dropdown-item" v-if="member.phone">
-                            <router-link
-                              :to="`/tenant/sms/compose?phone=${member.phone}`"
-                              >Send SMS</router-link
+                          <a class="dropdown-item" >
+                          <!-- <a class="dropdown-item" v-if="member.phoneNumber"> -->
+                            <a 
+                              @click="test(member)"
+                              > Send SMS</a
                             >
                           </a>
-                          <a class="dropdown-item" v-if="member.email">
-                            <router-link
-                              :to="`/tenant/email/compose?phone=${member.email}`"
-                              >Send Email</router-link
-                            >
+                          <!-- <a class="dropdown-item" v-if="member.email" href=""> -->
+                          <a class="dropdown-item">
+                            <a 
+                              @click="testEmail(member)"
+                            >Send Email</a>
                           </a>
+                              <!-- :to="`/tenant/email/compose?phone=${member.email}`" -->
                           <a
                             class="dropdown-item c-pointer"
                             @click="confirmDelete(member.personID, index)"
@@ -776,7 +836,9 @@
                 v-for="(member, index) in awaitingApprovals"
                 :key="index"
               >
+             
                 <div class="col-md-12">
+                   {{member}}
                   <div class="row">
                     <div
                       class="col-md-1 d-flex justify-content-between align-items-center"
@@ -879,7 +941,7 @@
         </div>
       </div>
 
-      <div class="row py-3 my-3">
+      <div class="row py-3 my-3" v-if="showGroup">
         <div class="col-md-12">
           <p
             class="text-right text-danger font-weight-bold pr-2"
@@ -919,6 +981,12 @@
             </div>
       </div>
     </Dialog>
+     <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
+      <smsComponent :phoneNumbers="contacts"/>
+    </SideBar>
+     <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
+      <emailComponent :selectedGroupMembers="selectedGroupMembers"/>
+    </SideBar>
   </div>
 </template>
 
@@ -937,13 +1005,21 @@ import store from "../../store/store";
 import NewPerson from '../../components/membership/NewDonor.vue';
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress.js";
+import smsComponent from "./component/smsComponent.vue";
+import emailComponent from "./component/emailComponent.vue";
+import SideBar from "./sidemodal/SideModal.vue";
+// import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
+import Attendancecheckin from "../event/attendance&checkin/AttendanceAndCheckinList.vue"
+// import Attendancevue from "../event/attendance&checkin/Attendance.vue"
+// import Attendancecheckin from "../event/attendance&checkin/MarkAttendance.vue"
+import attendanceservice from '../../services/attendance/attendanceservice';
 import ImportToGroup from "../people/ImportInstruction"
 
 export default {
   directives: {
     tooltip: Tooltip,
   },
-  components: { Dropdown, Dialog, NewPerson, ImportToGroup },
+  components: { Dropdown, Dialog, NewPerson, Attendancecheckin, smsComponent, SideBar, emailComponent, ImportToGroup },
   setup() {
      const display = ref(false);
     //  const showWardModal = ref(false)
@@ -965,6 +1041,16 @@ export default {
     const selectGroupTo = ref({});
     const copyGroupTo = ref({});
     const awaitingApprovals = ref([])
+    const contacts = ref([])
+    const showGroup = ref(true)
+    const attendanceData = ref([])
+    const showAttendanceCheckin = ref(false)
+    const selectedGroupMembers = ref([])
+    const showSMS = ref(false)
+    const isGroupLeader = ref(false)
+    const enableLogin = ref(false)
+    const showEmail = ref(false)
+    
     const closeGroupModal = ref()
     // const moveMembers =() =>{
     //   let memberChange = convert(marked.value);
@@ -979,11 +1065,44 @@ export default {
         console.log(error);
       }
     });
+
+    const test = (member) => {
+      if (member.phone) {
+        showSMS.value = true;
+        showEmail.value = false;
+        contacts.value = member.phone
+      }else {
+        alert('No phone number')
+      }
+    }
+    const testEmail = (member) => {
+      if (member.email) {
+        showEmail.value = true;
+        showSMS.value = false;
+        selectedGroupMembers.value.push({id:member.personID})
+      }
+    }
+    const selectedAttendanceId = ref('')
      const showAddMemberForm = () => {
 
           display.value = true;
 
         };
+        const attendanceCheckin = async () => {
+             const response = await attendanceservice.getItems();
+            attendanceData.value = response
+            const attendanceItem = response.find((i) => i.groupID === route.params.groupId);
+            if(attendanceItem && attendanceItem.id) selectedAttendanceId.value = attendanceItem.id;
+             showGroup.value = false;
+            showAttendanceCheckin.value = true;
+
+            return attendanceItem;
+        }
+         const groupDetail = async () => {
+            showGroup.value = true;
+            showAttendanceCheckin.value = false;
+           
+        }
     //   const setGroupModal = (payload) => {
     //     showWardModal.value = payload
     // }
@@ -1157,7 +1276,19 @@ export default {
         },
       });
     };
-
+    
+    const sendMarkedMemberSms = () => {
+     contacts.value = marked.value.filter( (i) => i.phone ).map( (i) => i.phone ).join()
+     showSMS.value = true;
+    }
+    const sendMarkedMemberEmail = () => {
+     selectedGroupMembers.value = marked.value.map( (i) => {
+       i.id = i.personID
+       return i
+     });
+     console.log(  selectedGroupMembers.value , 'rrrrr');
+     showEmail.value = true;
+    }
     const searchForMembers = (e) => {
       if (e.target.value.length >= 3) {
         memberSearchResults.value = [];
@@ -1233,6 +1364,7 @@ export default {
         // };
 
     const addSelectedMembersToGroup = () => {
+      // alert('qwerty')
       if (selectedMembers.value.length === 0) {
         modalStatus.value = "modal";
         return false;
@@ -1241,8 +1373,12 @@ export default {
         i.position = position.value;
         i.personID = i.id;
         i.id = "";
+        i.enableLogin = enableLogin.value;
+        i.isGroupLeader = isGroupLeader.value;
         groupMembers.value.push(i);
+        // alert('qwerty')
       });
+      console.log(groupMembers.value, "groupMember");
       if (route.params.groupId) {
         groupData.value.peopleInGroups = groupMembers.value;
         updateGroup(groupData.value, false);
@@ -1373,6 +1509,7 @@ export default {
             name: `${i.person.firstName ? i.person.firstName : ""} ${i.person.lastName ? i.person.lastName : ""}`,
             phone: i.person.mobilePhone,
             position: i.position
+
           };
 
           groupMembers.value.push(person);
@@ -1491,6 +1628,7 @@ export default {
 
     return {
       groupData,
+      selectedAttendanceId,
       searchForMembers,
       searchText,
       loading,
@@ -1532,7 +1670,23 @@ export default {
       requestApproval,
       setGroupModal,
       modalBtn,
+      contacts,
+      test,
+      attendanceCheckin,
+      groupDetail,
+      showGroup,
+      showAttendanceCheckin, 
       // wardSearchString,
+     getWardId,
+     attendanceData,
+     testEmail,
+     selectedGroupMembers,
+     showSMS,
+     showEmail,
+     isGroupLeader,
+     enableLogin,
+     sendMarkedMemberSms,
+     sendMarkedMemberEmail,
       // showWardModal
      getWardId,
      uploadToGroup,
@@ -1550,11 +1704,108 @@ export default {
 * {
   box-sizing: border-box;
 }
+.add-person-btn {
+        background: #136acd;
+        color: #fff;
+        }
+ .buttonn {
+        padding: 8px 20px;
+        border: none;
+        border-radius: 22px;
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0 8px;
+        outline: none;
+        text-decoration: none;
+        box-sizing: border-box;
+        }
 
 .mid-header-row {
   border-bottom: 1px solid #dde2e6;
 }
 
+.events {
+        font: normal normal 800 29px Nunito sans;
+    }
+    /* hr{
+      color: gainsboro;
+      background-color: hotpink;
+      height: 5px;
+      width : 100%;
+    } */
+
+.baseline {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    /* background-color: #33475b; */
+    /* color: #136acd" */
+    border-radius: 20px;
+    /* bottom: -2.5px; */
+    height: 6px;
+    left: 0px;
+    /* width: 50%; */
+    opacity: 1;
+}
+
+.hide-base {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    /* background-color: #33475b; */
+    border-radius: 20px;
+    /* bottom: -2.5px; */
+    height: 6px;
+    left: 0px;
+    /* width: 50%; */
+    opacity: 0;
+}
+.baselinetwo {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    /* background-color: #33475b; */
+    /* color: #136acd" */
+    border-radius: 20px;
+    /* bottom: -2.5px; */
+    height: 6px;
+    left: 0px;
+    /* width: 50%; */
+    opacity: 1;
+}
+
+.hide-basetwo {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    /* background-color: #33475b; */
+    border-radius: 20px;
+    /* bottom: -2.5px; */
+    height: 6px;
+    left: 0px;
+    /* width: 50%; */
+    opacity: 0;
+}
+    @media screen and (max-width: 767px ){
+        .baseline {
+            width: 40%;
+        }
+        .hide-base {
+            width: 40%;
+        }
+    }
+    @media screen and (max-width: 575px ){
+        .baseline {
+            width: 20%;
+        }
+        .hide-base {
+            width: 20%;
+        }
+    }
+    
+@media (max-width: 399px) {
+    .actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
 .remove-btn {
   background: red !important;
   padding: 10px 20px;

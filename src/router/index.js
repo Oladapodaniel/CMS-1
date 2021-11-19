@@ -415,6 +415,28 @@ const routes = [
                     },
                 ]
             },
+            {
+            
+                path: 'branchsummary',
+                name: "BranchSummary",
+                meta: {
+                    title: 'Churchplus - Branch',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/BranchSummary')
+                
+            },
+            {
+            
+                path: 'addbranch',
+                name: "AddBranch",
+                meta: {
+                    title: 'Churchplus - Branch',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/AddBranch')
+                
+            },
 
             // {
             //     path: 'attendanceservicereport',
@@ -867,6 +889,15 @@ const routes = [
                 },
                 component: () =>
                     import ( /* webpackChunkName: "groups" */ '@/views/groups/GroupsList')
+            },
+            {
+                path: 'sidemodal',
+                name: 'SideModal',
+                meta: {
+                    title: 'Churchplus - Groups',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "groups" */ '@/views/groups/sidemodal/SideModal.vue')
             },
             {
                 path: 'createpeoplegroup/:groupId?',

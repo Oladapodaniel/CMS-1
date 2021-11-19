@@ -118,7 +118,7 @@
             <!-- <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/whatsapp">Whatsapp</router-link>
             </li> -->
-            <li class="dd-list-item" >
+            <li class="dd-list-item" v-if="false">
               <router-link class="dd-link-item routelink" to="/tenant/Voice">Voice</router-link>
             </li>
           </ul>

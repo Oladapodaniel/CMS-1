@@ -352,7 +352,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header border-0">
-        <h5 class="modal-title" id="exampleModalLabel">Connected Successfully</h5>
+        <h5 class="modal-title font-weight-bold" id="exampleModalLabel"> <h2 class="font-weight-bolder mt-2">Congratulations</h2> </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -360,30 +360,31 @@
       <div class="container">
         <div class="row">
                <div class="col-12">
-                 <h2>Congratulations</h2> 
+                
                </div>
                <div class="col-12 mt-1">
-                  <h6>Your facebook account has been connected to churchplus.</h6> 
+                  <h5 class="font-weight-normal">Your facebook account has been connected to churchplus.</h5> 
                </div>
-               <div class="col-12 mt-1">
-                  <h6>Select from the dropdown below, the page you will like to post.</h6> 
+               <div class="col-12 mt-2">
+                  <h6 class="font-weight-light">Select from the dropdown below, the page you will like to post.</h6> 
                </div>
         </div>       
-        <div class="col-12 mt-4">
+        <div class="col-12 mt-1">
           <div class="row">
                     <Dropdown
                       v-model="selectedPage"
-                      class="w-100"
+                      class="w-100 font-weight-normal"
                       :options="userPages"
                       optionLabel="name"
-                      placeholder="Select page"
-                      @change="saveSelectedPage"
+                      placeholder="Select Page"
+                     
                     />
           </div>
+           <!-- @change="saveSelectedPage" -->
         
-        <div class="row d-flex justify-content-between">
+        <div class="row d-flex justify-content-between mb-4">
                         <div class="p-0 mt-4 mb-4">
-                        <button class="btn default-btn btnfb" data-dismiss="modal" @click="userRoute()">Create Post</button>
+                        <button class="btn default-btn btnfb" data-dismiss="modal" @click="saveFacbookDetail()">Continue</button>
                       </div>
                         <div class="p-0 mt-4 mb-4">
                         <button data-dismiss="modal" type="button" class="btn default-btn">Cancel</button>
@@ -539,14 +540,13 @@
 <script>
 // import firebase from "../../../services/firebase/firebase";
 import { ref } from "vue";
-import Dialog from "primevue/dialog";
 import axios from "@/gateway/backendapi";
 import {useToast} from 'primevue/usetoast';
 import { useRouter } from "vue-router";
 import Dropdown from "primevue/dropdown";
 
-export default {
-  components: { Dialog, Dropdown},
+export default { 
+  components: { Dropdown},
   setup() {
     const router = useRouter();
     const toast = useToast()
@@ -596,10 +596,10 @@ export default {
       );
     };
 
-    const saveSelectedPage = () => {
-      let objParsed = JSON.stringify(selectedPage.value)
-      localStorage.setItem('authResponse', objParsed)
-    }
+    // const saveSelectedPage = () => {
+    //   let objParsed = JSON.stringify(selectedPage.value)
+    //   localStorage.setItem('authResponse', objParsed)
+    // }
 
     // const testAPI = () => {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
     //   console.log('Welcome!  Fetching your information.... ');
@@ -704,6 +704,7 @@ export default {
     const pageaccessToken = ref("");
     const pageId1 = ref("");
     const name = ref("facebook");
+    const pageUrl = ref('pageurl')
     
 
     const getPageAccessToken = async () => {
@@ -741,7 +742,26 @@ export default {
   }catch(error){
     console.log(error);
   }
-}    //getSocialDetails
+}  
+//save facebookdetail to Database
+const saveFacbookDetail = async()=>{
+  const facebookDetail={
+    name: name.value,
+    url:pageUrl.value ,
+    pageId:selectedPage.value.id,
+    accessToken:selectedPage.value.access_token
+  }
+  try{
+    const response= await axios.post('/api/SocialMedia/connect', facebookDetail);
+    console.log(response);
+    toast.add({severity:'success', summary: '', detail:'Successfully', life: 3000});
+    setTimeout(function () {
+     userRoute()
+    }, 1500);
+  }catch(error){
+    console.log(error);
+  }
+}
    
 
     /*eslint no-undef: "warn"*/
@@ -834,9 +854,11 @@ export default {
       showPageList,
       userPages,
       userRoute,
-      saveSelectedPage,
+      // saveSelectedPage,
       selectedPage,
-      pagesBtn
+      pagesBtn,
+      pageUrl,
+      saveFacbookDetail
     };
   },
 };

@@ -158,6 +158,7 @@ import { useRoute } from "vue-router"
             const postDestination = ref("Facebook");
             const toFacebook = ref(true);
             const socialData = ref({ });
+            const fBPhotoId = ref([])
 
             
             // const store = useStore();
@@ -229,6 +230,52 @@ import { useRoute } from "vue-router"
                 }
             }
 
+            const getFacebookPhotoId = async(pictureUrl) => {
+                try {
+                    let { data } = await axios.post(`https://graph.facebook.com/${socialData.value.pageId}/photos?url=${pictureUrl}&access_token=${socialData.value.accessToken}&published=false`)
+                    console.log(data)
+                    fBPhotoId.value.push(data)
+                }
+                catch (err) {
+                    console.log(err)
+                }
+            }
+
+            const uploadPicture = async(payload) => {
+                console.log(payload)
+                let formData = new FormData()
+                formData.append("mediaFileImage", payload)
+                try {
+                    let { data } = await axios.post("/api/Media/UploadProfilePicture", formData)
+                    console.log(data)
+                    getFacebookPhotoId(data.pictureUrl)
+                }
+                catch (err) {
+                    console.log(err)
+                }
+            }
+
+            const postToFbPage = () => {
+                const fbPhotoIds = []
+                fBPhotoId.value.forEach(i => {
+                    fbPhotoIds.push({
+                        media_fbid: `${i.id}`
+                    })
+                    console.log(fbPhotoIds)
+                    console.log(arrStr)
+                    const arrStr = encodeURIComponent(JSON.stringify(fbPhotoIds));
+                    axios.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=${message.value}&access_token=${socialData.value.accessToken}&attached_media=${arrStr}`)
+                    .then(res => {
+                        console.log(res)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                })
+                
+                
+            }
+
             const craetePost = () => {
                 if (!message.value) return false;
                 const formData = new FormData();
@@ -254,13 +301,31 @@ import { useRoute } from "vue-router"
                     .then(res => {
                         console.log(res, "upload res");
                         display.value = false;
+                        postToFbPage()
                         if (res) router.push("/tenant/social/feed")
                     })
                     .catch(err => {
                          console.log(err)
                          display.value = false;
                     })
+                    
             }
+
+            
+
+            
+            //get facebookDetail
+    //         const getSocialDetails = async() =>{
+    //   try{
+    //     let {data} = await axios.get('/api/SocialMedia/getSocialDetails?handle=facebook')
+    //     facebookDetail.value = data;
+    //     console.log(data);
+    //     getFeed(data.pageId, data.accessToken)
+    //   }catch(error){
+    //     console.log(error);
+    //   }
+    // }
+    // getSocialDetails()
 
             const updatePost = async (body) => {
                 try {
@@ -291,6 +356,8 @@ import { useRoute } from "vue-router"
 
             const isUrl = ref(false);
             const showImagePicker = ref(false);
+
+
             const fileUploaded = payload => {
                 console.log(payload, "payload");
                 isUrl.value = false;
@@ -306,6 +373,9 @@ import { useRoute } from "vue-router"
                     mediaUrl.value = ""
                 }
                 showImagePicker.value = false;
+
+                // Upload to get image url
+                uploadPicture(payload.data)
             }
 
             const rowsCount = computed(() => {
@@ -356,6 +426,10 @@ import { useRoute } from "vue-router"
                 isUrl,
                 rowsCount,
                 route,
+                uploadPicture,
+                getFacebookPhotoId,
+                fBPhotoId,
+                postToFbPage
             }
         }
     }
