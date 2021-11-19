@@ -47,7 +47,6 @@
           </Dialog>
         </div>
       </div>
-        {{ selectedGroupMembers  }} 'yytyytytyty'
       <div class="row">
         <div class="col-md-12 pr-0">
           <hr class="hr my-1" />
