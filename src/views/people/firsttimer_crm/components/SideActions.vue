@@ -840,6 +840,7 @@ export default {
           try {
             const { data } = await axios.get('/api/People/GetPeopleBasicInfo');
             contacts.value = data;
+            console.log(data)
             emit('allcontact', data)
           } catch (error) {
             console.log(error);

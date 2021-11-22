@@ -175,7 +175,9 @@
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">First Name</span>
                             <span class=" d-sm-flex c-pointer">
-                                <div class="px-1">{{ item.firstName }}</div>
+                                <router-link :to="`/tenant/firsttimermanagement/${item.id}`">
+                                    <div class="px-1">{{ item.firstName }}</div>
+                                </router-link>
                             </span>
                             </span>
                         </div>
