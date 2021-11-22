@@ -132,14 +132,14 @@
                 >
                   <span><i class="pi pi-thumbs-up mr-2"></i></span>
                   <span>Like</span>
-                  <span class="ml-2">post.likeCount</span>
+                  <span class="ml-2 text-primary" @click="viewLikes(post.id, index)">{{ post && post.like ? post.like : "view likes" }}</span>
                 </a>
                 <a
                   class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
                 >
                   <span><i class="pi pi-comment mr-2"></i></span>
                   <span>Comment</span>
-                  <span class="ml-2">com</span>
+                  <span class="ml-2">{{post.comments.data}}</span>
                 </a>
                 <a
                   class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
@@ -150,7 +150,7 @@
               </div>
             </div>
 
-            <!-- <div
+            <div
               class="row my-3"
               v-for="(comment, indx) in post.comments"
               :key="indx"
@@ -178,9 +178,9 @@
                   </p>
                 </div>
               </div>
-            </div> -->
+            </div>
 
-            <!-- <div class="row my-2">
+            <div class="row my-2">
               <div class="col-2 d-md-flex justify-content-center">
                 <div class="img-holder bg-secondary"></div>
               </div>
@@ -197,7 +197,7 @@
                   </p>
                 </form>
               </div>
-            </div> -->
+            </div>
           </div>
         </div>
 
@@ -338,7 +338,9 @@ export default {
     // console.log(getCurrentUser);
     //Get AllChurchProfile
   const churchData =ref('');
-  const facebookAuth =ref({});
+  const postLike = ref([]);
+  const facebookAuth = ref({});
+  const comment = ref({});
     const getChurchProfile= async()=>{
       try{
         const {data} = await axios.get("/mobile/v1/Profile/GetChurchProfile");
@@ -363,21 +365,42 @@ export default {
     //   .catch((err) => console.log(err));
 
     const loaded = ref(true);
-    const getFeed = async (pId, accTkn) => {
-      try {
+    // const getFeed = async (pId, accTkn) => {
+    //   try {
         
-            // const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
-            // console.log(pageDetail);
-            const {data} = await fb.get(`https://graph.facebook.com/${pId}/feed?access_token=${accTkn}`)
-        feed.value = data.data
+    //         // const pageDetail = JSON.parse(localStorage.getItem('authResponse'))
+    //         // console.log(pageDetail);
+    //         const {data} = await fb.get(`https://graph.facebook.com/${pId}/feed?access_token=${accTkn}`)
+    //           feed.value = data.data
 
-        loaded.value = false;
+    //           loaded.value = false;
+    //           console.log(feed.value);
+    //         } catch (error) {
+    //           console.log(error);
+    //           loaded.value = false;
+    //         }
+    // };
+    const getFeed = async(pageId, accessToken) => {
+      try{
+        const{ data } = await fb.get(`https://graph.facebook.com/${pageId}/feed?fields=message,comments.limit(10).summary(true){message,from,likes.limit(0).summary(true)}&access_token=${accessToken}`)
+        feed.value = data.data
         console.log(feed.value);
-      } catch (error) {
+      }catch(error){
         console.log(error);
-        loaded.value = false;
       }
-    };
+    }
+
+    const viewLikes = async(objectId, index) => {
+      try{
+        const{data} = await fb.get(`https://graph.facebook.com/${objectId}?fields=likes.summary(true)&access_token=${facebookAuth.value.accessToken}`)
+        postLike.value = data
+        console.log(postLike.value);
+        feed.value[index].like = data.likes.summary.total_count
+      }catch(error){
+        console.log(error);
+      }
+
+    }
     
     const getSocialDetails = async() =>{
       try{
@@ -391,7 +414,7 @@ export default {
     }
     getSocialDetails()
 
-    const comment = ref({});
+    
     const postComment = async (e, postId, index) => {
       if (!comment.value.message) return false;
       if (e.keyCode == 13) {
@@ -434,7 +457,9 @@ export default {
       loaded,
       previewLenth,
       churchData,
-      facebookAuth
+      facebookAuth,
+      postLike,
+      viewLikes
     };
   },
 };

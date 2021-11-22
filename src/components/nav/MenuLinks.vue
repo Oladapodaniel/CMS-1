@@ -19,7 +19,7 @@
             <!-- <a  class="user-link">Grace... <span class="user-link-icon"> ></span></a> -->
             <a class="user-link"
               >{{ tenantDisplayName }}
-              <span class="user-link-icon"
+              <span class="user-link-icon c-pointer" @click="toggleNavFlyOver"
                 ><i class="pi pi-angle-right"></i></span
             ></a>
           </div>
@@ -118,7 +118,7 @@
             <!-- <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/whatsapp">Whatsapp</router-link>
             </li> -->
-            <li class="dd-list-item" >
+            <li class="dd-list-item" v-if="false">
               <router-link class="dd-link-item routelink" to="/tenant/Voice">Voice</router-link>
             </li>
           </ul>
@@ -298,15 +298,31 @@
               </a>
             </div>
           </div>
+        
           <hr class="hr" />
-
-          <router-link class="link routelink" to="/tenant/settings"> Settings </router-link>
-          <hr class="hr" />
-          <a href="https://churchplus.azurewebsites.net/Account/LogOn" target="_a" class="link routelink">Visit ChurchPlus Classic</a>
+         
           <div class="link" @click="logout">Logout</div>
 
           <!-- Hidden -->
           <a class="link routelink" v-if="false"> Integration </a>
+          <OverlayPanel ref="flyOverRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
+              <div class="container-fluid p-0 my-3" >
+                <router-link class="text-dark" to="/tenant/settings"> 
+                <div class="row py-2 px-3 hover-flyover" @click="closeOverlay">
+                  Settings
+                  
+                </div>
+                </router-link>
+                
+                <a href="https://churchplus.azurewebsites.net/Account/LogOn" target="_a" class="text-dark">
+                <div class="row py-2 px-3 hover-flyover" @click="closeOverlay">
+                  
+                  Visit ChurchPlus Classic
+                  
+                </div>
+                </a>
+              </div>
+        </OverlayPanel>
         </div>
       </div>
     </div>
@@ -320,12 +336,17 @@ import store from "@/store/store";
 import axios from "@/gateway/backendapi";
 import { useRouter } from 'vue-router'
 import setupService from '../../services/setup/setupservice';
+import OverlayPanel from 'primevue/overlaypanel';
 export default {
+  components: {
+    OverlayPanel
+  },
   setup(props, { emit }) {
     const route = useRoute();
     const router = useRouter()
     const moreShown = ref(false);
     const churchLogo = ref("");
+    const flyOverRef = ref(false)
     const showMore = () => {
       moreShown.value = !moreShown.value;
     };
@@ -368,18 +389,32 @@ export default {
 
     const tenantInfo = ref({});
 
-    if (!store.getters.currentUser || !store.getters.currentUser.churchName) {
-      axios
-        .get("/dashboard")
-        .then((res) => {
-          tenantInfo.value = res.data;
-          console.log(res.data)
-        })
-        .catch((err) => console.log(err.respone));
-    } else {
-      tenantInfo.value.churchName = store.getters.currentUser.churchName;
-      tenantInfo.value.tenantId = store.getters.currentUser.tenantId;
+    const getChurchProfile = async() => {
+            try {
+                let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantInfo.value.tenantId}`)
+                churchLogo.value = res.data.returnObject.logo
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
+    const currentUser = () => {
+      if (!store.getters.currentUser || !store.getters.currentUser.churchName) {
+        axios
+          .get("/api/Membership/GetCurrentSignedInUser")
+          .then((res) => {
+            tenantInfo.value = res.data;
+            getChurchProfile()
+          })
+          .catch((err) => console.log(err.respone));
+      } else {
+        tenantInfo.value.churchName = store.getters.currentUser.churchName;
+        tenantInfo.value.tenantId = store.getters.currentUser.tenantId;
+        getChurchProfile()
+      }
     }
+    currentUser()
 
     const tenantDisplayName = computed(() => {
       if (!tenantInfo.value.churchName) return "";
@@ -396,18 +431,6 @@ export default {
       }
     }
 
-    const getChurchProfile = async() => {
-            try {
-                let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantInfo.value.tenantId}`)
-                console.log(res)
-                churchLogo.value = res.data.returnObject.logo
-            }
-            catch (err) {
-                console.log(err)
-            }
-        }
-        getChurchProfile()
-
     const logout = () => {
       localStorage.clear()
       router.push('/')
@@ -417,6 +440,14 @@ export default {
 
     const goToReport = () => {
       router.push('/tenant/reports')
+    }
+
+    const toggleNavFlyOver = (event) => {
+      flyOverRef.value.toggle(event)
+    }  
+    
+    const closeOverlay = () => {
+      flyOverRef.value.hide()
     }
 
     return {
@@ -436,7 +467,10 @@ export default {
       linkClicked,
       churchLogo,
       logout,
-      goToReport
+      goToReport,
+      flyOverRef,
+      toggleNavFlyOver,
+      closeOverlay
     };
   },
 };
@@ -513,9 +547,10 @@ export default {
 }
 
 .link-image {
-  width: 40px;
-  height: 23px;
+  width: 25px;
+  height: 24px;
   padding-right: 0;
+  object-fit: cover;
 }
 
 .hr {
@@ -654,5 +689,11 @@ export default {
   /* .nav .link {
     opacity: 1;
   } */
+}
+
+.hover-flyover:hover {
+    background: rgba(202, 202, 202, 0.356);
+    cursor: pointer;
+    text-decoration: none;
 }
 </style>

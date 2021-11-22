@@ -533,7 +533,6 @@
 import ByMaritalStatusChart from "@/components/charts/PieChart";
 import ByGenderChart from "@/components/charts/PieChart";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
-import ColumnChart2 from "@/components/charts/ColumnChart2.vue";
 // import PieChart from "@/components/charts/PieChart"
 import { computed, onMounted, ref } from "vue";
 // import { useRoute } from 'vue-router';
@@ -551,7 +550,6 @@ export default {
    mixins: [mixin],
   components: {
     ColumnChart,
-    ColumnChart2,
     ByMaritalStatusChart,
     ByGenderChart,
     
@@ -636,9 +634,6 @@ export default {
         .get("/dashboard/basic")
         .then((res) => {
           tenantInfoBasic.value = res.data.returnObject;
-          console.log(tenantInfoBasic.value);
-          console.log(res.data);
-
           tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp;
           tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving;
           tenantInfoExtra.value.hasWebsite = res.data.returnObject.hasWebsite;
@@ -657,14 +652,12 @@ export default {
             sum += +i.value;
           });
           summed.value = sum;
-          // console.log(sum)
           // if (sum > 0) {
           //   firstTimerPieExist.value = true
           // }
         })
         .catch((err) => {
           stopProgressBar();
-          // console.log(err.response);
           if (err.response && err.response.status === 401) {
             localStorage.removeItem("token");
             setupService.clearStore();
@@ -677,7 +670,6 @@ export default {
     let getCelebDashboard = () => {
       axios.get("/dashboard/celebrations").then((res) => {
         celeb.value = res.data.returnObject.celebrations;
-        console.log(tenantInfoCeleb.value)
       });
     };
     getCelebDashboard();
@@ -692,7 +684,6 @@ export default {
       axios
         .get("/dashboard/attendance")
         .then((res) => {
-          console.log(res.data);
           attendanceLoading.value = false;
           tenantInfoAttendanceWeekly.value =
             res.data.returnObject.eventAttendanceChartDataWeekly;
@@ -725,7 +716,6 @@ export default {
           tenantInfoInterestedInJoining.value.forEach((i) => {
             sum += +i.value;
           });
-          console.log(sum);
           if (sum > 0) {
             firstTimerPieExist.value = true;
           } else {
@@ -748,15 +738,14 @@ export default {
       }
     });
 
-    const subPlan = () => {
-      axios.get("/api/GetAllSubscriptionPlans").then((res) => {
-        console.log(res.data);
-      });
-    };
-    subPlan();
+    // const subPlan = () => {
+    //   axios.get("/api/GetAllSubscriptionPlans").then((res) => {
+    //     console.log(res.data);
+    //   });
+    // };
+    // subPlan();
 
     const weeklyAttendance = () => {
-      console.log("weekly");
       attendanceSeries.value = "weekly";
       attendanceBoolean.value = true;
     };
@@ -773,7 +762,6 @@ export default {
     };
 
     const weeklyFirstTimer = () => {
-      console.log("weekly");
       firstTimerSeries.value = "weekly";
       firstTimerBoolean.value = true;
     };
@@ -891,7 +879,6 @@ export default {
       tenantInfoCeleb,
       moreLinksVissible,
       toggleMoreLinkVissibility,
-      subPlan,
       offering,
       moment,
       attendanceBoolean,
@@ -934,6 +921,7 @@ export default {
       checkRenewalDate,
       buttonTextCheck,
       celeb,
+      attendanceSeries
     };
   },
 };

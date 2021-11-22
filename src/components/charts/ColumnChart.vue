@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { onMounted, onUpdated, ref } from "vue";
+import { onMounted, ref } from "vue";
 import Highcharts from "highcharts";
 import { useRoute } from 'vue-router'
 export default {
@@ -111,20 +111,7 @@ export default {
       chart.value = new Highcharts.chart(highchartsOptions);
     });
 
-    onMounted(() => {
-      console.log(props.series, "take data")
-      console.log(props.data, "passed data")
-      console.log(props.attendanceSeries)
-    })
-
-    onUpdated(() => {
-      console.log(props.series, "take water data")
-      console.log(props.data, "passed data")
-
-    })
-
 const getRoute = () => {
-      console.log(route.fullPath)
       fullPath.value = route.fullPath
     }
     getRoute()

@@ -52,6 +52,7 @@ export default {
   setup() {
     const menuShouldShow = ref(false);
     const fullPath = ref("")
+    const followUpUser = ref(true)
 
     const toggleMenu = () => (menuShouldShow.value = !menuShouldShow.value);
 
@@ -80,6 +81,17 @@ export default {
     }
     getRoute()
 
+    const getRole =  () => {
+      const getRoles = JSON.parse(localStorage.getItem('roles'));
+      if (getRoles && getRoles.length === 1 && getRoles[0] === "FollowUp") {
+        followUpUser.value = false
+      } else {
+        followUpUser.value = true
+      }
+      console.log(getRoles)
+    }
+    getRole()
+
     return {
       menuShouldShow,
       toggleMenu,
@@ -88,6 +100,7 @@ export default {
       fullPath,
       route,
       isGroupLeader,
+      followUpUser
     };
   },
 };

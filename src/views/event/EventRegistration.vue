@@ -241,8 +241,29 @@
         </div>
       </div>
     </div>
+
+    <!-- <div class="row">
+      <div class="offset-5">
+        <div ref="authorizebutton" style="display: none" class="default-btn text-center"><img src="../../assets/preview.jpeg" style="width: 30px"/>Add event to google calendar</div>
+        <div ref="signout" style="display: none" class="default-btn">Sign Out</div>
+      </div>
+    </div> -->
     
     <div class="row">
+      <div class="col-3 offset-5">
+        <!-- Button code -->
+          <div title="Add to Calendar" class="addeventatc w-100">
+              Add to Calendar
+              <span class="start">{{ fullEventData.eventDate }}</span>
+              <!-- <span class="end">2021-11-04T10:34:29.746Z</span> -->
+              <span class="timezone">{{ Intl.DateTimeFormat().resolvedOptions().timeZone }}</span>
+              <span class="title">{{ eventData.name }}</span>
+              <span class="description">{{ fullEventData.eventDetails }}</span>
+          </div>
+      </div>
+    </div>
+    
+    <div class="row mt-3">
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-3 font-weight-700"
       ></div>
@@ -276,6 +297,10 @@
       <Toast />
     </div>
   </div>
+   
+  <pre ref="content" style="white-space: pre-wrap;"></pre>
+
+  <!-- <div @click="callIt">edicaoc</div> -->
 </template>
 
 
@@ -294,6 +319,7 @@ import PaymentOptionModal from "../../components/paymentoption/EventRegPayment.v
 import finish from '../../services/progressbar/progress';
 import store from '../../store/store';
 import FamilyWards from './component/EventRegFamilyWards.vue'
+// import Calendarjs from "../../services/google/calendarAPI"
 // import Dialog from 'primevue/dialog';
 
 export default {
@@ -327,6 +353,9 @@ export default {
     const memberRoles = ref([])
     const familyWards = ref({ familyMembers: [] })
     const familyMembers = ref([])
+    const authorizebutton = ref()
+    const signout = ref()
+    const content = ref()
 
     const birthMonth = ref("");
     const months = [
@@ -1037,6 +1066,22 @@ console.log(payload)
     }
 
     /*end of masking functions */
+
+  //  onMounted(() => {
+  //     console.log(authorizebutton.value)
+  //     Calendarjs.calendarApi(authorizebutton.value, signout.value, content.value)
+  //   })
+    // authCalendar()
+
+    // const callIt = () => {
+    //   try {
+    //     let res = Calendarjs.addEvent()
+    //     console.log(res)
+    //   }
+    //   catch (err) {
+    //     console.log(err)
+    //   }
+    // }
     return {
       toggleBase,
       checkCharacter,
@@ -1095,7 +1140,11 @@ console.log(payload)
       memberRoles,
       setNewMember,
       setMemberDetails,
-      familyMembers
+      familyMembers,
+      authorizebutton,
+      signout,
+      content,
+      // callIt
     };
   },
 };

@@ -167,9 +167,9 @@ export default {
     /* color: #136acd" */
     border-radius: 24px;
     bottom: -2.5px;
-    height: 6px;
+    height: 4px;
     left: 0px;
-    width: 50%;
+    /* width: 50%; */
     opacity: 1;
 }
 
@@ -179,12 +179,12 @@ export default {
     /* background-color: #33475b; */
     border-radius: 24px;
     bottom: -2.5px;
-    height: 6px;
+    height: 4px;
     left: 0px;
-    width: 50%;
+    /* width: 50%; */
     opacity: 0;
 }
-    @media screen and (max-width: 767px ){
+    /* @media screen and (max-width: 767px ){
         .baseline {
             width: 40%;
         }
@@ -199,5 +199,5 @@ export default {
         .hide-base {
             width: 20%;
         }
-    }
+    } */
 </style>
