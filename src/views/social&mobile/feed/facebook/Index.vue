@@ -132,14 +132,14 @@
                 >
                   <span><i class="pi pi-thumbs-up mr-2"></i></span>
                   <span>Like</span>
-                  <span class="ml-2 text-primary" @click="viewLikes(post.id, index)">{{ item && item.like ? item.like : "view likes" }}</span>
+                  <span class="ml-2 text-primary" @click="viewLikes(post.id, index)">{{ post && post.like ? post.like : "view likes" }}</span>
                 </a>
                 <a
                   class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
                 >
                   <span><i class="pi pi-comment mr-2"></i></span>
                   <span>Comment</span>
-                  <span class="ml-2">com</span>
+                  <span class="ml-2">{{post.comments.data}}</span>
                 </a>
                 <a
                   class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
@@ -150,7 +150,7 @@
               </div>
             </div>
 
-            <!-- <div
+            <div
               class="row my-3"
               v-for="(comment, indx) in post.comments"
               :key="indx"
@@ -178,9 +178,9 @@
                   </p>
                 </div>
               </div>
-            </div> -->
+            </div>
 
-            <!-- <div class="row my-2">
+            <div class="row my-2">
               <div class="col-2 d-md-flex justify-content-center">
                 <div class="img-holder bg-secondary"></div>
               </div>
@@ -197,7 +197,7 @@
                   </p>
                 </form>
               </div>
-            </div> -->
+            </div>
           </div>
         </div>
 
