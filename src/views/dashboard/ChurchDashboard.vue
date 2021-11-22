@@ -933,7 +933,7 @@ export default {
       calculatePercentage,
       checkRenewalDate,
       buttonTextCheck,
-      celeb
+      celeb,
     };
   },
 };
