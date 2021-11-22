@@ -646,8 +646,8 @@
                     >
                     </i>
                   </a>
-                  <a href="#" @click="sendMarkedMemberSms">Send SMS</a>
-                  <a href="#" @click="sendMarkedMemberEmail" class="pl-3">Send Email</a>
+                  <a href="#" @click="sendMarkedMemberSms"><i class="pi pi-comment"></i></a>
+                  <a href="#" @click="sendMarkedMemberEmail" class="pl-4"><i class="pi pi-envelope"></i></a>
                 </div>
               </div>
 
