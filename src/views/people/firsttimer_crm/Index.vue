@@ -230,13 +230,13 @@
                                 
                             </div> -->
                             <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                {{ Object.keys(selectedContact).length > 0 ? selectedContact.name : "Select contact" }}&nbsp; <i class="pi pi-sort-down"></i>
+                                {{ selectedContact && Object.keys(selectedContact).length > 0 ? selectedContact.name ? selectedContact.name : `${selectedContact.firstName} ${selectedContact.lastName}` : "Select contact" }}&nbsp; <i class="pi pi-sort-down"></i>
                             </div>
                             <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
                                 <div class="container-fluid p-0">
                                     <div class="py-2 px-3">Search whom you want to assign this task</div>
                                     <div class="py-2 px-3">
-                                        <SearchMember @memberdetail="chooseContact"/>
+                                        <SearchMember v-bind:currentMember="selectedContact" @memberdetail="chooseContact"/>
                                     </div>
                                 </div>
                             </OverlayPanel>
@@ -256,7 +256,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue"
+import { computed, onMounted, ref, watchEffect } from "vue"
 import SideActions from "./components/SideActions"
 import Activity from "./components/Activity"
 import Notes from "./components/Notes"
@@ -702,6 +702,12 @@ export default {
             contactRef.value.hide();
             selectedContact.value = payload
         }
+
+        watchEffect(() => {
+            if (personDetails.value && allContacts.value.length > 0) {
+                selectedContact.value = allContacts.value.find(i => i.id === personDetails.value.contactOwnerID)
+            }
+        })
 
         const getLogs = async() => {
             loader.value = true

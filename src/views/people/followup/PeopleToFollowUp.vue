@@ -107,8 +107,8 @@
                     <div class="col-2 d-none d-md-block small-text text-dark text-capitalize font-weight-bold" style="font-size:16px;">First Name</div>
                     <div class="col-2 d-none d-md-block small-text text-dark text-capitalize font-weight-bold" style="font-size:16px;">last Name</div>
                     <div class="col-3 d-none d-md-block small-text text-dark text-capitalize font-weight-bold" style="font-size:16px;">Phone</div>
-                    <div class="col-2 d-none d-md-block small-text text-dark text-capitalize font-weight-bold" style="font-size:16px;">Email</div>
-                    <div class="col-1 d-none d-md-block small-text text-dark text-capitalize font-weight-bold" style="font-size:16px;">Action</div>
+                    <div class="col-3 d-none d-md-block small-text text-dark text-capitalize font-weight-bold" style="font-size:16px;">Email</div>
+                    <!-- <div class="col-1 d-none d-md-block small-text text-dark text-capitalize font-weight-bold" style="font-size:16px;">Action</div> -->
                     <!-- <div class="col-2 d-none d-md-block">NEW CONVERTS</div> -->
                 </div>
 
@@ -175,7 +175,9 @@
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">First Name</span>
                             <span class=" d-sm-flex c-pointer">
-                                <div class="px-1">{{ item.firstName }}</div>
+                                <router-link :to="`/tenant/firsttimermanagement/${item.id}`">
+                                    <div class="px-1">{{ item.firstName }}</div>
+                                </router-link>
                             </span>
                             </span>
                         </div>
@@ -186,7 +188,9 @@
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Last Name</span>
                             <span class=" d-sm-flex c-pointer">
-                                <div>{{ item.lastName }}</div>
+                                <router-link :to="`/tenant/firsttimermanagement/${item.id}`">
+                                    <div>{{ item.lastName }}</div>
+                                </router-link>
                             </span>
                             </span>
                         </div>
@@ -197,23 +201,27 @@
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Phone</span>
                             <span class=" d-sm-flex c-pointer">
-                            <div>{{ item.mobilePhone }}</div>
+                                <router-link :to="`/tenant/firsttimermanagement/${item.id}`">
+                                    <div>{{ item.mobilePhone }}</div>
+                                </router-link>
                             </span>
                             </span>
                         </div>
                         
                         </div>
-                        <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
+                        <div class="col-md-3 col-sm-12 itemroute-color align-self-center">
                         <div>
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Email</span>
                             <span class=" d-sm-flex c-pointer">
-                            <div>{{ item.email }}</div>
+                                <router-link :to="`/tenant/firsttimermanagement/${item.id}`">
+                                    <div>{{ item.email }}</div>
+                                </router-link>
                             </span>
                             </span>
                         </div>
                         </div>
-                        <div class="col-md-1 col-sm-12 itemroute-color align-self-center">
+                        <!-- <div class="col-md-1 col-sm-12 itemroute-color align-self-center">
                         <div>
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Action</span>
@@ -238,14 +246,14 @@
                      
                                 <a class="dropdown-item elipsis-items"> Edit </a>
                         
-                            <!-- <router-link :to="`/tenant/event/${event.activityId}`"> -->
+        
                             <a
                                 class="dropdown-item elipsis-items cursor-pointer"
                                 @click="showConfirmModal(event.activityId, index)"
                             >
                                 Delete
                             </a>
-                            <!-- </router-link> -->
+         
                             </div>
                             </span>
                             </span>
@@ -254,7 +262,7 @@
                             </span>
                             </span>
                         </div>
-                        </div>
+                        </div> -->
                         <!-- <div class="col-md-1 col-sm-12 itemroute-color align-self-center">
                         <div>
                             <span class="d-flex justify-content-between">
