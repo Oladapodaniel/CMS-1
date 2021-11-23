@@ -45,10 +45,10 @@
                           </div>
                       </div> -->
                   </div>
-                    <Attendancecheckin :list="attendanceData"  />
+                    <Attendancecheckin :list="attendanceData" />
                     <!-- <Attendancecheckin :attendanceID="selectedAttendanceId"  /> -->
                   </div>
-                  <div >
+                  <div v-if="attendance && attendance.length === 0">
                     No checkin attendance for this group
                   </div>
                 </div>  
@@ -1095,8 +1095,8 @@ export default {
         }
 
         const attendanceCheckin = async () => {
-             const response = await attendanceservice.getItems();
-            attendanceData.value = response
+            const response = await attendanceservice.getItems();
+            attendanceData.value = response.filter((i) => i.groupID === route.params.groupId);
             const attendanceItem = response.find((i) => i.groupID === route.params.groupId);
             if(attendanceItem && attendanceItem.id) selectedAttendanceId.value = attendanceItem.id;
             return attendanceItem;

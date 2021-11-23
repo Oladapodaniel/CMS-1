@@ -200,8 +200,8 @@ export default {
         loading.value = true;
         const res = await axios.post("/login", state.credentials);
         const { data } = res;
-         localStorage.setItem("userRoles", JSON.stringify(data));
         // console.log(data, "data");
+          localStorage.setItem("userRoles", JSON.stringify(data));
         if (!data || !data.token) {
           router.push({
             name: "EmailSent",
