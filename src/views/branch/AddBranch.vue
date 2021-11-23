@@ -1,11 +1,11 @@
 <template>
-    <div class="container container-top container-wide ">
+    <div class="container-fluid  container-top  ">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12  ">
+                <div class="col-md-8  ">
                     <div class="heading-text"> Add branch</div>
                     <div class="row my-2 pt-4">
-                        <div class="col-md-6 offset-md-2">
+                        <div class="col-md-10 offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class="">Branch name</label>
@@ -44,7 +44,7 @@
                         </div>
                     </div>  -->
                     <div class="row my-1 pt-4">
-                        <div class="col-md-6 offset-md-2">
+                        <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class="">Address </label>
@@ -57,7 +57,7 @@
                         </div>
                     </div> 
                     <div class="row my-1 pt-4">
-                        <div class="col-md-6 offset-md-2">
+                        <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class="">Level </label>
@@ -71,7 +71,7 @@
                     </div>
                     <div class="heading-text"> Pastor</div> 
                     <div class="row my-1 pt-4">
-                        <div class="col-md-6 offset-md-2">
+                        <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class="">Pastor name </label>
@@ -84,7 +84,7 @@
                         </div>
                     </div> 
                     <div class="row my-1 pt-4">
-                        <div class="col-md-6 offset-md-2">
+                        <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class="">Pastor email </label>
@@ -97,7 +97,7 @@
                         </div>
                     </div> 
                     <div class="row my-1 pt-4">
-                        <div class="col-md-6 offset-md-2">
+                        <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
                                     <label for="" class="">Pastor phone </label>
@@ -110,17 +110,77 @@
                         </div>
                     </div> 
                     <div class="row my-1 pt-4">
-                        <div class="col-md-6 d-flex border justify-content-end offset-md-2">
-                            <div class="col-md-5 mt-4">
-                                <button class="default-btn" data-dismiss="modal">Cancel</button>
-                            </div>
-                            <div class="col-md-5 mt-4">
-                                <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="addBranch">
-                                    Save
-                                </button>
+                        <div class="col-md-9  d-flex justify-content-end offset-md-2">
+                            <div class="row">
+                                <div class="col-md-6  mt-4">
+                                    <button class="default-btn" data-dismiss="modal">Cancel</button>
+                                </div>
+                                <div class="col-md-6  mt-4">
+                                    <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="addBranch">
+                                        Save
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div> 
+                </div>
+                <div class="col-md-4">
+                        <div class="image-div other">
+                            <div class="grey-bg">
+                                <div v-if="routeParams">
+                                <div class="person-img">
+                            <img
+                            v-if="!memberToEdit.pictureUrl"
+                            src="../../assets/people/phone-import.svg"
+                            alt="Uploaded Image"
+                            />
+                            <img
+                            v-else
+                            :src="memberToEdit.pictureUrl"
+                            alt="Uploaded Image"
+                            style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover"
+                            />
+                        </div>
+                        </div>
+                        <div v-else>
+                        <div class="person-img">
+                            <img
+                            v-if="!url"
+                            src="../../assets/people/phone-import.svg"
+                            alt="Uploaded Image"
+                            />
+                            <img
+                            v-else
+                            :src="url"
+                            alt="Uploaded Image"
+                            style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover"
+                            />
+                        </div>
+                        </div>
+                        <div>
+                        <div class="cs-input">
+                            <label for="imgUpload" class="choose-file">
+                            Choose file
+                            <input
+                                type="file"
+                                class="input file-input"
+                                placeholder=""
+                                id="imgUpload"
+                                @change="imageSelected"
+                            />
+                            </label>
+                        </div>
+                        </div>
+                        <!-- <div>
+                        <button
+                            class="upload-btn outline-none"
+                            @click.prevent="uploadImage"
+                        >
+                            Upload
+                        </button>
+                        </div> -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

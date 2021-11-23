@@ -83,13 +83,13 @@
     that uses a custom <a>TreeLayout</a> to position "assistants" that way. -->
   </p>
   <div>
-    <!-- <div>
+    <div>
       <button id="SaveButton" onclick="save()">Save</button>
       <button onclick="load()">Load</button>
       Diagram Model saved in JSON format:
-    </div> -->
-    <!-- <textarea id="mySavedModel" style="width:100%; height:270px;"> -->
-<!-- { "class": "go.TreeModel",
+    </div>
+    <textarea id="mySavedModel" style="width:100%; height:270px;">
+{ "class": "go.TreeModel",
   "nodeDataArray": [
 {"key":1, "name":"Stella Payne Diaz", "title":"CEO"},
 {"key":2, "name":"Luke Warm", "title":"VP Marketing/Sales", "parent":1},
@@ -108,8 +108,8 @@
 {"key":15, "name":"Evan Elpus", "title":"Quality", "parent":5},
 {"key":16, "name":"Lotta B. Essen", "title":"Sales Rep", "parent":3}
  ]
-} -->
-    <!-- </textarea> -->
+}
+    </textarea>
   </div>
 </div>
     </div>
@@ -119,8 +119,21 @@
     </div>
 </template>
 
-<script id="code">
-    function init() {
+<script>
+// import { onMounted } from "vue";
+// import go from '../../services/Organisation/go.js';
+import goSampleChart from '../../services/Organisation/goSample.js';
+import DataInspectorChart from '../../services/Organisation/DataInspector.js';
+export default {
+  setup() {
+
+    const GoChartjs = () =>{
+      goSampleChart
+      DataInspectorChart
+    }
+    GoChartjs()
+
+    const init = () => {
       var $ = go.GraphObject.make;  // for conciseness in defining templates
 
       myDiagram =
@@ -434,14 +447,14 @@
         myDiagram.commandHandler.scrollToPart(myDiagram.findNodeForKey(1));
       });
 
-    } // end init
+    }
+    init()
 
-    // Show the diagram's model in JSON format
-    function save() {
+    const save = () => {
       document.getElementById("mySavedModel").value = myDiagram.model.toJson();
       myDiagram.isModified = false;
     }
-    function load() {
+    const load = () => {
       myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
       // make sure new data keys are unique positive integers
       var lastkey = 1;
@@ -452,10 +465,17 @@
         return k;
       };
     }
-    window.addEventListener('DOMContentLoaded', init);
-  </script>
+    return {
+      save,
+      load,
+      
+    }
+  },
+}
+// window.addEventListener('DOMContentLoaded', init);
+</script>
 
   <style scoped>
-  @import "../../components/Organisation/org.css";
-  @import "../../components/Organisation/DataInspector.css";
+  @import "../../services/Organisation/org.css";
+  @import "../../services/Organisation/DataInspector.css";
   </style>

@@ -3,7 +3,7 @@
         <div class="row d-flex justify-content-between px-3">
             <div class="heading-text">Branch</div>
             <div class="mb-3">
-                <router-link to="/tenant/addbranch"
+                <router-link to="/tenant/branch/addbranch"
                     class="default-btn bg-primary border-secondary text-white font-weight-bold c-pointer">
                     Add Branch
                 </router-link>
@@ -73,29 +73,11 @@
             </div>
       <!-- </div> -->
     </div>
-            <!-- <div class="row">
-                <div class="col-3 border" style="height: 30vh;">
-                    <div>Number of Branches</div>
-                    <div class="border">Total:</div>
-                </div>
-                <div class="col-3 border" style="height: 30vh;">
-                    <div>Number of People</div>
-                    <div class="border">Total:</div>
-                </div>
-                <div class="col-3 border" style="height: 30vh;">
-                    <div>Number of Branches</div>
-                    <div class="border">Total:</div>
-                </div>
-                <div class="col-3 border" style="height: 30vh;">
-                    <div>Number of Branches</div>
-                    <div class="border">Total:</div>
-                </div>
-            </div> -->
         </div>
         <div class="container-fluid mb-3 ">
             <div class="row">
                 <div class="col-12 border " style="height: 100%; border-radius: 5px">
-                    <Organisation/>
+                    <Organisation domId="orgchart2"/>
                 </div>
             </div>
         </div>
@@ -105,7 +87,7 @@
 <script>
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
-import Organisation from "../../components/charts/OrgChart.vue"
+import Organisation from "../../components/charts/OrgChart2.vue"
 export default {
     components: {
         Organisation,
