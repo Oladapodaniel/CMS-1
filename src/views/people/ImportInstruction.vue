@@ -1,5 +1,5 @@
 <template>
-    <div class="container-wide container-top">
+    <div class="container-wide" :class="{ 'container-top' : !route.fullPath.includes('createpeoplegroup') }">
         <div class="row">
             <div class="col-12 col-md-12 col-lg-12 header">
                 <div>Import members from Excel/CSV </div>
@@ -9,15 +9,20 @@
             <div class="col-12 col-md-10  col-lg-11 col-xl-11">
                 <p>You can easily import members from any spreadsheet with .xlsx/.xlx or .csv file format. </p>
             </div>
+            <div class="col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead"> Members Excel/CSV template file </div>
+            <div class="col-12 col-md-12 mb-3">
+                <a href="/files/Template.csv" class="text-decoration-none font-weight-bold" download>Download and view our members Excel/CSV template.</a>
+                <span>You can use this as a template for creating your Excel/CSV file.</span>
+            </div>
             <div class=" col-lg-12 col-md-12 mx-1 border  rounded">
                 <div class="col-md-12 col-12 col-lg-12 mt-3 ">
-                    <input type="file" @change="imageSelected" class="form-control col-sm-4">
+                    <input type="file" @change="imageSelected" class="form-control col-sm-4 c-pointer">
                 </div>
-                <div class="col-md-4 col-12 offset-md-4 text-center  my-3" @click="uploadFile">
-                     <button class="upload-button form-control">Upload and preview members</button>
+                <div class="col-12 offset-md-4 text-center  my-3" @click="uploadFile">
+                     <button class="border-0 primary-bg text-white default-btn form-control">Upload and preview members</button>
                 </div>
                 <div class="border-bottom w-100 my-2 col-md-12 "></div>
-                <div class="col-12 col-md-7 col-lg-7 my-3  small "> Maximum 10MB file size.</div>
+                <div class="col-12 col-md-7 col-lg-7 my-3  small "> Maximum 5MB file size.</div>
             </div>
                     <div class="col-lg-12 col-md-12">
                         <div class="mt-4">
@@ -28,11 +33,6 @@
                     </div>
             <div class="col-12" :class="{ 'show-instruction' : addInstructionClass, 'hide-instruction' : !addInstructionClass }">
                 <div class="row">
-                    <div class="col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead mt-5"> Members Excel/CSV template file </div>
-                    <div class="col-12 col-md-12 mb-3">
-                        <a href="/files/Template.csv" class="text-decoration-none font-weight-bold" download>Download and view our members Excel/CSV template.</a>
-                        <span>You can use this as a template for creating your Excel/CSV file.</span>
-                    </div>
                     <div class="col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead my-3 "> File format </div>
                     <div class="col-10 col-md-12">
                         <span>The first line of your members Excel/CSV must include all of the headers listed below, which are included in the member Excel/CSV template</span>  
@@ -176,10 +176,11 @@ import { useStore } from "vuex"
 import router from "@/router/index";
 
 export default {
+    emits: ["uploadtogroup"],
     components: {
         Dialog
     },
-    setup () {
+    setup (props, { emit }) {
         const route = useRoute()
         const store = useStore();
         const image = ref("");
@@ -199,53 +200,92 @@ export default {
         };
 
         const uploadFile = async() => {
-            const formData = new FormData();
-            formData.append("file", image.value ? image.value : "")
-            console.log(formData)
-            try {
-                let { data } = await axios.post("/api/People/UploadFirstTimerFile", formData)
-                console.log(data)
-                // if   (!data.response.toString().includes('0')) {
-                    toast.add({
-                    severity: "success",
-                    summary: "Confirmed",
-                    detail: data.response,
-                    life: 4000,
-                });
-                memberData.value = data.returnObject
-                displayModal.value = true;
-                // } else {
-                // toast.add({
-                // severity: "success",
-                // summary: "No Member found",
-                // detail: "Download our template and add members before you upload",
-                // life: 4000,
-                // });
-                // }        
-            }
-            catch  (err) {
-                finish()
-                console.log(err)
-                if (err.toString().toLowerCase().includes("network error")) {
-                toast.add({
-                    severity: "warn",
-                    summary: "Network Error",
-                    detail: "Please ensure you have strong internet connection",
-                    life: 4000,
-                });
-                } else if (err.toString().toLowerCase().includes("timeout")) {
-                toast.add({
-                    severity: "warn",
-                    summary: "Request took too long to respond",
-                    detail: "Please try again by refreshing the page",
-                    life: 3000,
-                });
-                }   else {
+                const formData = new FormData();
+                formData.append("file", image.value ? image.value : "")
+                console.log(formData)
+                if (!route.fullPath.includes("createpeoplegroup")) {
+                    try {
+                    let { data } = await axios.post("/api/People/UploadFirstTimerFile", formData)
+                    console.log(data)
+                    // if   (!data.response.toString().includes('0')) {
+                        toast.add({
+                        severity: "success",
+                        summary: "Confirmed",
+                        detail: data.response,
+                        life: 4000,
+                    });
+                    memberData.value = data.returnObject
+                    displayModal.value = true;
+                    // } else {
+                    // toast.add({
+                    // severity: "success",
+                    // summary: "No Member found",
+                    // detail: "Download our template and add members before you upload",
+                    // life: 4000,
+                    // });
+                    // }        
+                }
+                catch  (err) {
+                    finish()
+                    console.log(err)
+                    if (err.toString().toLowerCase().includes("network error")) {
                     toast.add({
                         severity: "warn",
-                        summary: "Upload not successful",
-                        detail: "Please try again",
+                        summary: "Network Error",
+                        detail: "Please ensure you have strong internet connection",
+                        life: 4000,
                     });
+                    } else if (err.toString().toLowerCase().includes("timeout")) {
+                    toast.add({
+                        severity: "warn",
+                        summary: "Request took too long to respond",
+                        detail: "Please try again by refreshing the page",
+                        life: 3000,
+                    });
+                    }   else {
+                        toast.add({
+                            severity: "warn",
+                            summary: "Upload not successful",
+                            detail: "Please try again",
+                        });
+                    }
+                }
+            } else {
+                try {
+                    let { data } = await axios.post(`/api/Groups/UploadGroupMembersFile?groupId=${route.params.groupId}`, formData)
+                    console.log(data)
+                        toast.add({
+                        severity: "success",
+                        summary: "Confirmed",
+                        detail: data.response,
+                        life: 5000,
+                    });  
+                    emit("uploadtogroup", data.returnObject)   
+                }
+                catch  (err) {
+                    finish()
+                    console.log(err)
+                    if (err.toString().toLowerCase().includes("network error")) {
+                    toast.add({
+                        severity: "warn",
+                        summary: "Network Error",
+                        detail: "Please ensure you have strong internet connection",
+                        life: 4000,
+                    });
+                    } else if (err.toString().toLowerCase().includes("timeout")) {
+                    toast.add({
+                        severity: "warn",
+                        summary: "Request took too long to respond",
+                        detail: "Please try again by refreshing the page",
+                        life: 3000,
+                    });
+                    }   else {
+                        toast.add({
+                            severity: "warn",
+                            summary: "Upload not successful",
+                            detail: "Please try again",
+                        });
+                    }
                 }
             }
         }
@@ -295,7 +335,6 @@ export default {
                 console.log(err)
             }
         }   else {
-            console.log(route.query.query)
             try {
                 let { data } = await axios.post("/api/People/CreateMultipleFirstTimer", memberData.value)
                 console.log(data)
@@ -350,7 +389,7 @@ export default {
     getImportType()
 
         return {
-            imageSelected, image, uploadFile, memberData, addToMembers, closeModal, displayModal, addInstructionClass, toggleInstruction, loading
+            imageSelected, image, uploadFile, memberData, addToMembers, closeModal, displayModal, addInstructionClass, toggleInstruction, loading, route
         }
     }
 }
@@ -358,13 +397,13 @@ export default {
 
 <style scoped>
 
-.upload-button {
+/* .upload-button {
   background: rgba(206, 206, 206, 0.274);
   color: black;
   border-radius: 25px;
   font-weight: 600;
   padding: 8px 10px;
-}
+} */
 
 .header {
 font: normal normal 800 29px Nunito sans;

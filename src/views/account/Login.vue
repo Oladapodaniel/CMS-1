@@ -201,6 +201,7 @@ export default {
         const res = await axios.post("/login", state.credentials);
         const { data } = res;
         // console.log(data, "data");
+          localStorage.setItem("userRoles", JSON.stringify(data));
         if (!data || !data.token) {
           router.push({
             name: "EmailSent",
@@ -220,11 +221,27 @@ export default {
           });
           return false;
         }
+
+        // i.toLowerCase() == "admin" || i.toLowerCase() == "basicuser" || i.toLowerCase() == "canaccessfirsttimers" || i.toLowerCase() == "canaccessfollowups" || i.toLowerCase() == "centerleader" || i.toLowerCase() == "financialaccount" || i.toLowerCase() == "mobileadmin" || i.toLowerCase() == "reports"
         if(data.roles.length > 0){
         let roleIndex = data.roles.findIndex(i => {
-          return i.toLowerCase() == "admin" || i.toLowerCase() == "basicuser" || i.toLowerCase() == "canaccessfirsttimers" || i.toLowerCase() == "canaccessfollowups" || i.toLowerCase() == "centerleader" || i.toLowerCase() == "financialaccount" || i.toLowerCase() == "mobileadmin" || i.toLowerCase() == "reports"
+          return i.toLowerCase() == "family" || i.toLowerCase() == "mobileuser"
         })
-        if (roleIndex === -1) {
+
+        let adminIndex = data.roles.findIndex(i => {
+          return i.toLowerCase() == "admin"
+        })
+        localStorage.setItem('roles', JSON.stringify(data.roles))
+        if (adminIndex !== -1) {
+          setTimeout(() => {
+            setupService.setup();
+              }, 5000);
+              if (data.churchSize > 0) {
+                router.push("/tenant");
+              } else {
+                router.push("/next");
+              }
+        } else if (adminIndex === -1 && roleIndex !== -1) {
             localStorage.clear()
             toast.add({
               severity:'info', 
@@ -233,17 +250,22 @@ export default {
               life: 10000}) 
             router.push('/')
           } else {
-            if (data.churchSize > 0) {
-              router.push("/tenant");
+            console.log( data.roles.indexOf("FollowUp"))
+            if (data.roles.indexOf("FollowUp") !== -1) {
+              router.push("/followup");
             } else {
-              router.push("/next");
+              setTimeout(() => {
+                setupService.setup();
+              }, 5000);
+              if (data.churchSize > 0) {
+                router.push("/tenant");
+              } else {
+                router.push("/next");
+              }
             }
           }
-        console.log(roleIndex)
         }
         loading.value = false
-        
-         
       } catch (err) {
         /*eslint no-undef: "warn"*/
         console.log(err.response, "login error");
@@ -304,7 +326,7 @@ export default {
               console.log(err);
             });
         },
-        { scope: "user_birthday" }
+        // { scope: "user_birthday" }
       );
     };
 

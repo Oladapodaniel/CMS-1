@@ -1,9 +1,9 @@
 <template>
     <div class="container">
-        <div class="row d-flex justify-content-between mt-3">
+        <!-- <div class="row d-flex justify-content-between mt-3">
             <div class="col font-weight-700 uniform-primary-color">Contacts</div>
             <div class="col font-weight-700 text-right uniform-primary-color">Actions <i class="pi pi-angle-down"></i></div>
-        </div>
+        </div> -->
         <div class="row mt-5">
             <div class="col-6 offset-3 d-flex justify-content-center c-pointer profile-overlay" @click="uploadPicture" @mouseover="setHover" @mouseleave="setLeave">
                 <img :src="url" class="contact-image " v-if="url"/>
@@ -30,9 +30,9 @@
                 <div>Email</div>
             </div>
             <!-- @click="call" -->
-            <div class="ml-4 c-pointer"  @click="toggleCallSms">
-                <div class="icon-bg" v-tooltip.top="'Make a phone call'"><i class="pi pi-phone"></i></div>
-                <div>Reach</div>
+            <div class="ml-4 c-pointer"  @click="toggleCallSmsPane($event)">
+                <div class="icon-bg" v-tooltip.top="'Send an sms'"><i class="pi pi-phone"></i></div>
+                <div>SMS</div>
             </div>
             <div class="ml-4 c-pointer" @click="openTaskEditor">
                 <div class="icon-bg" v-tooltip.top="'Create a task'"><i class="pi pi-calendar-plus"></i></div>
@@ -71,52 +71,17 @@
                         </div>
                 </div>
             </div>
-            <!-- <div class="row" @mouseover="toggleHoverPhone" @mouseleave="OutHoverPhone">
-                <div class="col-12 mt-4 label-text">Phone Number</div>
-                <div class="col-12 ml-2 mt-3" v-if="!hoverPhone">{{ personDetails.phoneNumber }}</div>
-                <div v-else class="col-12 mt-2">
-                    <input type="text" class="form-control phone-input" @blur="OutHoverPhone" v-model="personDetails.phoneNumber"/>
-                </div>
-                
-            </div> -->
+            
             <div class="row">
                 <div class="col-12 mt-4 label-text">Contact owner</div>
                 <div class="col-12 mt-2">
-                    <!-- <Contacts /> -->
-                    <!-- <Dropdown v-model="selectedContact" :options="contacts" :filter="true" class="w-100 phone-input" optionLabel="firstName" placeholder="Select Contact" /> -->
-                    <!-- <Dropdown v-model="selectedContact" :options="contacts" optionLabel="firstName" :filter="true" placeholder="Select a contact" :showClear="false" class="w-100 phone-input" @change="updateOwner">
-                        <template #value="slotProps">
-                            <div class="country-item country-item-value" v-if="slotProps.value">
-
-                                <div>{{slotProps.value.firstName}} {{slotProps.value.lastName}}</div>
-                            </div>
-                            <span v-else>
-                                {{slotProps.placeholder}}
-                            </span>
-                        </template>
-                        <template #option="slotProps">
-                            <div class="country-item">
-                             
-                                <div>{{slotProps.option.firstName}} {{slotProps.option.lastName}}</div>
-                            </div>
-                        </template>
-                    </Dropdown> -->
                     <SearchMember v-bind:currentMember="selectedContact" @memberdetail="updateOwner" :stylesidebarinput="true"/>
                 </div>
-                <!-- <div class="col-5 align-self-center">
-                    <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
-                </div> -->
             </div>
-            <!-- <div class="row">
-                <div class="col-12 mt-4 label-text">Last contacted</div>
-                <div class="col-12 mt-2">
-                    12/05/2012 11:59 PM GMT+1
-                </div>
-            </div> -->
+
             <div class="row">
                 <div class="col-12 mt-4 label-text">Lifecycle stage</div>
                 <div class="col-12">
-                    <!-- <Dropdown v-model="selectedLifeCycle" :options="lifeCycle" class="w-100 phone-input" optionLabel="name" placeholder="Select Contact" @change="updateLifeCycle"/> -->
                     <div class="dropdown">
                         <div  class="phone-input form-control d-flex justify-content-between c-pointer"
                                 id="dropdownMenuButton"
@@ -439,10 +404,11 @@
                <div class="row mt-3">
                    <div class="p-0 col-md-12">
                         <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle small-text border w-100 text-left" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                            <div class="btn btn-default small-text border w-100 d-flex justify-content-between align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                             <!-- @click="closeDropdownIfOpen" -->
-                            {{ Object.keys(selectedSender).length > 0 ? selectedSender.mask : "Select Sender Id" }}
-                            </button>
+                            <div>{{ Object.keys(selectedSender).length > 0 ? selectedSender.mask : "Select Sender Id" }}</div>
+                            <i class="pi pi-chevron-down"></i>
+                            </div>
                             <div
                             class="dropdown-menu w-100 pb-0 border-0"
                             aria-labelledby="dropdownMenuButton"
@@ -481,6 +447,39 @@
                 </div>
             </template>
     </Dialog>
+    <!-- Create sender id modal -->
+        <div class="modal fade" id="senderIdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Create sender id</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-12">Enter sender id</div>
+                    <div class="col-12 mt-2">
+                      <input type="text" class="form-control" placeholder="Enter sender id" v-model="senderIdText" @input="validateSenderId" ref="senderIdRef"/>
+                      <div class="invalid-feedback text-danger pl-2">
+                        <ul>
+                          <li>Should not contain any special characters</li>
+                          <li>Should not be less than 3 characters and more than 11 characters</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="button" class="btn default-btn " data-dismiss="modal">Close</button>
+                <button type="button" class="btn default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="saveSenderId" :disabled="requestbtn">Request sender id</button>
+              </div>
+            </div>
+          </div>
+        </div>
 </template>
 
 <script>
@@ -510,7 +509,7 @@ export default {
         'tooltip': Tooltip
     },
     emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog", "allcontact","updatelogtoview", "displayanim"],
-    props: ["personDetails", "callLog", "activityType"],
+    props: ["personDetails", "smsLog", "activityType"],
     setup (props, { emit }) {
         // const confirm = useConfirm()
         const toast = useToast()
@@ -580,6 +579,10 @@ export default {
         const membershipCategory = ref([])
         const displayConfirm = ref(false)
         const loading = ref(false)
+        const senderIdText = ref("")
+        const senderIdRef = ref()
+        const requestbtn = ref(false)
+        const tenantId = ref("")
 
 
         const selectedContactLog = computed(() => {
@@ -731,11 +734,14 @@ export default {
         const getIsoCode = () => {
             if (store.getters.currentUser && store.getters.currentUser.isoCode) {
             isoCode.value = store.getters.currentUser.isoCode;
+            tenantId.value = store.getters.currentUser.tenantId
             } else {
             axios
                 .get("/api/Membership/GetCurrentSignedInUser")
                 .then((res) => {
                 isoCode.value = res.data.isoCode;
+                tenantId.value = res.data.tenantId
+                console.log(res.data)
                 })
                 .catch((err) => console.log(err));
             }
@@ -766,6 +772,12 @@ export default {
             try {
                 let res = await frmservice.sendSms(route.params.personId, body)
                 console.log(res)
+                toast.add({
+                    severity: "success",
+                    summary: "Success",
+                    detail: "Message sent successfully",
+                    life: 5000,
+                });
                 displaySMSPane.value = false
                 emit("updatelogtoview")
             }
@@ -775,8 +787,8 @@ export default {
         }
 
         watchEffect(() => {
-            if (props.callLog) {
-                displayLogPane.value = true
+            if (props.smsLog) {
+                displaySMSPane.value = true
                 emit('resetlog', false)
             }
         })
@@ -828,6 +840,7 @@ export default {
           try {
             const { data } = await axios.get('/api/People/GetPeopleBasicInfo');
             contacts.value = data;
+            console.log(data)
             emit('allcontact', data)
           } catch (error) {
             console.log(error);
@@ -948,7 +961,7 @@ export default {
                 phoneNumber: props.personDetails.phoneNumber,
                 address: props.personDetails.address,
                 activityID: selectedEventAttended.value && Object.keys(selectedEventAttended.value).length > 0 ? selectedEventAttended.value.activityID : props.personDetails.activityID,
-                howDidYouAboutUsId: selectedAboutUsSource.value ? selectedAboutUsSource.value.id : 0,
+                howDidYouAboutUsId: selectedAboutUsSource.value ? selectedAboutUsSource.value.id : "00000000-0000-0000-0000-000000000000",
                 communicationMeans: selectedCommunicationMeans.value ? selectedCommunicationMeans.value.id : 0,
                 interestedInJoining: selectedJoinInterest.value ? selectedJoinInterest.value.id : 0,
                 wantsToBeVisited: selectedVisitOption.value ? selectedVisitOption.value.id : 0,
@@ -1142,6 +1155,71 @@ export default {
             // });
         }
 
+        const validateSenderId = (e) => {
+            var regExp = /^[a-zA-Z0-9]{3,11}$/;
+            var testString = e.target.value;
+                        
+            if(regExp.test(testString)){
+                /* do something if letters are found in your string */
+                senderIdRef.value.classList.add('is-valid')
+                senderIdRef.value.classList.remove('is-invalid')
+                requestbtn.value = false
+            } else {
+                /* do something if letters are not found in your string */
+                senderIdRef.value.classList.add('is-invalid')
+                senderIdRef.value.classList.remove('is-valid')
+                requestbtn.value = true
+            }
+        }
+
+        const saveSenderId = async() => {
+            let payload = {
+                tenantID: tenantId.value,
+                mask: senderIdText.value
+            }
+            try {
+                let { data } = await axios.post(`/api/Messaging/RequestSenderID`, payload)
+                console.log(data)
+                if(data.status === 0) {
+                toast.add({
+                    severity: "warn",
+                    summary: "Pending",
+                    detail: "Sender id is pending for approval, when it is approved, you will see it among the sender id list",
+                    life: 5000
+                });
+                } else if (data.status === 1) {
+                toast.add({
+                    severity: "warn",
+                    summary: "Processing",
+                    detail: "Sender id is processing for approval, when it is approved, you will see it among the sender id list",
+                    life: 5000
+                });
+                } else if (data.status === 2) {
+                    selectedSender.value = payload
+                toast.add({
+                    severity: "success",
+                    summary: "Approved",
+                    detail: "Sender id is approved!",
+                    life: 6000
+                });
+                } else {
+                toast.add({
+                    severity: "warn",
+                    summary: "Not Approved",
+                    detail: "Sender id is not approved, create another one.",
+                    life: 4000
+                })
+                }
+                senderIdText.value = ""
+                senderIdRef.value.classList.remove('is-invalid')
+                senderIdRef.value.classList.remove('is-valid')
+                getSenderId()
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
 
         return {
             selectedContact,
@@ -1249,7 +1327,13 @@ export default {
             membershipCategory,
             openConfirm,
             displayConfirm,
-            loading
+            loading,
+            validateSenderId,
+            senderIdText,
+            senderIdRef,
+            saveSenderId,
+            requestbtn,
+            tenantId
         }
             
     }

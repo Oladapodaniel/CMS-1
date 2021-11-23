@@ -229,6 +229,7 @@ const routes = [
             },
             {
                 path: 'firsttimermanagement/:personId?',
+                name: 'FirsttimerManagement',
                 meta: {
                     title: 'Churchplus - First Timer CRM',
                 },
@@ -859,7 +860,6 @@ const routes = [
                     }
                 ]
             },
-            // whatsapp
             {
                 path: 'whatsapp',
                 name: 'Whatsapp',
@@ -878,7 +878,6 @@ const routes = [
                             import ( /* webpackChunkName: "inbox" */ '@/views/communication/whatsapp/composeWhatsapp')
                     }]
             },
-            // voice
             {
                 path: 'voice',
                 name: 'voice',
@@ -1283,12 +1282,12 @@ const routes = [
             },
             {
                 path: 'onlinedonation',
-                name: 'Index',
+                name: 'DonateOnline',
                 meta: {
                     title: 'Churchplus - Online Donations',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/churchdonation/onlinedonation/Index')
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/churchdonation/onlinedonation/Index.vue')
             },
             {
                 path: 'payments/:editPayment?',
@@ -1502,7 +1501,7 @@ const routes = [
         meta: {
             title: 'Churchplus - ChildSignin',
         },
-        beforeEnter(to, from, next) {
+        beforeEnter() {
             window.location.href = "https://child-checkin-seven.vercel.app/";
         },
     },
@@ -1604,8 +1603,13 @@ const routes = [
             import ( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),
 
     },
+    {
+        path: '/followup',
+        name: 'Followup',
+        component: () =>
+            import ( /* webpackChunkName: "sentemails" */ '@/views/people/followup/Index'),
 
-
+    },
 ]
 
 const router = createRouter({
@@ -1627,6 +1631,7 @@ router.beforeEach((to, from, next) => {
     //   }
 
     const token = localStorage.getItem("token")
+    const role = localStorage.getItem("roles") ? JSON.parse(localStorage.getItem("roles")) : ''
     const tokenIsValid = token && token.length > 30 ? true : false;
     const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
 
@@ -1646,8 +1651,16 @@ router.beforeEach((to, from, next) => {
 
 
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
-    if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
+    if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next") 
 
+    if((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/followup" && to.name !== "FirsttimerManagement")) {
+        localStorage.removeItem('token')
+        next("/")
+        console.log('12323')
+    }   else {
+        next(true)
+        console.e.log('heree')
+    }
     next(true)
 
 

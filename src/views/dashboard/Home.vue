@@ -1,7 +1,8 @@
 <template>
 <div> 
+  <!-- {{isGroupLeader}} -->
   <div class="whole-page">
-    <div class="links-menu" :class="{ show: menuShouldShow }">
+    <div class="links-menu" :class="{ 'hide-menu': isGroupLeader }">
       <MenuLinks @linkclicked="hideNav" />
     </div>
     <div :class="{ 'main-con dim' :  !route.fullPath.includes('/mobileonboarding') && !route.fullPath.includes('/onboardingsuccessful'), 'top-router': route.query.fw }" @click="hideMenu">
@@ -41,7 +42,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed} from "vue";
 import MenuLinks from "../../components/nav/MenuLinks.vue";
 import { useRoute }  from "vue-router"
 
@@ -51,6 +52,7 @@ export default {
   setup() {
     const menuShouldShow = ref(false);
     const fullPath = ref("")
+    const followUpUser = ref(true)
 
     const toggleMenu = () => (menuShouldShow.value = !menuShouldShow.value);
 
@@ -64,12 +66,31 @@ export default {
       }
     }
 
+    const isGroupLeader  = computed(() => {
+      const retrievedUser = JSON.parse(localStorage.getItem('userRoles'));
+      console.log('retrievedUser: ', retrievedUser);
+       if (retrievedUser && retrievedUser.roles.length === 1  && retrievedUser.roles[0] === 'GroupLeader') return true;
+      //  console.log(isGroupLeader, 'isGroupLeader');
+       return false;
+    })
+
     const route = useRoute()
     const getRoute = () => {
       console.log(route.fullPath)
       fullPath.value = route.fullPath
     }
     getRoute()
+
+    const getRole =  () => {
+      const getRoles = JSON.parse(localStorage.getItem('roles'));
+      if (getRoles && getRoles.length === 1 && getRoles[0] === "FollowUp") {
+        followUpUser.value = false
+      } else {
+        followUpUser.value = true
+      }
+      console.log(getRoles)
+    }
+    getRole()
 
     return {
       menuShouldShow,
@@ -78,6 +99,8 @@ export default {
       hideNav,
       fullPath,
       route,
+      isGroupLeader,
+      followUpUser
     };
   },
 };
@@ -103,6 +126,15 @@ export default {
   height: inherit;
   overflow: auto;
 }
+
+.hide-menu {
+    display: none;
+    /* position: fixed; */
+    width: 0 !important;
+    left: -266px;
+    z-index: 9;
+    /* transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1); */
+  }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .links-menu::-webkit-scrollbar {

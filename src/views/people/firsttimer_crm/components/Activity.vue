@@ -34,7 +34,7 @@
                                 <div class="col align-self-center font-weight-700">Note</div>
                             </div>
                             <div>
-                                <div class="col text-right"><span class="ml-2 small-text">{{ formatDate(item.date) }} {{ item.time }}</span></div>
+                                <div class="col text-right"><span class="small-text">{{ formatDate(item.date) }} {{ item.time }}</span></div>
                             </div>
                         </div>
                         <div class="row">
@@ -59,14 +59,13 @@
                         
                     </div>
                     <div>
-                        <div class="col text-right"><span class="ml-2 small-text">{{ formatDate(item.date) }} {{ item.time }}</span></div>
+                        <div class="col text-right"><span class="small-text">{{ formatDate(item.date) }} {{ item.time }}</span></div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-4 enlargen-font" v-if="!item.taskIcon">
                         {{ item.loggedTask ? item.loggedTask.instructions : "Create your task" }}
                     </div>
-                    <!-- <div v-if="!taskIcon && item.description" class="col mt-4 enlargen-font">{{ theTask }}hereee</div> -->
                     <div class="col-12">
                         <transition name="fade">
                             <div class="row mt-4" v-if="item.taskIcon">
@@ -79,14 +78,12 @@
                                 <div><i class="pi pi-pencil" :class="{ 'uniform-primary-color' : item.hoverTask, 'text-white' : !item.hoverTask }"></i></div>
                             </div>
                             <input type="text" class="form-control col-10" v-model="item.loggedTask.instructions" v-if="item.editTask" @blur="saveTask(index, indx)"/>
-                            <!-- <div class="offset-1 p-2 col-2 mt-3 save-btn btn-btn c-pointer" @click="saveTask(index, indx)" v-if="item.editTask">Save</div>
-                            <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3 c-pointer" v-if="item.editTask" @click="cancelTaskEdit(index, indx)">Cancel</div> -->
                             <div class="col-12">
                                 <hr />
                             </div>
-                            <div class="col-6 label-text mt-3">Due date</div>
-                            <div class="col-6 label-text mt-3"></div>
-                            <div class="col-6 mt-2">
+                            <div class="col-4 col-md-6 label-text mt-3">Due date</div>
+
+                            <div class="col-8 col-md-12 d-block d-md-none mt-3">
                                 <div @click="toggleDueDate" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
                                      {{ item.selectedDueDate && Object.keys(item.selectedDueDate).length > 0 ? item.selectedDueDate.name : getDueDate(item.loggedTask.dueDate) }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
@@ -98,25 +95,23 @@
                                     </div>
                                 </OverlayPanel>
                             </div>
-                            <!-- <div class="col-6 mt-2">
-                                <div @click="toggleReminder" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                    {{ item.loggedTask.reminder }}&nbsp; <i class="pi pi-sort-down"></i>
+
+                            <div class="col-md-12 mt-2 d-none d-md-block mb-4">
+                                <div @click="toggleDueDate" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                     {{ item.selectedDueDate && Object.keys(item.selectedDueDate).length > 0 ? item.selectedDueDate.name : getDueDate(item.loggedTask.dueDate) }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
-                                <OverlayPanel ref="reminderOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <OverlayPanel ref="dueDateOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                     <div class="container-fluid p-0">
-                                        <div class="row hover-log" v-for="(item, index) in getReminder" :key="index">
-                                            <div class="py-2 px-3 ">{{ item.name }}</div>
+                                        <div class="row hover-log" v-for="(item, dueDateIndex) in dueDate" :key="dueDateIndex">
+                                            <div class="py-2 px-3" @click="setDueDate(index, indx, item)">{{ item.name }}</div>
                                         </div>
                                     </div>
                                 </OverlayPanel>
-                            </div> -->
-                            <div class="col-12 mt-3">
-                                <hr />
                             </div>
-                            <div class="col-4 label-text">Type</div>
-                            <div class="col-4 label-text">Priority</div>
-                            <div class="col-4 label-text">Assigned to</div>
-                            <div class="col-4 mt-2">
+                   
+                            <div class="col-4 label-text mt-3 mt-md-0">Type</div>
+
+                            <div class="col-8 d-block d-md-none mt-3 mt-md-0">
                                 <div @click="toggleTodo" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
                                     {{ item.selectedActivity && Object.keys(item.selectedActivity).length > 0 ? item.selectedActivity.value : item.loggedTask && item.loggedTask.type ? activityType.find(i => i.id === item.loggedTask.type).value : "" }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
@@ -128,7 +123,10 @@
                                     </div>
                                 </OverlayPanel>
                             </div>
-                            <div class="col-4 mt-2">
+
+                            <div class="col-4 label-text mt-3 mt-md-0">Priority</div>
+
+                            <div class="col-8 d-block d-md-none mt-3 mt-md-0">
                                 <div @click="togglePriority" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
                                     {{ item.selectedPriority ? item.selectedPriority.name : taskPriority.find(i => i.id === item.loggedTask.priority).name }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
@@ -140,17 +138,48 @@
                                     </div>
                                 </OverlayPanel>
                             </div>
-                            <div class="col-4 mt-2">
-                                <!-- <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                    {{ item.selectedContact ? `${item.selectedContact.firstName} ${item.selectedContact.lastName}` : item.person }}&nbsp; <i class="pi pi-sort-down"></i>
+
+                            <div class="col-4 label-text mt-3 mt-md-0">Assigned to</div>
+
+                            <div class="col-8 d-block d-md-none mt-3 mt-md-0">
+                                <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                    {{ item.selectedContact ? `${item.selectedContact.name}` : item.person }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
-                                <OverlayPanel ref="contactOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="make-scrollable">
+                                <OverlayPanel ref="contactOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
                                     <div class="container-fluid p-0">
-                                        <div class="row hover-log" v-for="(item, contactIndex) in allContacts" :key="contactIndex">
-                                            <div class="py-2 px-3" @click="chooseContact(item, index, indx)">{{ item.firstName }} {{ item.lastName }}</div>
+                                        <div class="py-2 px-3">Search whom you want to assign this task</div>
+                                        <div class="py-2 px-3">
+                                            <SearchMember @memberdetail="chooseContact($event, index, indx)"/>
                                         </div>
                                     </div>
-                                </OverlayPanel> -->
+                                </OverlayPanel>
+                            </div>
+
+                            <div class="col-4 mt-2 d-none d-md-block">
+                                <div @click="toggleTodo" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                    {{ item.selectedActivity && Object.keys(item.selectedActivity).length > 0 ? item.selectedActivity.value : item.loggedTask && item.loggedTask.type ? activityType.find(i => i.id === item.loggedTask.type).value : "" }}&nbsp; <i class="pi pi-sort-down"></i>
+                                </div>
+                                <OverlayPanel ref="todoOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                    <div class="container-fluid p-0">
+                                        <div class="row hover-log" v-for="(item, todoIndex) in activityType" :key="todoIndex">
+                                            <div class="py-2 px-3" @click="resetActivityType(todoIndex, index, indx)">{{ item.value }}</div>
+                                        </div>
+                                    </div>
+                                </OverlayPanel>
+                            </div>
+                            <div class="col-4 mt-2 d-none d-md-block">
+                                <div @click="togglePriority" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                    {{ item.selectedPriority ? item.selectedPriority.name : taskPriority.find(i => i.id === item.loggedTask.priority).name }}&nbsp; <i class="pi pi-sort-down"></i>
+                                </div>
+                                <OverlayPanel ref="priorityOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                    <div class="container-fluid p-0">
+                                        <div class="row hover-log" v-for="(item, priorityIndex) in taskPriority" :key="priorityIndex">
+                                            <div class="py-2 px-3" @click="resetPriority(priorityIndex, index, indx)">{{ item.name }}</div>
+                                        </div>
+                                    </div>
+                                </OverlayPanel>
+                            </div>
+                            <div class="col-4 mt-2 d-none d-md-block">
                                 <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
                                     {{ item.selectedContact ? `${item.selectedContact.name}` : item.person }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
@@ -277,8 +306,8 @@
                     <div class="col-12 card-bg lifecycle-bg p-4 " :style="`background: ${item.type === 94 ? item.color : 'white'}`">
                         <div class="row d-flex justify-content-between">
                             
-                                <div class="col-6 align-self-center"><span class="font-weight-700">{{ item.type === 94 ? "Lifecycle changed" : item.type === 95 ? "Lead status changed" : "Contact's owner changed" }}</span><span class="font-weight-700 uniform-primary-color"></span></div>
-                                <div class="col-6 text-right"><span class="ml-2 small-text">{{ formatDate(item.date) }} {{ item.time }}</span>
+                                <div class="col-12 col-md-6 align-self-center"><span class="font-weight-700">{{ item.type === 94 ? "Lifecycle changed" : item.type === 95 ? "Lead status changed" : "Contact's owner changed" }}</span><span class="font-weight-700 uniform-primary-color"></span></div>
+                                <div class="col-12 col-md-6 text-md-right"><span class="small-text">{{ formatDate(item.date) }} {{ item.time }}</span>
                             </div>
                         </div>
                         <div class="row mt-2">

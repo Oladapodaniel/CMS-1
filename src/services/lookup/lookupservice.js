@@ -1,8 +1,8 @@
 import axios from "@/gateway/backendapi";
-// import store from '../../store/store'
-import { useStore } from 'vuex';
+import store from '../../store/store'
+// import { useStore } from 'vuex';
 
-const store = useStore();
+// const store = useStore();
 
 const lookupService = {
     lookupsSetUp() {

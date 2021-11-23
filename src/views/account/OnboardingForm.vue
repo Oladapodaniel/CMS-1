@@ -205,7 +205,7 @@ export default {
       if (!this.userDetails.email) return false;
       this.userDetails.phoneNumber = this.userDetails.phoneNumber.includes("+")
         ? this.userDetails.phoneNumber
-        : `+${this.selectedCountry.phoneCode}${this.userDetails.phoneNumber.slice(1)}`;
+        : `+${this.selectedCountry.phoneCode}-${this.userDetails.phoneNumber}`;
         console.log(this.selectedCountry, "country");
         this.userDetails.countryId = this.selectedCountry.id;
       console.log(this.userDetails, "userDetails");
