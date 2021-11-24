@@ -67,10 +67,9 @@ export default {
     }
 
     const isGroupLeader  = computed(() => {
-      const retrievedUser = JSON.parse(localStorage.getItem('userRoles'));
+      const retrievedUser = JSON.parse(localStorage.getItem('roles'));
       console.log('retrievedUser: ', retrievedUser);
-       if (retrievedUser && retrievedUser.roles.length === 1  && retrievedUser.roles[0] === 'GroupLeader') return true;
-      //  console.log(isGroupLeader, 'isGroupLeader');
+       if (retrievedUser && retrievedUser.length === 1  && retrievedUser[0] === 'GroupLeader') return true;
        return false;
     })
 
