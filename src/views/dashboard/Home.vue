@@ -2,7 +2,7 @@
 <div> 
   <!-- {{isGroupLeader}} -->
   <div class="whole-page">
-    <div class="links-menu" :class="{ 'hide-menu': isGroupLeader }">
+    <div class="links-menu" :class="{ 'hide-menu': isGroupLeader , show: menuShouldShow }">
       <MenuLinks @linkclicked="hideNav" />
     </div>
     <div :class="{ 'main-con dim' :  !route.fullPath.includes('/mobileonboarding') && !route.fullPath.includes('/onboardingsuccessful'), 'top-router': route.query.fw }" @click="hideMenu">
@@ -135,6 +135,11 @@ export default {
     z-index: 9;
     /* transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1); */
   }
+
+  .show-menu {
+    display: block;
+  }
+
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .links-menu::-webkit-scrollbar {
