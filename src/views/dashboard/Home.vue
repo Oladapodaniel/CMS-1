@@ -2,7 +2,7 @@
 <div> 
   <!-- {{isGroupLeader}} -->
   <div class="whole-page">
-    <div class="links-menu" :class="{ 'hide-menu': isGroupLeader }">
+    <div class="links-menu" :class="{ 'hide-menu': isGroupLeader , show: menuShouldShow }">
       <MenuLinks @linkclicked="hideNav" />
     </div>
     <div :class="{ 'main-con dim' :  !route.fullPath.includes('/mobileonboarding') && !route.fullPath.includes('/onboardingsuccessful'), 'top-router': route.query.fw }" @click="hideMenu">
@@ -67,10 +67,9 @@ export default {
     }
 
     const isGroupLeader  = computed(() => {
-      const retrievedUser = JSON.parse(localStorage.getItem('userRoles'));
+      const retrievedUser = JSON.parse(localStorage.getItem('roles'));
       console.log('retrievedUser: ', retrievedUser);
-       if (retrievedUser && retrievedUser.roles.length === 1  && retrievedUser.roles[0] === 'GroupLeader') return true;
-      //  console.log(isGroupLeader, 'isGroupLeader');
+       if (retrievedUser && retrievedUser.length === 1  && retrievedUser[0] === 'GroupLeader') return true;
        return false;
     })
 
@@ -135,6 +134,11 @@ export default {
     z-index: 9;
     /* transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1); */
   }
+
+  .show-menu {
+    display: block;
+  }
+
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .links-menu::-webkit-scrollbar {
