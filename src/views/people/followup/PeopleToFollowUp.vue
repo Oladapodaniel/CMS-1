@@ -175,7 +175,7 @@
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">First Name</span>
                             <span class=" d-sm-flex c-pointer">
-                                <router-link :to="`/tenant/firsttimermanagement/${item.id}`">
+                                <router-link :to="{ name: 'FirsttimerManagement', params: { personId: item.id }, query: { memberType: item.memberType } }">
                                     <div class="px-1">{{ item.firstName }}</div>
                                 </router-link>
                             </span>
@@ -188,7 +188,7 @@
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Last Name</span>
                             <span class=" d-sm-flex c-pointer">
-                                <router-link :to="`/tenant/firsttimermanagement/${item.id}`">
+                                <router-link :to="{ name: 'FirsttimerManagement', params: { personId: item.id }, query: { memberType: item.memberType } }">
                                     <div>{{ item.lastName }}</div>
                                 </router-link>
                             </span>
@@ -201,7 +201,7 @@
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Phone</span>
                             <span class=" d-sm-flex c-pointer">
-                                <router-link :to="`/tenant/firsttimermanagement/${item.id}`">
+                                <router-link :to="{ name: 'FirsttimerManagement', params: { personId: item.id }, query: { memberType: item.memberType } }">
                                     <div>{{ item.mobilePhone }}</div>
                                 </router-link>
                             </span>
@@ -214,7 +214,7 @@
                             <span class="d-flex justify-content-between">
                             <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Email</span>
                             <span class=" d-sm-flex c-pointer">
-                                <router-link :to="`/tenant/firsttimermanagement/${item.id}`">
+                                <router-link :to="{ name: 'FirsttimerManagement', params: { personId: item.id }, query: { memberType: item.memberType } }">
                                     <div>{{ item.email }}</div>
                                 </router-link>
                             </span>
