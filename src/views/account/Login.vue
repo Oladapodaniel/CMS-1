@@ -200,7 +200,6 @@ export default {
         loading.value = true;
         const res = await axios.post("/login", state.credentials);
         const { data } = res;
-        // console.log(data, "data");
         if (!data || !data.token) {
           router.push({
             name: "EmailSent",

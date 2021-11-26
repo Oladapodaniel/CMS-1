@@ -132,31 +132,31 @@
                 >
                   <span><i class="pi pi-thumbs-up mr-2"></i></span>
                   <span>Like</span>
-                  <span class="ml-2 text-primary" @click="viewLikes(post.id, index)">{{ item && item.like ? item.like : "view likes" }}</span>
+                  <span class="ml-2 text-primary" @click="viewLikes(post.id, index)">{{ post && (post.like || post.like == 0) ? post.like : "view likes" }}</span>
                 </a>
                 <a
                   class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
                 >
                   <span><i class="pi pi-comment mr-2"></i></span>
                   <span>Comment</span>
-                  <span class="ml-2">com</span>
+                  <span class="ml-2"></span>
                 </a>
-                <a
+                <!-- <a
                   class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
                 >
                   <span><i class="pi pi-share-alt mr-2"></i></span>
                   <span>Share</span>
-                </a>
+                </a> -->
               </div>
             </div>
 
-            <!-- <div
+            <div
               class="row my-3"
-              v-for="(comment, indx) in post.comments"
+              v-for="(comment, indx) in post.comments.data"
               :key="indx"
             >
               <div class="col-2 d-md-flex justify-content-center">
-                <div class="img-holder bg-secondary"></div>
+                <!-- <div class="img-holder bg-secondary"></div> -->
               </div>
               <div>
                 <div
@@ -164,28 +164,28 @@
                   style="background: #ebeef0"
                 >
                   <h6 class="mb-0 font-weight-600">
-                    {{ comment.commenterName }}
+                    {{ comment && comment.from ?  comment.from.name : "" }}
                   </h6>
                   <p class="mb-0 small-text">
-                    {{ comment.commentMessage.trim() }}
+                    {{ comment.message }}
                   </p>
                 </div>
                 <div class="px-2">
                   <p class="mb-0">
-                    <small>{{
+                    <!-- <small>{{
                       formatDate(comment.commentDate).toLowerCase()
-                    }}</small>
+                    }}</small> -->
                   </p>
                 </div>
               </div>
-            </div> -->
+            </div>
 
-            <!-- <div class="row my-2">
+            <div class="row my-2">
               <div class="col-2 d-md-flex justify-content-center">
-                <div class="img-holder bg-secondary"></div>
+                <!-- <div class="img-holder bg-secondary"></div> -->
               </div>
               <div class="pl-0 col-10 d-flex align-items-center">
-                <form class="w-100">
+                <!-- <form class="w-100">
                   <p class="border mb-0 w-100 medium-border-radius">
                     <textarea
                       rows="1"
@@ -195,9 +195,9 @@
                       placeholder="Comment..."
                     ></textarea>
                   </p>
-                </form>
+                </form> -->
               </div>
-            </div> -->
+            </div>
           </div>
         </div>
 
