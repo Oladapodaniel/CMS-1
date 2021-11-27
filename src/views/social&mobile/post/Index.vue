@@ -159,6 +159,7 @@ import { useRoute } from "vue-router"
             const toFacebook = ref(true);
             const socialData = ref({ });
             const fBPhotoVideoId = ref([])
+            const fbVideoToPost = ref(null)
 
             
             // const store = useStore();
@@ -242,13 +243,11 @@ import { useRoute } from "vue-router"
             }
 
             const getFacebookVideoId = async(videoObject) => {
-                const payload = {
-                    source: videoObject
-                }
+                const formDataPayload = new FormData()
+                formDataPayload.append("source", videoObject)
                 try {
-                    let { data } = await axios.post(`https://graph.facebook.com/${socialData.value.pageId}/videos?access_token=${socialData.value.accessToken}&published=false`, payload)
+                    let { data } = await axios.post(`https://graph-video.facebook.com/${socialData.value.pageId}/videos?access_token=${socialData.value.accessToken}&published=true&description=${message.value}`, formDataPayload)
                     console.log(data)
-                    fBPhotoVideoId.value.push(data)
                 }
                 catch (err) {
                     console.log(err)
@@ -262,7 +261,7 @@ import { useRoute } from "vue-router"
                     let formData = new FormData()
                     formData.append("mediaFileImage", payload)
                     if (payload.type.includes("video")) {
-                        getFacebookVideoId(payload)
+                        fbVideoToPost.value = payload
                     }   else {
                             try {
                             let { data } = await axios.post("/api/Media/UploadProfilePicture", formData)
@@ -273,17 +272,9 @@ import { useRoute } from "vue-router"
                             console.log(err)
                         }
                     }
-
                 }   else {
-                    console.log("Selected Picture")
+                    getFacebookPhotoId(payload)
                 }
-         
-                // if (payload.type.includes("video")) {
-                //     console.log('isVideo')
-                // }   else {
-                //     console.log('isNotVideo')
-                // }
-                
             }
 
             const postToFbPage = () => {
@@ -332,7 +323,13 @@ import { useRoute } from "vue-router"
                     .then(res => {
                         console.log(res, "upload res");
                         display.value = false;
-                        postToFbPage()
+                        
+                        console.log(fbVideoToPost.value)
+                        if (fbVideoToPost.value !== null) {
+                            getFacebookVideoId(fbVideoToPost.value)
+                        } else {
+                            postToFbPage()
+                        }
                         if (res) router.push("/tenant/social/feed")
                     })
                     .catch(err => {
@@ -461,7 +458,8 @@ import { useRoute } from "vue-router"
                 getFacebookPhotoId,
                 fBPhotoVideoId,
                 postToFbPage,
-                getFacebookVideoId
+                getFacebookVideoId,
+                fbVideoToPost
             }
         }
     }
