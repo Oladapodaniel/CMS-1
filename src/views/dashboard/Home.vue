@@ -1,6 +1,6 @@
 <template>
 <div> 
-  <!-- {{isGroupLeader}} -->
+
   <div class="whole-page">
     <div class="links-menu" :class="{ 'hide-menu': isGroupLeader , show: menuShouldShow }">
       <MenuLinks @linkclicked="hideNav" />

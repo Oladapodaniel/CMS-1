@@ -23,7 +23,7 @@
                 ><i class="pi pi-angle-right"></i></span
             ></a>
           </div>
-          <router-link to="/tenant" class="link routelink dashboard-link">
+          <router-link to="/tenant" class="link routelink dashboard-link" v-if="admin">
             <img
               src="../../assets/dashboardlinks/dashboard-icon.svg"
               class="link-icon"
@@ -40,7 +40,7 @@
                 route.path.includes('first-time'),
             }"
           >
-            <span @click="togglePeopleDropDown">
+            <span @click="togglePeopleDropDown" v-if="admin">
               <img
                 src="../../assets/dashboardlinks/people.svg"
                 class="link-icon"
@@ -84,8 +84,9 @@
             :class="{
               'router-link-exact-active': route.path.includes('communication'),
             }"
+            
           >
-            <span @click="toggleCommDropDown">
+            <span @click="toggleCommDropDown" v-if="admin">
               <img
                 src="../../assets/dashboardlinks/com-icon.svg"
                 class="link-icon comm-link-icon"
@@ -130,7 +131,7 @@
               'router-link-exact-active': route.path.includes('/tenant/event'),
             }"
           >
-            <span @click="toggleEventsDropDown">
+            <span @click="toggleEventsDropDown" v-if="admin">
               <img
                 src="../../assets/dashboardlinks/events-icon.svg"
                 class="link-icon"
@@ -173,7 +174,7 @@
             }"
 
           >
-            <span @click="toggleAccDropDown">
+            <span @click="toggleAccDropDown" v-if="admin">
               <img
                 src="../../assets/dashboardlinks/acc-icon.svg"
                 class="link-icon"
@@ -228,7 +229,7 @@
 
           <!-- Hidden -->
           <!-- <router-link to="tenant/reports"> -->
-          <a class="link routelink" @click="goToReport">
+          <a class="link routelink" @click="goToReport" v-if="admin">
             <img
               src="../../assets/dashboardlinks/reports-icon.svg"
               class="link-icon"
@@ -252,16 +253,18 @@
               </p>
             </div>
             <div class="more-links" :class="{ 'hide-more-links': moreShown }">
-              <a v-if="false"  class="link follow-up routelink">
+              <a v-if="followup"  class="link follow-up routelink">
+                <router-link class="dd-link-item routelink" to="/tenant/followup">
                 <img
                   src="../../assets/dashboardlinks/follow-up-icon.svg"
                   class="link-icon"
                   alt=""
                 />
                 Follow up
+                </router-link>
               </a>
 
-              <router-link  to="/tenant/social" class="link routelink text-decoration-none">
+              <router-link  to="/tenant/social" class="link routelink text-decoration-none" v-if="admin">
                 <img
                   src="../../assets/dashboardlinks/social-icon.svg"
                   class="link-icon"
@@ -270,7 +273,7 @@
                 Social & Mobile App
               </router-link>
 
-              <router-link  to="/tenant/media" class="link routelink text-decoration-none">
+              <router-link  to="/tenant/media" class="link routelink text-decoration-none" v-if="admin">
                 <img
                   src="../../assets/dashboardlinks/social-icon.svg"
                   class="link-icon"
@@ -347,6 +350,15 @@ export default {
     const moreShown = ref(false);
     const churchLogo = ref("");
     const flyOverRef = ref(false)
+    const roleOfCurrentUser = computed(() => {
+      if (!localStorage.getItem('roles')) return []
+      return JSON.parse(localStorage.getItem('roles'))
+    })
+    const admin = ref(roleOfCurrentUser.value.some(i => i.toLowerCase() === 'admin'))
+    const followup = ref(roleOfCurrentUser.value.length == 1 && roleOfCurrentUser.value[0].toLowerCase() == 'followup')
+    
+
+
     const showMore = () => {
       moreShown.value = !moreShown.value;
     };
@@ -450,6 +462,8 @@ export default {
       flyOverRef.value.hide()
     }
 
+    
+
     return {
       route,
       moreShown,
@@ -470,7 +484,10 @@ export default {
       goToReport,
       flyOverRef,
       toggleNavFlyOver,
-      closeOverlay
+      closeOverlay,
+      roleOfCurrentUser,
+      followup,
+      admin
     };
   },
 };
