@@ -277,23 +277,25 @@ import { useRoute } from "vue-router"
                 }
             }
 
-            const postToFbPage = () => {
-                const fbPhotoIds = []
-                fBPhotoVideoId.value.forEach(i => {
-                    fbPhotoIds.push({
-                        media_fbid: `${i.id}`
-                    })
-                    console.log(fbPhotoIds)
-                    console.log(arrStr)
-                    const arrStr = encodeURIComponent(JSON.stringify(fbPhotoIds));
-                    axios.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=${message.value}&access_token=${socialData.value.accessToken}&attached_media=${arrStr}`)
+            const postToFbPage = async() => {
+                // const fbPhotoIds = []
+                // fBPhotoVideoId.value.forEach(i => {
+                //     fbPhotoIds.push({
+                //         media_fbid: `${i.id}`
+                //     })
+                // })
+
+                fBPhotoVideoId.value = fBPhotoVideoId.value.map(i => { 
+                     return { media_fbid: `${i.id}` }
+                })
+                const arrStr = encodeURIComponent(JSON.stringify(fBPhotoVideoId.value));
+                    await axios.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=${message.value}&access_token=${socialData.value.accessToken}&attached_media=${arrStr}`)
                     .then(res => {
                         console.log(res)
                     })
                     .catch(err => {
                         console.log(err)
                     })
-                })
                 
                 
             }
