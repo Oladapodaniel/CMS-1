@@ -77,27 +77,15 @@
             <div class="col-md-3">
               <span class="hidden-header">Status</span>
               <span class="small-text" v-if="message.deliveryReport.includes('sent')">
-                <!-- <Tag
-                  class="p-mr-2"
-                  severity="success"
-                  :value="message.deliveryReport"
-                  rounded
-                ></Tag> -->
                 sent
               </span>
-              <span class="small-text text-danger" v-else-if="message.deliveryReport === 'failed'">
-                <!-- <Tag
-                  class="p-mr-2"
-                  severity="error"
-                  :value="message.deliveryReport"
-                  rounded
-                ></Tag> -->
+              <span class="small-text text-danger" v-else-if="message.deliveryReport.includes('failed')">
                 failed
               </span>
-              <span class="small-text" v-if="message.deliveryReport === 'sms queued'">
+              <span class="small-text" v-else-if="message.deliveryReport.includes('queue')">
                 queued
               </span>
-              <span class="small-text" v-if="message.deliveryReport === 'sms processed'">
+              <span class="small-text" v-else-if="message.deliveryReport.includes('processed')">
                 processed
               </span>
             </div>
@@ -111,6 +99,9 @@
           <hr class="hr" />
         </div>
       </div>
+      <div class="col-md-12 px-0 text-center" v-if="messages.length == 0 && loading">
+          <ProgressSpinner style="width: 50px"/>
+        </div>
     </div>
   </div>
 </template>
@@ -121,9 +112,10 @@ import SecondChart from "@/components/charts/SecondReportPie.vue";
 import { useRoute } from "vue-router";
 import communicationService from "../../services/communication/communicationservice";
 import { computed, ref } from "vue";
+import ProgressSpinner from 'primevue/progressspinner';
 
 export default {
-  components: { ReportChart, SecondChart },
+  components: { ReportChart, SecondChart, ProgressSpinner },
 
   setup() {
     const route = useRoute();

@@ -83,7 +83,7 @@
                             class="mark-box"
                           />
                         </div>
-                        <div class="col-md-8 d-md-flex flex-column small-text">
+                        <div class="col-md-8 d-md-flex flex-column small-text py-1">
                           <router-link to="" class="text-decoration-none"
                             ><span class="msg-n-time">
                               <span class="font-weight-bold mr-2 text-dark">{{

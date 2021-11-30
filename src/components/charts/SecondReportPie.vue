@@ -46,7 +46,7 @@ export default {
           text: props.title,
         },
         tooltip: {
-          pointFormat: "{series.name}: <b>{point.percentage:.1f}¿</b>",
+          pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
         },
         accessibility: {
           point: {
@@ -73,7 +73,7 @@ export default {
         },
         series: [
           {
-            name: "Share",
+            name: "Series",
             data: props.summary ? props.summary : [
               {
                 name: "Male",
