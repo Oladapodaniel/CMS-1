@@ -36,11 +36,11 @@
                     </div>
                   </div>
                   <div class="row mt-2 d-flex justify-content-around">
-                    <div class="col-md-7">
+                    <!-- <div class="col-md-7">
                     <Checkbox v-model="isDefault" :binary="true" />
                     <span class="ml-4 mt-2">Mark As Default</span>
                       
-                    </div>
+                    </div> -->
                     <div class="col-md-3">
 
                     </div>
@@ -120,8 +120,8 @@
                     <input type="text" class="form-control" v-model="element.name">
                   </label>
                   <label for="" class="d-flex mt-4">
-                    <span class="mr-2">Mark As Default</span>
-                    <Checkbox v-model="element.isDefault" :binary="true" />
+                    <!-- <span class="mr-2">Mark As Default</span> -->
+                    <!-- <Checkbox v-model="element.isDefault" :binary="true" /> -->
                   </label>
                 </div>
                 <div
@@ -135,12 +135,6 @@
                       <button class="btn secondary-btn py-1 px-3" @click="discard">Discard</button>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-12 px-0">
-                  <hr class="hr my-0" />
                 </div>
               </div>
             </div>
@@ -186,7 +180,7 @@ export default {
       branchTypes: "",
       level: 0,
       tenantId: "",
-      isDefault: false,
+      // isDefault: false,
       loading: false,
       enabled: true,
       dragging: false
@@ -201,7 +195,7 @@ export default {
         this.branchList = data.returnObject.map((item, index)=>{
           item.index = index
           return item
-          }).sort((a, b) => a.order - b.order);
+          }).sort((a, b) => a.level - b.level);
         console.log(data, 'all branches');
         this.loading = false
       } catch (error) {
@@ -214,14 +208,14 @@ export default {
      
       setTimeout(async () => {
         const ordered = this.branchList.map((i, j) => {
-          return { id: i.id, order: j+1, name: i.name}
+          return { id: i.id, level: j, name: i.name}
           
         })
       this.loading = true
-     const response = await axios.put('/firsttimercycle/orderstages', ordered);
+     const response = await axios.put('/branching/reorderlevels', ordered);
       console.log(response)
        this.loading = false
-      this.$toast.add({severity:'success', summary: '', detail:' New Guest Life Cycle Order Updated Successfully', life: 3000});  
+      this.$toast.add({severity:'success', summary: '', detail:' Branch Level Order Updated Successfully', life: 3000});  
       console.log(ordered, "ORDERED");
       
       }, 1000)
