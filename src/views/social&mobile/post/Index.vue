@@ -158,7 +158,8 @@ import { useRoute } from "vue-router"
             const postDestination = ref("Facebook");
             const toFacebook = ref(true);
             const socialData = ref({ });
-            const fBPhotoId = ref([])
+            const fBPhotoVideoId = ref([])
+            const fbVideoToPost = ref(null)
 
             
             // const store = useStore();
@@ -234,7 +235,19 @@ import { useRoute } from "vue-router"
                 try {
                     let { data } = await axios.post(`https://graph.facebook.com/${socialData.value.pageId}/photos?url=${pictureUrl}&access_token=${socialData.value.accessToken}&published=false`)
                     console.log(data)
-                    fBPhotoId.value.push(data)
+                    fBPhotoVideoId.value.push(data)
+                }
+                catch (err) {
+                    console.log(err)
+                }
+            }
+
+            const getFacebookVideoId = async(videoObject) => {
+                const formDataPayload = new FormData()
+                formDataPayload.append("source", videoObject)
+                try {
+                    let { data } = await axios.post(`https://graph-video.facebook.com/${socialData.value.pageId}/videos?access_token=${socialData.value.accessToken}&published=true&description=${message.value}`, formDataPayload)
+                    console.log(data)
                 }
                 catch (err) {
                     console.log(err)
@@ -243,35 +256,46 @@ import { useRoute } from "vue-router"
 
             const uploadPicture = async(payload) => {
                 console.log(payload)
-                let formData = new FormData()
-                formData.append("mediaFileImage", payload)
-                try {
-                    let { data } = await axios.post("/api/Media/UploadProfilePicture", formData)
-                    console.log(data)
-                    getFacebookPhotoId(data.pictureUrl)
-                }
-                catch (err) {
-                    console.log(err)
+                if (payload instanceof File) {
+                    console.log("uploaded image or video")
+                    let formData = new FormData()
+                    formData.append("mediaFileImage", payload)
+                    if (payload.type.includes("video")) {
+                        fbVideoToPost.value = payload
+                    }   else {
+                            try {
+                            let { data } = await axios.post("/api/Media/UploadProfilePicture", formData)
+                            console.log(data)
+                            getFacebookPhotoId(data.pictureUrl)
+                        }
+                        catch (err) {
+                            console.log(err)
+                        }
+                    }
+                }   else {
+                    getFacebookPhotoId(payload)
                 }
             }
 
-            const postToFbPage = () => {
-                const fbPhotoIds = []
-                fBPhotoId.value.forEach(i => {
-                    fbPhotoIds.push({
-                        media_fbid: `${i.id}`
-                    })
-                    console.log(fbPhotoIds)
-                    console.log(arrStr)
-                    const arrStr = encodeURIComponent(JSON.stringify(fbPhotoIds));
-                    axios.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=${message.value}&access_token=${socialData.value.accessToken}&attached_media=${arrStr}`)
+            const postToFbPage = async() => {
+                // const fbPhotoIds = []
+                // fBPhotoVideoId.value.forEach(i => {
+                //     fbPhotoIds.push({
+                //         media_fbid: `${i.id}`
+                //     })
+                // })
+
+                fBPhotoVideoId.value = fBPhotoVideoId.value.map(i => { 
+                     return { media_fbid: `${i.id}` }
+                })
+                const arrStr = encodeURIComponent(JSON.stringify(fBPhotoVideoId.value));
+                    await axios.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=${message.value}&access_token=${socialData.value.accessToken}&attached_media=${arrStr}`)
                     .then(res => {
                         console.log(res)
                     })
                     .catch(err => {
                         console.log(err)
                     })
-                })
                 
                 
             }
@@ -301,7 +325,13 @@ import { useRoute } from "vue-router"
                     .then(res => {
                         console.log(res, "upload res");
                         display.value = false;
-                        postToFbPage()
+                        
+                        console.log(fbVideoToPost.value)
+                        if (fbVideoToPost.value !== null) {
+                            getFacebookVideoId(fbVideoToPost.value)
+                        } else {
+                            postToFbPage()
+                        }
                         if (res) router.push("/tenant/social/feed")
                     })
                     .catch(err => {
@@ -428,8 +458,10 @@ import { useRoute } from "vue-router"
                 route,
                 uploadPicture,
                 getFacebookPhotoId,
-                fBPhotoId,
-                postToFbPage
+                fBPhotoVideoId,
+                postToFbPage,
+                getFacebookVideoId,
+                fbVideoToPost
             }
         }
     }

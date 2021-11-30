@@ -168,20 +168,20 @@
                           </span>
                           <span class="small-text"
                             >{{
-                              sms.deliveryReport.filter((i) =>
-                                i.report.includes("sent")
+                              sms.report.filter((i) =>
+                                i.status.includes("sent")
                               ).length
                             }}
                             |
                             {{
-                              sms.deliveryReport.filter((i) =>
-                                i.report.includes("processed")
+                              sms.report.filter((i) =>
+                                i.status.includes("processed")
                               ).length
                             }}
                             |
                             {{
-                              sms.deliveryReport.filter((i) =>
-                                i.report.includes("failed")
+                              sms.report.filter((i) =>
+                                i.status.includes("failed")
                               ).length
                             }}</span
                           >

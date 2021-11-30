@@ -237,6 +237,13 @@ const routes = [
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/firsttimer_crm/Index.vue')
             },
             {
+                path: 'followup',
+                name: 'Followup',
+                component: () =>
+                    import ( /* webpackChunkName: "sentemails" */ '@/views/people/followup/Index'),
+        
+            },
+            {
                 path: 'reports',
                 meta: {
                     title: 'Churchplus - Reports',
@@ -1609,13 +1616,6 @@ const routes = [
             import ( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),
 
     },
-    {
-        path: '/followup',
-        name: 'Followup',
-        component: () =>
-            import ( /* webpackChunkName: "sentemails" */ '@/views/people/followup/Index'),
-
-    },
 ]
 
 const router = createRouter({
@@ -1659,7 +1659,7 @@ router.beforeEach((to, from, next) => {
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next") 
 
-    if((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/followup" && to.name !== "FirsttimerManagement")) {
+    if((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/tenant/followup" && to.name !== "FirsttimerManagement")) {
         localStorage.removeItem('token')
         next("/")
         console.log('12323')

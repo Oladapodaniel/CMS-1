@@ -100,7 +100,7 @@ export default {
         watchEffect(() => {
             if (props.currentMember && Object.keys(props.currentMember).length > 0 && Object.keys(props.currentMember).find(i => i == 'id')) {
                 console.log(props.currentMember)
-                userSearchString.value = `${props.currentMember.firstName} ${props.currentMember.lastName}`
+                userSearchString.value = `${props.currentMember.name}`
             }
         })
 

@@ -572,7 +572,36 @@ export default {
                 console.log(err)
             })
         }
-        getPersonDetails()
+        if (route.query.memberType == 0) getPersonDetails()
+        
+        const getMemberPersonDetails = () => {
+            axios
+            .get(`/api/People/GetPersonInfoWithAssignments/${route.params.personId}`)
+            .then((res) => {
+                console.log(res)
+                // personDetails.value = res.data
+                personDetails.value = {
+                    pictureUrl: res.data.pictureUrl,
+                    firstName: res.data.firstName,
+                    lastName: res.data.lastName,
+                    email: res.data.email,
+                    phoneNumber: res.data.mobilePhone,
+                    address: res.data.homeAddress,
+                    genderId: res.data.genderID,
+                    maritalStatusId: res.data.maritalStatusID,
+                    birthday: res.data.dayOfBirth,
+                    birthMonth: res.data.monthOfBirth,
+                    birthYear: res.data.yearOfBirth,
+                    followupPersonID: res.data.followupPersonID,
+                    followupPersonName: res.data.followupPersonName
+
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+        if (route.query.memberType == 1) getMemberPersonDetails()
 
         const setCallLogDesc = (payload) => {
             logList.value.unshift(payload)
