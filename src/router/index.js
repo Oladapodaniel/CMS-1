@@ -425,26 +425,40 @@ const routes = [
             },
             {
             
-                path: 'branchsummary',
-                name: "BranchSummary",
+                path: 'branch',
+                name: "Branch",
                 meta: {
                     title: 'Churchplus - Branch',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/BranchSummary')
-                
-            },
-            {
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/Branch'),
+                    children : [
+                        {
             
-                path: 'addbranch',
-                name: "AddBranch",
-                meta: {
-                    title: 'Churchplus - Branch',
-                },
-                component: () =>
-                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/AddBranch')
+                            path: 'branchsummary',
+                            name: "BranchSummary",
+                            meta: {
+                                title: 'Churchplus - Branch',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/BranchSummary')
+                            
+                        },
+                        {
+                        
+                            path: 'addbranch',
+                            name: "AddBranch",
+                            meta: {
+                                title: 'Churchplus - Branch',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/AddBranch')
+                            
+                        },
+                    ]
                 
             },
+           
 
             // {
             //     path: 'attendanceservicereport',
@@ -1149,6 +1163,12 @@ const routes = [
                         name: 'FirstTimerSettings',
                         component: () =>
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/FirstTimerSettings')
+                    },
+                    {
+                        path: 'branchlevelsettings',
+                        name: 'BranchLevelSettings',
+                        component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/BranchLevelSettings')
                     },
                     {
                         path: 'followupstatus',
