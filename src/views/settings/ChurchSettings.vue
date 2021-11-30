@@ -98,6 +98,12 @@
               >
             </div>
             
+            <div class="col-md-12 my-2">
+              <router-link class="font-weight-bold link dd-list-item" to="/tenant/settings/branchlevelsettings"
+                >Branch Level Sttings</router-link
+              >
+            </div>
+            
             
             
             </div>

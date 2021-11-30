@@ -1158,6 +1158,12 @@ const routes = [
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/FirstTimerSettings')
                     },
                     {
+                        path: 'branchlevelsettings',
+                        name: 'BranchLevelSettings',
+                        component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/BranchLevelSettings')
+                    },
+                    {
                         path: 'followupstatus',
                         name: 'FollowUpStatus',
                         component: () =>

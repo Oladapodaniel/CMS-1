@@ -1,7 +1,7 @@
 <template>
     <div  class="container-fluid">
         <div class="con">
-            <div id="domId" ref="chart"></div>
+            <div id="domId" ref="chart" class="chart"></div>
         </div>
        
     </div>
@@ -30,7 +30,7 @@ export default {
 
            Highcharts.chart(domId, {
     chart: {
-        height: 600,
+        height: 800,
         inverted: true
     },
 
@@ -53,6 +53,7 @@ export default {
     series: [{
         type: 'organization',
         name: 'Highsoft',
+        fontSize: '10px',
         keys: ['from', 'to'],
         data: [
             ['Shareholders', 'Board'],
@@ -72,17 +73,24 @@ export default {
         levels: [{
             level: 0,
             color: 'silver',
+            fontSize: '10px',
             dataLabels: {
-                color: 'black'
+                 style: {
+                    fontSize: '10px'
+                        },
+                color: 'black',
             },
-            height: 25
+            height: 20
         }, {
             level: 1,
             color: 'silver',
             dataLabels: {
-                color: 'black'
+                color: 'black',
+                 style: {
+                    fontSize: '10px'
+                        }
             },
-            height: 25
+            height: 20
         }, {
             level: 2,
             color: '#980104'
@@ -137,7 +145,10 @@ export default {
         colorByPoint: false,
         color: '#007ad0',
         dataLabels: {
-            color: 'white'
+            color: 'white',
+             style: {
+                        fontSize: '10px'
+                    }
         },
         borderColor: 'white',
         nodeWidth: 65
@@ -161,14 +172,17 @@ export default {
 <style scoped>
 .con {
     min-width: 300px;
-    max-width: 800px;
+    max-width: 900px;
     margin: 1em auto;
-    border: 1px solid silver;
+    /* border: 1px solid silver; */
 }
 
 #csv {
     display: none;
 }
+/* .chart{
+    font-size: 10px!important;
+} */
 
 
 </style>
