@@ -3,7 +3,7 @@
     <canvas ref="confeti" width="300" height="300" class="active canvas-style" v-show="displayAnim"></canvas>
         <div class="row">
             <div class="col-12 col-md-4 p-0 side-bar">
-                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails" @calllogdesc="setCallLogDesc" :smsLog="smsLog" @resetlog="resetLog" @allcontact="setAllContacts" :activityType="activityType" @updatelogtoview="updateLogToView" @displayanim="setDisplayAnim"/>
+                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails" @calllogdesc="setCallLogDesc" :smsLog="smsLog" @resetlog="resetLog" :activityType="activityType" @updatelogtoview="updateLogToView" @displayanim="setDisplayAnim"/>
             </div>
             <div class="col-12 col-md-8 main-view">
                 <div class="row">
@@ -50,7 +50,7 @@
               
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
-                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp"  :loader="loader" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :allContacts="allContacts" :personDetails="personDetails" @commentindex="pushToComment" @removecommetfromview="removeCommentFromView" @editcommentinview="editCommentInView" @setduedate="setDueDateTask"/>
+                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp"  :loader="loader" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :personDetails="personDetails" @commentindex="pushToComment" @removecommetfromview="removeCommentFromView" @editcommentinview="editCommentInView" @setduedate="setDueDateTask"/>
                     </div>
                     <div class="col-12 px-0" v-if="showNotes" transition="bounce">
                         <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
@@ -62,7 +62,7 @@
                         <SMS :personDetails="personDetails" :logList="logList" @individualcallicon="setCallLogIcon" @opensmslogpane="opensmslogpane" @hoverLog="setHoverLogProp" @outhoverLog="setOutHoverLogProp"/>
                     </div>
                     <div class="col-12 px-0" v-if="showTasks" transition="bounce">
-                        <Tasks :addTask="taskList" @individualtoggletask="setIconMainTask" :taskTime="taskTime" @opentaskeditor="openTaskEditor" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :allContacts="allContacts" :personDetails="personDetails" @hovertask="setHoverPropForTask" @outhovertask="setOutHoverPropForTask" @edittask="displayEditTaskField" @hidetaskfield="hideTaskField" @removecommetfromview="removeCommentFromViewTask" @editcommentinview="editCommentInViewTask"/>
+                        <Tasks :addTask="taskList" @individualtoggletask="setIconMainTask" @opentaskeditor="openTaskEditor" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" @hovertask="setHoverPropForTask" @outhovertask="setOutHoverPropForTask" @edittask="displayEditTaskField" @hidetaskfield="hideTaskField" @removecommetfromview="removeCommentFromViewTask" @editcommentinview="editCommentInViewTask"/>
                     </div>
                 </div>
             </div>
@@ -215,20 +215,7 @@
                                 </div>
                             </OverlayPanel>
                         </div>
-                        <!-- <div class="col-2 mt-2">
-                            <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
-                                None&nbsp; <i class="pi pi-sort-down"></i>
-                            </div>
-                            <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                <div v-for="(item, index) in taskTime" :key="index">
-                                    <div class="px-3 py-1">{{ item.name }}</div>
-                                </div>
-                            </OverlayPanel>
-                        </div> -->
                         <div class="col-4 mt-2">
-                            <!-- <div>
-                                
-                            </div> -->
                             <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
                                 {{ selectedContact && Object.keys(selectedContact).length > 0 ? selectedContact.name ? selectedContact.name : `${selectedContact.firstName} ${selectedContact.lastName}` : "Select contact" }}&nbsp; <i class="pi pi-sort-down"></i>
                             </div>
@@ -312,7 +299,6 @@ export default {
         const emailSubject = ref("")
         const displayEmailPane = ref(false)
         const taskDisplayPosition = ref(false)
-        const taskTime = ref([{ name: '08:00' },{ name: '09:00' }, { name: '10:00' }])
         const op = ref("")
         const todoTask = ref("")
         const theTask = ref("")
@@ -333,7 +319,7 @@ export default {
         const reminder = ref(getReminder)
         const reminderRef = ref("")
         const selectedReminder = ref({})
-        const allContacts = ref([])
+        // const allContacts = ref([])
         const selectedContact = ref({})
         const contactRef = ref("")
         const loader = ref(false)
@@ -718,9 +704,9 @@ export default {
         })
         // getReminder()
 
-        const setAllContacts = (payload) => {
-            allContacts.value = payload
-        }
+        // const setAllContacts = (payload) => {
+        //     allContacts.value = payload
+        // }
 
         const setPriority = (payload) => {
             priorityRef.value.hide();
@@ -733,8 +719,11 @@ export default {
         }
 
         watchEffect(() => {
-            if (personDetails.value && allContacts.value.length > 0) {
-                selectedContact.value = allContacts.value.find(i => i.id === personDetails.value.contactOwnerID)
+            if (personDetails.value) {
+                selectedContact.value = {
+                    name: personDetails.value.followUpPersonName,
+                    id: personDetails.value.contactOwnerID
+                }
             }
         })
 
@@ -916,7 +905,6 @@ export default {
             displayEmailPane,
             openTaskEditor,
             taskDisplayPosition,
-            taskTime,
             toggle,
             op,
             theTask,
@@ -960,8 +948,8 @@ export default {
             taskNote,
             selectedPriority,
             setPriority,
-            allContacts,
-            setAllContacts,
+            // allContacts,
+            // setAllContacts,
             selectedContact,
             chooseContact,
             contactRef,

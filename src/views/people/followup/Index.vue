@@ -57,13 +57,17 @@ export default {
     setup () {
         const contacts = ref([])
         const tasks = ref([])
+        const statuses = ref([ { name: 'Pending', value: 0 }, { name: 'InProgress', value: 1 }, { name: 'Completed', value: 2 }, { name: 'Cancelled', value: 3 }, { name: 'Rescheduled', value: 4 }, { name: 'Stalled', value: 5 } ])
 
         const getFollowUpContactDetails = async() => {
             try {
                 const { data } = await axios.get('/api/FirsttimerManager/contactstofollow')
                 console.log(data)
                 contacts.value = data.people
-                tasks.value = data.tasks
+                tasks.value = data.tasks.map(i => {
+                    i.selectedStatus = statuses.value.find(j => j.value == i.status)
+                    return i
+                })
             }
             catch (err) {
                 console.log(err)
@@ -78,7 +82,8 @@ export default {
         return {
             contacts,
             tasks,
-            logout
+            logout,
+            statuses
         }
     }
 }
