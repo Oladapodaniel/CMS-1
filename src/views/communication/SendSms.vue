@@ -976,11 +976,12 @@ export default {
             
             // Save the res to store in other to get it in the view sent sms page
             let sentObj = {
-                message: res.data.message,
+                message: res.data.sentMessageDTO.message,
                 id: res.data.channel,
-                smsUnitsUsed: res.data.unitsUsed,
+                smsUnitsUsed: res.data.sentMessageDTO.smsUnitsUsed,
                 dateSent: "",
-                deliveryReport: [{ report: "-" }]
+                deliveryReport: [{ report: "-" }],
+                report: res.data.sentMessageDTO.report
               }
               console.log(sentObj)
               store.dispatch("communication/addSmsToSentList", sentObj)
