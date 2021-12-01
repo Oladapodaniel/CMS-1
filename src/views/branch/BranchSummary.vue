@@ -40,9 +40,10 @@
                 <div class="col-md-2 item-Area mb-4">
                     <div class="row p-2 mb-2 d-flex justify-content-between">
                         <div class="top-icon-div d-flex justify-content-center align-items-center ml-2">
-                            <i class="pi pi-users text-center"></i>
+                            <!-- <i class="pi pi-users text-center"></i> -->
 
                             <!-- <img class="trend-icon" src="/img/trend-icon.b63f0d8d.svg" alt=""> -->
+                            <img class="trend-icon " src="../../assets/dashboardlinks/people.svg" alt="">
                         </div>
                         <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total pl-0">5000</div>
                     </div>
