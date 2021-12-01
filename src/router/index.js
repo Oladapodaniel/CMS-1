@@ -236,6 +236,18 @@ const routes = [
                 component: () =>
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/firsttimer_crm/Index.vue')
             },
+
+            // {
+            //     path: 'branch',
+            //     meta: {
+            //         title: 'Churchplus - Branch'
+            //     },
+            //     component: () =>
+            //         import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/FirstTimer'),
+            //      children: [
+
+            //      ]   
+            // },
             {
                 path: 'followup',
                 name: 'Followup',

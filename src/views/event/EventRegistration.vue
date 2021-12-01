@@ -811,7 +811,7 @@ export default {
 
           try {
             let { data } = await axios.post("/createPublicPerson", createNewPerson)
-              console.log(data)
+              console.log(data, 'ceeejay jenifer')
               if (displayFamily.value) {
                 createNewFamily(data.returnObject.id)
               } else {
