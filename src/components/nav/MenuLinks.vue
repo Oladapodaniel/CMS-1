@@ -1,9 +1,12 @@
+
+
 <template>
   <div>
     <div class="nav-con">
       <div>
         <div class="nav" @click="linkClicked">
-          <div class="user">
+          <div class="w-100">
+            <div class="user">
             <img
               :src="churchLogo"
               v-if="churchLogo"
@@ -23,7 +26,7 @@
                 ><i class="pi pi-angle-right"></i></span
             ></a>
           </div>
-          <router-link to="/tenant" class="link routelink dashboard-link" >
+          <router-link to="/tenant" class="link routelink dashboard-link" v-if="admin" >
             <img
               src="../../assets/dashboardlinks/dashboard-icon.svg"
               class="link-icon"
@@ -40,7 +43,7 @@
                 route.path.includes('first-time'),
             }"
           >
-            <span @click="togglePeopleDropDown" >
+            <span @click="togglePeopleDropDown" v-if="admin">
               <img
                 src="../../assets/dashboardlinks/people.svg"
                 class="link-icon"
@@ -86,7 +89,7 @@
             }"
             
           >
-            <span @click="toggleCommDropDown" >
+            <span @click="toggleCommDropDown" v-if="admin">
               <img
                 src="../../assets/dashboardlinks/com-icon.svg"
                 class="link-icon comm-link-icon"
@@ -131,7 +134,7 @@
               'router-link-exact-active': route.path.includes('/tenant/event'),
             }"
           >
-            <span @click="toggleEventsDropDown" >
+            <span @click="toggleEventsDropDown" v-if="admin">
               <img
                 src="../../assets/dashboardlinks/events-icon.svg"
                 class="link-icon"
@@ -174,7 +177,7 @@
             }"
 
           >
-            <span @click="toggleAccDropDown" >
+            <span @click="toggleAccDropDown" v-if="admin">
               <img
                 src="../../assets/dashboardlinks/acc-icon.svg"
                 class="link-icon"
@@ -229,7 +232,7 @@
 
           <!-- Hidden -->
           <!-- <router-link to="tenant/reports"> -->
-          <a class="link routelink" @click="goToReport" >
+          <a class="link routelink" @click="goToReport" v-if="admin">
             <img
               src="../../assets/dashboardlinks/reports-icon.svg"
               class="link-icon"
@@ -240,7 +243,7 @@
           </a>
           <!-- </router-link> -->
 
-          <div>
+          <div v-if="admin">
             <div>
               <p @click="showMore" class="more-tab">
                 <span>{{ dropDownText }}...</span>
@@ -302,13 +305,18 @@
             </div>
           </div>
         
-          <div>
-            
-            
+          <a v-if="followup"  class="link follow-up routelink">
+                <router-link class="dd-link-item routelink" to="/tenant/followup">
+                <img
+                  src="../../assets/dashboardlinks/follow-up-icon.svg"
+                  class="link-icon"
+                  alt=""
+                />
+                Follow up
+                </router-link>
+              </a>
           </div>
-
-         
-          <div class="push-link-down" >
+          <div class="w-100 align-self-end">
             <hr class="hr" />
             <router-link class="text-dark" to="/tenant/settings"> 
               <div class="link">
@@ -317,6 +325,10 @@
             </router-link>
             <div class="link" @click="logout">Logout</div>
           </div>
+
+
+         
+          
 
           <!-- Hidden -->
           <a class="link routelink" v-if="false"> Integration </a>
@@ -368,6 +380,7 @@ export default {
     })
     const admin = ref(roleOfCurrentUser.value.some(i => i.toLowerCase() === 'admin'))
     const followup = ref(roleOfCurrentUser.value.length == 1 && roleOfCurrentUser.value[0].toLowerCase() == 'followup')
+    const basicUser = ref(!admin && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'basicuser'))
     
 
 
@@ -499,7 +512,8 @@ export default {
       // closeOverlay,
       roleOfCurrentUser,
       followup,
-      admin
+      admin,
+      basicUser
     };
   },
 };
@@ -519,7 +533,7 @@ export default {
 
 .nav {
   display: flex;
-  flex-direction: column;
+  flex-direction: inherit;
   padding: 8px 20px 24px 4px;
   background: #ebeff4;
   z-index: 100;
@@ -701,7 +715,7 @@ export default {
 .dd-link-item {
   color: #02172e;
   text-decoration: none;
-  opacity: 0.5;
+  /* opacity: 0.5; */
 }
 
 .comm-link-icon {
