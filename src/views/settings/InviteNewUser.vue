@@ -2,7 +2,7 @@
 <template>
     <div>
         <div container>
-            <h1 class="mt-3 pl-3 mb-3 font-weight-bolder" style="font-size:34px">{{currentUser.churchName }}</h1>
+            <h1 class="mt-3 pl-3 mb-3 font-weight-bolder" style="font-size:34px">{{currentUser ? currentUser.churchName : '' }}</h1>
             <p class="pl-3" style="font-size:16px" >You can invite a new user to access your ChurchPlus account. Only give access to people you trust, since users can see your transactions and other business information.</p>
             <div class="invite-container" style="font-size:14px">
                 <h4 class="font-weight-bold ml-0 ml-md-3 ml-sm-0">{{ $route.query.email ? 'Edit New User' : inviteNew}}</h4>

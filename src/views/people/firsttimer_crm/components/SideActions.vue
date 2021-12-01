@@ -51,7 +51,7 @@
                 <i class="pi pi-angle-up uniform-primary-color c-pointer" :class="{ 'unroll-icon' : !contactIcon, 'roll-icon' : contactIcon }" @click="toggleContactIcon"></i>&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-weight-700">About This Contact</span>
             </div>
         </div>
-        <div class="row" :class="{ 'hide-contact' : !contactIcon, 'show-contact' : contactIcon }">
+        <div class="row" :class="{ 'hide-contact' : !contactIcon, 'show-contact' : contactIcon && route.query.memberType == 0, 'reduce-contact-height' : contactIcon && route.query.memberType == 1 }">
             <div class="col-12">
             <div class="row mt-4">
                 <div class="col-12 label-text">Email</div>
@@ -79,7 +79,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" v-if="route.query.memberType == 0">
                 <div class="col-12 mt-4 label-text">Lifecycle stage</div>
                 <div class="col-12">
                     <div class="dropdown">
@@ -111,7 +111,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" v-if="route.query.memberType == 0">
                 <div class="col-12 label-text mt-4">Lead Status</div>
                 <div class="col-12 mt-2">
                     <Dropdown v-model="selectedLeadStatus" :filter="false" :options="leadStatus" class="w-100 phone-input" optionLabel="name" placeholder="Select status" @change="updateLeadStatus" />
@@ -153,8 +153,8 @@
                             </div>
                 
                     </div>
-                    <div class="col-12 mt-4 label-text">Event of service attended</div>
-                    <div class="col-12 mt-2">
+                    <div class="col-12 mt-4 label-text" v-if="route.query.memberType == 0">Event of service attended</div>
+                    <div class="col-12 mt-2" v-if="route.query.memberType == 0">
                         <div class="dropdown">
                             <div class="cursor-pointer phone-input d-flex justify-content-between" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div>{{ Object.keys(selectedEventAttended).length > 0 ? selectedEventAttended.name : personDetails.activityID && eventsAttended.length > 0 ? eventsAttended.find(i => {
@@ -208,7 +208,7 @@
         </div>
     </div>
     <div class="container">
-        <div class="row">
+        <div class="row" v-if="route.query.memberType == 0">
             <div class="col-12 mt-4 font-weight-700">
                 <i class="pi pi-angle-up uniform-primary-color c-pointer" :class="{ 'unroll-icon' : !insightIcon, 'roll-icon' : insightIcon }" @click="toggleInsightIcon"></i>&nbsp;&nbsp;&nbsp;&nbsp;Insights
             </div>
@@ -234,6 +234,8 @@
             </div>
 
             <!-- <div class="cancel-btn btn-btn col-2 offset-3 ml-3 p-2 mt-3" @click="cancelTaskEdit">Cancel</div> -->
+        </div>
+        <div class="row">
             <div class="p-2 offset-3 col-6 mt-3 save-btn btn-btn c-pointer" @click="editBasicDetails">Update</div>
         </div>
     </div>
@@ -909,8 +911,18 @@ export default {
                 selectedLifeCycle.value = lifeCycle.value.find(i => i.id === props.personDetails.firstTimerCycleStageID)
             }
             
-            if (props.personDetails && contacts.value.length > 0) {
-                selectedContact.value = contacts.value.find(i => i.id === props.personDetails.contactOwnerID)
+            if (props.personDetails && route.query.memberType == 1) {
+                selectedContact.value = {
+                    name: props.personDetails.followupPersonName,
+                    id: props.personDetails.followupPersonID
+                }
+            }
+            
+            if (props.personDetails && route.query.memberType == 0) {
+                selectedContact.value = {
+                    name: 'Not yet available',
+                    id: props.personDetails.contactOwnerID
+                }
             }
 
             if (props.personDetails && leadStatus.value.length > 0) {
@@ -953,7 +965,8 @@ export default {
         }
 
         const editBasicDetails = async() => {
-            let payload = {
+            if (route.query.memberType == 0) {
+                let payload = {
                 personId: route.params.personId,
                 email: props.personDetails.email,
                 firstName: props.personDetails.firstName,
@@ -1001,6 +1014,45 @@ export default {
             editEmailRef.value.hide();
             phoneRef.value.hide();
             addressRef.value.hide();
+            } else {
+                const formData = new FormData()
+                formData.append("firstName",props.personDetails.firstName)
+                formData.append("lastName",props.personDetails.lastName)
+                formData.append("mobilePhone",props.personDetails.phoneNumber)
+                formData.append("email",props.personDetails.email)
+                formData.append("dayOfBirth",selectedBirthday.value ? selectedBirthday.value : props.personDetails.birthday)
+                formData.append("monthOfBirth", selectedBirthMonth.value ? month.value.findIndex(i => i == selectedBirthMonth.value) + 1 : props.personDetails.birthMonth)
+                formData.append("yearOfBirth", selectedBirthYear.value ? selectedBirthYear.value : props.personDetails.birthYear)
+                formData.append("homeAddress", props.personDetails.address)
+                formData.append("followupPersonID", props.personDetails.followupPersonID)
+                formData.append("genderID", selectedGender.value && Object.keys(selectedGender.value).length > 0 ? selectedGender.value.id : props.personDetails.genderId)
+                // lastName: toghgr
+                // picture: 
+                // mobilePhone: 0890344443
+                // email: fkfmkk@de,m,f.com
+                // occupation: 
+                // dayOfBirth: 27
+                // monthOfBirth: 0
+                // yearOfBirth: 0
+                // occupation: 
+                // yearOfWedding: 0
+                // monthOfWedding: 0
+                // dayOfWedding: 0
+                // peopleClassificationID: 
+                // personGroups: 
+                // homeAddress: 
+                // maritalStatusID: 
+                // genderID: 1
+                // ageGroupID: 
+                // followupPersonID: 00000000-0000-0000-0000-000000000000
+
+                try {
+                    let { data } = await axios.put(`/api/People/UpdatePerson/${route.params.personId}`, formData)
+                    console.log(data)
+                } catch (err) {
+                    console.log(err)
+                }
+            }
         }
         
         watchEffect(() => {
@@ -1333,7 +1385,8 @@ export default {
             senderIdRef,
             saveSenderId,
             requestbtn,
-            tenantId
+            tenantId,
+            route
         }
             
     }
@@ -1466,6 +1519,13 @@ export default {
     transition: all 0.5s ease-in-out;
     /* overflow: hidden; */
 }
+
+.reduce-contact-height {
+    height: 296px;
+    transition: all 0.5s ease-in-out;
+    /* overflow: hidden; */
+}
+
 
 .dropdown-menu {
     max-height: 300px;

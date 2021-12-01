@@ -16,10 +16,10 @@
                 </div>
                 <div class="col-6 mt-3">
                     <div class="font-weight-700">Task type</div>
-                    <div>{{ item.type }}</div>
+                    <div>{{ createdTypes(item.type) }}</div>
                 </div>
-                <div class="col-12 mt-3">
-                    <Checkbox id="binary" v-model="item.markAsCompleted" :binary="true"/>
+                <div class="col-12 mt-3 d-flex justify-content-start">
+                    <Checkbox id="binary" v-model="item.markAsCompleted" :binary="true"/> &nbsp; &nbsp;
                     <div class="mt-1 font-weight-600">Mark as completed</div>
                 </div>
             </div>
@@ -31,23 +31,44 @@
 import { ref } from "vue"
 import frm from "@/services/FRM/firsttimermanagement.js"
 import dateFormatter from '../../../services/dates/dateformatter'
+import lookupTable from "../../../services/lookup/lookupservice"
 
 export default {
     props: ["tasks"],
     setup () {
         const markAsCompleted = ref(false)
+        const activityType = ref([])
         const getPriority = (id) => {
             return frm.priority().find(i => i.id === id)
         }
         const getDueDate = (date) => {
             return dateFormatter.monthDayYear(date)
         }
+
+        const getActivityType = async () => {
+            try {
+                let data = await lookupTable.getLookUps()
+                console.log(data)
+                activityType.value = data.activityType.filter(i => !i.value.toLowerCase().includes("update"))
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        getActivityType()
+
+        const createdTypes = (id) => {
+            if (activityType.value.length > 0) return activityType.value.find(i => i.id === id).value
+            return ""
+        }
         
 
         return {
             markAsCompleted,
             getPriority,
-            getDueDate
+            getDueDate,
+            createdTypes,
+            activityType
         }
     }
 }

@@ -257,7 +257,7 @@
                   <p>Name</p>
                 </div>
                 <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
                   class="itemroute-color"
                   >{{
                     person.fullName
@@ -274,7 +274,7 @@
                   <p>Phone</p>
                 </div>
                 <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
                   class="data-value itemroute-color"
                   >{{ person.phoneNumber }}</router-link
                 >
@@ -287,7 +287,7 @@
                   <p>Source</p>
                 </div>
                 <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
                   class="itemroute-color"
                   >{{ person.howDidYouAboutUsName }}</router-link
                 >
@@ -301,7 +301,7 @@
                   <p>Interested</p>
                 </div>
                 <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
                   class="itemroute-color"
                   >{{
                     person.interestedInJoining === "Not_Specified"
@@ -319,7 +319,7 @@
                   <p>Date</p>
                 </div>
                 <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
                   class="itemroute-color"
                   >{{
                     moment
@@ -335,7 +335,7 @@
 
             <div>
               <router-link
-                :to="`/tenant/firsttimermanagement/${person.id}`"
+                :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
                 class="data-value itemroute-color"
               ></router-link>
             </div>

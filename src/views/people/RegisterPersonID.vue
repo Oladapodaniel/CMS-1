@@ -412,8 +412,8 @@
         </div> -->
         <div class="submit-div">
           <button
-            class="primary-bg px-md-4 outline-none default-btn text-white border-0"
-            :disabled="loading"
+            class="primary-bg px-md-4 outline-none default-btn text-white border-0   " 
+            :disabled="loading || !person.firstName "
           >
             <i class="fas fa-circle-notch fa-spin mr-2" v-if="loading"></i>
             <span>Save</span>
@@ -504,7 +504,7 @@
                   </div>
                   <div class="col-md-6">
                     <button
-                      class="default-btn primary-bg border-0 text-white"
+                      class="default-btn primary-bg border-0 contn-btn text-white"
                       :data-dismiss="dismissAddToGroupModal"
                       @click="addMemberToGroup"
                     >
@@ -655,10 +655,12 @@ export default {
 
     const errMessage = ref("");
     const showError = ref(false);
+    const disableClick = ref(false);
 
 
 
     const addPerson = async() => {
+      disableClick.value = true;
       const personObj = { ...person };
       errMessage.value = "";
 
@@ -730,6 +732,7 @@ export default {
           let response = await axios.post(
             `/PublicMemberRegister?tenantID=${route.params.id}`, formData );
           console.log(response)
+          disableClick.value = false;
 
 
           if (response.status === 200 || response.status === 201) {
@@ -1029,6 +1032,7 @@ export default {
     };
 
     return {
+      disableClick,
       months,
       numberofYears,
       startingYear,
@@ -1092,6 +1096,10 @@ export default {
 
 .cs-select.month {
   width: 111px;
+}
+
+.contn-btn:disabled {
+  opacity: 0.3;
 }
 
 .cs-select.day {

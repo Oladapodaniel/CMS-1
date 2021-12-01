@@ -232,7 +232,7 @@
               class="default-btn add-btn mt-3 mt-sm-0"
               @click="confirmToRegister"
               :disabled="
-                !person.name || person.name.length < 1 || !person.address
+                !person.name || person.name.length < 1 || disableClick
               "
             >
               {{ fullEventData.paymentFormId ? 'Make payment to register' : 'Confirm to register' }}
@@ -356,6 +356,7 @@ export default {
     const authorizebutton = ref()
     const signout = ref()
     const content = ref()
+    const disableClick = ref(false)
 
     const birthMonth = ref("");
     const months = [
@@ -599,6 +600,7 @@ export default {
         .then((res) => {
           loading.value = false;
           autosearch.value = false;
+          disableClick.value = false;
           console.log(res, "tosin");
 
           if (newPerson) checkedIn.value = true;
@@ -674,6 +676,7 @@ export default {
     };
 
     const confirmToRegister = () => {
+      disableClick.value = true;
       if (!fullEventData.value.paymentFormId) {
         
         // Scenerio when the person exist and we want to create family
@@ -723,6 +726,7 @@ export default {
                         }
                         axios.post("/EventRegistration", regFamMembers).then(res => {
                           console.log(res)
+                          disableClick.value = false;
                         })
                         .catch(err => {
                           console.log(err)
@@ -733,7 +737,7 @@ export default {
                 registerMember(newFamily)
 
             } else {
-              // console.log('does not intend to add family')
+              console.log('does not intend to add family')
               confirm()
             }
         } else if (personData.value.personId && familyWards.value.id) {
@@ -768,6 +772,7 @@ export default {
                       }
                       axios.post("/EventRegistration", regFamMembers).then(res => {
                         console.log(res)
+                        disableClick.value = false;
                       })
                       .catch(err => {
                         console.log(err)
@@ -820,6 +825,7 @@ export default {
     }
 
     const createNewFamily = (id) => {
+      disableClick.value = true;
       let familyDetails = {
             fatherId: id,
             familyName: person.value.name,
@@ -862,6 +868,7 @@ export default {
                     }
                     axios.post("/EventRegistration", regFamMembers).then(res => {
                       console.log(res)
+                      disableClick.value = false;
                     })
                     .catch(err => {
                       console.log(err)
@@ -874,9 +881,11 @@ export default {
 
 
     const registerMember = async(registerData) => {
+      disableClick.value = true;
       try {
         let res = await axios.post("/EventRegistration", registerData)
           console.log(res)
+          disableClick.value = false;
           swal(
             "Registration Successful!",
             "You have registered for this event successfully!",
@@ -1083,6 +1092,7 @@ console.log(payload)
     //   }
     // }
     return {
+      disableClick,
       toggleBase,
       checkCharacter,
       populateInputfields,

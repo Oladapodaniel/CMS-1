@@ -3,7 +3,7 @@
         <div class="row d-flex justify-content-between px-3">
             <div class="heading-text">Branch</div>
             <div class="mb-3">
-                <router-link to="/tenant/addbranch"
+                <router-link to="/tenant/branch/addbranch"
                     class="default-btn bg-primary border-secondary text-white font-weight-bold c-pointer">
                     Add Branch
                 </router-link>
@@ -27,7 +27,8 @@
                 <div class="col-md-2 item-Area mb-4">
                     <div class="row p-2 mb-2 d-flex justify-content-between">
                         <div class="top-icon-div d-flex justify-content-center align-items-center ml-2">
-                            <i class="pi pi-users text-center"></i>
+                            <img class="trend-icon" src="/img/trend-icon.b63f0d8d.svg" alt="">
+                            <!-- <i class="pi pi-users text-center"></i> -->
                         </div>
                         <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">2000</div>
                     </div>
@@ -39,7 +40,9 @@
                 <div class="col-md-2 item-Area mb-4">
                     <div class="row p-2 mb-2 d-flex justify-content-between">
                         <div class="top-icon-div d-flex justify-content-center align-items-center ml-2">
-                            <img class="trend-icon" src="/img/trend-icon.b63f0d8d.svg" alt="">
+                            <i class="pi pi-users text-center"></i>
+
+                            <!-- <img class="trend-icon" src="/img/trend-icon.b63f0d8d.svg" alt=""> -->
                         </div>
                         <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total pl-0">5000</div>
                     </div>
@@ -73,36 +76,11 @@
             </div>
       <!-- </div> -->
     </div>
-            <!-- <div class="row">
-                <div class="col-3 border" style="height: 30vh;">
-                    <div>Number of Branches</div>
-                    <div class="border">Total:</div>
-                </div>
-                <div class="col-3 border" style="height: 30vh;">
-                    <div>Number of People</div>
-                    <div class="border">Total:</div>
-                </div>
-                <div class="col-3 border" style="height: 30vh;">
-                    <div>Number of Branches</div>
-                    <div class="border">Total:</div>
-                </div>
-                <div class="col-3 border" style="height: 30vh;">
-                    <div>Number of Branches</div>
-                    <div class="border">Total:</div>
-                </div>
-            </div> -->
         </div>
         <div class="container-fluid mb-3 ">
             <div class="row">
-                <div class="col-12 border " style="height: 70vh; border-radius: 5px"></div>
-            </div>
-        </div>
-         <div class="contanier-fluid">
-            <div class="row mb-3 ">
-                <div class="col-12 d-flex justify-content-end">
-                    <div>
-                        <Dropdown  v-model="selectedBranch" :options="branches" optionLabel="name" placeholder="Select branch" class="w-100" />
-                    </div>
+                <div class="col-12 border " style="height: 100%; border-radius: 5px">
+                    <Organisation domId="orgchart2"/>
                 </div>
             </div>
         </div>
@@ -112,8 +90,10 @@
 <script>
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
+import Organisation from "../../components/charts/OrgChart2.vue"
 export default {
     components: {
+        Organisation,
         Dropdown
     },
     setup() {
