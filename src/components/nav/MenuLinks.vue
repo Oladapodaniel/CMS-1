@@ -176,7 +176,8 @@
           >
             <span @click="toggleAccDropDown" >
               <img
-                src="../../assets/dashboardlinks/acc-icon.svg"
+                src="../../assets/dashboardlinks/acc-icon.svg
+                "
                 class="link-icon"
                 alt=""
               />
@@ -225,6 +226,69 @@
                 >Payment Form</router-link
               >
             </li> -->
+          </ul>
+          <!-- multiBranching -->
+            <a
+            class="link dd"
+            :class="{
+              'router-link-exact-active': route.path.includes('/tenant/event'),
+            }"
+          >
+            <span @click="toggleBranchDropDown">
+              <img
+                src="../../assets/dashboardlinks/events-icon.svg"
+                class="link-icon"
+                alt=""
+              />
+              <span class="drop-link"
+                >Branch
+                <span class="user-link-icon">
+                  <i
+                    class="pi pi-angle-up more-icon"
+                    :class="{ 'tbb-icon-rotate': branchLinkDropped }"
+                  ></i></span
+              ></span>
+            </span>
+          </a>
+          <ul
+            class="dd-list branch-list"
+            :class="{ 'dd-hide-list': !branchLinkDropped }"
+          >
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" :to="`/tenant/events`"
+                >Dashboard</router-link
+              >
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" :to="`/tenant/people`"
+                >People</router-link
+              >
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" :to="`/tenant/firsttimerslist`"
+                >FirstTimer</router-link
+              >
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" :to="`/tenant/events`"
+                >Communication</router-link
+              >
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" to="/tenant/reports"
+                >Report</router-link
+              >
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" to="/tenant/attendancecheckin"
+                >Financial</router-link
+              >
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" to="/tenant/events"
+                >Event</router-link
+              >
+            </li>
           </ul>
 
           <!-- Hidden -->
@@ -381,6 +445,7 @@ export default {
       commLinkDropped.value = false;
       accLinkDropped.value = false;
       eventsLinkDropped.value = false;
+      branchLinkDropped.value = false
     };
 
     const commLinkDropped = ref(false);
@@ -389,11 +454,21 @@ export default {
       peopleLinkDropped.value = false;
       eventsLinkDropped.value = false;
       accLinkDropped.value = false;
+      branchLinkDropped.value = false
     };
 
     const eventsLinkDropped = ref(false);
     const toggleEventsDropDown = () => {
       eventsLinkDropped.value = !eventsLinkDropped.value;
+      commLinkDropped.value = false;
+      accLinkDropped.value = false;
+      peopleLinkDropped.value = false;
+      branchLinkDropped.value = false
+    };
+
+     const branchLinkDropped = ref(false);
+      const toggleBranchDropDown = () => {
+      branchLinkDropped.value = !branchLinkDropped.value;
       commLinkDropped.value = false;
       accLinkDropped.value = false;
       peopleLinkDropped.value = false;
@@ -405,6 +480,7 @@ export default {
       commLinkDropped.value = false;
       eventsLinkDropped.value = false;
       peopleLinkDropped.value = false;
+      branchLinkDropped.value = false
     };
 
     const dropDownText = computed(() => {
@@ -489,17 +565,16 @@ export default {
       toggleAccDropDown,
       eventsLinkDropped,
       toggleEventsDropDown,
+      toggleBranchDropDown,
       tenantDisplayName,
       linkClicked,
       churchLogo,
       logout,
       goToReport,
-      // flyOverRef,
-      // toggleNavFlyOver,
-      // closeOverlay,
-      roleOfCurrentUser,
-      followup,
-      admin
+      flyOverRef,
+      toggleNavFlyOver,
+      closeOverlay,
+      branchLinkDropped
     };
   },
 };
@@ -677,6 +752,10 @@ export default {
 
 .events-list {
   height: 90px;
+}
+
+.branch-list {
+      height: 295px;
 }
 
 .acc-list {
