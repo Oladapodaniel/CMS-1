@@ -1,8 +1,7 @@
 <template>
-<div> 
-
+<div>
   <div class="whole-page">
-    <div class="links-menu">
+    <div class="links-menu" :class="{ 'show' : menuShouldShow }">
       <MenuLinks @linkclicked="hideNav" />
     </div>
     <div :class="{ 'main-con dim' :  !route.fullPath.includes('/mobileonboarding') && !route.fullPath.includes('/onboardingsuccessful'), 'top-router': route.query.fw }" @click="hideMenu">
@@ -42,7 +41,7 @@
 </template>
 
 <script>
-import { ref, computed} from "vue";
+import { ref} from "vue";
 import MenuLinks from "../../components/nav/MenuLinks.vue";
 import { useRoute }  from "vue-router"
 
@@ -52,7 +51,7 @@ export default {
   setup() {
     const menuShouldShow = ref(false);
     const fullPath = ref("")
-    const followUpUser = ref(true)
+    // const followUpUser = ref(true)
 
     const toggleMenu = () => (menuShouldShow.value = !menuShouldShow.value);
 
