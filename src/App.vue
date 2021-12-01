@@ -1,13 +1,17 @@
-<template >
+<template>
   <!-- <transition name="fade" mode="out-in"> -->
   <div class="container-fluid connectionbar">
       <div class="row">
         <div class="col-md-12 px-0">
           <ConnectionBar />
         </div>
+        <div class="col-md-12 px-0 text-center p-2 font-weight-700 bg-white" style="border: 2px solid red" v-if="speed">
+          🖐 Slow network detected, kindly reload or wait till you have a strong network.
+        </div>
       </div>
     </div>
   <router-view class="view" />
+  <!-- <Toast /> -->
   <!-- </transition> -->
 </template>
 
@@ -21,6 +25,7 @@ import router from "@/router/index";
 import ConnectionBar from "@/components/connectivity/ConnectionStatus.vue";
 import setupService from "./services/setup/setupservice"
 // import celebAnim from "./services/celebration-animation/party"
+// import speed from "./services/network/networkSpeed"
 
 export default {
   name: "App",
@@ -30,6 +35,7 @@ export default {
   data() {
     return {
       transitionName: null,
+      speed: null
     };
   },
 
@@ -66,17 +72,40 @@ export default {
 
       setupService.setup();
     }
-  
-    
-  }
+  },
+  updated() {
+    // console.log('updated triggered')
+   
+    navigator.connection.onchange =  (speed) => {
+            //do what you need to do ,on speed change event
+            // console.log('Connection Speed Changed');
+            // console.log(speed)
+            if (speed.currentTarget.downlink > 7 && speed.currentTarget.downlink < 10) {
+              this.speed = true
+              // this.$toast.add({
+              //   severity: "info",
+              //   summary: "Slow network detected",
+              //   detail: "You have a slow network, kindly reload or wait till you have a strong network",
+              //   life: 5000,
+              // });
+            } else {
+              this.speed = false
+            }
 
-  // mounted() {
+           }
+  },
+
+  mounted() {
+    // console.log('mounted triggered')
+     this.speed = false
+    // let res = speed.speed()
+    // console.log(res)
   //   window.addEventListener('DOMContentLoaded', () => {
   //     const script = document.createElement("script");
   //     script.src = 'https://embed.tawk.to/60ba6591de99a4282a1b7128/1f7c1pgqv';
   //     document.getElementsByTagName("head")[0].appendChild(script);
   //   });
-  // }
+  }
 };
 </script>
 
