@@ -26,7 +26,7 @@
                 ><i class="pi pi-angle-right"></i></span
             ></a>
           </div>
-          <router-link to="/tenant" class="link routelink dashboard-link" v-if="admin || basicUser" >
+          <router-link to="/tenant" class="link routelink dashboard-link" v-if="admin || basicUser || canAccessFirstTimers" >
             <img
               src="../../assets/dashboardlinks/dashboard-icon.svg"
               class="link-icon"
@@ -43,7 +43,7 @@
                 route.path.includes('first-time'),
             }"
           >
-            <span @click="togglePeopleDropDown">
+            <span @click="togglePeopleDropDown" v-if="admin || basicUser || groupLeader || canAccessFirstTimers">
               <img
                 src="../../assets/dashboardlinks/people.svg"
                 class="link-icon"
@@ -65,7 +65,7 @@
                 >Members</router-link
               >
             </li>
-            <li class="dd-list-item" v-if="admin || basicUser">
+            <li class="dd-list-item" v-if="admin || basicUser || canAccessFirstTimers">
               <router-link class="dd-link-item routelink" :to="`/tenant/firsttimerslist`"
                 >First Timers</router-link
               >
@@ -386,6 +386,7 @@ export default {
     const mobileAdmin = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'mobileadmin'))
     const report = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'reports'))
     const groupLeader = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'groupleader'))
+    const canAccessFirstTimers = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'canaccessfirsttimers'))
     
 
 
@@ -522,7 +523,8 @@ export default {
       financialAccount,
       mobileAdmin,
       report,
-      groupLeader
+      groupLeader,
+      canAccessFirstTimers
     };
   },
 };

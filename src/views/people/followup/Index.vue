@@ -29,7 +29,8 @@
                     </ul>
                     <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <PeopleToFollowUp :contacts="contacts"/>
+                        <PeopleToFollowUp :contacts="contacts" :loading="loading"/>
+                        
                     </div>
                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                         <FollowUpTask :tasks="tasks"/>
@@ -58,8 +59,10 @@ export default {
         const contacts = ref([])
         const tasks = ref([])
         const statuses = ref([ { name: 'Pending', value: 0 }, { name: 'InProgress', value: 1 }, { name: 'Completed', value: 2 }, { name: 'Cancelled', value: 3 }, { name: 'Rescheduled', value: 4 }, { name: 'Stalled', value: 5 } ])
+        const loading = ref(false)
 
         const getFollowUpContactDetails = async() => {
+            loading.value = true
             try {
                 const { data } = await axios.get('/api/FirsttimerManager/contactstofollow')
                 console.log(data)
@@ -68,9 +71,11 @@ export default {
                     i.selectedStatus = statuses.value.find(j => j.value == i.status)
                     return i
                 })
+                loading.value = false
             }
             catch (err) {
                 console.log(err)
+                loading.value = false
             }
         }
         getFollowUpContactDetails()
@@ -83,7 +88,8 @@ export default {
             contacts,
             tasks,
             logout,
-            statuses
+            statuses,
+            loading
         }
     }
 }
