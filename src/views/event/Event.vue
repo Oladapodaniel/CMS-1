@@ -374,9 +374,9 @@
             </div>
             <div class="col-6 col-lg-3">
               <input
-                type="number"
+                type="text"
                 class="form-control"
-                v-model.number="item.amount"
+                v-model="item.amount"
                 placeholder="Enter Amount"
                 @input="sendAmount($event, index)"
               />
@@ -1955,10 +1955,14 @@ export default {
       let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
       let fromCurrencyRate = this.offeringItem[index].fromCurrencyRate
 
-      let amount = this.offeringItem[index].amount ? +this.offeringItem[index].amount : 0
+      let amount = this.offeringItem[index].amount.toString()
+      const removeCharacters = amount.replace(/[^0-9.]/g, "");
+      const toNumber = parseFloat(removeCharacters)
+
+      let amountToConvert = toNumber ? toNumber : 0
 
       try {
-        let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+        let result = await CurrencyConverterService.currencyConverter(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
         console.log(result)
         this.convertedAmount2[index] = result
       }
@@ -2627,12 +2631,17 @@ export default {
           }
           for (let index = 0; index < this.offeringItem.length; index++) {
             const i = this.offeringItem[index];
+
+            let amount = i.amount.toString()
+            const removeCharacters = amount.replace(/[^0-9.]/g, "");
+            const toNumber = parseFloat(removeCharacters)
+
             let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
             let fromCurrencyRate = i.fromCurrencyRate
-            let amount = i.amount ? +i.amount : 0
-            console.log(amount, fromCurrencyRate, toDestinationCurrencyRate)
+            let amountToConvert = toNumber ? +toNumber : 0
+            console.log(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
           try {
-            let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+            let result = await CurrencyConverterService.currencyConverter(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
             this.convertedAmount2.push(result)
             console.log(result, this.convertedAmount2)
           }
@@ -2783,6 +2792,10 @@ export default {
         }
     },
     async sendAmount (e, index) {
+      let amount = this.offeringItem[index].amount.toString()
+  
+      let removeCharacters = amount.replace(/[^0-9.]/g, "");
+      let toNumber = parseFloat(removeCharacters)
 
       this.currencyAmount = e.target.value
       this.currencyIndex = index
@@ -2791,12 +2804,12 @@ export default {
       let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
       let fromCurrencyRate = this.offeringItem[index].fromCurrencyRate
 
-      let amount = this.offeringItem[index].amount ? +this.offeringItem[index].amount : 0
+      let amountToConvert = toNumber ? toNumber : 0
 
-      console.log(amount, fromCurrencyRate, toDestinationCurrencyRate)
+      console.log(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
 
       try {
-        let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+        let result = await CurrencyConverterService.currencyConverter(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
         console.log(result)
         this.convertedAmount2[index] = result
       }
@@ -3131,11 +3144,6 @@ export default {
     },
     addContributionTotal() {
       if (this.convertedAmount2.length <= 0) return 0;
-      // if (this.convertedAmount.length === 1) return this.convertedAmount[0].amount;
-      // const amounts = this.offeringItem.map((i) => +i.amount);
-      // return amounts.reduce((a, b) => {
-      //   return (a || 0) + (b || 0);
-      // });
       return this.convertedAmount2.reduce((a, b) => {
         return +a + +b
       })
