@@ -518,7 +518,7 @@ export default {
         const route = useRoute()
         const store = useStore()
         const selectedContact = ref({})
-        const contacts = ref([])
+        // const contacts = ref([])
         const lifeCycle = ref([])
         const selectedLifeCycle = ref({})
         const leadStatus = ref(frmservice.leadStatus())
@@ -838,17 +838,17 @@ export default {
             outcomeRef.value.hide()
         }
 
-        const getMembers = async () => {
-          try {
-            const { data } = await axios.get('/api/People/GetPeopleBasicInfo');
-            contacts.value = data;
-            console.log(data)
-            emit('allcontact', data)
-          } catch (error) {
-            console.log(error);
-          }
-        };
-        getMembers();
+        // const getMembers = async () => {
+        //   try {
+        //     const { data } = await axios.get('/api/People/GetPeopleBasicInfo');
+        //     // contacts.value = data;
+        //     // console.log(data)
+        //     emit('allcontact', data)
+        //   } catch (error) {
+        //     console.log(error);
+        //   }
+        // };
+        // getMembers();
 
         const updateOwner = async(payload) => {
             const body = {
@@ -920,7 +920,7 @@ export default {
             
             if (props.personDetails && route.query.memberType == 0) {
                 selectedContact.value = {
-                    name: 'Not yet available',
+                    name: props.personDetails.followUpPersonName,
                     id: props.personDetails.contactOwnerID
                 }
             }
@@ -1275,7 +1275,7 @@ export default {
 
         return {
             selectedContact,
-            contacts,
+            // contacts,
             lifeCycle,
             selectedLifeCycle,
             selectedLeadStatus,

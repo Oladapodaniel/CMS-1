@@ -269,7 +269,11 @@ import stopProgressBar from "../../services/progressbar/progress";
 import Loading from "../../components/loading/LoadingComponent"
 
 export default {
-  components: { UnitsArea, PaginationButtons, Loading },
+  components: { 
+    UnitsArea, 
+    PaginationButtons, 
+    Loading 
+    },
   directives: {
     tooltip: Tooltip,
   },

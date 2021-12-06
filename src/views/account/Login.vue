@@ -209,6 +209,7 @@ export default {
         }
         localStorage.setItem("token", data.token);
         localStorage.setItem("expiryDate", data.expiryTime);
+        localStorage.setItem('roles', JSON.stringify(data.roles))
         console.log(data, "Church data");
         setTimeout(() => {
           setupService.setup();
@@ -229,7 +230,7 @@ export default {
         let adminIndex = data.roles.findIndex(i => {
           return i.toLowerCase() == "admin"
         })
-        localStorage.setItem('roles', JSON.stringify(data.roles))
+        
         if (adminIndex !== -1) {
           setTimeout(() => {
             setupService.setup();
@@ -248,10 +249,17 @@ export default {
               life: 10000}) 
             router.push('/')
           } else {
-            console.log( data.roles.indexOf("FollowUp"))
+            console.log(data.roles)
+            console.log( data.roles.indexOf("FinancialAccount"))
             if (data.roles.indexOf("FollowUp") !== -1) {
               router.push("/tenant/followup");
-            } else {
+            } else if (data.roles.indexOf("FinancialAccount") !== -1) {
+              router.push("/tenant/offering");
+            }else if (data.roles.indexOf("MobileAdmin") !== -1) {
+              router.push("/tenant/social");
+            }else if (data.roles.indexOf("Reports") !== -1) {
+              router.push("/tenant/reports");
+            }else {
               setTimeout(() => {
                 setupService.setup();
               }, 5000);

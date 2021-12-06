@@ -140,36 +140,14 @@
                         </div>
                         
                     </div>
+                        <div class="col-md-12 text-center" v-if="searchContact.length === 0 && loading">
+                            <ProgressSpinner style="width: 50px" />
+                        </div>
                     <div class="col-md-12" v-for="(item, index) in searchContact" :key="index">
                     <div class="row border-bottom p-2">
                         <div class="col-md-1 col-sm-12">
-                        <!-- <div class="row px-2">
-                             <div class="col-8 col-md-0 d-md-none">
-                            <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Tab</span>
-                            </div>
-                            <div class="col-4 col-md-12 ">
-                            <span class="d-flex justify-content-end">
-                         
-                             <span class=" d-sm-flex small">
-                                    <div class="td-first px-1">
-                                    <input type="checkbox" name="" id="" data-v-65858e43="">
-                                    </div>
-                                </span>
-                                </span>
-                            </div>
-                        </div> -->
+        
                         </div>
-                        <!-- <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
-                        <div>
-                            <span class="d-flex justify-content-between">
-                            <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">First Name</span>
-                            <span class=" d-sm-flex small">
-                              
-                                <img src="" alt="">
-                            </span>
-                            </span>
-                        </div>
-                        </div> -->
                         <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
                         <div>
                             <span class="d-flex justify-content-between">
@@ -293,8 +271,12 @@
 
 <script>
 import { ref, computed } from "vue"
+import ProgressSpinner from 'primevue/progressspinner';
 export default {
-    props: ["contacts"],
+    props: ["contacts", "loading"],
+    components: {
+        ProgressSpinner
+    },
     setup (props) {
         const searchIsVisible = ref(false)
         const searchText = ref("")

@@ -339,6 +339,7 @@ export default {
         const theContributionItems = ref([])
         const templateDisplay = ref(false)
         const displayResponsive = ref(false)
+        const subAccounts = ref([])
 
 
         const addContribution = () => {
@@ -573,23 +574,22 @@ export default {
             catch (error) {
                 finish()
                 console.log(error)
-                if (error.toString().includes('422') || error.toString().includes('400')) {
-                    console.log('didnt verify')
-                    const gateway = gateways.value.find(i => i.name.toLowerCase().includes('paystack'))
-                    if (gateway) {
-                        paymentGateWaysDb.value = gateways.value.filter(i => gateway.name !== i.name)
-                    }   else {
-                        console.log('already removed')
-                    }
+                // if (error.toString().includes('422') || error.toString().includes('400')) {
+                //     console.log('didnt verify')
+                //     const gateway = gateways.value.find(i => i.name.toLowerCase().includes('paystack'))
+                //     if (gateway) {
+                //         paymentGateWaysDb.value = gateways.value.filter(i => gateway.name !== i.name)
+                //     }   else {
+                //         console.log('already removed')
+                //     }
                     
-                }   else {
-                    // if (!accountNumber.value || accountNumber.value === "") {
-                    //     toast.add({severity:'warn', summary: 'No account number found', detail:'Please enter your account number', life: 4000});
-                    // }   else {
-                    //     toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 4000});
-                    // }
-                }
-
+                // }   else {
+                //     // if (!accountNumber.value || accountNumber.value === "") {
+                //     //     toast.add({severity:'warn', summary: 'No account number found', detail:'Please enter your account number', life: 4000});
+                //     // }   else {
+                //     //     toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 4000});
+                //     // }
+                // }
                 loading.value = false
 
                 
@@ -615,14 +615,14 @@ export default {
                     severity:'warn', 
                     summary: 'Unable to verify', 
                     detail: data.data.data.responsemessage, 
-                    life: 4000
+                    life: 8000
                 });
                 }   else {
                     toast.add({
                     severity:'success', 
                     summary: 'Account Check Successful', 
                     detail:'The account check was successful', 
-                    life: 4000
+                    life: 8000
                 });
                 }
 
@@ -654,18 +654,55 @@ export default {
             item.isChecked = !item.isChecked
 
             if (item.isChecked && paymentGateWays.value.findIndex(i => i.id === item.id) < 0) {
-                paymentGateWays.value.push(item)
+                console.log('1 level')
+                
+
+                if (item.name.toLowerCase().includes('flutterwave')) {
+                    console.log('2 level')
+                    const findSubAccount = subAccounts.value.findIndex(i => i.account_number == accountNumber.value)
+                    console.log(findSubAccount)
+                    if (findSubAccount !== -1) {
+                        
+                        confirm.require({
+                        message: `This account details has been recorded with Flutterwave as ${subAccounts.value[findSubAccount].meta[0].meta_name}, Do you want to use it?`,
+                        header: 'Account Confirmation',
+                        icon: 'pi pi-info-circle',
+                        acceptClass: 'p-button-danger',
+                        accept: () => {
+                            toast.add({
+                                severity:'success', 
+                                summary:'Confirmed', 
+                                detail:'The selected acount is now in use.', 
+                                life: 8000
+                            });
+                            item.subAccountID = subAccounts.value[findSubAccount].meta[0].meta_value
+                            paymentGateWays.value.push(item)
+                        },
+                        reject: () => {
+                            toast.add({
+                                severity:'info', 
+                                summary:'You have declined to use the account details for Flutterwave', 
+                                detail:'Please enter another bank account details to enable Flutterwave subaccount integration', 
+                                life: 8000
+                            });
+                            accountNumber.value = ""
+                            accountName.value = ""
+                            selectedBank.value = new Object()
+                        }
+                    });
+                    }   else {
+                        paymentGateWays.value.push(item)
+                    }
+                }   else {
+                    console.log('3 level')
+                    paymentGateWays.value.push(item)
+                }
             } else {
                 paymentGateWays.value = paymentGateWays.value.filter(i => {
                     return i.id !== item.id
                 })
-                // console.log(item.id)
-                // if (removePaymentGatewayIDs.value.findIndex(i => i.id === item.id) > 0) {
                     removePaymentGatewayIDs.value.push(item.id)
-                // }
-                // console.log(removePaymentGatewayIDs.value)
             }
-            // console.log(item, paymentGateWaysDb.value)
         }
 
         const saveAndContinue = async() => {
@@ -896,6 +933,19 @@ export default {
                 router.push({ name: "ChartOfAccount" })
             }
 
+            const getSubAccounts = async() => {
+                try {
+                    let { data } = await axios.get("/api/PaymentForm/subaccounts")
+                    console.log(data)
+                    subAccounts.value = data.filter(i => i.meta[0].meta_value !== null)
+                    console.log(subAccounts.value)
+                }
+                catch (err) {
+                    console.log(err)
+                }
+            }
+            getSubAccounts()
+
         return {
             contributionItems, newContribution, addContribution,
             deleteContribution, nigerianBanks, selectedBank, resolveCustomerDetail,
@@ -905,7 +955,7 @@ export default {
             toggleThirdTemplate, sourceModal, togglePopup, booleanModal, closeModal,
             paymentGateWaysDb, paymentGateWays, toggleCheckBox, gateways, removeContributionIDs,
             removePaymentGatewayIDs, isActive, active, routeParams, theContributionItems,
-            templateDisplay, toggleTemplate, showConfirmModal, displayResponsive, toggleDisplayModal, closeResponsive
+            templateDisplay, toggleTemplate, showConfirmModal, displayResponsive, toggleDisplayModal, closeResponsive,subAccounts
         }
     }
 }
