@@ -654,9 +654,11 @@ export default {
             item.isChecked = !item.isChecked
 
             if (item.isChecked && paymentGateWays.value.findIndex(i => i.id === item.id) < 0) {
+                console.log('1 level')
                 
 
                 if (item.name.toLowerCase().includes('flutterwave')) {
+                    console.log('2 level')
                     const findSubAccount = subAccounts.value.findIndex(i => i.account_number == accountNumber.value)
                     console.log(findSubAccount)
                     if (findSubAccount !== -1) {
@@ -688,8 +690,11 @@ export default {
                             selectedBank.value = new Object()
                         }
                     });
+                    }   else {
+                        paymentGateWays.value.push(item)
                     }
                 }   else {
+                    console.log('3 level')
                     paymentGateWays.value.push(item)
                 }
             } else {
@@ -931,6 +936,7 @@ export default {
             const getSubAccounts = async() => {
                 try {
                     let { data } = await axios.get("/api/PaymentForm/subaccounts")
+                    console.log(data)
                     subAccounts.value = data.filter(i => i.meta[0].meta_value !== null)
                     console.log(subAccounts.value)
                 }
