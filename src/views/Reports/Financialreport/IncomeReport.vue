@@ -167,7 +167,6 @@
               <td class="totalAmount">Total Income</td>
               <td></td>
               <td></td>
-              <td></td>
               <td class="totalAmount">#{{numberWithCommas(grouped(group))}}</td>
               <td></td>
             </tr>        
