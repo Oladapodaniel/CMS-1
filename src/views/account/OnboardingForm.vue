@@ -173,7 +173,7 @@ export default {
       zipCode: "",
       step1Completed: true,
       userDetails: {
-        subscriptionPlanID: 9,
+        subscriptionPlanID: 1,
         countryId: 89,
         password: "password",
       },
