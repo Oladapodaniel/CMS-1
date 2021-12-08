@@ -269,9 +269,11 @@ export default {
         const display = ref(false);
         const offeringData = ref([]);
         const offeringChartResult = ref([]);
+        const offeringColumnChartResult = ref([]);
         // const pieChart= ref([])
         const mainOfferingData= ref([])
         const mappedOfferingCol = ref([])
+        const columnData = ref([])
         const showExport = ref(false);
         const fileName = ref("")
         const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'},{name: 'pdf'} ])
@@ -296,24 +298,49 @@ export default {
         })
 
     const offeringDetail = computed(() => {
-         if (offeringInChurch.value.length === 0) return []
-           offeringData.value = []
-            mainOfferingData.value = []
-            mappedOfferingCol.value = []
-           offeringInChurch.value.forEach(i => {
-            let offeringIndex = Object.keys(i).findIndex(i => i === 'amount')
-            let offeringValue = Object.values(i)[offeringIndex]
-            offeringData.value.push(offeringValue)  
-            // console.log(offeringInChurch.value)  
-            mappedOfferingCol.value.push(i.contributionName) 
-         });
+        //  if (offeringInChurch.value.length === 0) return []
+        //    offeringData.value = []
+        //     mainOfferingData.value = []
+        //     mappedOfferingCol.value = []
+        //    offeringInChurch.value.forEach(i => {
+        //     let offeringIndex = Object.keys(i).findIndex(i => i === 'amount')
+        //     let offeringValue = Object.values(i)[offeringIndex]
+        //     offeringData.value.push(offeringValue)  
+        //     // console.log(offeringInChurch.value)  
+        //     mappedOfferingCol.value.push(i.contributionName) 
+        //  });
+        //  mainOfferingData.value.push({
+        //      name: 'Offering',
+        //      color: '#002044',
+        //      data: offeringData.value
+        //  })
+        //  console.log(mainOfferingData.value)
+        //  return mainOfferingData.value  
+        mappedOfferingCol.value = []
+        mainOfferingData.value = []
+        columnData.value = []
+        
+        if (offeringColumnChartResult.value.length === 0) return []
+        offeringColumnChartResult.value.forEach(i => {
+          let sumvalue = 0
+          i.value.forEach(j => {
+            console.log(j)
+            sumvalue += +j.amount
+          })
+          
+          mappedOfferingCol.value.push(i.name) 
+          columnData.value.push(sumvalue)
+          console.log(columnData.value)
+        })
+    
          mainOfferingData.value.push({
              name: 'Offering',
              color: '#002044',
-             data: offeringData.value
+             data: columnData.value
          })
-        //  console.log(mainOfferingData.value)
-         return mainOfferingData.value  
+  
+        console.log(columnData)
+        return mainOfferingData.value 
      })
      const offeringChart = (array, key) => {
        // Accepts the array and key
@@ -331,9 +358,13 @@ export default {
           name: prop,
           value: result[prop].length
         })
+        offeringColumnChartResult.value.push({
+          name: prop,
+          value: result[prop]
+        })
          
       }
-      // console.log(offeringChartResult.value,'giddy')
+      console.log(offeringChartResult.value,'giddy')
     };
     const mappedOffering = computed(() => {
       if (offeringChartResult.value.length === 0 ) return []
@@ -357,6 +388,7 @@ export default {
     getMemberClassification();
 
      const genarateReport = () => {
+       offeringColumnChartResult.value = []
        if(offeringPersonID.value){
             let OfferingCategory = selectedCategories.value.map(i => i.id)
         //  console.log(OfferingCategory, 'MyGod');
@@ -465,6 +497,8 @@ export default {
             genarateReport,
             showReport,
             selectedofferingCategory,
+            offeringColumnChartResult,
+            columnData
             // pieChart
             
         }

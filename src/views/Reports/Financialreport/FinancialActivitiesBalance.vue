@@ -77,10 +77,10 @@
               <td>{{ AccountList.description }}</td>
               <td class="text-success">{{Math.abs(AccountList.debit).toLocaleString()}}.00</td>
               <td class="text-danger">{{Math.abs(AccountList.credit).toLocaleString()}}.00</td>
-              <td class="text-dark font-weight-bolder ">({{Math.abs(AccountList.balance).toLocaleString()}}.00)</td>
+              <td class="text-dark font-weight-bolder ">{{ AccountList && AccountList.currency ? AccountList.currency.symbol: "" }}{{Math.abs(AccountList.balance).toLocaleString()}}</td>
               <!-- <td>{{parseFloat(AccountList.balance).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</td> -->
             </tr>
-            <tr class="answer-row">
+            <!-- <tr class="answer-row">
               <td class="answer"></td>
               <td></td>
               <td></td>
@@ -88,15 +88,15 @@
               <td class="answer text-success ">NGN {{sumDebit ? sumDebit.toLocaleString() : 0}}.00</td>
               <td class="answer text-danger ">NGN {{sumCredit ? Math.abs(sumCredit).toLocaleString() : 0}}.00</td>
               <td></td>
-            </tr>
+            </tr> -->
             <tr class="answer-row">
-              <td class="answer font-weight-bolder ">Account Balance</td>
+              <td class="answer">Account Balance</td>
               <td></td>
               <td></td>
               <td></td>
               <td></td>
               <td></td>
-              <td class="answer text-dark">NGN {{sumBalance.toLocaleString()}}.00</td>
+              <td class="answer">{{ accountInChurch.length > 0 ? currentUser.currencySymbol + accountInChurch[accountInChurch.length - 1].balance.toLocaleString() : 0 }}</td>
             </tr>
           </tbody>
         </table>
@@ -122,6 +122,7 @@
   import Listbox from 'primevue/listbox';
   // import html2pdf from "html2pdf.js"
   import exportService from "../../../services/exportFile/exportservice";
+  import currencyConverter from "../../../services/currency-converter/currencyConverter"
 
     export default {
         components:{
@@ -131,7 +132,7 @@
 
         setup() {
 
-      const accountType = ref([]);
+    const accountType = ref([]);
     const startDate = ref("");
     const endDate = ref("");
     const selectedAccount = ref({});
@@ -144,6 +145,7 @@
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);
+    const currentUser = ref({})
 
 
 
@@ -189,8 +191,8 @@
         const generateReport = () => {
           axios.get(`/api/Reports/financials/getAccountActivityReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&accountID=${selectedAccount.value.id}`)
           .then((res) => {
-            accountInChurch.value = res.data;
-            console.log(accountInChurch.value, "✌️✌️");
+            convertValues(res.data)
+            
             // offeringChart(res.data,'contributionName')
           //   maritalStatusChart(res.data,'maritalStatus')
           //   eventDateChart(res.data,'activityDate')
@@ -207,6 +209,20 @@
           // showReport.value = true;
 
       };
+
+      const convertValues = (data) => {
+        try {
+              accountInChurch.value = data.map(i => {
+              let converted  = currencyConverter.currencyConverter(+i.balance, i.currency ? `usd${i.currency.shortCode.toLowerCase()}` : "", `usd${currentUser.value.currency.toLowerCase()}`)
+            converted.then(res => i.balance = res).catch(err => console.log(err))
+            return i
+          })
+          console.log(accountInChurch.value, "✌️✌️");
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
 
       const getAllFinancialAccount = async () => {
           try {
@@ -235,6 +251,21 @@
      const formatDate = (date) => {
       return dateFormatter.monthDayYear(date);
     };
+
+     const getCurrentlySignedInUser = async() => {
+            try {
+                const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+                console.log(res.data)
+                currentUser.value = res.data
+                
+                
+            } catch (err) {
+                /*eslint no-undef: "warn"*/
+                NProgress.done();
+                console.log(err);
+            }
+        }
+        getCurrentlySignedInUser()
         return{
           amountTotal,
           formatDate,
@@ -257,7 +288,9 @@
             acountID,
             sumBalance, 
             sumDebit,
-            sumCredit
+            sumCredit,
+            currentUser,
+            convertValues
             
         }
         
@@ -326,21 +359,23 @@
         padding-bottom: .1rem;
     
 }
-.answer{
-  font-weight: bolder;
-  color: rgb(0, 0, 0);
+
+.answer {
+  font-size: 1.7em;
 }
+
 .answer-row{
-  background-color: #d5d5d5;
+  background-color: #136ACD;
   border-radius: 30px !important;
   border-bottom-left-radius:  50px !important;
   border-bottom-right-radius: 50px !important;
   font-weight: bold;
+  color: white;
 }
 
-.answer-row:hover{
+/* .answer-row:hover{
   background-color: #d1d1d1;
-}
+} */
 
     .country-item-value {
         padding: .25rem .5rem;
