@@ -12,7 +12,7 @@
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <input type="text" v-model="branchName" class="form-control" />
+                                    <input type="text" v-model="churchName" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -109,40 +109,12 @@
                             </div>
                         </div>
                     </div> 
-                    <div class="row my-1 pt-4">
-                        <div class="col-md-9  d-flex justify-content-end offset-md-2">
-                            <div class="row">
-                                <div class="col-md-6  mt-4">
-                                    <button class="default-btn" data-dismiss="modal">Cancel</button>
-                                </div>
-                                <div class="col-md-6  mt-4">
-                                    <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="addBranch">
-                                        Save
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div> 
+                    
                 </div>
                 <div class="col-md-4">
                         <div class="image-div other">
                             <div class="grey-bg">
-                                <div v-if="routeParams">
-                                <div class="person-img">
-                            <img
-                            v-if="!memberToEdit.pictureUrl"
-                            src="../../assets/people/phone-import.svg"
-                            alt="Uploaded Image"
-                            />
-                            <img
-                            v-else
-                            :src="memberToEdit.pictureUrl"
-                            alt="Uploaded Image"
-                            style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover"
-                            />
-                        </div>
-                        </div>
-                        <div v-else>
+                        <div>
                         <div class="person-img">
                             <img
                             v-if="!url"
@@ -182,12 +154,27 @@
                         </div>
                     </div>
                 </div>
+                <!-- <div class="row my-1 pt-4"> -->
+                        <div class="col-md-8  d-flex justify-content-center offset-md-2">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-sm-6  mt-4">
+                                    <button class="default-btn" data-dismiss="modal">Cancel</button>
+                                </div>
+                                <div class="col-md-6 col-sm-6  mt-4">
+                                    <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="addBranch">
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- </div>  -->
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import axios from "@/gateway/backendapi";
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 export default {
@@ -195,17 +182,85 @@ export default {
         Dropdown
     },
     setup() {
-        
-         const level = ref([
-            { name: "Region" },
-            { name: "District" },
-            { name: "Zone" },
-            { name: "Area" },
-            { name: "Branch" },
-        ]);
+        const churchName = ref('');
+        const Address = ref('');
+        const selectedLevel = ref('');
+        const pastorName = ref('');
+        const pastorEmail = ref('');
+        const pastorPhone = ref('');
+
+         const level = ref([]);
+
+        const url = ref("");
+        const image = ref("");
+        const memberToEdit = ref("");
+        const imageSelected = (e) => {
+            image.value = e.target.files[0];
+            url.value = URL.createObjectURL(image.value);
+        };
+        const getAllBranchList = async () => {
+                    try {
+                        axios
+                        .get("/api/Branching")
+                        .then((res) => {
+                            // tenantCurrency.value = res.data;
+                            // level.value = res.data.returnObject;
+                            console.log(res.data,'Fejiro');
+                        })
+                        .catch((err) => console.log(err));
+                        // donationSummary.value = data;
+                    } catch (err) {
+                        console.log(err);
+                    }
+                    };
+                getAllBranchList();
+
+        const addBranch = async () => {
+            const formData = new FormData();
+            const HierarchyID = selectedLevel.value.id
+            const selectedLevelID = selectedLevel.value.tenantID
+            console.log(selectedLevelID,'allid')
+             formData.append( "ChurchName", churchName.value ? churchName.value : "");  
+             formData.append( "Address", Address.value ? Address.value : "");
+             formData.append( "ParentID", selectedLevelID ? selectedLevelID : "");
+             formData.append( "HierarchyID", HierarchyID ? HierarchyID : "");
+             formData.append( "PastorName", pastorName.value ? pastorName.value : "");
+             formData.append( "PastorEmail", pastorEmail.value ? pastorEmail.value : ""); 
+             formData.append( "PastorPhone", pastorPhone.value ? pastorPhone.value : "");
+             formData.append( "Image", image.value ? image.value : "");
+            try {
+        //   loading.value = true;
+          let response = await axios.post('/api/Branching', formData );
+          console.log(response)
+        //   disableClick.value = false;
+
+
+        //   if (response.status === 200 || response.status === 201) {
+        //     loading.value = false;
+        //       swal(
+        //     "Registration Successful!",
+        //     "Your memberships detail has been added successfully!",
+        //     "success"
+        //   );
+        //   } 
+        } catch (err) {
+            console.log(err)
+            }
+        }
 
         return {
-          level 
+          level,
+          addBranch,
+          churchName,
+          Address,
+          selectedLevel, 
+          pastorName,
+          pastorEmail,
+          pastorPhone,
+          imageSelected,
+          url,
+          image,
+          memberToEdit
         }
     },
 }

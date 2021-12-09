@@ -149,7 +149,7 @@
           incomeStatement && incomeStatement.length > 0 ? 'graph-area' : ''
         "
       >
-        <div class="chart1 col-12 col-md-6">
+        <div class="col-12 col-md-6">
           <IncomeStatementChart
             domId="chart"
             title=""
@@ -159,7 +159,7 @@
           />
         </div>
 
-        <div class="chart1 col-12 col-md-6">
+        <div class=" col-12 col-md-6">
           <IncomeStatmentColumnChart
             domId="chart1"
             title=""

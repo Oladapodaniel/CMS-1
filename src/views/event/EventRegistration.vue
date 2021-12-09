@@ -561,7 +561,7 @@ export default {
     };
 
     // confirm status
-    const confirm = () => {
+    const confirm = (idOfNewPerson) => {
       // person.value.attendanceCode = +route.params.code;
       let newPerson = {};
       if (person.value.personId) {
@@ -584,6 +584,7 @@ export default {
           },
           activityID: route.params.eventId
         };
+        newPerson.person.personId = idOfNewPerson ? idOfNewPerson : ""
       }
       newPerson.person.monthOfBirth = birthMonth.value && !personData.value.monthOfBirth
         ? months.indexOf(birthMonth.value) + 1
@@ -815,11 +816,11 @@ export default {
               if (displayFamily.value) {
                 createNewFamily(data.returnObject.id)
               } else {
-                confirm()
+                confirm(data.returnObject.id)
               }
               
           }
-          catch (error) {
+          catch (error ) {
             console.log(error)
           }
     }
