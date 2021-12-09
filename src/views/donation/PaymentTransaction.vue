@@ -654,47 +654,46 @@ export default {
             item.isChecked = !item.isChecked
 
             if (item.isChecked && paymentGateWays.value.findIndex(i => i.id === item.id) < 0) {
-                console.log('1 level')
-                
 
                 if (item.name.toLowerCase().includes('flutterwave')) {
-                    console.log('2 level')
-                    const findSubAccount = subAccounts.value.findIndex(i => i.account_number == accountNumber.value)
-                    console.log(findSubAccount)
-                    if (findSubAccount !== -1) {
-                        
-                        confirm.require({
-                        message: `This account details has been recorded with Flutterwave as ${subAccounts.value[findSubAccount].meta[0].meta_name}, Do you want to use it?`,
-                        header: 'Account Confirmation',
-                        icon: 'pi pi-info-circle',
-                        acceptClass: 'p-button-danger',
-                        accept: () => {
-                            toast.add({
-                                severity:'success', 
-                                summary:'Confirmed', 
-                                detail:'The selected acount is now in use.', 
-                                life: 8000
-                            });
-                            item.subAccountID = subAccounts.value[findSubAccount].meta[0].meta_value
-                            paymentGateWays.value.push(item)
-                        },
-                        reject: () => {
-                            toast.add({
-                                severity:'info', 
-                                summary:'You have declined to use the account details for Flutterwave', 
-                                detail:'Please enter another bank account details to enable Flutterwave subaccount integration', 
-                                life: 8000
-                            });
-                            accountNumber.value = ""
-                            accountName.value = ""
-                            selectedBank.value = new Object()
+                        try {
+                            axios.get(`/api/PaymentForm/subaccounts?accountNumber=${accountNumber.value}`).then(res => {
+                                console.log(res.data)
+                                if (res.data.length > 0) {
+                                    confirm.require({
+                                        message: `This account details has been recorded with Flutterwave as ${res.data[0].meta[0].meta_name}, Do you want to use it?`,
+                                        header: 'Account Confirmation',
+                                        icon: 'pi pi-info-circle',
+                                        acceptClass: 'p-button-danger',
+                                        accept: () => {
+                                            toast.add({
+                                                severity:'success', 
+                                                summary:'Confirmed', 
+                                                detail:'The selected acount is now in use.', 
+                                                life: 8000
+                                            });
+                                            item.subAccountID = res.data[0].subaccount_id
+                                            paymentGateWays.value.push(item)
+                                        },
+                                        reject: () => {
+                                            toast.add({
+                                                severity:'info', 
+                                                summary:'You have declined to use the account details for Flutterwave', 
+                                                detail:'Please enter another bank account details to enable Flutterwave subaccount integration', 
+                                                life: 8000
+                                            });
+                                            accountNumber.value = ""
+                                            accountName.value = ""
+                                            selectedBank.value = new Object()
+                                        }
+                                    });
+                                }
+                            })                   
                         }
-                    });
-                    }   else {
-                        paymentGateWays.value.push(item)
-                    }
-                }   else {
-                    console.log('3 level')
+                        catch (err) {
+                            console.log(err)
+                        }
+                    } else {
                     paymentGateWays.value.push(item)
                 }
             } else {
