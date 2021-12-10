@@ -1,16 +1,15 @@
 <template>
     <div class="container container-top container-wide">
-        <div class="row d-flex justify-content-between px-3">
+        <div class="row d-flex justify-content-between px-3 mb-3">
             <div class="heading-text">Branch</div>
             <div class="mb-3">
-                <router-link to="/tenant/branch/addbranch"
-                    class="default-btn bg-primary border-secondary text-white font-weight-bold c-pointer">
+                <div class="default-btn primary-bg text-white font-weight-bold c-pointer border-0" data-toggle="modal" data-target="#statusmodal" ref="statusmodalBtn">
                     Add Branch
-                </router-link>
+                </div>
             </div>
         </div>
         <div class="contanier-fluid">
-            <div class="row mb-3 ">
+            <div class="row mb-4">
                 <div class="col-12 d-flex justify-content-end">
                     <div class="mr-3">
                         <Dropdown  v-model="selectedPeriod" :options="periods" optionLabel="name" placeholder="Select a period" class="w-100" />
@@ -86,16 +85,106 @@
             </div>
         </div>
     </div>
+     <!-- Branch Status Level Modal -->
+    <div class="modal fade" id="statusmodal" tabindex="-1" role="dialog" aria-labelledby="importgroupModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered" role="document" ref="modal">
+        <div class="modal-content pr-2">
+        <div class="modal-header py-3">
+            <h5 class="modal-title font-weight-700">
+            Which of these option best suit your intentions?
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ref="closeStatusModal" >
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+            <div class="col-md-10 offset-1">
+                <div class="default-btn border mb-3 text-center c-pointer" @click="setUpBranch">Setup branch network</div>
+                <div class="default-btn border mb-3 text-center c-pointer" data-dismiss="modal" @click="joinBranch">Join branch network</div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    </div>
+     <!-- Branch Status Level Modal -->
+     <div data-toggle="modal" data-target="#levelmodal" ref="levelmodalBtn" hidden>
+        Show modal
+    </div>
+    <div class="modal fade" id="levelmodal" tabindex="-1" role="dialog" aria-labelledby="importgroupModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" ref="modal">
+        <div class="modal-content pr-2">
+        <div class="modal-header py-3">
+            <h5 class="modal-title font-weight-700" id="importgroupModalLabel" >
+            Set up your branch level
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ref="closeGroupModal" >
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+            <div class="col-md-12">
+                <div class="mb-3" style="font-size: 1.2em">You dont have branch hierarchies set up yet, create the hierarchies, then you can proceed to create your branch</div>
+                <BranchSettings/>
+                <button class="mt-3 mb-3 offset-5 col-4 default-btn primary-bg text-white font-weight-bold c-pointer border-0 text-center" data-dismiss="modal"  @click="goToAddBranch">Proceed</button>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    </div>
+     <!-- Join Branch Modal -->
+     <div data-toggle="modal" data-target="#joinmodal" ref="joinmodalBtn" hidden>
+        Show modal
+    </div>
+    <div class="modal fade" id="joinmodal" tabindex="-1" role="dialog" aria-labelledby="importgroupModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered" role="document" ref="modal">
+        <div class="modal-content pr-2">
+        <div class="modal-header py-3">
+            <h5 class="modal-title font-weight-700" id="importgroupModalLabel" >
+            Enter your code to join a branch network
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ref="closeGroupModal" >
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+            <div class="col-md-12">
+                <div class="p-field p-col-12 p-md-4">
+                    <span class="p-float-label">
+                            <InputText class="w-100" id="inputtext" type="text" v-model="value1" />
+                            <label for="inputtext">Enter your code</label>
+                        </span>
+                    </div>
+                <button class="mt-3 mb-3 offset-5 col-4 default-btn primary-bg text-white font-weight-bold c-pointer border-0 text-center" data-dismiss="modal">Join network</button>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    </div>
 </template>
 
 <script>
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import Organisation from "../../components/charts/OrgChart2.vue"
+import BranchSettings from "../settings/BranchLevelSettings.vue"
+import axios from "@/gateway/backendapi";
+import router from '../../router';
+import InputText from "primevue/inputtext";
 export default {
     components: {
         Organisation,
-        Dropdown
+        Dropdown,
+        BranchSettings,
+        InputText
     },
     setup() {
         const periods = ref([
@@ -115,11 +204,52 @@ export default {
             { name: "Area" },
             { name: "Branch" },
         ]);
+        const hierarchies = ref([])
+        const levelmodalBtn = ref()
+        const joinmodalBtn = ref()
+        const closeStatusModal = ref()
+
+        const getHierarchies = async() => {
+            try {
+                let { data } = await axios.get('/branching/hierarchies')
+                console.log(data)
+                hierarchies.value = data.returnObject
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        getHierarchies()
+
+        const setUpBranch = () => {
+            if (hierarchies.value.length === 0) {
+                levelmodalBtn.value.click()
+            }   else {
+                closeStatusModal.value.click()
+                router.push('/tenant/branch/addbranch')
+            }
+        }
+
+        const joinBranch = () => {
+            joinmodalBtn.value.click()
+        }
+
+        const goToAddBranch = () => {
+            closeStatusModal.value.click()
+            router.push('/tenant/branch/addbranch')
+        }
         
 
         return {
             periods,
-            branches
+            branches,
+            hierarchies,
+            setUpBranch,
+            levelmodalBtn,
+            goToAddBranch,
+            closeStatusModal,
+            joinBranch,
+            joinmodalBtn
         }
     },
 }

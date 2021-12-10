@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <div class="row d-md-flex justify-content-between mt-3 mb-5">
+      <div class="row d-md-flex justify-content-between mt-3 mb-5" v-if="!this.$router.currentRoute.value.fullPath.includes('tenant/branch/branchsummary')">
         <div class="col-md-12">
           <h2 class="first">Branch Level Settings</h2>
         </div>
@@ -166,7 +166,6 @@ export default {
     ConfirmDialog,
     draggable,
     Checkbox
-
   },
   directives: {
     'tooltip': Tooltip
@@ -183,7 +182,7 @@ export default {
       // isDefault: false,
       loading: false,
       enabled: true,
-      dragging: false
+      dragging: false,
     }
   },
 
