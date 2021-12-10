@@ -95,7 +95,7 @@
         <!-- table header -->
         <div v-if="accountTransaction.length > 0">
               <div  class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
-          <table class="table remove-styles mt-0 table-hover table-header-area">
+          <table class="table remove-styles mt-0 table-header-area">
             <thead class="table-header-area-main">
               <tr
               class="text-capitalize text-nowrap font-weight-bold"
@@ -163,13 +163,17 @@
                       <td>&nbsp;</td>
                   </tr>
             </tbody>
-            <tbody>
-                <tr class="answer-row">
-                      <td  class="answer" style="font-weight: bolder; font-size:medium;">Total</td>
+            <tbody class="font-weight-bolder text-nowrap" style="font-size: small">
+                <tr class="answer-row2">
+                      <td  class=" gross-total" >Total</td>
                       <td></td>
                       <td></td>
-                      <td class="text-success fund-answer">NGN{{ sumOfCreditAndDebit("debit").toLocaleString() }}.00</td>
-                      <td class="text-danger fund-answer">NGN({{ Math.abs(sumOfCreditAndDebit("credit")).toLocaleString() }}.00)</td>
+                      <td class=" gross-total responsive-horizontalrule">NGN{{ sumOfCreditAndDebit("debit").toLocaleString() }}.00
+                        <hr class="horizontal-rule" />
+                      </td>
+                      <td class=" gross-total responsive-horizontalrule" >NGN({{ Math.abs(sumOfCreditAndDebit("credit")).toLocaleString() }}.00)
+                        <hr class="horizontal-rule" />
+                      </td>
                       <td></td>
                   </tr>
             </tbody>
@@ -185,7 +189,7 @@
     </div>
   </div>
 </template>
-//  computed
+
 <script>
 import { ref, } from "vue";
 import Calendar from "primevue/calendar";
@@ -337,6 +341,27 @@ export default {
     min-width: 121px;
 }
 
+.gross-total {
+  font-weight: bolder;
+  font-size: large;
+  color: #fff;
+}
+
+.answer-row2 {
+  background-color: #136acd;
+}
+.horizontal-rule {
+   /* border: 0.1875rem solid #ffe50f; */
+  /* border: 0.1875rem solid #ebeff4; */
+  border-radius: 5px;
+  margin: 0.125rem 0;
+  background: white;
+  height: 1px;
+}
+
+/* .responsive-horizontalrule {
+  display: inline-block;
+} */
 
 .generate-report {
   font-size: 1rem;

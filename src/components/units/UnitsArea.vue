@@ -12,7 +12,7 @@
                 class="btn buy-btn center-flexed"
                 @click="payWithPaystack"
                 >
-                <span class="btn-text"> BUY UNITS </span>
+                <span class="btn-text box-btn-text2"> BUY UNITS </span>
                 </button>
             </div>
         </div>
@@ -78,7 +78,12 @@ import { useStore } from "vuex"
 .btn-text {
   opacity: 1;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: bolder;
+}
+.box-btn-text2 {
+  /* color: #ffe50f; */
+  color: orange;
+  /* color: #136acd; */
 }
 
 .center-flexed {

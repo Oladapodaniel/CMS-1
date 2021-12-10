@@ -146,6 +146,31 @@
                       </a>
                     </div>
                   </div>
+                  <div
+                    class="row menu-item-con py-2"
+                    :class="{
+                      'active-link':
+                        route.path === '/tenant/sms/scheduled',
+                    }"
+                  >
+                    <div class="col-md-12 menu-item-div m-auto">
+                      <a class="btn btn-default font-weight-bold">
+                        <span class="menu-item">
+                          <router-link
+                            class="r-link text-decoration-none"
+                            :to="{ name: 'BuyUnits', path: '/tenant/buyunits' }"
+                          >
+                            <!-- <i class="pi pi-list mr-3 menu-icon"></i> -->
+                            <i
+                              class="pi pi-envelope mr-3 menu-icon"
+                              aria-hidden="true"
+                            ></i>
+                            <span class="active">Buy Units</span>
+                          </router-link>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
