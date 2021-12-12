@@ -114,7 +114,7 @@
         Show modal
     </div>
     <div class="modal fade" id="levelmodal" tabindex="-1" role="dialog" aria-labelledby="importgroupModalLabel" aria-hidden="true" >
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" ref="modal">
+    <div class="modal-dialog modal-dialog-centered" role="document" ref="modal">
         <div class="modal-content pr-2">
         <div class="modal-header py-3">
             <h5 class="modal-title font-weight-700" id="importgroupModalLabel" >
@@ -148,7 +148,7 @@
             <h5 class="modal-title font-weight-700" id="importgroupModalLabel" >
             Enter your code to join a branch network
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ref="closeGroupModal" >
+            <button type="button" ref="closeJoinNetworkModal" class="close" data-dismiss="modal" aria-label="Close" >
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -157,18 +157,18 @@
             <div class="col-md-12">
                 <div class="p-field p-col-12 p-md-4">
                     <span class="p-float-label">
-                            <InputText class="w-100" id="inputtext" type="text" v-model="value1" />
-                            <label for="inputtext">Enter your code</label>
-                        </span>
-                    </div>
-                <button class="mt-3 mb-3 offset-5 col-4 default-btn primary-bg text-white font-weight-bold c-pointer border-0 text-center" data-dismiss="modal">Join network</button>
+                        <InputText class="w-100" id="inputtext" type="text" v-model="code" />
+                        <label for="inputtext">Enter your code</label>
+                    </span>
+                </div>
+                <button class="mt-3 mb-3 offset-5 col-4 default-btn primary-bg text-white font-weight-bold c-pointer border-0 text-center" @click="joinNetwork">Join network</button>
             </div>
             </div>
         </div>
         </div>
     </div>
-    
     </div>
+    <Toast />
 </template>
 
 <script>
@@ -179,6 +179,7 @@ import BranchSettings from "../settings/BranchLevelSettings.vue"
 import axios from "@/gateway/backendapi";
 import router from '../../router';
 import InputText from "primevue/inputtext";
+import { useToast } from "primevue/usetoast";
 export default {
     components: {
         Organisation,
@@ -187,6 +188,7 @@ export default {
         InputText
     },
     setup() {
+        const toast = useToast()
         const periods = ref([
             { name: "One Week" },
             { name: "This Week" },
@@ -208,6 +210,8 @@ export default {
         const levelmodalBtn = ref()
         const joinmodalBtn = ref()
         const closeStatusModal = ref()
+        const code = ref("")
+        const closeJoinNetworkModal = ref()
 
         const getHierarchies = async() => {
             try {
@@ -238,6 +242,23 @@ export default {
             closeStatusModal.value.click()
             router.push('/tenant/branch/addbranch')
         }
+
+        const joinNetwork = async() => {
+            try {
+                let { data } = await axios.post('/api/Branching/joinnetwork', { code: code.value })
+                console.log(data)
+                closeJoinNetworkModal.value.click()
+                    toast.add({
+                        severity: "success",
+                        summary: "Success",
+                        detail: data.response,
+                        life: 5000,
+                    });
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
         
 
         return {
@@ -249,7 +270,10 @@ export default {
             goToAddBranch,
             closeStatusModal,
             joinBranch,
-            joinmodalBtn
+            joinmodalBtn,
+            code,
+            joinNetwork,
+            closeJoinNetworkModal
         }
     },
 }

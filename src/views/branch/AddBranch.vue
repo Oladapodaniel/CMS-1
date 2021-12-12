@@ -130,19 +130,19 @@
                                 <div class="col-8">
                                     <div class="row">
                                         <div class="col-12 mt-2">
-                                            <Checkbox id="binary" v-model="replicateAttendance" @change="checkin" :binary="true" /> 
+                                            <Checkbox id="binary" v-model="replicateAttendance" :binary="true" /> 
                                             Replicate attendance
                                         </div>
                                         <div class="col-12 mt-2">
-                                            <Checkbox id="binary" v-model="replicateFinancial" @change="checkin" :binary="true" /> 
+                                            <Checkbox id="binary" v-model="replicateFinancial" :binary="true" /> 
                                             Replicate financial
                                         </div>
                                         <div class="col-12 mt-2">
-                                            <Checkbox id="binary" v-model="replicateEvent" @change="checkin" :binary="true" /> 
+                                            <Checkbox id="binary" v-model="replicateEvent" :binary="true" /> 
                                             Replicate event
                                         </div>
                                         <div class="col-12 mt-2">
-                                            <Checkbox id="binary" v-model="replicateGroup" @change="checkin" :binary="true" /> 
+                                            <Checkbox id="binary" v-model="replicateGroup" :binary="true" /> 
                                             Replicate group
                                         </div>
                                     </div>
@@ -222,7 +222,7 @@
         <div class="modal-content pr-2">
         <div class="modal-header py-3">
             <h5 class="modal-title font-weight-700" id="codemodalModalLabel" >
-            Code generated. Copy, share.
+            Generate your branch code.
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close" ref="closeGroupModal" >
             <span aria-hidden="true">&times;</span>
@@ -230,30 +230,44 @@
         </div>
         <div class="modal-body">
             <div class="row">
-            <div class="col-md-12">
-                <div class="p-field p-col-12 p-md-4">
-                    <span class="p-float-label">
-                            <InputText class="w-100" id="inputtext" type="text" v-model="value1" />
-                            <label for="inputtext">Heres your code your code</label>
-                        </span>
-                    </div>
-                <button class="mt-3 mb-3 offset-5 col-4 default-btn primary-bg text-white font-weight-bold c-pointer border-0 text-center" data-dismiss="modal">Join network</button>
+                <div class="col-12 mb-2">
+                    Select the branch level you want your code to be generated with, then copy the generated code.
+                </div>
+            <div class="col-9 mt-2">
+                <Treeselect v-model="value" :multiple="false" :options="branches"/>
             </div>
+            <button class="mt-2 mb-3 col-2 default-btn primary-bg text-white font-weight-bold c-pointer border-0 text-center" @click="generateCode">Generate</button>
+            <!-- <div class="col-md-12 mb-3" v-if="requestedCode">
+                <div class="p-col-12">
+                    <div class="p-inputgroup">
+                        <InputText placeholder="Heres your code" v-model="requestedCode" :value="requestedCode" ref="code"/>
+                        <Button icon="" @click="copyCode"/>
+                    </div>
+                </div>
+            </div> -->
+            <div class="input-group mb-3 ml-3" v-if="requestedCode">
+                <input type="text" class="form-control" placeholder="Heres your code" :value="requestedCode" ref="code" aria-describedby="basic-addon1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text c-pointer" id="basic-addon1" @click="copyCode"><i class="pi pi-copy"></i></span>
+                </div>
+                </div>
             </div>
         </div>
         </div>
     </div>
-    
+    <Toast />
     </div>
 </template>
 
 <script>
 import axios from "@/gateway/backendapi";
+import axio from "axios";
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import Treeselect from 'vue3-treeselect'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
+import { useToast } from "primevue/usetoast";
 export default {
     components: {
         Dropdown,
@@ -261,6 +275,7 @@ export default {
         Treeselect
     },
     setup() {
+        const toast = useToast()
         const churchName = ref('');
         const Address = ref('');
         const selectedLevel = ref('');
@@ -271,10 +286,12 @@ export default {
         const image = ref("");
         const memberToEdit = ref("");
         const branches = ref([])
-        const replicateAttendance = ref(false)
-        const replicateFinancial = ref(false)
-        const replicateEvent = ref(false)
-        const replicateGroup = ref(false)
+        const replicateAttendance = ref(true)
+        const replicateFinancial = ref(true)
+        const replicateEvent = ref(true)
+        const replicateGroup = ref(true)
+        const requestedCode = ref("")
+        const code = ref(null)
 
         const options = ref([ {
           id: 'a',
@@ -348,28 +365,22 @@ export default {
              formData.append( "pastorPhone", pastorPhone.value ? pastorPhone.value : "");
              formData.append( "image", image.value ? image.value : "");
              formData.append( "countryID", 1275);
-             formData.append( "subscriptionPlanID", 1);
+             formData.append( "duplicateAttendances", replicateAttendance.value);
+             formData.append( "duplicateEvents", replicateEvent.value);
+             formData.append( "duplicateGroups", replicateGroup.value);
              console.log(encodeURIComponent(formData))
-            try {
+        try {
         //   loading.value = true;
-          let response = await axios.post('/api/Branching', formData, { headers: {'Content-Type': 'application/x-www-form-urlencoded'} } );
-        //   let response = await axios.post({
-        //             method: 'post',
-        //             url: '/api/Branching',
-        //             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        //         })  ;
-          console.log(response)
-        //   disableClick.value = false;
-
-
-        //   if (response.status === 200 || response.status === 201) {
-        //     loading.value = false;
-        //       swal(
-        //     "Registration Successful!",
-        //     "Your memberships detail has been added successfully!",
-        //     "success"
-        //   );
-        //   } 
+          let { data } = await axios.post('/api/Branching', formData);
+          console.log(data)
+          if (data.status) {
+              toast.add({
+                severity: "success",
+                summary: "Branch created",
+                detail: data.message,
+                life: 3000,
+            });
+          }
         } catch (err) {
             console.log(err)
             }
@@ -383,6 +394,48 @@ export default {
                 
         //     }
         // }
+
+        const generateCode = async() => {
+            let getHierarchyId = branches.value.find(i => {
+                return i.children.some(j => j.id == value.value)
+            })
+            let body = {
+                parentId: value.value,
+                hierarchyID: getHierarchyId.id
+            }
+            try {
+            let { data } = await axios.post('/api/Branching/requestcode', body);
+            console.log(data)
+            requestedCode.value = data.code
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        
+        const orgData = async() => {
+     
+            try {
+            let data = await axio.get('https://gist.githubusercontent.com/bumbeishvili/dc0d47bc95ef359fdc75b63cd65edaf2/raw/c33a3a1ef4ba927e3e92b81600c8c6ada345c64b/orgChart.json');
+            console.log(data)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        orgData()
+
+        const copyCode = () => {       
+            code.value.select();
+            code.value.setSelectionRange(0, code.value.value.length); /* For mobile devices */
+
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+            toast.add({
+                severity: "success",
+                summary: "Code Copied",
+                detail: "Code copied to your clipboard",
+                life: 5000,
+            });
+        }
 
         return {
           addBranch,
@@ -402,7 +455,11 @@ export default {
           replicateEvent,
           replicateGroup,
           options,
-          value
+          value,
+          generateCode,
+          requestedCode,
+          code,
+          copyCode
         }
     },
 }
