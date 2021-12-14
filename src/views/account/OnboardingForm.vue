@@ -220,7 +220,7 @@ export default {
             localStorage.removeItem("pretoken");
           } else {
             localStorage.setItem("token", res.data.token);
-            // localStorage.setItem('roles', JSON.stringify(res.data.roles))
+            localStorage.setItem('roles', JSON.stringify(["Admin"]))
           }
           // this.$store.dispatch("setStartPoint", url)
           this.loading = false;
