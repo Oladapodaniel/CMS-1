@@ -227,8 +227,6 @@
           <div class="col-md-7 py-4 text-center">
             <button class="default-btn mr-3" @click="notme">Not Me</button>
             <button
-              :data-toggle="fullEventData.paymentFormId ? 'modal' : ''"
-              :data-target="fullEventData.paymentFormId ? '#PaymentOptionModal' : ''"
               class="default-btn add-btn mt-3 mt-sm-0"
               @click="confirmToRegister"
               :disabled="
@@ -237,6 +235,7 @@
             >
               {{ fullEventData.paymentFormId ? 'Make payment to register' : 'Confirm to register' }}
             </button>
+            <button ref="makePaymentRef" data-toggle="modal" data-target="#PaymentOptionModal" hidden>Toggle modal</button>
           </div>
         </div>
       </div>
@@ -357,6 +356,7 @@ export default {
     const signout = ref()
     const content = ref()
     const disableClick = ref(false)
+    const makePaymentRef = ref()
 
     const birthMonth = ref("");
     const months = [
@@ -797,6 +797,7 @@ export default {
 
       } 
       if (fullEventData.value.paymentFormId) {
+        makePaymentRef.value.click()
         confirmCheck()
       }
     }
@@ -812,7 +813,7 @@ export default {
 
           try {
             let { data } = await axios.post("/createPublicPerson", createNewPerson)
-              console.log(data, 'ceeejay jenifer')
+              console.log(data)
               if (displayFamily.value) {
                 createNewFamily(data.returnObject.id)
               } else {
@@ -1155,6 +1156,7 @@ console.log(payload)
       authorizebutton,
       signout,
       content,
+      makePaymentRef
       // callIt
     };
   },
