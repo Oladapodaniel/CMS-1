@@ -557,9 +557,13 @@ border-top-right-radius: 0 !important;
 }
 
 .horizontal-rule{
- border: 0.1875rem solid #FFE50F;
+ /* border: 0.1875rem solid #FFE50F;
+  border-radius: 5px;
+  margin: 0.125rem 0; */
   border-radius: 5px;
   margin: 0.125rem 0;
+  background: white;
+  height: 1px;
 }
 
 .responsive-horizontalrule{

@@ -129,7 +129,7 @@
                 <span class="plan-text"></span>
                 <router-link :to="{ name: 'BuyUnits', path: '/tenant/buyunits' }" class="push-down">
                   <button class="upgrade-btn buy-btn">
-                    <h4 class="box-btn-text">BUY UNIT</h4>
+                    <h4 class="box-btn-text2">BUY UNITS</h4>
                   </button>
                 </router-link>
               </div>
@@ -1273,7 +1273,16 @@ tbody tr:nth-child(even) {
   margin: 0px;
   font-size: 12px;
   font-weight: 700;
+  /* color: #ffe50f; */
   color: #136acd;
+}
+.box-btn-text2 {
+  margin: 0px;
+  font-size: 12px;
+  font-weight: bolder;
+  color: orange;
+  /* color: #ffe50f; */
+  /* color: #136acd; */
 }
 
 .size-text {

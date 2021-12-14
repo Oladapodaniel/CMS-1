@@ -57,7 +57,7 @@
               <div class=" heading-text mt-5">Account Activity Report</div>
         </div> -->
       <div id="element-to-print" class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " >
-        <table class="table remove-styles mt-0  table-hover table-header-area" id="table">
+        <table class="table remove-styles mt-0  table-header-area" id="table">
           <thead class="table-header-area-main">
             <tr class=" font-weight-bold text-capitalize text-nowrap" style="border-bottom: 0" >
               <th scope="col">Date</th>
@@ -89,14 +89,18 @@
               <td class="answer text-danger ">NGN {{sumCredit ? Math.abs(sumCredit).toLocaleString() : 0}}.00</td>
               <td></td>
             </tr> -->
+          </tbody>
+          <tbody class="font-weight-bolder text-nowrap" style="font-size: small">
             <tr class="answer-row">
-              <td class="answer">Account Balance</td>
+              <td class="gross-total">Total Balance</td>
               <td></td>
               <td></td>
               <td></td>
               <td></td>
               <td></td>
-              <td class="answer">{{ accountInChurch.length > 0 ? currentUser.currencySymbol + accountInChurch[accountInChurch.length - 1].balance.toLocaleString() : 0 }}</td>
+              <td class="gross-total">{{ accountInChurch.length > 0 ? currentUser.currencySymbol + accountInChurch[accountInChurch.length - 1].balance.toLocaleString() : 0 }}
+                 <hr class="horizontal-rule" />
+              </td>
             </tr>
           </tbody>
         </table>
@@ -305,6 +309,13 @@
   box-sizing: border-box;
 }
 
+.horizontal-rule {
+  border-radius: 5px;
+  margin: 0.125rem 0;
+  background: white;
+  height: 2px;
+}
+
 .show-report{
     display: block;
 }
@@ -358,6 +369,11 @@
         padding-top: .1rem;
         padding-bottom: .1rem;
     
+}
+.gross-total {
+  font-weight: bolder;
+  font-size: large;
+  color: #fff;
 }
 
 .answer {

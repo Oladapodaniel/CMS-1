@@ -183,7 +183,7 @@
                       <!-- table header -->
                   <div class=" mt-3 container-fluid table-main px-0 remove-styles2 remove-border responsiveness "
                   :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
-                          <table class="table remove-styles mt-0  table-hover table-header-area " id="table">
+                          <table class="table remove-styles mt-0  table-header-area " id="table">
                             <thead class="table-header-area-main">
                               <tr class="small-text text-capitalize text-nowrap" style="border-bottom: 0">
                                   <!-- <th class="">Group Name</th> -->
@@ -204,11 +204,17 @@
                                 <td>{{ OfferingList.contactName }}</td>
                                 <td>{{ OfferingList.channel }}</td>
                                 </tr>
-                                 <tr class="answer-row">
-                                  <td class="answer">Total</td>
+                            </tbody>
+                            <tbody class="font-weight-bolder text-nowrap"
+                                        style="font-size: small">
+
+                                 <tr class="answer-row2">
+                                  <td class="gross-total">Total</td>
                                   <td></td>
                                   <td></td>
-                                  <td class="answer">NGN {{sumTotal && sumTotal.amount ? sumTotal.amount.toLocaleString() : 0}}.00</td>
+                                  <td class="gross-total responsive-horizontalrule">NGN {{sumTotal && sumTotal.amount ? sumTotal.amount.toLocaleString() : 0}}.00
+                                    <hr class="horizontal-rule" />
+                                  </td>
                                   <td></td>
                                   <td></td>
                                   <td></td>
@@ -509,6 +515,25 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+}
+.gross-total {
+  font-weight: bolder;
+  font-size: large;
+  color: #fff;
+}
+
+.answer-row2 {
+  background-color: #136acd;
+}
+.horizontal-rule {
+  border-radius: 5px;
+  margin: 0.125rem 0;
+  background: white;
+  height: 2px;
+}
+
+.responsive-horizontalrule {
+  display: inline-block;
 }
 
 .answer{
