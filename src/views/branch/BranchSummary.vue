@@ -29,7 +29,7 @@
                             <img class="trend-icon" src="/img/trend-icon.b63f0d8d.svg" alt="">
                             <!-- <i class="pi pi-users text-center"></i> -->
                         </div>
-                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">200</div>
+                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">0</div>
                     </div>
                     <div class="row p-2">
                         <p class="item-text ml-2">Total Branches </p>
@@ -44,7 +44,7 @@
                             <!-- <img class="trend-icon" src="/img/trend-icon.b63f0d8d.svg" alt=""> -->
                             <img class="trend-icon " src="../../assets/dashboardlinks/people.svg" alt="">
                         </div>
-                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total pl-0">500</div>
+                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total pl-0">0</div>
                     </div>
                     <div class="row p-2 ">
                         <p class="item-text ml-2 text-truncate">Total People</p>
@@ -56,7 +56,7 @@
                         <div class="top-icon-div d-flex justify-content-center align-items-center ml-2">
                             <i class="pi pi-list text-center"></i>
                         </div>
-                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">500</div>
+                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">0</div>
                     </div>
                     <div class="row p-2">
                         <p class="item-text ml-2 text-truncate">Average Attendance</p>
@@ -68,7 +68,7 @@
                         <div class="top-icon-div d-flex justify-content-center align-items-center ml-2">
                             <i class="pi pi-list text-center"></i>
                         </div>
-                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">100</div>
+                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">0</div>
                     </div>
                 <div class="row p-2">
                     <p class="item-text ml-2 text-truncate">Average monthly income/expense</p>
