@@ -174,6 +174,19 @@
     </div>
     </div>
     <Toast />
+    <!-- <OrganizationChart :value="data1" :collapsible="true" class="company" selectionMode="single" v-model:selectionKeys="selection"
+                @nodeSelect="onNodeSelect" @nodeUnselect="onNodeUnselect" @nodeCollapse="onNodeCollapse" @nodeExpand="onNodeExpand">
+                <template #person="slotProps">
+                    <div class="node-header ui-corner-top">{{slotProps.node.data.label}}</div>
+                    <div class="node-content">
+                        <img src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png" width="32">
+                        <div>{{slotProps.node.data.name}}</div>
+                    </div>
+                </template>
+                <template #default="slotProps">
+                    <span>{{slotProps.node.data.label}}</span>
+                </template>
+            </OrganizationChart> -->
     
 </template>
 
@@ -189,12 +202,14 @@ import { useToast } from "primevue/usetoast";
 // import fromCDN from "from-cdn";
 import { workers } from "../../services/orgchart/orgChartData";
 import * as dhx from "../../services/orgchart/diagramWithEditor"
+// import OrganizationChart from 'primevue/organizationchart';
 export default {
     components: {
         Organisation,
         Dropdown,
         BranchSettings,
-        InputText
+        InputText,
+        // OrganizationChart
     },
     setup() {
         const toast = useToast()
@@ -215,6 +230,87 @@ export default {
             { name: "Area" },
             { name: "Branch" },
         ]);
+
+        const data1 = ref({
+            key: '0',
+            type: 'person',
+            styleClass: 'p-person',
+            data: {label: 'CEO', name: 'Walter White', avatar: 'walter.jpg'},
+            children: [
+                {
+                    key: '0_0',
+                    type: 'person',
+                    styleClass: 'p-person',
+                    data: {label: 'CFO', name:'Saul Goodman', avatar: 'saul.jpg'},
+                    children:[{
+                        key: '0_0_0',
+                        data: {label: 'Tax'},
+                        selectable: false,
+                        styleClass: 'department-cfo'
+                    },
+                    {
+                        key: '0_0_1',
+                        data: {label: 'Legal'},
+                        selectable: false,
+                        styleClass: 'department-cfo'
+                    }],
+                },
+                {
+                    key: '0_1',
+                    type: 'person',
+                    styleClass: 'p-person',
+                    data: {label: 'COO', name:'Mike E.', avatar: 'mike.jpg'},
+                    children:[{
+                        key: '0_1_0',
+                        data: {label: 'Operations'},
+                        selectable: false,
+                        styleClass: 'department-coo'
+                    }]
+                },
+                {
+                    key: '0_2',
+                    type: 'person',
+                    styleClass: 'p-person',
+                    data: {label: 'CTO', name:'Jesse Pinkman', avatar: 'jesse.jpg'},
+                    children:[{
+                        key: '0_2_0',
+                        data: {label: 'Development'},
+                        selectable: false,
+                        styleClass: 'department-cto',
+                        children:[{
+                        key: '0_2_0_0',
+                            data: {label: 'Analysis'},
+                            selectable: false,
+                            styleClass: 'department-cto'
+                        },
+                        {
+                            key: '0_2_0_1',
+                            data: {label: 'Front End'},
+                            selectable: false,
+                            styleClass: 'department-cto'
+                        },
+                        {
+                            key: '0_2_0_2',
+                            data: {label: 'Back End'},
+                            selectable: false,
+                            styleClass: 'department-cto'
+                        }]
+                    },
+                    {
+                        key: '0_2_1',
+                        data: {label: 'QA'},
+                        selectable: false,
+                        styleClass: 'department-cto'
+                    },
+                    {
+                        key: '0_2_2',
+                        data: {label: 'R&D'},
+                        selectable: false,
+                        styleClass: 'department-cto'
+                    }]
+                }
+            ]
+        });
         const hierarchies = ref([])
         const levelmodalBtn = ref()
         const joinmodalBtn = ref()
@@ -322,7 +418,8 @@ export default {
             closeJoinNetworkModal,
             editor,
             editorr,
-            mappedBranch
+            mappedBranch,
+            data1
         }
     },
 }

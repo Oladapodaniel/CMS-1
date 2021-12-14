@@ -27,7 +27,6 @@ export default {
         watchEffect(() => {
             if (props.data.length > 0) {
                 const allIDs = props.data.map(i => i.id)
-                console.log(allIDs)
                 allIDs.forEach(i => {
                     props.data.forEach(j => {
                         if (i == j.parentID) {
