@@ -29,7 +29,7 @@
                             <img class="trend-icon" src="/img/trend-icon.b63f0d8d.svg" alt="">
                             <!-- <i class="pi pi-users text-center"></i> -->
                         </div>
-                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">2000</div>
+                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">200</div>
                     </div>
                     <div class="row p-2">
                         <p class="item-text ml-2">Total Branches </p>
@@ -44,7 +44,7 @@
                             <!-- <img class="trend-icon" src="/img/trend-icon.b63f0d8d.svg" alt=""> -->
                             <img class="trend-icon " src="../../assets/dashboardlinks/people.svg" alt="">
                         </div>
-                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total pl-0">5000</div>
+                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total pl-0">500</div>
                     </div>
                     <div class="row p-2 ">
                         <p class="item-text ml-2 text-truncate">Total People</p>
@@ -68,7 +68,7 @@
                         <div class="top-icon-div d-flex justify-content-center align-items-center ml-2">
                             <i class="pi pi-list text-center"></i>
                         </div>
-                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">1000</div>
+                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">100</div>
                     </div>
                 <div class="row p-2">
                     <p class="item-text ml-2 text-truncate">Average monthly income/expense</p>
@@ -79,9 +79,14 @@
         </div>
         <div class="container-fluid mb-3 ">
             <div class="row">
-                <div class="col-12 border " style="height: 100%; border-radius: 5px">
-                    <Organisation domId="orgchart2"/>
+                <div class="col-12 border " style="height: 100%; border-radius: 5px" v-show="mappedBranch.length > 0">
+                    <!-- <div class="dhx_sample-container">
+                        <div class="dhx_sample-widget w-100" ref="editor"></div>
+                    </div> -->
+                    <Organisation domId="orgchart2" :data="mappedBranch"/>
                 </div>
+                <div class="col-12 border p-3" style="height: 100%; border-radius: 5px" v-show="mappedBranch.length === 0"><div>👋 Hey!</div>
+                <div> Welcome to the branching feature in Churchplus.</div> Manage your ministry branches easily via this branch feature. Start by setting up your ministry's hierarchies in <router-link to="/tenant/settings/branchlevelsettings">Settings</router-link>, then create your branches.</div>
             </div>
         </div>
     </div>
@@ -169,10 +174,11 @@
     </div>
     </div>
     <Toast />
+    
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import Organisation from "../../components/charts/OrgChart2.vue"
 import BranchSettings from "../settings/BranchLevelSettings.vue"
@@ -180,6 +186,9 @@ import axios from "@/gateway/backendapi";
 import router from '../../router';
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
+// import fromCDN from "from-cdn";
+import { workers } from "../../services/orgchart/orgChartData";
+import * as dhx from "../../services/orgchart/diagramWithEditor"
 export default {
     components: {
         Organisation,
@@ -212,6 +221,29 @@ export default {
         const closeStatusModal = ref()
         const code = ref("")
         const closeJoinNetworkModal = ref()
+        const editor = ref()
+        const editorr = ref(null)
+        const mappedBranch = ref([])
+
+        const getBranches = async() => {
+            try {
+                let { data } = await axios.get('/api/Branching')
+                console.log(data)
+                mappedBranch.value = data.returnObject.map(i => {
+                    return {
+                        id: i.id,
+                        // title: 'CEO',
+                        name: i.name,
+                        image: i.logo,
+                        parentID: i.parentID
+                    }
+                })
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        getBranches()
 
         const getHierarchies = async() => {
             try {
@@ -260,6 +292,20 @@ export default {
             }
         }
         
+        onMounted(() => {
+            console.log(workers)
+            // fromCDN([
+            //     "../../services/orgchart/diagramWithEditor"
+                // "https://cdn.dhtmlx.com/diagram/pro/edge/diagramWithEditor.css",
+                // ]).then(() => {
+                // eslint-disable-next-line no-undef
+                editorr.value = new dhx.DiagramEditor(editor.value, {
+                    type: "org",
+                    shapeType: "img-card",
+                });
+                editorr.value.parse(workers);
+                // });
+        })
 
         return {
             periods,
@@ -273,13 +319,17 @@ export default {
             joinmodalBtn,
             code,
             joinNetwork,
-            closeJoinNetworkModal
+            closeJoinNetworkModal,
+            editor,
+            editorr,
+            mappedBranch
         }
     },
 }
 </script>
-
 <style scoped>
+@import "../../services/orgchart/diagramWithEditor.css";
+@import "../../services/orgchart/index.css";
     .heading-text {
         font: normal normal 800 1.5rem Nunito sans;
 }

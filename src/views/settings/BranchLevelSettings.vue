@@ -22,7 +22,7 @@
 
               <div class="row">
                 <div class="col-md-12 py-5 grey-background">
-                  <div class="row d-md-flex justify-content-around">
+                  <div class="row d-md-flex">
                     <div class="col-md-7">
                       <input
                         type="text"

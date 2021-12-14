@@ -682,7 +682,7 @@ export default {
 
       image.value ? formData.append("bannerPhoto", image.value) : ""
       formData.append("details", eventDetails.value)
-      selectedBank.value ? formData.append("bankId", selectedBank.value ? selectedBank.value.id : "") : ""
+      selectedBank.value ? formData.append("bankId", selectedBank.value ? selectedBank.value.code : "") : ""
       accountName.value ? formData.append("accountName", accountName.value) : ""
       accountNumber.value ? formData.append("accountNumber", accountNumber.value) : ""
       formData.append("contributionItemName", selectedEvent.value.name)

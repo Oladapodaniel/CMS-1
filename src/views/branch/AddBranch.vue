@@ -268,6 +268,8 @@ import InputText from "primevue/inputtext";
 import Treeselect from 'vue3-treeselect'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
 import { useToast } from "primevue/usetoast";
+import router from '../../router';
+import store from "../../store/store";
 export default {
     components: {
         Dropdown,
@@ -292,6 +294,7 @@ export default {
         const replicateGroup = ref(true)
         const requestedCode = ref("")
         const code = ref(null)
+        const isoCode = ref("")
 
         const options = ref([ {
           id: 'a',
@@ -323,7 +326,7 @@ export default {
                         .get("/api/Branching/hierarchieswithbranches")
                         .then((res) => {
                             // branches.value = res.data.returnObject;
-                            console.log(res.data,'Fejiro');
+                            console.log(res.data);
                             branches.value = res.data.returnObject.map(i => {
                                 return {
                                     label: i.name,
@@ -345,7 +348,26 @@ export default {
                         console.log(err);
                     }
                     };
-                getAllBranchList();
+        getAllBranchList();
+
+        if (store.getters.currentUser && store.getters.currentUser.isoCode) {
+            isoCode.value = store.getters.currentUser.isoCode;
+            // userCountry.value = store.getters.currentUser.country;
+            // tenantId.value = store.getters.tenantId
+            console.log(store.getters.currentUser)
+            } else {
+            axios
+                .get("/api/Membership/GetCurrentSignedInUser")
+                .then((res) => {
+                isoCode.value = res.data.isoCode;
+                // userCountry.value = res.data.country;
+                // tenantId.value = store.getters.tenantId
+                console.log(store.getters.currentUser)
+                })
+                .catch((err) => console.log(err));
+            }
+
+
 
         const addBranch = async () => {
             let getHierarchyId = branches.value.find(i => {
@@ -359,7 +381,7 @@ export default {
              formData.append( "churchName", churchName.value ? churchName.value : "");  
              formData.append( "address", Address.value ? Address.value : "");
              formData.append( "parentID", value.value ? value.value : "");
-             formData.append( "hierarchyID", getHierarchyId ? getHierarchyId.id : "");
+            //  formData.append( "hierarchyID", getHierarchyId ? getHierarchyId.id : "");
              formData.append( "pastorName", pastorName.value ? pastorName.value : "");
              formData.append( "email", pastorEmail.value ? pastorEmail.value : ""); 
              formData.append( "pastorPhone", pastorPhone.value ? pastorPhone.value : "");
@@ -372,14 +394,35 @@ export default {
         try {
         //   loading.value = true;
           let { data } = await axios.post('/api/Branching', formData);
+
+          // SEND SMS
+          let SMSBody = {
+            category: "",
+            contacts: [],
+            emailAddress: "",
+            emailDisplayName: "",
+            gateWayToUse: "hybridKonnect",
+            groupedContacts: [],
+            isPersonalized: true,
+            isoCode: isoCode.value,
+            message: `YOU HAVE BEEN ADDED AS A BRANCH ON CHURCHPLUS, \n You are on the right place and track, take control of your ministry, know the key information that will help you make better decision and become an effective manager. Use your credentials below to login and get started now \n Email: greatakins321@gmail.com \n Password: Branch@123 please do well to change your password after you login`,
+            // subject: "Churchplus",
+            toOthers: pastorPhone.value
+          }
           console.log(data)
           if (data.status) {
+              axios.post('/api/Messaging/sendSms', SMSBody)
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
               toast.add({
                 severity: "success",
                 summary: "Branch created",
                 detail: data.message,
                 life: 3000,
             });
+            setTimeout(() => {
+                router.push("/tenant/branch/branchsummary")
+            }, 3000);
           }
         } catch (err) {
             console.log(err)
@@ -459,7 +502,8 @@ export default {
           generateCode,
           requestedCode,
           code,
-          copyCode
+          copyCode,
+          isoCode
         }
     },
 }
