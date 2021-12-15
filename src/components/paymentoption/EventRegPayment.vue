@@ -6,7 +6,7 @@
     </div>
     <div class="row row-button" @click="payWithPaystack">
       <div class="col-4 col-sm-7 offset-2">
-        <img class="w-100" src="../../assets/4PaystackLogo.png" alt="paystack"/>
+        <img class="img-pay" src="../../assets/4PaystackLogo.png" alt="paystack"/>
       </div>
     </div>
 
@@ -258,5 +258,9 @@ export default {
 .row-button:hover {
   cursor: pointer;
   transform: scale(1.05, 1.05)
+}
+
+.img-pay {
+  width: 125px
 }
 </style>
