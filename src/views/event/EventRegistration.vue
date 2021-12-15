@@ -642,7 +642,7 @@ export default {
 
     // confirm button check
 
-    const confirmCheck = async() => {
+    const confirmCheck = () => {
       
       donationObj.value = {
             name: person.value.name,
@@ -664,9 +664,10 @@ export default {
             }),
 
           }
+    };
 
-
-          try {
+    const initializePayment = async() => {
+      try {
               let  res = await axios.post('/initailizedonationpayment', donationObj.value)
               console.log(res)
             
@@ -676,7 +677,7 @@ export default {
               finish()
               console.log(error)
             }
-    };
+    }
 
     const confirmToRegister = () => {
       disableClick.value = true;
@@ -800,6 +801,7 @@ export default {
       } 
       if (fullEventData.value.paymentFormId) {
         makePaymentRef.value.click()
+        confirmCheck()
       }
     }
 
@@ -978,8 +980,10 @@ export default {
     });
 
     const setGateway = (payload) => {
-      usedPaymentGateway.value = payload
-      confirmCheck()
+      usedPaymentGateway.value = payload // Get the gateway used
+      confirmCheck() // Update the donationObj with the used gateway
+      initializePayment() // make initialize payment call
+      
     }
 
     const setConfirmDonation = () => {
@@ -1108,7 +1112,8 @@ console.log(payload)
       signout,
       content,
       makePaymentRef,
-      usedPaymentGateway
+      usedPaymentGateway,
+      initializePayment
       // callIt
     };
   },

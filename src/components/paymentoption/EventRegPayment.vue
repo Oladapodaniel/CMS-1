@@ -91,6 +91,7 @@ export default {
       emit('selected-gateway', selectedGateway.value)
    
      console.log(selectedGateway.value)
+     console.log(props.donation)
 
       props.close.click()
       /*eslint no-undef: "warn"*/
