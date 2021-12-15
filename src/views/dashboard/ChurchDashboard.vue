@@ -128,7 +128,7 @@
               <div class="box-bottom">
                 <span class="plan-text"></span>
                 <router-link :to="{ name: 'BuyUnits', path: '/tenant/buyunits' }" class="push-down">
-                  <button class="upgrade-btn buy-btn">
+                  <button class="upgrade-btn2 buy-btn">
                     <h4 class="box-btn-text2">BUY UNITS</h4>
                   </button>
                 </router-link>
@@ -1119,6 +1119,18 @@ export default {
   align-self: center;
   padding: 7px;
   background: #136acd4b;
+  /* background: orange; */
+  border-radius: 20px;
+  border: none;
+  font-weight: 800;
+  outline: none;
+  width: 80px;
+}
+.upgrade-btn2 {
+  align-self: center;
+  padding: 7px;
+  /* background: #136acd4b; */
+  background: rgba(255, 166, 0, 0.241);
   border-radius: 20px;
   border: none;
   font-weight: 800;
@@ -1126,9 +1138,14 @@ export default {
   width: 80px;
 }
 
-.upgrade-btn:hover,
-.buy-btn:hover {
+
+.upgrade-btn:hover{
   background: #136acd91;
+}
+.upgrade-btn2:hover,
+.buy-btn:hover {
+  /* background: #136acd91; */
+  background: rgba(255, 166, 0, 0.179);
   /* font-weight: 600; */
 }
 
@@ -1279,10 +1296,10 @@ tbody tr:nth-child(even) {
 .box-btn-text2 {
   margin: 0px;
   font-size: 12px;
-  font-weight: bolder;
-  color: orange;
+  font-weight: 800;
+  /* color: rgb(147, 95, 0) */
   /* color: #ffe50f; */
-  /* color: #136acd; */
+  color: #136acd;
 }
 
 .size-text {
