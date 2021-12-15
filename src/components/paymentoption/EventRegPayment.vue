@@ -85,9 +85,9 @@ export default {
     // })
       
 
-    const payWithPaystack = (e) => {
+    const payWithPaystack = () => {
 
-      selectedGateway.value = e.srcElement.alt
+      selectedGateway.value = "paystack"
       emit('selected-gateway', selectedGateway.value)
    
      console.log(selectedGateway.value)

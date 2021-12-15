@@ -357,6 +357,7 @@ export default {
     const content = ref()
     const disableClick = ref(false)
     const makePaymentRef = ref()
+    const usedPaymentGateway = ref("")
 
     const birthMonth = ref("");
     const months = [
@@ -652,6 +653,7 @@ export default {
             orderID: fullEventData.value.paymentFormOrderID,
             currencyID: fullEventData.value.currencyID,
             paymentGateway: fullEventData.value.paymentForm.paymentGateWays,
+            usedPaymentGateway: usedPaymentGateway.value,
             contributionItems: fullEventData.value.paymentForm.contributionItems.map(i => {
               return {
                 contributionItemId: i.financialContribution.id,
@@ -665,7 +667,7 @@ export default {
 
 
           try {
-              let  res = await axios.post('/donation', donationObj.value)
+              let  res = await axios.post('/initailizedonationpayment', donationObj.value)
               console.log(res)
             
               finish()
@@ -798,7 +800,6 @@ export default {
       } 
       if (fullEventData.value.paymentFormId) {
         makePaymentRef.value.click()
-        confirmCheck()
       }
     }
 
@@ -977,7 +978,8 @@ export default {
     });
 
     const setGateway = (payload) => {
-      donationObj.value.usedPaymentGateway = payload
+      usedPaymentGateway.value = payload
+      confirmCheck()
     }
 
     const setConfirmDonation = () => {
@@ -1000,40 +1002,6 @@ export default {
                     })
 
                     console.log(familyWards.value.familyMembers)
-
-                //     familyName.value = res.data.familyName
-
-                //     userSearchString.value = `${res.data.father && res.data.father.firstName ? res.data.father.firstName : ""} ${res.data.father && res.data.father.lastName? res.data.father.lastName : ""}`
-
-                //     motherSearchString.value = `${res.data.mother && res.data.mother.firstName ? res.data.mother.firstName : ""} ${res.data.mother && res.data.mother.lastName ? res.data.mother.lastName : ""}`
-
-                //     father.value = { id: res.data.fatherID }
-
-                //     mother.value = { id: res.data.motherID }
-
-                //     email.value = res.data.email
-
-                //     homePhone.value = res.data.homePhone
-
-                //     familyMembers.value = res.data.familyMembers.map(i => {
-                //         return {
-                //             name: i.person.firstName,
-                //             personId: i.person.id,
-                //             roleId: memberRoles.value.find(j => j.id === i.familyRoleID),
-                //             id: i.id
-                //         }
-                //     })
-
-                //     familyMain.value = {
-                //         familyId: res.data.id,
-                //         id: res.data.familyMembers.length > 0 ? res.data.familyMembers[memberIndex.value].id : 0,
-                //         tenantId: res.data.tenantID
-                //     }
-
-                // console.log(memberRoles.value)
-                //     console.log(familyMembers.value)
-
-
                 }
                 catch (error) {
                     console.log(error)
@@ -1076,23 +1044,6 @@ console.log(payload)
 
     }
 
-    /*end of masking functions */
-
-  //  onMounted(() => {
-  //     console.log(authorizebutton.value)
-  //     Calendarjs.calendarApi(authorizebutton.value, signout.value, content.value)
-  //   })
-    // authCalendar()
-
-    // const callIt = () => {
-    //   try {
-    //     let res = Calendarjs.addEvent()
-    //     console.log(res)
-    //   }
-    //   catch (err) {
-    //     console.log(err)
-    //   }
-    // }
     return {
       disableClick,
       toggleBase,
@@ -1156,7 +1107,8 @@ console.log(payload)
       authorizebutton,
       signout,
       content,
-      makePaymentRef
+      makePaymentRef,
+      usedPaymentGateway
       // callIt
     };
   },
