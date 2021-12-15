@@ -53,6 +53,7 @@ export default {
     // paystack
   },
   props: ['close', 'donation'],
+  emits: ['selected-gateway', 'payment-successful', 'set-props'],
 //   'orderId', 'donation', , 'amount', 'converted', 'name', 'email', 'gateways', 'currency'
   setup (props, { emit }) {
 
@@ -92,6 +93,13 @@ export default {
    
      console.log(selectedGateway.value)
      console.log(props.donation)
+
+    let body = {
+      transactionReference: props.donation.orderID,
+      amount: props.donation.contributionItems[0].amount * 100,
+      gateway: "paystack"
+    }
+     emit('set-props', body)
 
       props.close.click()
       /*eslint no-undef: "warn"*/

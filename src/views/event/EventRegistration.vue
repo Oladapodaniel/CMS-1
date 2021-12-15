@@ -282,7 +282,7 @@
                   </button>
                 </div>
                 <div class="modal-body p-0 bg-modal pb-5">
-                  <PaymentOptionModal :close="close" :donation="donationObj" @selected-gateway="setGateway" @donation-confirmed="setConfirmDonation"/>
+                  <PaymentOptionModal :close="close" :donation="donationObj" @selected-gateway="setGateway" @donation-confirmed="setConfirmDonation" @set-props="setDonationProperties"/>
                   <!-- :orderId="formResponse.orderId" :donation="donationObj"  :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" -->
                 </div>
                 <!-- <div class="modal-footer bg-modal">
@@ -358,6 +358,7 @@ export default {
     const disableClick = ref(false)
     const makePaymentRef = ref()
     const usedPaymentGateway = ref("")
+    const donationNewProps = ref({})
 
     const birthMonth = ref("");
     const months = [
@@ -663,6 +664,11 @@ export default {
               }
             }),
 
+          }
+          if (Object.keys(donationNewProps.value).length > 0) {
+              donationObj.value.transactionReference = donationNewProps.value.transactionReference,
+              donationObj.value.amount = donationNewProps.value.amount,
+              donationObj.value.gateway = donationNewProps.value.gateway
           }
     };
 
@@ -1034,7 +1040,7 @@ export default {
 
     const setMemberDetails = (payload) => {
       familyMembers.value.push(payload)
-console.log(payload)
+      console.log(payload)
       let pushMemberToView = {
         person: {
           firstName: payload.name,
@@ -1046,6 +1052,12 @@ console.log(payload)
       // familyWards.value.familyMembers = new Array()
       familyWards.value.familyMembers.push(pushMemberToView)
 
+    }
+
+    const setDonationProperties = (payload) => {
+      console.log(payload)
+      donationNewProps.value = payload
+      confirmCheck()
     }
 
     return {
@@ -1113,7 +1125,9 @@ console.log(payload)
       content,
       makePaymentRef,
       usedPaymentGateway,
-      initializePayment
+      initializePayment,
+      setDonationProperties,
+      donationNewProps
       // callIt
     };
   },
