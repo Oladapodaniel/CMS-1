@@ -70,7 +70,7 @@
         <!-- v-if="autosearch && !person.name" -->
       </div>
       <div class="col-3 offset-3 offset-sm-4 offset-md-5 mt-4" v-if="!names">
-        <div class="default-btn primary-bg text-white border-0 text-center c-pointer">Search</div>
+        <div class="default-btn primary-bg text-white border-0 text-center c-pointer">Register</div>
       </div>
     </div>
     <div class="row mb-4">
@@ -249,7 +249,7 @@
     </div> -->
     
     <div class="row">
-      <div class="col-3 offset-5">
+      <div class="col-10 offset-1 col-md-3 offset-md-5">
         <!-- Button code -->
           <div title="Add to Calendar" class="addeventatc w-100">
               Add to Calendar

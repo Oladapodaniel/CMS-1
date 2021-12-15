@@ -743,8 +743,8 @@ export default {
         catch (err) {
           console.log(err)
         }
-      } else if (amount.value && selectedBank.value && accountNumber.value && selectedCashAccount.value && selectedIncomeAccount.value &&  image.value) {
-        console.log('image and paid')
+      } else if (amount.value && selectedBank.value && accountNumber.value && selectedCashAccount.value && selectedIncomeAccount.value) {
+        console.log('image or not and paid')
         try {
             let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
             console.log(data)
