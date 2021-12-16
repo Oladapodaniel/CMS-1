@@ -258,36 +258,36 @@
             :class="{ 'dd-hide-list': !branchLinkDropped }"
           >
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" :to="`/tenant/events`"
+              <router-link class="dd-link-item routelink" :to="`/tenant/branch/branchsummary`"
                 >Dashboard</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="false">
               <router-link class="dd-link-item routelink" :to="`/tenant/people`"
                 >People</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="false">
               <router-link class="dd-link-item routelink" :to="`/tenant/firsttimerslist`"
                 >FirstTimer</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="false">
               <router-link class="dd-link-item routelink" :to="`/tenant/events`"
                 >Communication</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="false">
               <router-link class="dd-link-item routelink" to="/tenant/reports"
                 >Report</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="false">
               <router-link class="dd-link-item routelink" to="/tenant/attendancecheckin"
                 >Financial</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="false">
               <router-link class="dd-link-item routelink" to="/tenant/events"
                 >Event</router-link
               >
@@ -787,7 +787,7 @@ export default {
 }
 
 .branch-list {
-      height: 295px;
+      /* height: 295px; */
 }
 
 .acc-list {

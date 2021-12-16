@@ -70,7 +70,7 @@
         <!-- v-if="autosearch && !person.name" -->
       </div>
       <div class="col-3 offset-3 offset-sm-4 offset-md-5 mt-4" v-if="!names">
-        <div class="default-btn primary-bg text-white border-0 text-center c-pointer">Search</div>
+        <div class="default-btn primary-bg text-white border-0 text-center c-pointer">Register</div>
       </div>
     </div>
     <div class="row mb-4">
@@ -227,8 +227,6 @@
           <div class="col-md-7 py-4 text-center">
             <button class="default-btn mr-3" @click="notme">Not Me</button>
             <button
-              :data-toggle="fullEventData.paymentFormId ? 'modal' : ''"
-              :data-target="fullEventData.paymentFormId ? '#PaymentOptionModal' : ''"
               class="default-btn add-btn mt-3 mt-sm-0"
               @click="confirmToRegister"
               :disabled="
@@ -237,6 +235,7 @@
             >
               {{ fullEventData.paymentFormId ? 'Make payment to register' : 'Confirm to register' }}
             </button>
+            <button ref="makePaymentRef" data-toggle="modal" data-target="#PaymentOptionModal" hidden>Toggle modal</button>
           </div>
         </div>
       </div>
@@ -250,7 +249,7 @@
     </div> -->
     
     <div class="row">
-      <div class="col-3 offset-5">
+      <div class="col-10 offset-1 col-md-3 offset-md-5">
         <!-- Button code -->
           <div title="Add to Calendar" class="addeventatc w-100">
               Add to Calendar
@@ -357,6 +356,7 @@ export default {
     const signout = ref()
     const content = ref()
     const disableClick = ref(false)
+    const makePaymentRef = ref()
 
     const birthMonth = ref("");
     const months = [
@@ -797,6 +797,7 @@ export default {
 
       } 
       if (fullEventData.value.paymentFormId) {
+        makePaymentRef.value.click()
         confirmCheck()
       }
     }
@@ -812,7 +813,7 @@ export default {
 
           try {
             let { data } = await axios.post("/createPublicPerson", createNewPerson)
-              console.log(data, 'ceeejay jenifer')
+              console.log(data)
               if (displayFamily.value) {
                 createNewFamily(data.returnObject.id)
               } else {
@@ -1155,6 +1156,7 @@ console.log(payload)
       authorizebutton,
       signout,
       content,
+      makePaymentRef
       // callIt
     };
   },

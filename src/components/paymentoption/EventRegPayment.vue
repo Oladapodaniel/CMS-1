@@ -115,7 +115,7 @@ export default {
           
 
           axios
-            .post(`/confirmDonation?txnref=${response.trxref}`, props.donation)
+            .post(`/donated?paymentType=0`, props.donation)
             .then((res) => {
               finish()
               console.log(res, "success data");
