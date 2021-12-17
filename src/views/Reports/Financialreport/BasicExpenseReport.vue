@@ -258,7 +258,6 @@ export default {
       axios
         .get(`/api/Reports/financials/getAccountTypeReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&accountType=${3}`)
         .then((res) => {
-
           console.log(res, "🎄🎄🎄");
           accountTransaction.value = res.data;
           groupedFundType()

@@ -76,7 +76,8 @@
             </div>
             <div class="col-md-3">
               <span class="hidden-header">Status</span>
-              <span class="small-text" v-if="message.deliveryReport.includes('sent')">
+              <span class="small-text">{{ message.deliveryReport }}</span>
+              <!-- <span class="small-text" v-if="message.deliveryReport.includes('sent')">
                 sent
               </span>
               <span class="small-text text-danger" v-else-if="message.deliveryReport.includes('failed')">
@@ -87,7 +88,7 @@
               </span>
               <span class="small-text" v-else-if="message.deliveryReport.includes('processed')">
                 processed
-              </span>
+              </span> -->
             </div>
             <div class="col-md-3 small-text">
               <span class="hidden-header">Date</span>

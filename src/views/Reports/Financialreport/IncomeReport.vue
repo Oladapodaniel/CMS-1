@@ -50,7 +50,7 @@
             <div>
               <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
             </div>
-            <Calendar id="icon" class="w-100" v-model="startDate" :showIcon="true" />
+            <Calendar id="icon" class="w-100"  dateFormat="dd/mm/yy" v-model="startDate" :showIcon="true" />
           </div>
         </div>
         <div class="col-md-4 col-sm-12 px-md-0">
@@ -212,8 +212,8 @@ export default {
     Listbox
   },
   setup() {
-    const startDate = ref(new Date());
-    const endDate = ref(new Date());
+    const startDate = ref("");
+    const endDate = ref("");
     const membersInChurch = ref([]);
     const toggleReport = ref(false);
     const summary = ref([]);
