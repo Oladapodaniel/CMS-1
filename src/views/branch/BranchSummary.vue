@@ -199,9 +199,6 @@ import axios from "@/gateway/backendapi";
 import router from '../../router';
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
-// import fromCDN from "from-cdn";
-import { workers } from "../../services/orgchart/orgChartData";
-import * as dhx from "../../services/orgchart/diagramWithEditor"
 // import OrganizationChart from 'primevue/organizationchart';
 export default {
     components: {
@@ -389,17 +386,17 @@ export default {
         }
         
         onMounted(() => {
-            console.log(workers)
+       
             // fromCDN([
             //     "../../services/orgchart/diagramWithEditor"
                 // "https://cdn.dhtmlx.com/diagram/pro/edge/diagramWithEditor.css",
                 // ]).then(() => {
                 // eslint-disable-next-line no-undef
-                editorr.value = new dhx.DiagramEditor(editor.value, {
-                    type: "org",
-                    shapeType: "img-card",
-                });
-                editorr.value.parse(workers);
+                // editorr.value = new dhx.DiagramEditor(editor.value, {
+                //     type: "org",
+                //     shapeType: "img-card",
+                // });
+                // editorr.value.parse(workers);
                 // });
         })
 
@@ -425,8 +422,6 @@ export default {
 }
 </script>
 <style scoped>
-@import "../../services/orgchart/diagramWithEditor.css";
-@import "../../services/orgchart/index.css";
     .heading-text {
         font: normal normal 800 1.5rem Nunito sans;
 }
