@@ -49,11 +49,12 @@ export default {
            Highcharts.chart(domId, {
     chart: {
         height: 800,
-        inverted: true
+        width: 1000,
+        inverted: false,
     },
 
     title: {
-        text: 'Highcharts Org Chart'
+        text: 'Ministry Level Chart'
     },
 
     accessibility: {
@@ -71,7 +72,14 @@ export default {
     series: [{
         type: 'organization',
         name: 'Highsoft',
-        fontSize: '10px',
+        dataLabels: {
+            style: {
+                fontSize: '13px',
+                fontWeight: 'normal',
+                color: 'orange',
+                textOverflow: 'ellipsis'
+            }
+        },
         keys: ['from', 'to'],
         data: matchedValues.value,
         //  [
@@ -92,30 +100,28 @@ export default {
         levels: [{
             level: 0,
             color: 'silver',
-            fontSize: '10px',
             dataLabels: {
                  style: {
                     fontSize: '10px'
                         },
-                color: 'black',
             },
             height: 20
         }, {
             level: 1,
-            color: 'silver',
-            dataLabels: {
-                color: 'black',
-                 style: {
-                    fontSize: '10px'
-                        }
-            },
+            color: '#3786da79',
+            // dataLabels: {
+            //     color: 'black',
+            //      style: {
+            //         fontSize: '10px'
+            //             }
+            // },
             height: 20
         }, {
             level: 2,
-            color: '#980104'
+            color: '#98010451'
         }, {
             level: 4,
-            color: '#359154'
+            color: '#35915451'
         }],
         nodes: props.data,
         // [{
@@ -163,15 +169,15 @@ export default {
         //     column: 5
         // }],
         colorByPoint: false,
-        color: '#007ad0',
+        color: '#35889151',
         dataLabels: {
-            color: 'white',
-             style: {
-                        fontSize: '10px'
-                    }
+            color: 'black',
+            // style: {
+            //     fontSize: '10px'
+            // }
         },
         borderColor: 'white',
-        nodeWidth: 65
+        nodeWidth: 120
     }],
     tooltip: {
         outside: true
@@ -199,10 +205,14 @@ export default {
 
 #csv {
     display: none;
+    color: #35889151
 }
 /* .chart{
     font-size: 10px!important;
 } */
-
+#domId {
+  min-width: 300px;
+  overflow: scroll !important;
+}
 
 </style>

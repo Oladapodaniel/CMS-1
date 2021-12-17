@@ -75,10 +75,7 @@
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <!-- <Dropdown  v-model="selectedLevel" :options="level" optionLabel="name" placeholder="Select level" class="w-100" /> -->
-                                    <div>
-                                        <Treeselect v-model="value" :multiple="false" :options="branches"/>
-                                    </div>
+                                    <CascadeSelect v-model="value" :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100" placeholder="Select a level" />
                                 </div>
                             </div>
                         </div>
@@ -206,7 +203,7 @@
                                 </div>
                                 <div class="mt-4">
                                     <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal" @click="addBranch">
-                                        Save
+                                        <i class="pi pi-spin pi-spinner" v-if="loading"></i> Save
                                     </button>
                                 </div>
                             </div>
@@ -234,17 +231,11 @@
                     Select the branch level you want your code to be generated with, then copy the generated code.
                 </div>
             <div class="col-9 mt-2">
-                <Treeselect v-model="value" :multiple="false" :options="branches"/>
+                <CascadeSelect v-model="value" :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100" placeholder="Select a level" />
             </div>
-            <button class="mt-2 mb-3 col-2 default-btn primary-bg text-white font-weight-bold c-pointer border-0 text-center" @click="generateCode">Generate</button>
-            <!-- <div class="col-md-12 mb-3" v-if="requestedCode">
-                <div class="p-col-12">
-                    <div class="p-inputgroup">
-                        <InputText placeholder="Heres your code" v-model="requestedCode" :value="requestedCode" ref="code"/>
-                        <Button icon="" @click="copyCode"/>
-                    </div>
-                </div>
-            </div> -->
+            <button class="mt-2 mb-3 col-2 default-btn primary-bg text-white font-weight-bold c-pointer border-0 text-center" @click="generateCode">
+                <i class="pi pi-spin pi-spinner" v-if="loadingCode"></i> Generate
+            </button>
             <div class="input-group mb-3 ml-3" v-if="requestedCode">
                 <input type="text" class="form-control" placeholder="Heres your code" :value="requestedCode" ref="code" aria-describedby="basic-addon1">
                 <div class="input-group-prepend">
@@ -257,6 +248,7 @@
     </div>
     <Toast />
     </div>
+    <Toast />
 </template>
 
 <script>
@@ -265,16 +257,15 @@ import axio from "axios";
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
-import Treeselect from 'vue3-treeselect'
-import 'vue3-treeselect/dist/vue3-treeselect.css'
 import { useToast } from "primevue/usetoast";
 import router from '../../router';
 import store from "../../store/store";
+import CascadeSelect from 'primevue/cascadeselect';
 export default {
     components: {
         Dropdown,
         InputText,
-        Treeselect
+        CascadeSelect
     },
     setup() {
         const toast = useToast()
@@ -295,24 +286,8 @@ export default {
         const requestedCode = ref("")
         const code = ref(null)
         const isoCode = ref("")
-
-        const options = ref([ {
-          id: 'a',
-          label: 'a',
-          children: [ {
-            id: 'aa',
-            label: 'aa',
-          }, {
-            id: 'ab',
-            label: 'ab',
-          } ],
-        }, {
-          id: 'b',
-          label: 'b',
-        }, {
-          id: 'c',
-          label: 'c',
-        } ])
+        const loading = ref(false)
+        const loadingCode = ref(false)
         const value = ref()
 
 
@@ -333,7 +308,7 @@ export default {
                                     id: i.id,
                                     children: i.teanants ? i.teanants.map(j => {
                                         return {
-                                            label: j.name,
+                                            clabel: j.name,
                                             id: j.id
                                         }
                                     }) : ''
@@ -360,8 +335,6 @@ export default {
                 .get("/api/Membership/GetCurrentSignedInUser")
                 .then((res) => {
                 isoCode.value = res.data.isoCode;
-                // userCountry.value = res.data.country;
-                // tenantId.value = store.getters.tenantId
                 console.log(store.getters.currentUser)
                 })
                 .catch((err) => console.log(err));
@@ -371,30 +344,26 @@ export default {
 
         const addBranch = async () => {
             let getHierarchyId = branches.value.find(i => {
-                return i.children.some(j => j.id == value.value)
+                return i.children.some(j => j.id == value.value.id)
             })
             console.log(getHierarchyId)
             const formData = new FormData();
-            // const HierarchyID = selectedLevel.value.id
-            // const selectedLevelID = selectedLevel.value.tenantID
-            // console.log(selectedLevelID,'allid')
              formData.append( "churchName", churchName.value ? churchName.value : "");  
              formData.append( "address", Address.value ? Address.value : "");
-             formData.append( "parentID", value.value ? value.value : "");
-            //  formData.append( "hierarchyID", getHierarchyId ? getHierarchyId.id : "");
+             formData.append( "parentID", value.value ? value.value.id : "");
              formData.append( "pastorName", pastorName.value ? pastorName.value : "");
              formData.append( "email", pastorEmail.value ? pastorEmail.value : ""); 
              formData.append( "pastorPhone", pastorPhone.value ? pastorPhone.value : "");
              formData.append( "image", image.value ? image.value : "");
-             formData.append( "countryID", 1275);
+            //  formData.append( "countryID", 1275);
              formData.append( "duplicateAttendances", replicateAttendance.value);
              formData.append( "duplicateEvents", replicateEvent.value);
              formData.append( "duplicateGroups", replicateGroup.value);
              console.log(encodeURIComponent(formData))
         try {
-        //   loading.value = true;
+          loading.value = true;
           let { data } = await axios.post('/api/Branching', formData);
-
+          loading.value = false
           // SEND SMS
           let SMSBody = {
             category: "",
@@ -405,7 +374,7 @@ export default {
             groupedContacts: [],
             isPersonalized: true,
             isoCode: isoCode.value,
-            message: `YOU HAVE BEEN ADDED AS A BRANCH ON CHURCHPLUS, \n You are on the right place and track, take control of your ministry, know the key information that will help you make better decision and become an effective manager. Use your credentials below to login and get started now \n Email: greatakins321@gmail.com \n Password: Branch@123 please do well to change your password after you login`,
+            message: `YOU HAVE BEEN ADDED AS A BRANCH ON CHURCHPLUS, \n You are on the right place and track, take control of your ministry, know the key information that will help you make better decision and become an effective manager. Use your credentials below to login and get started now \n Email: ${pastorEmail.value} \n Password: Branch@123 please do well to change your password after you login`,
             // subject: "Churchplus",
             toOthers: pastorPhone.value
           }
@@ -426,32 +395,33 @@ export default {
           }
         } catch (err) {
             console.log(err)
+            loading.value = false
             }
         }
 
-        // const getValue = () => {
-        //     if (chooseBranchCategory.value.toLowerCase().includes('join')) {
-        //         console.log('join')
-        //     }   else {
-        //         console.log('Initiate')
-                
-        //     }
-        // }
-
         const generateCode = async() => {
             let getHierarchyId = branches.value.find(i => {
-                return i.children.some(j => j.id == value.value)
+                return i.children.some(j => j.id == value.value.id)
             })
             let body = {
-                parentId: value.value,
+                parentId: value.value.id,
                 hierarchyID: getHierarchyId.id
             }
+            loadingCode.value = true
             try {
             let { data } = await axios.post('/api/Branching/requestcode', body);
+            loadingCode.value = false
             console.log(data)
             requestedCode.value = data.code
+            toast.add({
+                severity: "success",
+                summary: "Successful",
+                detail: "Code generated successfully, you can copy to share to the branch",
+                life: 5000,
+            });
             } catch (err) {
                 console.log(err)
+                loadingCode.value = false
             }
         }
         
@@ -497,13 +467,14 @@ export default {
           replicateFinancial,
           replicateEvent,
           replicateGroup,
-          options,
           value,
           generateCode,
           requestedCode,
           code,
           copyCode,
-          isoCode
+          isoCode,
+          loading,
+          loadingCode
         }
     },
 }

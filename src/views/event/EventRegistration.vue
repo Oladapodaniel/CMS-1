@@ -162,7 +162,7 @@
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
           >
-            <label for="">Address</label>
+            <label for="">School</label>
           </div>
           <div class="col-md-7">
             <span class="p-input-icon-left w-100">
@@ -179,7 +179,7 @@
               class="font-weight-7 small-text text-danger mb-0"
               v-if="person.personId && !person.address"
             >
-              Address is required
+              school is required
             </p>
           </div>
         </div>
