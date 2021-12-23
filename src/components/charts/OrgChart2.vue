@@ -30,13 +30,10 @@ export default {
                 allIDs.forEach(i => {
                     props.data.forEach(j => {
                         if (i == j.parentID) {
-                            // matchedVAlues.push(j)
-                            console.log(j)
                             matchedValues.value.push([props.data.find(k => k.id == i).id, j.id])
                         }
                     })
                 })
-                    console.log(matchedValues.value)
             }
         })
 
