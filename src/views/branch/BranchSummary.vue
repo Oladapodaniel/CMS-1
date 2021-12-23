@@ -85,8 +85,7 @@
                         <div class="dhx_sample-widget w-100" ref="editor"></div>
                     </div> -->
                     <!-- <Organisation domId="orgchart2" :data="mappedBranch"/> -->
-                    <OrganizationChart :value="data1" :collapsible="true" class="company" selectionMode="single" v-model:selectionKeys="selection"
-                        @nodeSelect="onNodeSelect" @nodeUnselect="onNodeUnselect" @nodeCollapse="onNodeCollapse" @nodeExpand="onNodeExpand">
+                    <OrganizationChart :value="data1" :collapsible="true" class="company" selectionMode="single" v-model:selectionKeys="selection">
                         <template #person="slotProps">
                             <!-- <div class="node-header ui-corner-top">{{slotProps.node.data.label}}</div> -->
                             <div class="node-content">
@@ -201,7 +200,6 @@ import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
 import CascadeSelect from 'primevue/cascadeselect';
 import OrganizationChart from 'primevue/organizationchart';
-import groupedData from "../../services/groupArray/groupResponse"
 export default {
     inheritAttrs: false,
     components: {
@@ -220,94 +218,6 @@ export default {
 			{name: 'Last 120days', code: new Date(new Date().setDate(new Date().getDate() - 120)).toLocaleDateString("en-US")},
 			{name: 'One Year', code: new Date(new Date().setDate(new Date().getDate() - 365)).toLocaleDateString("en-US")},
       ]);
-        // const branches = ref([
-        //     { name: "Region" },
-        //     { name: "District" },
-        //     { name: "Zone" },
-        //     { name: "Area" },
-        //     { name: "Branch" },
-        // ]);
-        // {
-        //     // key: '0',
-        //     type: 'person',
-        //     styleClass: 'p-person',
-        //     data: {label: 'CEO', name: 'Walter White', avatar: 'walter.jpg'},
-        //     children: [
-        //         {
-        //             // key: '0_0',
-        //             type: 'person',
-        //             styleClass: 'p-person',
-        //             data: {label: 'CFO', name:'Saul Goodman', avatar: 'saul.jpg'},
-        //             children:[{
-        //                 // key: '0_0_0',
-        //                 data: {label: 'Tax'},
-        //                 selectable: false,
-        //                 styleClass: 'department-cfo'
-        //             },
-        //             {
-        //                 // key: '0_0_1',
-        //                 data: {label: 'Legal'},
-        //                 selectable: false,
-        //                 styleClass: 'department-cfo'
-        //             }],
-        //         },
-        //         {
-        //             // key: '0_1',
-        //             type: 'person',
-        //             styleClass: 'p-person',
-        //             data: {label: 'COO', name:'Mike E.', avatar: 'mike.jpg'},
-        //             children:[{
-        //                 // key: '0_1_0',
-        //                 data: {label: 'Operations'},
-        //                 selectable: false,
-        //                 styleClass: 'department-coo'
-        //             }]
-        //         },
-        //         {
-        //             // key: '0_2',
-        //             type: 'person',
-        //             styleClass: 'p-person',
-        //             data: {label: 'CTO', name:'Jesse Pinkman', avatar: 'jesse.jpg'},
-        //             children:[{
-        //                 // key: '0_2_0',
-        //                 data: {label: 'Development'},
-        //                 selectable: false,
-        //                 styleClass: 'department-cto',
-        //                 children:[{
-        //                 // key: '0_2_0_0',
-        //                     data: {label: 'Analysis'},
-        //                     selectable: false,
-        //                     styleClass: 'department-cto'
-        //                 },
-        //                 {
-        //                     // key: '0_2_0_1',
-        //                     data: {label: 'Front End'},
-        //                     selectable: false,
-        //                     styleClass: 'department-cto'
-        //                 },
-        //                 {
-        //                     // key: '0_2_0_2',
-        //                     data: {label: 'Back End'},
-        //                     selectable: false,
-        //                     styleClass: 'department-cto'
-        //                 }]
-        //             },
-        //             {
-        //                 // key: '0_2_1',
-        //                 data: {label: 'QA'},
-        //                 selectable: false,
-        //                 styleClass: 'department-cto'
-        //             },
-        //             {
-        //                 // key: '0_2_2',
-        //                 data: {label: 'R&D'},
-        //                 selectable: false,
-        //                 styleClass: 'department-cto'
-        //             }]
-        //         }
-        //     ]
-        // }
-
         const data1 = ref({});
         const hierarchies = ref([])
         const levelmodalBtn = ref()
@@ -322,6 +232,7 @@ export default {
         const selectedBranch = ref({})
         const selectedPeriod = ref({})
         const branchAnalytics = ref({})
+        const selection = ref({})
 
         const getBranches = async() => {
             try {
@@ -339,68 +250,13 @@ export default {
                     }
                 })
                 console.log(mappedBranch.value)
+                let matchedValues = []
 
-            //     let primeData = []
-                
-            //     // const allIDs = mappedBranch.value.map(i => i.id)
-            //     let grouped = groupedData.groupData(mappedBranch.value, 'parentID')
-            //     console.log(grouped)
-
-            //     for (const prop in grouped) {
-            //         primeData.push({
-            //         name: prop,
-            //         value: grouped[prop]
-            //         })
-            // }
-            // let mappeddata1 = []
-            //         console.log(primeData)
-            //         mappeddata1 = primeData.map((i, index) => {
-            //         return {
-            //                 key: index,
-            //                 type: 'person',
-            //                 styleClass: 'p-person',
-            //                 data: {label: 'CEO', name: i.name, avatar: 'j.logo'},
-            //                 children: i.value.map((j, index2) => {
-            //                     return {
-            //                         key: `${index}_${index2}`,
-            //                         type: 'person',
-            //                         styleClass: 'p-person',
-            //                         data: {label: 'CEO', name: j.name, avatar: 'j.logo'},
-            //                     }
-            //                 })
-            //             }
-            //         })
-            //     let prri = {}
-            //     mappeddata1.forEach(i => {
-
-            //         Object.keys(prri).push(i)
-            //     console.log(prri)
-            //     })
-//             var arr = [
-//         {'id':1 ,'parentid' : 0},
-//         {'id':2 ,'parentid' : 1},
-//         {'id':3 ,'parentid' : 1},
-//         {'id':4 ,'parentid' : 2},
-//         {'id':5 ,'parentid' : 0},
-//         {'id':6 ,'parentid' : 0},
-//         {'id':7 ,'parentid' : 4}
-// ];
-let matchedValues = []
-
-const allIDs = mappedBranch.value.map(i => i.mainID)
-console.log(allIDs)
-let sum = 0
-let keyarr = []
+                const allIDs = mappedBranch.value.map(i => i.mainID)
+                let sum = 0
                 allIDs.forEach(i => {
                     mappedBranch.value.forEach((j, ind) => {
                         if (i == j.parent) {
-                            console.log(j)
-                            // delete j.mainID
-                            // delete j.parent
-                            // for (let i = 0; i <= ind; i++) {
-                            //     keyarr.push(i)
-                            // }
-                            // j.key = `${keyarr.join('_')}`
                             j.id = ind
                             j.parentid = sum
                             matchedValues.push(j)
@@ -409,39 +265,31 @@ let keyarr = []
                     sum++
                 })
 
-                
+                const unflatten = function ( array, parent, tree ){
+                    tree = typeof tree !== 'undefined' ? tree : [];
+                    parent = typeof parent !== 'undefined' ? parent : { id: 0 };
+                    var children = _.filter( array, function(child){ return child.parentid == parent.id; });
+                    if( !_.isEmpty( children )  ){
+                        if( parent.id == 0 ){
+                        tree = children;   
+                        }else{
+                        parent['children'] = children
+                        }
+                        _.each( children, function( child ){ unflatten( array, child ) } );                    
+                    }
+                    return tree;
+                }
 
-const unflatten = function( array, parent, tree ){
-   
-    tree = typeof tree !== 'undefined' ? tree : [];
-    parent = typeof parent !== 'undefined' ? parent : { id: 0 };
-        
-    var children = _.filter( array, function(child){ return child.parentid == parent.id; });
-    
-    if( !_.isEmpty( children )  ){
-        if( parent.id == 0 ){
-           tree = children;   
-        }else{
-           parent['children'] = children
-        }
-        _.each( children, function( child ){ unflatten( array, child ) } );                    
-    }
-    return tree;
-}
-let treeConstruted = unflatten(matchedValues)
-console.log(treeConstruted)
-const HQ = data.returnObject.find(i => i.parentID.includes('00000000-000'))
-console.log(HQ)
-let aaa = {
-        key: '0',
-        type: 'person',
-        styleClass: 'p-person',
-        data: {label: HQ, name: HQ.name, avatar: HQ.logo},
-        children: treeConstruted
-    }
-    data1.value = aaa
-    console.log(treeConstruted)
-
+                let treeConstruted = unflatten(matchedValues)
+                const HQ = data.returnObject.find(i => i.parentID.includes('00000000-000'))
+                let treeData = {
+                        key: '0',
+                        type: 'person',
+                        styleClass: 'p-hq',
+                        data: {label: HQ, name: HQ.name, avatar: HQ.logo},
+                        children: treeConstruted
+                    }
+                    data1.value = treeData
             }
             catch (err) {
                 console.log(err)
@@ -562,7 +410,8 @@ let aaa = {
             selectedBranch,
             selectedPeriod,
             getPeriod,
-            branchAnalytics
+            branchAnalytics,
+            selection
         }
     },
 }
@@ -616,5 +465,15 @@ font-size: 1.5rem;
   background: -o-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
   background: -ms-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
   background: -khtml-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
+}
+
+::v-deep(.p-person) {
+     background-color: #00000067;
+    color: #ffffff;
+}
+
+::v-deep(.p-hq) {
+     background-color: #ffffffd0;
+    color: #000000;
 }
 </style>
