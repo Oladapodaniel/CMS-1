@@ -41,33 +41,36 @@
     <!--end of header area -->
 
     <!-- date area -->
-    <div class="container-fluid my-3 px-0 bg-area">
+    <div class="container-fluid my-3  bg-area">
       <div
-        style="padding: 0.2rem 0 1.2rem 0"
-        class="row d-flex flex-row justify-content-center align-items-center"
+        class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3"
       >
-        <!-- <div class="col-md-2">
-          <h4 class="small font-weight-bold ml-2">Date Range</h4>
-        </div> -->
-
-        <div class="col-md-7 d-sm-flex">
-          <div class="p-field p-col-12 p-md-4 mt-1">
-            <div><label for="icon" class="font-weight-bold">Start Date</label></div>
-            <Calendar id="icon" v-model="startDate" :showIcon="true" />
-          </div>
-          <div class="p-field p-col-12 p-md-4 my-1">
-            <div><label for="icon" class="font-weight-bold">End Date</label></div>
-            <Calendar id="endDate" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/>
+        <div class="col-md-4 col-sm-12 px-md-0">
+          <div class="p-field p-col-12 pt-md-2 pb-2">
+            <div>
+              <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+            </div>
+            <Calendar id="icon" class="w-100"  dateFormat="dd/mm/yy" v-model="startDate" :showIcon="true" />
           </div>
         </div>
-        
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center mt-4">
-          <button
-            class="default-btn generate-report c-pointer font-weight-normal"
-            @click="incomeEndPoint"
-          >
-            Generate &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
-          </button>
+        <div class="col-md-4 col-sm-12 px-md-0">
+          <div class="p-field p-col-12 pt-md-2">
+            <div>
+              <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+            </div>
+            <Calendar id="endDate" class="w-100" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-12 pr-md-0">
+          <div class="p-field p-col-12 pt-md-2">
+            <button
+              class="default-btn generate-report c-pointer font-weight-normal mt-4"
+              @click="incomeEndPoint"
+            >
+            Generate Report
+              <!-- Generate &nbsp; &nbsp; <i class="pi pi-angle-down"></i> -->
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -168,8 +171,12 @@
               <td class="totalAmount">Total Income</td>
               <td></td>
               <td></td>
+<<<<<<< HEAD
               <td></td>
               <td class="totalAmount">{{ currencySymbol }}{{groupedCurrency(group)}} {{numberWithCommas(grouped(group))}}</td>
+=======
+              <td class="totalAmount">#{{numberWithCommas(grouped(group))}}</td>
+>>>>>>> 01ecf7afae6ed460fc965254e87ad6be00c75f0e
               <td></td>
             </tr>  
           </tbody>
@@ -203,7 +210,7 @@ import ColumnChart2 from "@/components/charts/ReportColumnChart";
 import Listbox from 'primevue/listbox';
 import exportService from "../../../services/exportFile/exportservice"
 import axios from "@/gateway/backendapi";
-import axioz from "axios";
+// import axioz from "axios";
 import dateFormatter from  "../../../services/dates/dateformatter";
 import groupResponse from  "../../../services/groupArray/groupResponse";
 
@@ -219,8 +226,8 @@ export default {
     Listbox
   },
   setup() {
-    const startDate = ref(new Date());
-    const endDate = ref(new Date());
+    const startDate = ref("");
+    const endDate = ref("");
     const membersInChurch = ref([]);
     const toggleReport = ref(false);
     const summary = ref([]);

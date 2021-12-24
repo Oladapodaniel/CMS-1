@@ -1,9 +1,12 @@
+
+
 <template>
   <div>
     <div class="nav-con">
       <div>
         <div class="nav" @click="linkClicked">
-          <div class="user">
+          <div class="w-100">
+            <div class="user">
             <img
               :src="churchLogo"
               v-if="churchLogo"
@@ -23,7 +26,7 @@
                 ><i class="pi pi-angle-right"></i></span
             ></a>
           </div>
-          <router-link to="/tenant" class="link routelink dashboard-link" >
+          <router-link to="/tenant" class="link routelink dashboard-link" v-if="admin || basicUser || canAccessFirstTimers" >
             <img
               src="../../assets/dashboardlinks/dashboard-icon.svg"
               class="link-icon"
@@ -40,7 +43,7 @@
                 route.path.includes('first-time'),
             }"
           >
-            <span @click="togglePeopleDropDown" >
+            <span @click="togglePeopleDropDown" v-if="admin || basicUser || groupLeader || canAccessFirstTimers">
               <img
                 src="../../assets/dashboardlinks/people.svg"
                 class="link-icon"
@@ -57,23 +60,23 @@
             </span>
           </a>
           <ul class="dd-list people-dd" :class="{ 'dd-hide-list': !peopleLinkDropped }">
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="admin || basicUser">
               <router-link class="dd-link-item routelink" :to="`/tenant/people`"
                 >Members</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="admin || basicUser || canAccessFirstTimers">
               <router-link class="dd-link-item routelink" :to="`/tenant/firsttimerslist`"
                 >First Timers</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="admin || basicUser || groupLeader">
               <router-link class="dd-link-item routelink" to="/tenant/peoplegroups"
                 >Groups</router-link
               >
             </li>
             <!-- Hidden -->
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="admin || basicUser">
               <router-link class="dd-link-item routelink" :to="{ name: 'Family' }">Families</router-link>
             </li>
           </ul>
@@ -86,7 +89,7 @@
             }"
             
           >
-            <span @click="toggleCommDropDown" >
+            <span @click="toggleCommDropDown" v-if="admin || basicUser">
               <img
                 src="../../assets/dashboardlinks/com-icon.svg"
                 class="link-icon comm-link-icon"
@@ -131,7 +134,7 @@
               'router-link-exact-active': route.path.includes('/tenant/event'),
             }"
           >
-            <span @click="toggleEventsDropDown" >
+            <span @click="toggleEventsDropDown" v-if="admin || basicUser">
               <img
                 src="../../assets/dashboardlinks/events-icon.svg"
                 class="link-icon"
@@ -174,7 +177,7 @@
             }"
 
           >
-            <span @click="toggleAccDropDown" >
+            <span @click="toggleAccDropDown" v-if="admin || financialAccount">
               <img
                 src="../../assets/dashboardlinks/acc-icon.svg
                 "
@@ -323,7 +326,7 @@
 
           <!-- Hidden -->
           <!-- <router-link to="tenant/reports"> -->
-          <a class="link routelink" @click="goToReport" >
+          <a class="link routelink" @click="goToReport" v-if="admin || basicUser || report">
             <img
               src="../../assets/dashboardlinks/reports-icon.svg"
               class="link-icon"
@@ -334,7 +337,7 @@
           </a>
           <!-- </router-link> -->
 
-          <div>
+          <div v-if="admin || basicUser || mobileAdmin">
             <div>
               <p @click="showMore" class="more-tab">
                 <span>{{ dropDownText }}...</span>
@@ -347,7 +350,7 @@
               </p>
             </div>
             <div class="more-links" :class="{ 'hide-more-links': moreShown }">
-              <a v-if="followup"  class="link follow-up routelink">
+              <!-- <a v-if="followup"  class="link follow-up routelink">
                 <router-link class="dd-link-item routelink" to="/tenant/followup">
                 <img
                   src="../../assets/dashboardlinks/follow-up-icon.svg"
@@ -356,7 +359,7 @@
                 />
                 Follow up
                 </router-link>
-              </a>
+              </a> -->
 
               <router-link  to="/tenant/social" class="link routelink text-decoration-none">
                 <img
@@ -396,21 +399,30 @@
             </div>
           </div>
         
-          <div>
-            
-            
+          <a v-if="followup"  class="link follow-up routelink">
+                <router-link class="dd-link-item routelink" to="/tenant/followup">
+                <img
+                  src="../../assets/dashboardlinks/follow-up-icon.svg"
+                  class="link-icon"
+                  alt=""
+                />
+                Follow up
+                </router-link>
+              </a>
           </div>
-
-         
-          <div class="push-link-down" >
+          <div class="w-100 align-self-end">
             <hr class="hr" />
-            <router-link class="text-dark" to="/tenant/settings"> 
+            <router-link class="text-dark" :to="basicUser ? '/tenant/settings/profile' : '/tenant/settings'" v-if="admin || basicUser"> 
               <div class="link">
                 Settings
               </div>
             </router-link>
             <div class="link" @click="logout">Logout</div>
           </div>
+
+
+         
+          
 
           <!-- Hidden -->
           <a class="link routelink" v-if="false"> Integration </a>
@@ -460,8 +472,15 @@ export default {
       if (!localStorage.getItem('roles')) return []
       return JSON.parse(localStorage.getItem('roles'))
     })
+
     const admin = ref(roleOfCurrentUser.value.some(i => i.toLowerCase() === 'admin'))
     const followup = ref(roleOfCurrentUser.value.length == 1 && roleOfCurrentUser.value[0].toLowerCase() == 'followup')
+    const basicUser = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'basicuser'))
+    const financialAccount = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'financialaccount'))
+    const mobileAdmin = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'mobileadmin'))
+    const report = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'reports'))
+    const groupLeader = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'groupleader'))
+    const canAccessFirstTimers = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'canaccessfirsttimers'))
     
 
 
@@ -630,7 +649,7 @@ export default {
 
 .nav {
   display: flex;
-  flex-direction: column;
+  flex-direction: inherit;
   padding: 8px 20px 24px 4px;
   background: #ebeff4;
   z-index: 100;
@@ -822,7 +841,7 @@ export default {
 .dd-link-item {
   color: #02172e;
   text-decoration: none;
-  opacity: 0.5;
+  /* opacity: 0.5; */
 }
 
 .comm-link-icon {

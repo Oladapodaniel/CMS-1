@@ -173,7 +173,7 @@ export default {
       zipCode: "",
       step1Completed: true,
       userDetails: {
-        subscriptionPlanID: 9,
+        subscriptionPlanID: 1,
         countryId: 89,
         password: "password",
       },
@@ -220,6 +220,7 @@ export default {
             localStorage.removeItem("pretoken");
           } else {
             localStorage.setItem("token", res.data.token);
+            localStorage.setItem('roles', JSON.stringify(["Admin"]))
           }
           // this.$store.dispatch("setStartPoint", url)
           this.loading = false;

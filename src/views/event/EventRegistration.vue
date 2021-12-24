@@ -70,7 +70,7 @@
         <!-- v-if="autosearch && !person.name" -->
       </div>
       <div class="col-3 offset-3 offset-sm-4 offset-md-5 mt-4" v-if="!names">
-        <div class="default-btn primary-bg text-white border-0 text-center c-pointer">Search</div>
+        <div class="default-btn primary-bg text-white border-0 text-center c-pointer">Register</div>
       </div>
     </div>
     <div class="row mb-4">
@@ -162,7 +162,7 @@
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
           >
-            <label for="">Address</label>
+            <label for="">School</label>
           </div>
           <div class="col-md-7">
             <span class="p-input-icon-left w-100">
@@ -179,7 +179,7 @@
               class="font-weight-7 small-text text-danger mb-0"
               v-if="person.personId && !person.address"
             >
-              Address is required
+              school is required
             </p>
           </div>
         </div>
@@ -227,8 +227,6 @@
           <div class="col-md-7 py-4 text-center">
             <button class="default-btn mr-3" @click="notme">Not Me</button>
             <button
-              :data-toggle="fullEventData.paymentFormId ? 'modal' : ''"
-              :data-target="fullEventData.paymentFormId ? '#PaymentOptionModal' : ''"
               class="default-btn add-btn mt-3 mt-sm-0"
               @click="confirmToRegister"
               :disabled="
@@ -237,6 +235,7 @@
             >
               {{ fullEventData.paymentFormId ? 'Make payment to register' : 'Confirm to register' }}
             </button>
+            <button ref="makePaymentRef" data-toggle="modal" data-target="#PaymentOptionModal" hidden>Toggle modal</button>
           </div>
         </div>
       </div>
@@ -250,7 +249,7 @@
     </div> -->
     
     <div class="row">
-      <div class="col-3 offset-5">
+      <div class="col-10 offset-1 col-md-3 offset-md-5">
         <!-- Button code -->
           <div title="Add to Calendar" class="addeventatc w-100">
               Add to Calendar
@@ -283,7 +282,7 @@
                   </button>
                 </div>
                 <div class="modal-body p-0 bg-modal pb-5">
-                  <PaymentOptionModal :close="close" :donation="donationObj" @selected-gateway="setGateway" @donation-confirmed="setConfirmDonation"/>
+                  <PaymentOptionModal :close="close" :donation="donationObj" @selected-gateway="setGateway" @donation-confirmed="setConfirmDonation" @set-props="setDonationProperties"/>
                   <!-- :orderId="formResponse.orderId" :donation="donationObj"  :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" -->
                 </div>
                 <!-- <div class="modal-footer bg-modal">
@@ -357,6 +356,9 @@ export default {
     const signout = ref()
     const content = ref()
     const disableClick = ref(false)
+    const makePaymentRef = ref()
+    const usedPaymentGateway = ref("")
+    const donationNewProps = ref({})
 
     const birthMonth = ref("");
     const months = [
@@ -561,7 +563,7 @@ export default {
     };
 
     // confirm status
-    const confirm = () => {
+    const confirm = (idOfNewPerson) => {
       // person.value.attendanceCode = +route.params.code;
       let newPerson = {};
       if (person.value.personId) {
@@ -584,6 +586,7 @@ export default {
           },
           activityID: route.params.eventId
         };
+        newPerson.person.personId = idOfNewPerson ? idOfNewPerson : ""
       }
       newPerson.person.monthOfBirth = birthMonth.value && !personData.value.monthOfBirth
         ? months.indexOf(birthMonth.value) + 1
@@ -640,7 +643,7 @@ export default {
 
     // confirm button check
 
-    const confirmCheck = async() => {
+    const confirmCheck = () => {
       
       donationObj.value = {
             name: person.value.name,
@@ -651,6 +654,7 @@ export default {
             orderID: fullEventData.value.paymentFormOrderID,
             currencyID: fullEventData.value.currencyID,
             paymentGateway: fullEventData.value.paymentForm.paymentGateWays,
+            usedPaymentGateway: usedPaymentGateway.value,
             contributionItems: fullEventData.value.paymentForm.contributionItems.map(i => {
               return {
                 contributionItemId: i.financialContribution.id,
@@ -661,10 +665,16 @@ export default {
             }),
 
           }
+          if (Object.keys(donationNewProps.value).length > 0) {
+              donationObj.value.transactionReference = donationNewProps.value.transactionReference,
+              donationObj.value.amount = donationNewProps.value.amount,
+              donationObj.value.gateway = donationNewProps.value.gateway
+          }
+    };
 
-
-          try {
-              let  res = await axios.post('/donation', donationObj.value)
+    const initializePayment = async() => {
+      try {
+              let  res = await axios.post('/initailizedonationpayment', donationObj.value)
               console.log(res)
             
               finish()
@@ -673,7 +683,7 @@ export default {
               finish()
               console.log(error)
             }
-    };
+    }
 
     const confirmToRegister = () => {
       disableClick.value = true;
@@ -796,6 +806,7 @@ export default {
 
       } 
       if (fullEventData.value.paymentFormId) {
+        makePaymentRef.value.click()
         confirmCheck()
       }
     }
@@ -815,11 +826,11 @@ export default {
               if (displayFamily.value) {
                 createNewFamily(data.returnObject.id)
               } else {
-                confirm()
+                confirm(data.returnObject.id)
               }
               
           }
-          catch (error) {
+          catch (error ) {
             console.log(error)
           }
     }
@@ -975,7 +986,10 @@ export default {
     });
 
     const setGateway = (payload) => {
-      donationObj.value.usedPaymentGateway = payload
+      usedPaymentGateway.value = payload // Get the gateway used
+      confirmCheck() // Update the donationObj with the used gateway
+      initializePayment() // make initialize payment call
+      
     }
 
     const setConfirmDonation = () => {
@@ -998,40 +1012,6 @@ export default {
                     })
 
                     console.log(familyWards.value.familyMembers)
-
-                //     familyName.value = res.data.familyName
-
-                //     userSearchString.value = `${res.data.father && res.data.father.firstName ? res.data.father.firstName : ""} ${res.data.father && res.data.father.lastName? res.data.father.lastName : ""}`
-
-                //     motherSearchString.value = `${res.data.mother && res.data.mother.firstName ? res.data.mother.firstName : ""} ${res.data.mother && res.data.mother.lastName ? res.data.mother.lastName : ""}`
-
-                //     father.value = { id: res.data.fatherID }
-
-                //     mother.value = { id: res.data.motherID }
-
-                //     email.value = res.data.email
-
-                //     homePhone.value = res.data.homePhone
-
-                //     familyMembers.value = res.data.familyMembers.map(i => {
-                //         return {
-                //             name: i.person.firstName,
-                //             personId: i.person.id,
-                //             roleId: memberRoles.value.find(j => j.id === i.familyRoleID),
-                //             id: i.id
-                //         }
-                //     })
-
-                //     familyMain.value = {
-                //         familyId: res.data.id,
-                //         id: res.data.familyMembers.length > 0 ? res.data.familyMembers[memberIndex.value].id : 0,
-                //         tenantId: res.data.tenantID
-                //     }
-
-                // console.log(memberRoles.value)
-                //     console.log(familyMembers.value)
-
-
                 }
                 catch (error) {
                     console.log(error)
@@ -1060,7 +1040,7 @@ export default {
 
     const setMemberDetails = (payload) => {
       familyMembers.value.push(payload)
-console.log(payload)
+      console.log(payload)
       let pushMemberToView = {
         person: {
           firstName: payload.name,
@@ -1074,23 +1054,12 @@ console.log(payload)
 
     }
 
-    /*end of masking functions */
+    const setDonationProperties = (payload) => {
+      console.log(payload)
+      donationNewProps.value = payload
+      confirmCheck()
+    }
 
-  //  onMounted(() => {
-  //     console.log(authorizebutton.value)
-  //     Calendarjs.calendarApi(authorizebutton.value, signout.value, content.value)
-  //   })
-    // authCalendar()
-
-    // const callIt = () => {
-    //   try {
-    //     let res = Calendarjs.addEvent()
-    //     console.log(res)
-    //   }
-    //   catch (err) {
-    //     console.log(err)
-    //   }
-    // }
     return {
       disableClick,
       toggleBase,
@@ -1154,6 +1123,11 @@ console.log(payload)
       authorizebutton,
       signout,
       content,
+      makePaymentRef,
+      usedPaymentGateway,
+      initializePayment,
+      setDonationProperties,
+      donationNewProps
       // callIt
     };
   },

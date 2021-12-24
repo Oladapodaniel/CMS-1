@@ -12,7 +12,7 @@
                 class="btn buy-btn center-flexed"
                 @click="payWithPaystack"
                 >
-                <span class="btn-text"> BUY UNITS </span>
+                <span class="btn-text box-btn-text2"> BUY UNITS </span>
                 </button>
             </div>
         </div>
@@ -67,11 +67,13 @@ import { useStore } from "vuex"
   border: 1px solid #dde2e6;
   border-radius: 20px;
   padding: 15px 0;
-  background: #f9a9a933 !important;
+  background: #f5ebeb1c !important;
 }
 
 .buy-btn {
-  background: rgb(112, 142, 177, 0.33);
+  font-weight: 700;
+  /* background: rgb(112, 142, 177, 0.33); */
+  background: rgba(255, 166, 0, 0.241);
   border-radius: 22px;
 }
 
@@ -79,6 +81,12 @@ import { useStore } from "vuex"
   opacity: 1;
   font-size: 11px;
   font-weight: 700;
+}
+.box-btn-text2 {
+  font-weight: 800;
+  /* color: #ffe50f; */
+  /* color: rgb(147, 95, 0) */
+  color: #136acd;
 }
 
 .center-flexed {

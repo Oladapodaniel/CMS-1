@@ -789,7 +789,7 @@ const routes = [
                             title: 'Churchplus - SMS Communication - Sent Messages',
                         },
                         component: () =>
-                            import ( /* webpackChunkName: "sentmessages" */ '@/views/communication/SentMessages')
+                        import ( /* webpackChunkName: "sentmessages" */ '@/views/communication/SentMessages'),
                     },
                     {
                         path: 'draft',

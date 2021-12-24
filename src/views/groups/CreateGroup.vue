@@ -1,7 +1,7 @@
 <template>
   <div class="container-wide container-top" @click="closeDropdownIfOpen">
     <div class="container-fluid">
-        <div class="row mt-3">
+        <div class="row mt-3 botom">
             <!-- <div class="col-12"> -->
                 <div class="col-12 col-sm-6 c-pointer "  @click="groupDetail">
                     <div  class="font-weight-bold h5 col-12  ">Group Detail</div>
@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-12 col-sm-6  c-pointer" @click="displayView">
                     <div class="font-weight-bold h5 col-12  ">Attendance & Checkin</div>
-                    <div class="" :class="{ 'baseline' : showAttendanceCheckin, 'hide-base' : !showAttendanceCheckin }"></div>
+                    <div class="" :class="{ 'baselinetwo' : showAttendanceCheckin, 'hide-basetwo' : !showAttendanceCheckin }"></div>
                 </div>
                 <!-- <div class="hr"><hr /></div> -->
             <!-- </div> -->
@@ -1709,6 +1709,15 @@ export default {
 * {
   box-sizing: border-box;
 }
+.botom{
+  border-bottom: 7px solid rgb(252, 248, 248);
+  border-radius: 2px;
+  position: relative;
+  /* border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px; */
+  
+  /* height: 4px; */
+}
 .add-person-btn {
         background: #136acd;
         color: #fff;
@@ -1742,49 +1751,63 @@ export default {
 .baseline {
     transition: all 150ms ease-in-out;
     background-color: #136acd;
+    position: absolute;
     /* background-color: #33475b; */
     /* color: #136acd" */
-    /* border-radius: 20px; */
+    border-radius: 10px;
     /* bottom: -2.5px; */
-    height: 3px;
+    z-index: 175;
+    height: 4px;
+    top: 33px;
     left: 0px;
-    /* width: 50%; */
+    width: 35%;
     opacity: 1;
 }
 
 .hide-base {
-    transition: all 150ms ease-in-out;
+     transition: all 150ms ease-in-out;
     background-color: #136acd;
+    position: absolute;
     /* background-color: #33475b; */
-    /* border-radius: 20px; */
+    /* color: #136acd" */
+    border-radius: 10px;
     /* bottom: -2.5px; */
-    height: 3px;
+    z-index: 175;
+    height: 4px;
+    top: 33px;
     left: 0px;
-    /* width: 50%; */
+    width: 35%;
     opacity: 0;
 }
 .baselinetwo {
-    transition: all 150ms ease-in-out;
+     transition: all 150ms ease-in-out;
     background-color: #136acd;
+    position: absolute;
     /* background-color: #33475b; */
     /* color: #136acd" */
-    border-radius: 20px;
+    border-radius: 10px;
     /* bottom: -2.5px; */
-    height: 6px;
+    z-index: 175;
+    height: 4px;
+    top: 33px;
     left: 0px;
-    /* width: 50%; */
+    width: 50%;
     opacity: 1;
 }
 
 .hide-basetwo {
     transition: all 150ms ease-in-out;
     background-color: #136acd;
+    position: absolute;
     /* background-color: #33475b; */
-    border-radius: 20px;
+    /* color: #136acd" */
+    border-radius: 10px;
     /* bottom: -2.5px; */
-    height: 6px;
+    z-index: 175;
+    height: 4px;
+    top: 36px;
     left: 0px;
-    /* width: 50%; */
+    width: 50%;
     opacity: 0;
 }
     @media screen and (max-width: 767px ){

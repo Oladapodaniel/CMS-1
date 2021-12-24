@@ -183,7 +183,7 @@
                       <!-- table header -->
                   <div class=" mt-3 container-fluid table-main px-0 remove-styles2 remove-border responsiveness "
                   :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
-                          <table class="table remove-styles mt-0  table-hover table-header-area " id="table">
+                          <table class="table remove-styles mt-0  table-header-area " id="table">
                             <thead class="table-header-area-main">
                               <tr class="small-text text-capitalize text-nowrap" style="border-bottom: 0">
                                   <!-- <th class="">Group Name</th> -->
@@ -204,11 +204,17 @@
                                 <td>{{ formatDate(OfferingList.date) }}</td>
                                 <td>{{ OfferingList.channel }}</td>
                                 </tr>
-                                 <tr class="answer-row">
-                                  <td class="answer">Total</td>
+                            </tbody>
+                            <tbody class="font-weight-bolder text-nowrap"
+                                        style="font-size: small">
+
+                                 <tr class="answer-row2">
+                                  <td class="gross-total">Total</td>
                                   <td></td>
                                   <td></td>
-                                  <td class="answer">NGN {{sumTotal && sumTotal.amount ? sumTotal.amount.toLocaleString() : 0}}.00</td>
+                                  <td class="gross-total responsive-horizontalrule">NGN {{sumTotal && sumTotal.amount ? sumTotal.amount.toLocaleString() : 0}}.00
+                                    <hr class="horizontal-rule" />
+                                  </td>
                                   <td></td>
                                   <td></td>
                                   <td></td>
@@ -271,9 +277,11 @@ export default {
         const display = ref(false);
         const offeringData = ref([]);
         const offeringChartResult = ref([]);
+        const offeringColumnChartResult = ref([]);
         // const pieChart= ref([])
         const mainOfferingData= ref([])
         const mappedOfferingCol = ref([])
+        const columnData = ref([])
         const showExport = ref(false);
         const fileName = ref("")
         const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'},{name: 'pdf'} ])
@@ -298,24 +306,49 @@ export default {
         })
 
     const offeringDetail = computed(() => {
-         if (offeringInChurch.value.length === 0) return []
-           offeringData.value = []
-            mainOfferingData.value = []
-            mappedOfferingCol.value = []
-           offeringInChurch.value.forEach(i => {
-            let offeringIndex = Object.keys(i).findIndex(i => i === 'amount')
-            let offeringValue = Object.values(i)[offeringIndex]
-            offeringData.value.push(offeringValue)  
-            // console.log(offeringInChurch.value)  
-            mappedOfferingCol.value.push(i.contributionName) 
-         });
+        //  if (offeringInChurch.value.length === 0) return []
+        //    offeringData.value = []
+        //     mainOfferingData.value = []
+        //     mappedOfferingCol.value = []
+        //    offeringInChurch.value.forEach(i => {
+        //     let offeringIndex = Object.keys(i).findIndex(i => i === 'amount')
+        //     let offeringValue = Object.values(i)[offeringIndex]
+        //     offeringData.value.push(offeringValue)  
+        //     // console.log(offeringInChurch.value)  
+        //     mappedOfferingCol.value.push(i.contributionName) 
+        //  });
+        //  mainOfferingData.value.push({
+        //      name: 'Offering',
+        //      color: '#002044',
+        //      data: offeringData.value
+        //  })
+        //  console.log(mainOfferingData.value)
+        //  return mainOfferingData.value  
+        mappedOfferingCol.value = []
+        mainOfferingData.value = []
+        columnData.value = []
+        
+        if (offeringColumnChartResult.value.length === 0) return []
+        offeringColumnChartResult.value.forEach(i => {
+          let sumvalue = 0
+          i.value.forEach(j => {
+            console.log(j)
+            sumvalue += +j.amount
+          })
+          
+          mappedOfferingCol.value.push(i.name) 
+          columnData.value.push(sumvalue)
+          console.log(columnData.value)
+        })
+    
          mainOfferingData.value.push({
              name: 'Offering',
              color: '#002044',
-             data: offeringData.value
+             data: columnData.value
          })
-        //  console.log(mainOfferingData.value)
-         return mainOfferingData.value  
+  
+        console.log(columnData)
+        return mainOfferingData.value 
      })
      const offeringChart = (array, key) => {
        // Accepts the array and key
@@ -333,9 +366,13 @@ export default {
           name: prop,
           value: result[prop].length
         })
+        offeringColumnChartResult.value.push({
+          name: prop,
+          value: result[prop]
+        })
          
       }
-      // console.log(offeringChartResult.value,'giddy')
+      console.log(offeringChartResult.value,'giddy')
     };
     const mappedOffering = computed(() => {
       if (offeringChartResult.value.length === 0 ) return []
@@ -359,6 +396,7 @@ export default {
     getMemberClassification();
 
      const genarateReport = () => {
+       offeringColumnChartResult.value = []
        if(offeringPersonID.value){
             let OfferingCategory = selectedCategories.value.map(i => i.id)
         //  console.log(OfferingCategory, 'MyGod');
@@ -467,6 +505,8 @@ export default {
             genarateReport,
             showReport,
             selectedofferingCategory,
+            offeringColumnChartResult,
+            columnData
             // pieChart
             
         }
@@ -477,6 +517,25 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+}
+.gross-total {
+  font-weight: bolder;
+  font-size: large;
+  color: #fff;
+}
+
+.answer-row2 {
+  background-color: #136acd;
+}
+.horizontal-rule {
+  border-radius: 5px;
+  margin: 0.125rem 0;
+  background: white;
+  height: 2px;
+}
+
+.responsive-horizontalrule {
+  display: inline-block;
 }
 
 .answer{

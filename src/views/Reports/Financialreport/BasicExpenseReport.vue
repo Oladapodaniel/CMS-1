@@ -256,9 +256,8 @@ export default {
     const fileToExport = ref([]);
     const generateReport = () => {
       axios
-        .get(`/api/Reports/financials/getAccountTypeReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&acccountType=${3}`)
+        .get(`/api/Reports/financials/getAccountTypeReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&accountType=${3}`)
         .then((res) => {
-
           console.log(res, "🎄🎄🎄");
           accountTransaction.value = res.data;
           groupedFundType()
@@ -557,9 +556,13 @@ border-top-right-radius: 0 !important;
 }
 
 .horizontal-rule{
- border: 0.1875rem solid #FFE50F;
+ /* border: 0.1875rem solid #FFE50F;
+  border-radius: 5px;
+  margin: 0.125rem 0; */
   border-radius: 5px;
   margin: 0.125rem 0;
+  background: white;
+  height: 1px;
 }
 
 .responsive-horizontalrule{

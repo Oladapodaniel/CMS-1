@@ -956,7 +956,7 @@ export default {
               validateEmail.value.classList.remove('is-invalid')
             } else {
               setTimeout(() => {
-                router.push(`/tenant/firsttimermanagement/${res.data.personID}`)
+                router.push(`/tenant/firsttimermanagement/${res.data.personID}?memberType=0`)
                 routeToFRM.value = false
               }, 2000)
             }
