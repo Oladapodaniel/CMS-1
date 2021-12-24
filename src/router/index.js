@@ -457,7 +457,7 @@ const routes = [
                             
                         },
                         {
-                        
+
                             path: 'addbranch',
                             name: "AddBranch",
                             meta: {
@@ -466,6 +466,55 @@ const routes = [
                             component: () =>
                                 import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/AddBranch')
                             
+                        },
+                        {
+
+                            path: 'people',
+                            name: "Peoples",
+                            meta: {
+                                title: 'Churchplus - Members',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "people" */ '../views/people/People.vue'),
+                                children: [
+                                    {
+                                        path: 'member',
+                                        name: "Member",
+                                        meta: {
+                                            title: 'Church - Members',
+                                        },
+                                        component: () =>
+                                            import ( /* webpackChunkName: "peopleempty" */ '../views/branch/people/People.vue')
+
+                                    }
+                                ]        
+                        },
+                        {
+                            path: 'firsttimerslist',
+                            name: 'FirstTimerList',
+                            meta: {
+                                title: 'Churchplus - First Timers',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
+                        },
+                        {
+                            path: 'reports',
+                            name: 'ReportList',
+                            meta: {
+                                title: 'Churchplus - Reports',
+                            },
+                            component: () =>
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Index.vue'),
+                        },
+                        {
+                            path: 'events',
+                            name: 'EventsList',
+                            meta: {
+                                title: 'Churchplus - Event Forms',
+                            },
+                            component: () =>
+                            import ( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
                         },
                     ]
                 

@@ -188,20 +188,20 @@
                               <tr class="small-text text-capitalize text-nowrap" style="border-bottom: 0">
                                   <!-- <th class="">Group Name</th> -->
                                   <th scope="col">Offering name</th>
-                                  <th scope="col">Amount</th>
                                   <th scope="col">Event name</th>
-                                  <th scope="col">Date</th>
                                   <th scope="col">Contact name</th>
+                                  <th scope="col">Amount</th>
+                                  <th scope="col">Date</th>
                                   <th scope="col">Channel</th>
                               </tr>
                             </thead>
                             <tbody class="font-weight-bold text-nowrap" style="font-size: small;">
                                 <tr v-for="(OfferingList, index) in offeringInChurch" :key="index">
                                 <td>{{ OfferingList.contributionName }}</td>
-                                <td>{{ OfferingList.amount.toLocaleString()}}.00</td>
                                 <td>{{ OfferingList.eventName }}</td>
-                                <td>{{ formatDate(OfferingList.date) }}</td>
                                 <td>{{ OfferingList.contactName }}</td>
+                                <td>{{ OfferingList.amount.toLocaleString()}}.00</td>
+                                <td>{{ formatDate(OfferingList.date) }}</td>
                                 <td>{{ OfferingList.channel }}</td>
                                 </tr>
                                  <tr class="answer-row">
@@ -241,6 +241,7 @@
 //  import html2pdf from "html2pdf.js"
 //  import InputText from 'primevue/inputtext';
  import exportService from "../../../services/exportFile/exportservice"
+ import groupArray from "../../../services/groupArray/groupResponse"
 //  import Dropdown from "primevue/dropdown";
 
 export default {
@@ -251,12 +252,13 @@ export default {
         OfferingPieChart,
         OfferingColumnChart,
         Calendar,
+        groupArray,
         MultiSelect
         // PaginationButtons 
         },
     setup() {
         const Categories = ref({});
-        const selectedCategories = ref();
+        const selectedCategories = ref([]);
         const showReport = ref(false);
         const startDate = ref("");
         const endDate = ref("");

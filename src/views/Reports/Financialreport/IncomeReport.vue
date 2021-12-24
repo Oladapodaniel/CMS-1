@@ -2,7 +2,7 @@
   <div class="container-fluid px-5 mt-5">
      <div class="row d-flex justify-content-between px-3">
             <h3 class="heading-text ml-1">Basic Income And Revenue Report</h3>
-                  <!-- {{groupedAccountName}} -->
+            <!-- {{currencySymbol}} -->
             <div class="default-btn  font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
@@ -155,12 +155,13 @@
             </tr>
           </thead>
           <tbody class="font-weight-bold small-text text-nowrap" v-for="(group, index) in Array.from(series)" :key='index'>
+              
             <tr v-for="(item, index) in accounts(group)" :key='index'>
               <td>{{item ? item.fund : ''}}</td>
               <td>{{item ? item.accountCategory : ''}}</td>
               <td>{{item.accountName ? item.accountName : ''}}</td>
               <td>{{item ? item.description : ''}}</td>
-              <td>{{item ?  Math.abs(item.amount) : ''}}</td>
+              <td>{{item && item.currency ? item.currency.symbol : ''}}{{item ?  Math.abs(item.amount) : ''}}</td>
               <td>{{item ? formatDate(item.date): ''}}</td>
             </tr>        
             <tr class="second-row">
@@ -168,10 +169,18 @@
               <td></td>
               <td></td>
               <td></td>
-              <td class="totalAmount">#{{numberWithCommas(grouped(group))}}</td>
+              <td class="totalAmount">{{ currencySymbol }}{{groupedCurrency(group)}} {{numberWithCommas(grouped(group))}}</td>
               <td></td>
-            </tr>        
+            </tr>  
           </tbody>
+            <tr class="second-row">
+              <td class="totalAmount">Grand Total</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="totalAmount">{{ currencySymbol }}{{numberWithCommas(grandTotal)}}</td>
+              <td></td>
+            </tr> 
         </table>
         <div class="table-foot d-flex justify-content-end mt-n3">
           <PaginationButtons />
@@ -218,6 +227,8 @@ export default {
     const columnChartData = ref([]);
     const series = ref([]);
     const showReport = ref(false)
+    const incomeReportData = ref([])
+    const currentUser = ref([])
     //   onMounted (() => {
     //        columnChartData.value = [
     //             {
@@ -245,6 +256,7 @@ export default {
      const fileToExport = ref([]);
      const getIncomeDetails = ref([]);
      const showExport = ref(false);
+     const currencySymbol = ref('');
      const formatDate = (activityDate) => {
         return dateFormatter.monthDayYear(activityDate);
       };
@@ -259,23 +271,25 @@ export default {
     })
 
      const incomeEndPoint = () => {
-        axios
+         axios
         .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
         .then((res) => {
+          incomeReportData.value = res.data
+           console.log(incomeReportData.value, 'incomereportData');
             pieChartData.value = [];
-             console.log(res, 'income response');
+            //  console.log(res, 'income response');
              toggleReport.value = true;
              getIncomeDetails.value = res.data
             const resMap = res.data.filter(i => i !== null)
-            console.log(resMap)
+            // console.log(resMap)
             groupedAccountName.value = groupResponse.groupData(resMap, 'accountName')
-            console.log(groupedAccountName, 'abc');
+            // console.log(groupedAccountName, 'abc');
              
-             console.log(res.data, 'getIncomeDetails');
+            //  console.log(res.data, 'getIncomeDetails');
              const accountNameMap = res.data.map(i => i && i.accountName ? i.accountName : '')
-             console.log(accountNameMap, "CCCCCCCC");
+            //  console.log(accountNameMap, "CCCCCCCC");
              const groupAccountName = new Set(accountNameMap)
-             series.value = groupAccountName
+             series.value = [...groupAccountName].filter(i => i !== "")
              console.log(series.value, 'serrrrr');
             console.log(groupAccountName, 'groupAccountName...');
             groupAccountName.forEach(i => {
@@ -288,8 +302,8 @@ export default {
             })
 
             columnChartData.value = constructChartData(res.data, groupAccountName);
-            console.log(columnChartData.value, "COLUMN CHART DATA");
-            console.log(pieChartData.value, 'pieChartData,,,,');
+            // console.log(columnChartData.value, "COLUMN CHART DATA");
+            // console.log(pieChartData.value, 'pieChartData,,,,');
 
             setTimeout(() => {
                 fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
@@ -308,7 +322,7 @@ export default {
 
     // incomeEndPoint();
     const constructChartData  = (accounts, series) => {
-        console.log(series, 'SERIES...');
+        // console.log(series, 'SERIES...');
         const data = []
         series.forEach(i => {
 
@@ -318,11 +332,11 @@ export default {
                 data: Array.from( new Set(accounts.filter(j => j && j.accountName ? j.accountName === i : false)
                 .map(i => Math.abs(i.amount))))
             }
-            console.log(datum, 'DATUM');
+            // console.log(datum, 'DATUM');
             data.push(datum)
             // console.log(i, 'groupAccountNameLLL');
         })
-            console.log(data, 'DATUM');
+            // console.log(data, 'DATUM');
         return data;
     }
     const getRandomColor = () => {
@@ -339,8 +353,10 @@ export default {
     }
     const grouped = (group) => {
       // alert(group)
-      console.log(groupedAccountName.value , 'star');
+      
+      console.log(groupedAccountName.value , 'star11');
       if (!groupedAccountName.value || !groupedAccountName.value[group] ) return 0
+      // console.log(group)
       const sum = groupedAccountName.value[group]
         .filter(i => i.amount)
         .map(i => i.amount)
@@ -348,18 +364,52 @@ export default {
       // console.log(sum, "SUM");
       return Math.abs(sum);
     }
+
+    const groupedCurrency = (group) => {
+      if (!groupedAccountName.value || !groupedAccountName.value[group] ) return ''
+      console.log(groupedAccountName, "groupedAccountName");
+      console.log(group, 'group');
+      return groupedAccountName.value[group].currency
+    }
     const accounts = (group) => {
+      // console.log(group, 'group111');
       // alert(group)
       if (!groupedAccountName.value || !groupedAccountName.value[group] ) return []
       return groupedAccountName.value[group]
     }
    
+   const grandTotal = computed( () => {
+     if (incomeReportData.value.length === 0 ) return 0
+     if (incomeReportData.value.length > 0 ) {
+       const totalAllGroupAmount = incomeReportData.value.filter(i => i !== null).map(i => i.amount).reduce((a,b) => a + b , 0)
+    //  console.log(totalAllGroupAmount, 'bbb')
+     return Math.abs(totalAllGroupAmount)
+     }
+   } )
+
+  const getCurrentlySignedInUser = async() => {
+      try {
+          const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+          console.log(res.data, 'getCurrentlySignedIn User')
+          currentUser.value = res.data
+          currencySymbol.value = currentUser.value.currencySymbol
+          console.log(currencySymbol.value, "currencySymbol");
+      } catch (err) {
+          /eslint no-undef: "warn"/
+          NProgress.done();
+          console.log(err);
+       }
+   }
+   getCurrentlySignedInUser()
+
     return {
       summary,
       Calendar,
       grouped,
       accounts,
+      groupedCurrency,
       startDate,
+      grandTotal,
       endDate,
       membersInChurch,
       toggleReport,
@@ -381,6 +431,9 @@ export default {
       incomeEndPoint,
       getRandomColor,
       numberWithCommas,
+      incomeReportData,
+      currencySymbol, 
+      currentUser,
     };
   },
 };
@@ -481,6 +534,9 @@ export default {
 }
 .showClass { 
     display: block;
+}
+.pl-5, .px-5 {
+    padding-left: 6rem !important;
 }
 .exportButton {
     font-weight: 800;

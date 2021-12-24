@@ -12,7 +12,7 @@
             <p class="total-text mb-0">TOTAL MEMBERS</p>
             <img
               class="trend-icon"
-              src="../../assets/dashboardlinks/trend-icon.svg"
+              src="../../../assets/dashboardlinks/trend-icon.svg"
               alt=""
             />
           </div>
@@ -353,7 +353,7 @@
                       v-if="person.pictureUrl"
                     />
                     <img
-                      src="../../assets/people/avatar-male.png"
+                      src="../../../assets/people/avatar-male.png"
                       alt=""
                       style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover"
                       v-else
@@ -501,20 +501,20 @@
 import { ref, computed } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
-import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
+import PaginationButtons from "../../../components/pagination/PaginationButtons.vue";
 import axios from "@/gateway/backendapi";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
-import store from "../../store/store";
-import stopProgressBar from "../../services/progressbar/progress";
-import membershipservice from "../../services/membership/membershipservice";
+import store from "../../../store/store";
+import stopProgressBar from "../../../services/progressbar/progress";
+import membershipservice from "../../../services/membership/membershipservice";
 import Tooltip from "primevue/tooltip";
 import Dropdown from "primevue/dropdown";
 import loadingComponent from "@/components/loading/LoadingComponent";
-import smsComponent from "../groups/component/smsComponent.vue";
-import emailComponent from "../groups/component/emailComponent.vue";
-import SideBar from "../groups/sidemodal/SideModal.vue";
+import smsComponent from "../../groups/component/smsComponent.vue";
+import emailComponent from "../../groups/component/emailComponent.vue";
+import SideBar from "../../groups/sidemodal/SideModal.vue";
 
 export default {
   props: ["list", "peopleCount"],

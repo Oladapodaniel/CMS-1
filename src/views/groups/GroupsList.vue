@@ -294,6 +294,7 @@ export default {
     const confirm = useConfirm();
     const showSMS = ref(false)
     const showEmail = ref(false)
+    // const route = useRoute();
 
     // const showSide = ref(false);
 
@@ -407,6 +408,7 @@ export default {
       toggleSearch,
       searchGroup,
       removeSearchText,
+      // route
     };
   },
 };
