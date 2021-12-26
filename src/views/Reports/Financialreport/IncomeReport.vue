@@ -171,12 +171,7 @@
               <td class="totalAmount">Total Income</td>
               <td></td>
               <td></td>
-<<<<<<< HEAD
-              <td></td>
-              <td class="totalAmount">{{ currencySymbol }}{{groupedCurrency(group)}} {{numberWithCommas(grouped(group))}}</td>
-=======
               <td class="totalAmount">#{{numberWithCommas(grouped(group))}}</td>
->>>>>>> 01ecf7afae6ed460fc965254e87ad6be00c75f0e
               <td></td>
             </tr>  
           </tbody>
