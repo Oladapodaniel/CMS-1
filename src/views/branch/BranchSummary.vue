@@ -12,10 +12,10 @@
             <div class="row mb-4">
                 <div class="col-12 d-flex justify-content-end">
                     <div class="mr-3">
-                        <Dropdown  v-model="selectedPeriod" :options="periods" optionLabel="name" placeholder="Select a period" class="w-100" />
+                        <Dropdown  :options="periods" optionLabel="name" placeholder="Select a period" class="w-100" v-model="selectedPeriod" @change="getPeriod" />
                     </div>
                     <div>
-                        <Dropdown  v-model="selectedBranch" :options="branches" optionLabel="name" placeholder="Select branch" class="w-100" />
+                        <CascadeSelect :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100" placeholder="Select a branch" v-model="selectedBranch" @change="getBranchAnalytics"/>
                     </div>
                 </div>
             </div>
@@ -26,10 +26,10 @@
                 <div class="col-md-2 item-Area mb-4">
                     <div class="row p-2 mb-2 d-flex justify-content-between">
                         <div class="top-icon-div d-flex justify-content-center align-items-center ml-2">
-                            <img class="trend-icon" src="/img/trend-icon.b63f0d8d.svg" alt="">
-                            <!-- <i class="pi pi-users text-center"></i> -->
+                            <!-- <img class="trend-icon" src="/img/trend-icon.b63f0d8d.svg" alt=""> -->
+                            <i class="pi pi-home text-center"></i>
                         </div>
-                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">0</div>
+                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">{{ branchAnalytics.totalBranches ? branchAnalytics.totalBranches : 0 }}</div>
                     </div>
                     <div class="row p-2">
                         <p class="item-text ml-2">Total Branches </p>
@@ -39,12 +39,12 @@
                 <div class="col-md-2 item-Area mb-4">
                     <div class="row p-2 mb-2 d-flex justify-content-between">
                         <div class="top-icon-div d-flex justify-content-center align-items-center ml-2">
-                            <!-- <i class="pi pi-users text-center"></i> -->
+                            <i class="pi pi-users text-center"></i>
 
                             <!-- <img class="trend-icon" src="/img/trend-icon.b63f0d8d.svg" alt=""> -->
-                            <img class="trend-icon " src="../../assets/dashboardlinks/people.svg" alt="">
+                            <!-- <img class="trend-icon " src="../../assets/dashboardlinks/people.svg" alt=""> -->
                         </div>
-                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total pl-0">0</div>
+                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total pl-0">{{ branchAnalytics.totalMembers ? branchAnalytics.totalMembers : 0 }}</div>
                     </div>
                     <div class="row p-2 ">
                         <p class="item-text ml-2 text-truncate">Total People</p>
@@ -55,8 +55,9 @@
                     <div class="row p-2 mb-2 d-flex justify-content-between">
                         <div class="top-icon-div d-flex justify-content-center align-items-center ml-2">
                             <i class="pi pi-list text-center"></i>
+                            <!-- <img class="trend-icon " src="../../assets/dashboardlinks/people.svg" alt=""> -->
                         </div>
-                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">0</div>
+                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">{{ branchAnalytics.averageAttendance ? branchAnalytics.averageAttendance : 0 }}</div>
                     </div>
                     <div class="row p-2">
                         <p class="item-text ml-2 text-truncate">Average Attendance</p>
@@ -66,12 +67,12 @@
                 <div class="col-md-2 item-Area mb-4">
                     <div class="row p-2 mb-2 d-flex justify-content-between">
                         <div class="top-icon-div d-flex justify-content-center align-items-center ml-2">
-                            <i class="pi pi-list text-center"></i>
+                            <i class="pi pi-money-bill text-center"></i>
                         </div>
-                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">0</div>
+                        <div class="col d-flex justify-content-end font-weight-bold align-items-center item-total">{{ branchAnalytics.averageIncome ? branchAnalytics.averageIncome : 0 }}</div>
                     </div>
                 <div class="row p-2">
-                    <p class="item-text ml-2 text-truncate">Average monthly income/expense</p>
+                    <p class="item-text ml-2 text-truncate">Average income</p>
                 </div>
             </div>
       <!-- </div> -->
@@ -79,11 +80,23 @@
         </div>
         <div class="container-fluid mb-3 ">
             <div class="row">
-                <div class="col-12 border " style="height: 100%; border-radius: 5px" v-show="mappedBranch.length > 0">
+                <div class="col-12 border domId p-3" v-show="mappedBranch.length > 0">
                     <!-- <div class="dhx_sample-container">
                         <div class="dhx_sample-widget w-100" ref="editor"></div>
                     </div> -->
-                    <Organisation domId="orgchart2" :data="mappedBranch"/>
+                    <!-- <Organisation domId="orgchart2" :data="mappedBranch"/> -->
+                    <OrganizationChart :value="data1" :collapsible="true" class="company" selectionMode="single" v-model:selectionKeys="selection">
+                        <template #person="slotProps">
+                            <!-- <div class="node-header ui-corner-top">{{slotProps.node.data.label}}</div> -->
+                            <div class="node-content">
+                                <img :src="slotProps.node.data.label.logo" width="32">
+                                <div>{{slotProps.node.data.name}}</div>
+                            </div>
+                        </template>
+                        <template #default="slotProps">
+                            <span>{{slotProps.node && slotProps.node.data ? slotProps.node.data.name : ''}}</span>
+                        </template>
+                    </OrganizationChart>
                 </div>
                 <div class="col-12 border p-3" style="height: 100%; border-radius: 5px; font-size: 1.5em" v-show="mappedBranch.length === 0"><div>👋 Hey!</div>
                 <div class="mt-3"> Welcome to the branching feature in Churchplus.</div>
@@ -175,24 +188,10 @@
     </div>
     </div>
     <Toast />
-    <!-- <OrganizationChart :value="data1" :collapsible="true" class="company" selectionMode="single" v-model:selectionKeys="selection"
-                @nodeSelect="onNodeSelect" @nodeUnselect="onNodeUnselect" @nodeCollapse="onNodeCollapse" @nodeExpand="onNodeExpand">
-                <template #person="slotProps">
-                    <div class="node-header ui-corner-top">{{slotProps.node.data.label}}</div>
-                    <div class="node-content">
-                        <img src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png" width="32">
-                        <div>{{slotProps.node.data.name}}</div>
-                    </div>
-                </template>
-                <template #default="slotProps">
-                    <span>{{slotProps.node.data.label}}</span>
-                </template>
-            </OrganizationChart> -->
-    
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import Organisation from "../../components/charts/OrgChart2.vue"
 import BranchSettings from "../settings/BranchLevelSettings.vue"
@@ -200,115 +199,27 @@ import axios from "@/gateway/backendapi";
 import router from '../../router';
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
-// import OrganizationChart from 'primevue/organizationchart';
+import CascadeSelect from 'primevue/cascadeselect';
+import OrganizationChart from 'primevue/organizationchart';
 export default {
+    inheritAttrs: false,
     components: {
         Organisation,
         Dropdown,
         BranchSettings,
         InputText,
-        // OrganizationChart
+        CascadeSelect,
+        OrganizationChart
     },
     setup() {
         const toast = useToast()
         const periods = ref([
-            { name: "One Week" },
-            { name: "This Week" },
-            { name: "Last Week" },
-            { name: "This Month" },
-            { name: "Last Month" },
-            { name: "Last 30days" },
-            { name: "Last 90days" },
-            { name: "One Year" },
-        ]);
-        const branches = ref([
-            { name: "Region" },
-            { name: "District" },
-            { name: "Zone" },
-            { name: "Area" },
-            { name: "Branch" },
-        ]);
-
-        const data1 = ref({
-            key: '0',
-            type: 'person',
-            styleClass: 'p-person',
-            data: {label: 'CEO', name: 'Walter White', avatar: 'walter.jpg'},
-            children: [
-                {
-                    key: '0_0',
-                    type: 'person',
-                    styleClass: 'p-person',
-                    data: {label: 'CFO', name:'Saul Goodman', avatar: 'saul.jpg'},
-                    children:[{
-                        key: '0_0_0',
-                        data: {label: 'Tax'},
-                        selectable: false,
-                        styleClass: 'department-cfo'
-                    },
-                    {
-                        key: '0_0_1',
-                        data: {label: 'Legal'},
-                        selectable: false,
-                        styleClass: 'department-cfo'
-                    }],
-                },
-                {
-                    key: '0_1',
-                    type: 'person',
-                    styleClass: 'p-person',
-                    data: {label: 'COO', name:'Mike E.', avatar: 'mike.jpg'},
-                    children:[{
-                        key: '0_1_0',
-                        data: {label: 'Operations'},
-                        selectable: false,
-                        styleClass: 'department-coo'
-                    }]
-                },
-                {
-                    key: '0_2',
-                    type: 'person',
-                    styleClass: 'p-person',
-                    data: {label: 'CTO', name:'Jesse Pinkman', avatar: 'jesse.jpg'},
-                    children:[{
-                        key: '0_2_0',
-                        data: {label: 'Development'},
-                        selectable: false,
-                        styleClass: 'department-cto',
-                        children:[{
-                        key: '0_2_0_0',
-                            data: {label: 'Analysis'},
-                            selectable: false,
-                            styleClass: 'department-cto'
-                        },
-                        {
-                            key: '0_2_0_1',
-                            data: {label: 'Front End'},
-                            selectable: false,
-                            styleClass: 'department-cto'
-                        },
-                        {
-                            key: '0_2_0_2',
-                            data: {label: 'Back End'},
-                            selectable: false,
-                            styleClass: 'department-cto'
-                        }]
-                    },
-                    {
-                        key: '0_2_1',
-                        data: {label: 'QA'},
-                        selectable: false,
-                        styleClass: 'department-cto'
-                    },
-                    {
-                        key: '0_2_2',
-                        data: {label: 'R&D'},
-                        selectable: false,
-                        styleClass: 'department-cto'
-                    }]
-                }
-            ]
-        });
+            {name: 'Last 30days', code:  new Date(new Date().setDate(new Date().getDate() - 30)).toLocaleDateString("en-US")},
+			{name: 'Last 90days', code:  new Date(new Date().setDate(new Date().getDate() - 90)).toLocaleDateString("en-US")},
+			{name: 'Last 120days', code: new Date(new Date().setDate(new Date().getDate() - 120)).toLocaleDateString("en-US")},
+			{name: 'One Year', code: new Date(new Date().setDate(new Date().getDate() - 365)).toLocaleDateString("en-US")},
+      ]);
+        const data1 = ref({});
         const hierarchies = ref([])
         const levelmodalBtn = ref()
         const joinmodalBtn = ref()
@@ -318,6 +229,11 @@ export default {
         const editor = ref()
         const editorr = ref(null)
         const mappedBranch = ref([])
+        const branches = ref([])
+        const selectedBranch = ref({})
+        const selectedPeriod = ref({})
+        const branchAnalytics = ref({})
+        const selection = ref({})
 
         const getBranches = async() => {
             try {
@@ -325,19 +241,90 @@ export default {
                 console.log(data)
                 mappedBranch.value = data.returnObject.map(i => {
                     return {
-                        id: i.id,
+                        mainID: i.id,
                         // title: 'CEO',
-                        name: i.name,
-                        image: i.logo,
-                        parentID: i.parentID
+                        // name: i.name,
+                        data: { name: i.name, avatar: i.logo, label: 'CEO' },
+                        // image: i.logo,
+                        parent: i.parentID,
+                        styleClass: 'p-person',
                     }
                 })
+                console.log(mappedBranch.value)
+                let matchedValues = []
+
+                const allIDs = mappedBranch.value.map(i => i.mainID)
+                let sum = 0
+                allIDs.forEach(i => {
+                    mappedBranch.value.forEach((j, ind) => {
+                        if (i == j.parent) {
+                            j.id = ind
+                            j.parentid = sum
+                            matchedValues.push(j)
+                        }
+                    })
+                    sum++
+                })
+
+                const unflatten = function ( array, parent, tree ){
+                    tree = typeof tree !== 'undefined' ? tree : [];
+                    parent = typeof parent !== 'undefined' ? parent : { id: 0 };
+                    var children = _.filter( array, function(child){ return child.parentid == parent.id; });
+                    if( !_.isEmpty( children )  ){
+                        if( parent.id == 0 ){
+                        tree = children;   
+                        }else{
+                        parent['children'] = children
+                        }
+                        _.each( children, function( child ){ unflatten( array, child ) } );                    
+                    }
+                    return tree;
+                }
+
+                let treeConstruted = unflatten(matchedValues)
+                const HQ = data.returnObject.find(i => i.parentID.includes('00000000-000'))
+                let treeData = {
+                        key: '0',
+                        type: 'person',
+                        styleClass: 'p-hq',
+                        data: {label: HQ, name: HQ.name, avatar: HQ.logo},
+                        children: treeConstruted
+                    }
+                    data1.value = treeData
             }
             catch (err) {
                 console.log(err)
             }
         }
         getBranches()
+
+        const getAllBranchList = async () => {
+                    try {
+                        axios
+                        .get("/api/Branching/hierarchieswithbranches")
+                        .then((res) => {
+                            console.log(res.data);
+                            branches.value = res.data.returnObject.map(i => {
+                                return {
+                                    label: i.name,
+                                    id: i.id,
+                                    children: i.teanants ? i.teanants.map(j => {
+                                        return {
+                                            clabel: j.name,
+                                            id: j.id
+                                        }
+                                    }) : ''
+                                }
+                            })
+
+                            console.log(branches.value)
+                        })
+                        .catch((err) => console.log(err));
+                    } catch (err) {
+                        console.log(err);
+                    }
+                    };
+        getAllBranchList();
 
         const getHierarchies = async() => {
             try {
@@ -385,21 +372,23 @@ export default {
                 console.log(err)
             }
         }
-        
-        onMounted(() => {
-       
-            // fromCDN([
-            //     "../../services/orgchart/diagramWithEditor"
-                // "https://cdn.dhtmlx.com/diagram/pro/edge/diagramWithEditor.css",
-                // ]).then(() => {
-                // eslint-disable-next-line no-undef
-                // editorr.value = new dhx.DiagramEditor(editor.value, {
-                //     type: "org",
-                //     shapeType: "img-card",
-                // });
-                // editorr.value.parse(workers);
-                // });
-        })
+
+        const getBranchAnalytics = async() => {
+            console.log(selectedBranch.value)
+            try {
+                let { data } = await axios.get(`/api/Branching/analytics?startDate=${selectedPeriod.value.code}&endDate=${new Date().toLocaleDateString("en-US")}&branchID=${selectedBranch.value.id}`)
+                console.log(data)
+                branchAnalytics.value = data
+            }
+            catch (err) {
+                console.log(err)
+            }
+            
+        }
+
+        const getPeriod = () => {
+            console.log(selectedPeriod.value)
+        }
 
         return {
             periods,
@@ -417,7 +406,13 @@ export default {
             editor,
             editorr,
             mappedBranch,
-            data1
+            data1,
+            getBranchAnalytics,
+            selectedBranch,
+            selectedPeriod,
+            getPeriod,
+            branchAnalytics,
+            selection
         }
     },
 }
@@ -459,4 +454,27 @@ line-height: 1.2;
 font-size: 1.5rem;
 }
 
+.domId {
+  height: 530px; 
+  border-radius: 5px;
+  min-width: 300px;
+  overflow: scroll !important;
+  background: rgb(22,34,42);
+  background: linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
+  background: -webkit-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
+  background: -moz-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
+  background: -o-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
+  background: -ms-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
+  background: -khtml-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
+}
+
+::v-deep(.p-person) {
+     background-color: #00000067;
+    color: #ffffff;
+}
+
+::v-deep(.p-hq) {
+     background-color: #ffffffd0;
+    color: #000000;
+}
 </style>
