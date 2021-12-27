@@ -327,13 +327,12 @@
             /> -->
           </div>
         </div>
-
-        <ConfirmDialog />
-        <Toast />
       </div>
     </div>
     </div>
   </div>
+  <ConfirmDialog />
+  <Toast />
 </template>
 
 <script>
@@ -372,6 +371,14 @@ export default {
         loading.value = false
         console.log(data)
         branchMembers.value = data
+        if (data.length === 0) {
+          toast.add({
+              severity: "warn",
+              summary: "No members found",
+              detail: "There are no members in this branch yet.",
+              life: 7000,
+            });
+        }
       }
       catch (err) {
         loading.value = false
