@@ -237,7 +237,7 @@
               'router-link-exact-active': route.path.includes('/tenant/event'),
             }"
           >
-            <span @click="toggleBranchDropDown">
+            <span @click="toggleBranchDropDown" v-if="admin || basicuser">
               <img
                 src="../../assets/dashboardlinks/events-icon.svg"
                 class="link-icon"
@@ -254,75 +254,45 @@
             </span>
           </a>
           <ul
-            class="dd-list"
-            :class="{ 'dd-hide-list': !branchLinkDropped , 'branch-list': branchLinkDropped }"
+            class="dd-list branch-list"
+            :class="{ 'dd-hide-list': !branchLinkDropped }"
           >
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" :to="`/tenant/branch/branchsummary`"
                 >Dashboard</router-link
               >
             </li>
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" :to="`/tenant/branch/people/member`"
+            <li class="dd-list-item" v-if="admin || basicuser">
+              <router-link class="dd-link-item routelink" :to="`/tenant/branch/branch_members`"
                 >People</router-link
               >
             </li>
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" :to="`/tenant/branch/firsttimerslist`"
+            <li class="dd-list-item" v-if="false">
+              <router-link class="dd-link-item routelink" :to="`/tenant/firsttimerslist`"
                 >FirstTimer</router-link
               >
-            </li >
-            <li class="dd-list-item">
-               <span class="drop-link dd-link-item routelink" @click="toggleCommunication"
-                >Communication
-                <span class="user-link-icon">
-                  <i
-                    class="pi pi-angle-up more-icon"
-                    :class="{ 'tbb-icon-rotate': commLinkDropped }"
-                  ></i></span
-              ></span>
             </li>
-             
-             <ul class="" :class="{ 'dd-hide-list': !commLinkDrop }"
-               :style="{ 'height': commLinkDrop  ? '200px' : '0px'}"
-             >
-              <li class="dd-list-item">
-                <router-link class="dd-link-item routelink" to="/tenant/sms/sent"
-                  >SMS</router-link
-                >
-              </li>
-              <!-- Hidden -->
-              <li class="dd-list-item">
-                <router-link
-                  class="dd-link-item routelink"
-                  to="/tenant/email"
-                  >Email</router-link
-                >
-              </li>
-              <!-- <li class="dd-list-item">
-                <router-link class="dd-link-item routelink" to="/tenant/whatsapp">Whatsapp</router-link>
-              </li> -->
-              <li class="dd-list-item" v-if="false">
-                <router-link class="dd-link-item routelink" to="/tenant/Voice">Voice</router-link>
-              </li>
-          </ul>
-
-            <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/branch/reports"
+            <li class="dd-list-item" v-if="false">
+              <router-link class="dd-link-item routelink" :to="`/tenant/events`"
+                >Communication</router-link
+              >
+            </li>
+            <li class="dd-list-item" v-if="false">
+              <router-link class="dd-link-item routelink" to="/tenant/reports"
                 >Report</router-link
               >
             </li>
-                <!-- <li class="dd-list-item">
-                  <router-link class="dd-link-item routelink" to="/tenant/branch/attendancecheckin"
-                    >Financial</router-link
-                  >
-                </li> -->
-                <li class="dd-list-item">
-                  <router-link class="dd-link-item routelink" to="/tenant/branch/events"
-                    >Event</router-link
-                  >
-                </li>
-              </ul>
+            <li class="dd-list-item" v-if="false">
+              <router-link class="dd-link-item routelink" to="/tenant/attendancecheckin"
+                >Financial</router-link
+              >
+            </li>
+            <li class="dd-list-item" v-if="false">
+              <router-link class="dd-link-item routelink" to="/tenant/events"
+                >Event</router-link
+              >
+            </li>
+          </ul>
 
           <!-- Hidden -->
           <!-- <router-link to="tenant/reports"> -->
@@ -536,10 +506,6 @@ export default {
       return moreShown.value ? "Less" : "More";
     });
 
-    const commLinkDrop = ref(false);
-    const toggleCommunication = () => {
-      commLinkDrop.value = !commLinkDrop.value
-    }
     const tenantInfo = ref({});
 
     const getChurchProfile = async() => {
@@ -594,15 +560,6 @@ export default {
     const goToReport = () => {
       router.push('/tenant/reports')
     }
-
-    // const toggleNavFlyOver = (event) => {
-    //   flyOverRef.value.toggle(event)
-    // }  
-    
-    // const closeOverlay = () => {
-    //   flyOverRef.value.hide()
-    // }
-
     
 
     return {
@@ -624,12 +581,16 @@ export default {
       churchLogo,
       logout,
       goToReport,
-      // flyOverRef,
-      // toggleNavFlyOver,
-      // closeOverlay,
       branchLinkDropped,
-      toggleCommunication,
-      commLinkDrop
+      roleOfCurrentUser,
+      followup,
+      admin,
+      basicUser,
+      financialAccount,
+      mobileAdmin,
+      report,
+      groupLeader,
+      canAccessFirstTimers
     };
   },
 };
@@ -704,11 +665,6 @@ export default {
 .link-icon {
   padding-right: 10px;
 }
-
-/* .dd-list-ul {
-      height: 73px;
-    transition: all 0.3s ease-in-out;
-} */
 
 .link-image {
   width: 25px;
@@ -816,7 +772,6 @@ export default {
 
 .branch-list {
       /* height: 295px; */
-      height: 340px;
 }
 
 .acc-list {

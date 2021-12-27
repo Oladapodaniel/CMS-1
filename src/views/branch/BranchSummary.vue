@@ -85,8 +85,9 @@
                     </div> -->
                     <Organisation domId="orgchart2" :data="mappedBranch"/>
                 </div>
-                <div class="col-12 border p-3" style="height: 100%; border-radius: 5px" v-show="mappedBranch.length === 0"><div>👋 Hey!</div>
-                <div> Welcome to the branching feature in Churchplus.</div> Manage your ministry branches easily via this branch feature. Start by setting up your ministry's hierarchies in <router-link to="/tenant/settings/branchlevelsettings">Settings</router-link>, then create your branches.</div>
+                <div class="col-12 border p-3" style="height: 100%; border-radius: 5px; font-size: 1.5em" v-show="mappedBranch.length === 0"><div>👋 Hey!</div>
+                <div class="mt-3"> Welcome to the branching feature in Churchplus.</div>
+                <div class="mt-3"> Manage your ministry branches easily via this branch feature. Start by setting up your ministry's hierarchies in <router-link to="/tenant/settings/branchlevelsettings">Settings</router-link>, then create your branches.</div></div>
             </div>
         </div>
     </div>

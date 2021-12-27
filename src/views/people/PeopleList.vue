@@ -1349,11 +1349,4 @@ a {
   padding: 10px 0;
   border-radius: 0px 0px 22px 22px;
 }
-
-.hide  {
-  display: none;
-}
-.show {
-  display: block;
-}
 </style>

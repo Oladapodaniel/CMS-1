@@ -253,7 +253,6 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import axio from "axios";
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
@@ -424,17 +423,6 @@ export default {
                 loadingCode.value = false
             }
         }
-        
-        const orgData = async() => {
-     
-            try {
-            let data = await axio.get('https://gist.githubusercontent.com/bumbeishvili/dc0d47bc95ef359fdc75b63cd65edaf2/raw/c33a3a1ef4ba927e3e92b81600c8c6ada345c64b/orgChart.json');
-            console.log(data)
-            } catch (err) {
-                console.log(err)
-            }
-        }
-        orgData()
 
         const copyCode = () => {       
             code.value.select();

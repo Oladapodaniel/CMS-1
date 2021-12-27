@@ -210,6 +210,7 @@ const routes = [
                     },
                     {
                         path: 'add/:personId?',
+                        name: 'AddPerson',
                         meta: {
                             title: 'Churchplus - Member Form',
                         },
@@ -468,27 +469,37 @@ const routes = [
                             
                         },
                         {
-
-                            path: 'people',
-                            name: "Peoples",
+                            path: 'branch_members',
+                            name: "BranchMembers",
                             meta: {
-                                title: 'Churchplus - Members',
+                                title: 'Church - Members',
                             },
                             component: () =>
-                                import ( /* webpackChunkName: "people" */ '../views/people/People.vue'),
-                                children: [
-                                    {
-                                        path: 'member',
-                                        name: "Member",
-                                        meta: {
-                                            title: 'Church - Members',
-                                        },
-                                        component: () =>
-                                            import ( /* webpackChunkName: "peopleempty" */ '../views/branch/people/People.vue')
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/branch/people/People.vue')
 
-                                    }
-                                ]        
                         },
+                        // {
+
+                        //     path: 'branch_people',
+                        //     name: "BranchPeoples",
+                        //     meta: {
+                        //         title: 'Churchplus - Members',
+                        //     },
+                        //     component: () =>
+                        //         import ( /* webpackChunkName: "people" */ '../views/people/People.vue'),
+                        //         children: [
+                        //             {
+                        //                 path: 'member',
+                        //                 name: "Member",
+                        //                 meta: {
+                        //                     title: 'Church - Members',
+                        //                 },
+                        //                 component: () =>
+                        //                     import ( /* webpackChunkName: "peopleempty" */ '../views/branch/people/People.vue')
+
+                        //             }
+                        //         ]        
+                        // },
                         {
                             path: 'firsttimerslist',
                             name: 'FirstTimerList',
