@@ -100,7 +100,7 @@
                             distance="5"
                             :titleMargin="10"
                             :data ="summaryChart"
-                            :series = "series"
+                            :series = "attendanceSeries"
                             :seriesText="`Attendance analysis`"
 
                         />
@@ -167,7 +167,7 @@ import MultiSelect from 'primevue/multiselect';
 
 // import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
-import ReportAreaChart from "@/components/charts/AreaChart.vue";
+import ReportAreaChart from "../../../components/charts/AreaChart.vue";
 import axios from "@/gateway/backendapi";
 // import InputText from "primevue/inputtext"
 import dateFormatter from "../../../services/dates/dateformatter.js"
@@ -199,6 +199,7 @@ import { useToast } from 'primevue/usetoast';
     const selectedEvents =ref()
     const series = ref([])
     const activityReport = ref([])
+    const attendanceSeries = ref([])
     const startDate = ref('');
     const endDate = ref('');
     const attendanceData = ref([])
@@ -261,7 +262,13 @@ import { useToast } from 'primevue/usetoast';
 
      const groupCategory = () => {
         attendanceGroup.value = groupData.groupData(activityReport.value, 'attendanceCategory');
+        const dateSeries = groupData.groupData(activityReport.value, 'date');
+        for (const prop in dateSeries) {
+                attendanceSeries.value.unshift(dateFormatter.monthDayYear(prop))
+            }
             console.log(attendanceGroup.value)
+            console.log(attendanceSeries.value)
+            
      }
      const groupName = () =>{
        const result = groupData.groupData(activityReport.value, 'name');
@@ -311,101 +318,118 @@ import { useToast } from 'primevue/usetoast';
 
     const summaryChart = computed(() => {
          if (Object.keys(attendanceGroup.value).length === 0) return new Object()
-            attendanceGroup.value.Babies ? attendanceGroup.value.Babies.forEach(i => {
-            let babiesIndex = Object.keys(i).findIndex(i => i === 'attendance')
-            let babiesValue = Object.values(i)[babiesIndex]
-            babiesData.value.unshift(babiesValue)
-            console.log(babiesData.value)
-        }) : []
+         Object.entries(attendanceGroup.value).forEach(([key, value]) => {
+              console.log(key, value)
 
-         categoryData.value.push({
-                name: 'Babies',
-                color: '#3f37c9',
-                data: babiesData.value
+              let newArr = []
+              value.forEach(i => {
+                  let valIndex = Object.keys(i).findIndex(i => i === 'attendance')
+                  let attValue = Object.values(i)[valIndex]
+                  newArr.unshift(attValue)
+              })
+              categoryData.value.push({
+                      name: key,
+                      color: `#${Math.floor(Math.random()*16777215).toString(16)}`,
+                      data: newArr
+                  })
             })
+            console.log(categoryData.value)
+        //     attendanceGroup.value.Babies ? attendanceGroup.value.Babies.forEach(i => {
+        //     let babiesIndex = Object.keys(i).findIndex(i => i === 'attendance')
+        //     let babiesValue = Object.values(i)[babiesIndex]
+        //     babiesData.value.unshift(babiesValue)
+        //     console.log(babiesData.value)
+        // }) : []
 
-           attendanceGroup.value.FeMale ? attendanceGroup.value.FeMale.forEach(i => {
-            let womenIndex = Object.keys(i).findIndex(i => i === 'attendance')
-            let womenValue = Object.values(i)[womenIndex]
-            womenData.value.unshift(womenValue)
+        //  categoryData.value.push({
+        //         name: 'Babies',
+        //         color: '#3f37c9',
+        //         data: babiesData.value
+        //     })
+
+        //    attendanceGroup.value.FeMale ? attendanceGroup.value.FeMale.forEach(i => {
+        //     let womenIndex = Object.keys(i).findIndex(i => i === 'attendance')
+        //     let womenValue = Object.values(i)[womenIndex]
+        //     womenData.value.unshift(womenValue)
            
-        }) : []
+        // }) : []
 
-         categoryData.value.push({
-                name: 'Women',
-                color: '#43eb10',
-                data: womenData.value
-            })
-            attendanceGroup.value.Male ? attendanceGroup.value.Male.forEach(i => {
-            let maleIndex = Object.keys(i).findIndex(i => i === 'attendance')
-            let maleValue = Object.values(i)[maleIndex]
-            maleData.value.unshift(maleValue)
-            console.log(maleData)
-        }) : []
+        //  categoryData.value.push({
+        //         name: 'Women',
+        //         color: '#43eb10',
+        //         data: womenData.value
+        //     })
+        //     attendanceGroup.value.Male ? attendanceGroup.value.Male.forEach(i => {
+        //     let maleIndex = Object.keys(i).findIndex(i => i === 'attendance')
+        //     let maleValue = Object.values(i)[maleIndex]
+        //     maleData.value.unshift(maleValue)
+        //     console.log(maleData)
+        // }) : []
 
-         categoryData.value.push({
-                name: 'male',
-                color: '#a207f0',
-                data: maleData.value
-            })
+        //  categoryData.value.push({
+        //         name: 'male',
+        //         color: '#a207f0',
+        //         data: maleData.value
+        //     })
 
-            attendanceGroup.value.Boy ? attendanceGroup.value.Boy.forEach(i => {
-            let boyIndex = Object.keys(i).findIndex(i => i === 'attendance')
-            let boyValue = Object.values(i)[boyIndex]
-            boyData.value.unshift(boyValue)
-        }) : []
+        //     attendanceGroup.value.Boy ? attendanceGroup.value.Boy.forEach(i => {
+        //     let boyIndex = Object.keys(i).findIndex(i => i === 'attendance')
+        //     let boyValue = Object.values(i)[boyIndex]
+        //     boyData.value.unshift(boyValue)
+        // }) : []
 
-         categoryData.value.push({
-                name: 'Boy',
-                color: '#e7f20c',
-                data: boyData.value
-            })
-            attendanceGroup.value.Girl ? attendanceGroup.value.Girl.forEach(i => {
-            let girlIndex = Object.keys(i).findIndex(i => i === 'attendance')
-            let girlValue = Object.values(i)[girlIndex]
-            girlData.value.unshift(girlValue)
+        //  categoryData.value.push({
+        //         name: 'Boy',
+        //         color: '#e7f20c',
+        //         data: boyData.value
+        //     })
+        //     attendanceGroup.value.Girl ? attendanceGroup.value.Girl.forEach(i => {
+        //     let girlIndex = Object.keys(i).findIndex(i => i === 'attendance')
+        //     let girlValue = Object.values(i)[girlIndex]
+        //     girlData.value.unshift(girlValue)
             
-        }) : []
+        // }) : []
 
-         categoryData.value.push({
-                name: 'Girl',
-                color: '#818182',
-                data: girlData.value
-            })
+        //  categoryData.value.push({
+        //         name: 'Girl',
+        //         color: '#818182',
+        //         data: girlData.value
+        //     })
 
-             attendanceGroup.value.Children ?  attendanceGroup.value.Children.forEach(i => {
-            let ChildrenIndex = Object.keys(i).findIndex(i => i === 'attendance')
-            let ChildrenValue = Object.values(i)[ChildrenIndex]
-            ChildrenData.value.unshift(ChildrenValue)
-            console.log(ChildrenData)
-        }) : []
-         categoryData.value.push({
-                name: 'Children',
-                color: '#ed6109',
-                data: ChildrenData.value
-            })
-             attendanceGroup.value.Teenagers ? attendanceGroup.value.Teenagers.forEach(i => {
-            let TeenagersIndex = Object.keys(i).findIndex(i => i === 'attendance')
-            let TeenagersValue = Object.values(i)[TeenagersIndex]
-           TeenagersData.value.unshift(TeenagersValue)
-        }) : []
+        //      attendanceGroup.value.Children ?  attendanceGroup.value.Children.forEach(i => {
+        //     let ChildrenIndex = Object.keys(i).findIndex(i => i === 'attendance')
+        //     let ChildrenValue = Object.values(i)[ChildrenIndex]
+        //     ChildrenData.value.unshift(ChildrenValue)
+        //     console.log(ChildrenData)
+        // }) : []
+        //  categoryData.value.push({
+        //         name: 'Children',
+        //         color: '#ed6109',
+        //         data: ChildrenData.value
+        //     })
+        //      attendanceGroup.value.Teenagers ? attendanceGroup.value.Teenagers.forEach(i => {
+        //     let TeenagersIndex = Object.keys(i).findIndex(i => i === 'attendance')
+        //     let TeenagersValue = Object.values(i)[TeenagersIndex]
+        //    TeenagersData.value.unshift(TeenagersValue)
+        // }) : []
 
-         categoryData.value.push({
-                name: 'Teenagers',
-                color: '#b01105',
-                data: TeenagersData.value
-            })
+        //  categoryData.value.push({
+        //         name: 'Teenagers',
+        //         color: '#b01105',
+        //         data: TeenagersData.value
+        //     })
 
-            attendanceGroup.value.singles ? attendanceGroup.value.singles.forEach(i => {
-            let SinglesIndex = Object.keys(i).findIndex(i => i === 'attendance')
-            let SinglesValue = Object.values(i)[SinglesIndex]
-           SinglesData.value.unshift(SinglesValue)
-        }) : []
-         categoryData.value.push({
-                name: 'Singles',
-                color: '#f7d68f',
-                data: SinglesData.value
-            })
+        //     attendanceGroup.value.singles ? attendanceGroup.value.singles.forEach(i => {
+        //     let SinglesIndex = Object.keys(i).findIndex(i => i === 'attendance')
+        //     let SinglesValue = Object.values(i)[SinglesIndex]
+        //    SinglesData.value.unshift(SinglesValue)
+        // }) : []
+        //  categoryData.value.push({
+        //         name: 'Singles',
+        //         color: '#f7d68f',
+        //         data: SinglesData.value
+        //     })
+            
 
         return categoryData.value
       })
@@ -424,6 +448,7 @@ import { useToast } from 'primevue/usetoast';
             activityReport,
            getActivityReport,
             series,
+            attendanceSeries,
             attendanceChart,
             womenData,
             maleData,

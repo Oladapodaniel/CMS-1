@@ -7,18 +7,20 @@
 <script>
 import { onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
+import { useRoute } from "vue-router"
 
 export default {
   props: ["elemId", "domId", "title", "subtitle", "lineColor", "series", "xAxis"],
   setup(props) {
     const chart = ref(null);
+    const route = useRoute()
     onUpdated(() => {
       console.log(props.series, "series");
       let highchartsOptions = {
         chart: {
           type: "line",
           renderTo: props.domId,
-          height: '250px'
+          height: route.fullPath.includes("attendanceperformancereport") ? 500 : '250px'
         },
         title: {
           text: `${props.title}`,
