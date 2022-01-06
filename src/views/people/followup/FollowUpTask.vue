@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { ref, watchEffect } from "vue"
+import { ref } from "vue"
 import frm from "@/services/FRM/firsttimermanagement.js"
 import dateFormatter from '../../../services/dates/dateformatter'
 import lookupTable from "../../../services/lookup/lookupservice"
