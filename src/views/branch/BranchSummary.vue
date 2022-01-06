@@ -80,7 +80,7 @@
         </div>
         <div class="container-fluid mb-3 ">
             <div class="row">
-                <div class="col-12 border domId p-3" v-show="mappedBranch.length > 0">
+                <div class="col-12 domId p-3" v-show="mappedBranch.length > 0">
                     <!-- <div class="dhx_sample-container">
                         <div class="dhx_sample-widget w-100" ref="editor"></div>
                     </div> -->
@@ -461,18 +461,17 @@ font-size: 1.5rem;
   border-radius: 5px;
   min-width: 300px;
   overflow: scroll !important;
-  background: rgb(22,34,42);
-  background: linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
-  background: -webkit-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
+  background: #ebeff4
+  /* background: -webkit-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
   background: -moz-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
   background: -o-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
   background: -ms-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
-  background: -khtml-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%);
+  background: -khtml-linear-gradient(90deg, rgba(22,34,42,1) 4%, rgba(58,96,115,1) 50%); */
 }
 
 ::v-deep(.p-person) {
-     background-color: #00000067;
-    color: #ffffff;
+     background-color: #ffffffd0;
+    color: #000000;
 }
 
 ::v-deep(.p-hq) {
