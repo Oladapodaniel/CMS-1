@@ -283,11 +283,13 @@ export default {
 
                 let treeConstruted = unflatten(matchedValues)
                 const HQ = data.returnObject.find(i => i.parentID.includes('00000000-000'))
+                const belowHQ = data.returnObject[0]
+                console.log(belowHQ)
                 let treeData = {
                         key: '0',
                         type: 'person',
                         styleClass: 'p-hq',
-                        data: {label: HQ, name: HQ.name, avatar: HQ.logo},
+                        data: {label: HQ ? HQ : belowHQ, name: HQ && HQ.name ? HQ.name : belowHQ.name, avatar: HQ && HQ.logo? HQ.logo : belowHQ.logo},
                         children: treeConstruted
                     }
                     data1.value = treeData

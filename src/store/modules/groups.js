@@ -3,7 +3,7 @@ import stopProgressBar from "../../services/progressbar/progress"
 
 export default {
     namespaced: true,
-
+    
     state: {
         groups: [],
     },
@@ -43,6 +43,10 @@ export default {
         removeGroup(state, payload) {
             state.groups.slice(payload, 1);
         },
+        clearGroup (state) {
+            console.log('state', state)
+            state.groups = []
+        }
     },
 
     actions: {
@@ -66,6 +70,9 @@ export default {
 
         updateGroup({ commit }, payload) {
             commit("updateGroup", payload)
+        },
+        clearGroup ({ commit }) {
+            commit('clearGroup')
         },
 
         async getGroups({ commit }) {

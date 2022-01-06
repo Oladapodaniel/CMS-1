@@ -116,30 +116,6 @@
                     class="table-body row"
                    
                 >
-                    <div class="col-6 d-block d-md-none">
-                        <div class="row">
-                        <div class="col-1">
-                            STATUS
-                        </div>
-                            <div class="col-2">
-                            EVENT NAME
-                        </div>
-                            <div class="col-3">
-                            TITLE
-                        </div>
-                            <div class="col-3">
-                            DATE
-                        </div>
-                            <div class="col-1" >
-                            ATTENDANCE
-                        </div>
-                            <div class="col-2" >
-                            FIRST TIMERS
-                        </div>
-                       
-                        </div>
-                        
-                    </div>
                         <div class="col-md-12 text-center" v-if="searchContact.length === 0 && loading">
                             <ProgressSpinner style="width: 50px" />
                         </div>

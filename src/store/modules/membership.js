@@ -33,6 +33,9 @@ export default {
     },
     showImportedPeople(state, payload) {
         payload.forEach(i => state.members.push(i))
+    },
+    clearMember (state) {
+        state.members = []
     }
   },
 
@@ -95,6 +98,9 @@ export default {
     },
     showImportedPeople ({ commit }, payload) {
       commit("showImportedPeople", payload)
+    },
+    clearMember ({ commit }) {
+      commit("clearMember")
     }
 
   },
