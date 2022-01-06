@@ -226,10 +226,13 @@ export default {
     
      //First Timer save
     async saveBranch(){
+      let mappedLevel = this.branchList.map(i => i.level)
+      const maxLevel = Math.max.apply(null, mappedLevel)
+      console.log(maxLevel)
       try{
         let createBranchLevel = {
           name: this.branchTypes,
-          level : this.branchList.length
+          level : maxLevel + 1
           // tenantID: this.tenantId,
           // isDefault: this.isDefault,
         } 
