@@ -129,6 +129,7 @@
               <i class="pi pi-users icon" />
               <InputText
                 class="w-100"
+                placeholder="Name"
                 type="text"
                 aria-required=""
                 v-model="person.name"
@@ -149,6 +150,7 @@
               <i class="pi pi-envelope icon" />
               <InputText
                 class="w-100"
+                placeholder="Email"
                 type="text"
                 aria-required=""
                 v-model="person.email"
@@ -162,13 +164,14 @@
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
           >
-            <label for="">School</label>
+            <label for="">Chapter / Sex</label>
           </div>
           <div class="col-md-7">
             <span class="p-input-icon-left w-100">
               <i class="pi pi-map-marker icon" />
               <InputText
                 class="w-100 border"
+                placeholder="Chapter / Sex"
                 type="text"
                 aria-required=""
                 v-model="person.address"
