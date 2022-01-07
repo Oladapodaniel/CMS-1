@@ -23,7 +23,7 @@
               <div class="row">
                 <div class="col-md-12 py-5 grey-background">
                   <div class="row d-md-flex">
-                    <div class="col-md-7">
+                    <div class="col-md-8 col-lg-9">
                       <input
                         type="text"
                         class="form-control"
