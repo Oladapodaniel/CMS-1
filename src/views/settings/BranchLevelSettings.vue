@@ -8,7 +8,7 @@
       </div>
        
 
-      <div class="row grey-border pt-1 pb-5">
+      <div class="row grey-border pt-1 pb-3">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
@@ -31,8 +31,8 @@
                         v-model="branchTypes"
                       />
                     </div>
-                    <div class="col-md-3 justify-content-end">
-                      <button class="btn primary-btn text-white px-md-5 px-4 py-1 bold  mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3" @click="saveBranch">Save</button>
+                    <div class="col-md-3 d-flex justify-content-center mt-3 mt-md-0">
+                      <button class="btn primary-bg default-btn text-white border-0" @click="saveBranch">Save</button>
                     </div>
                   </div>
                   <div class="row mt-2 d-flex justify-content-around">
@@ -51,10 +51,14 @@
               </div>
             </div>
           </div>
-          <span>You can re-arrange your branch level by dragging to the position you desired </span>
+          <div class="row">
+            <div class="col-12 mt-3">
+              You can re-arrange your branch level by dragging to the position you desired 
+            </div>
+          </div>
 
 
-          <div class="row table-header-row py-2 mt-5">
+          <div class="row table-header-row py-2 mt-3">
             <div class="col-md-7">
               <span class="py-2 font-weight-bold">NAME</span>
             </div>
@@ -63,13 +67,13 @@
             </div>
            
           </div>
-         
+<!--          
           <div class="row table-header-row py-2 mt-5">
             <div class=" col-12 text-center p-5" v-if="loading">
              <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
          </div>
             
-          </div>
+          </div> -->
           <!-- test -->
           <draggable
         :list="branchList"
@@ -87,17 +91,17 @@
             <div class="col-md-12">
               <div class="row">   
                 <div
-                   class="col-md-7 px-md-0 px-5 d-flex justify-content-between align-items-center mb-md-0 mb-5"
+                   class="col-md-7 px-0 d-flex justify-content-between align-items-center mb-md-0 mb-3"
                 >
                   <span class="py-2 hidden-header">NAME</span>
                    
-                  <span  class="py-2 text-xs-left mr-md-0 ml-md-3 mr-4">{{ element.name }}</span>
+                  <span  class="py-2 text-xs-left mr-md-0 mr-4">{{ element.name }}</span>
                   
                 </div>
                   
                 
                 <div
-                  class="col-md-5 mb-md-0 mb-2 col-12 d-flex justify-md-content-end justify-content-start align-items-end"
+                  class="col-md-5 mb-md-0 mb-2 col-12 d-flex justify-content-end align-items-end"
                 >
                   <span class="py-md-4 hidden-header hidden-header1">ACTION</span>
                   <div class="row">
@@ -342,6 +346,7 @@ export default {
 }
 .list-group-item {
   cursor: move;
+  padding: .75rem 0;
 }
 .list-group-item i {
   cursor: pointer;
@@ -350,7 +355,7 @@ input::placeholder {
   text-align: center;
 }
 .delete-btn{
-  background: #F2BC9E!important;
+  background: #f2bb9eab!important;
   color: black!important;
 }
 .delete-btn:hover{
@@ -391,6 +396,10 @@ input::placeholder {
   letter-spacing: 0px;
   color: #02172E;
   opacity: 1;
+}
+
+.list-group-item {
+  border: none;
 }
 
 @media screen and (max-width: 767px) {
