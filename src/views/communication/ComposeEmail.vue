@@ -944,7 +944,7 @@ export default {
               </style>
             </head>
             <body>
-              <div id="email-body">${editorData.value}</div>
+              <div id="email-body">${editorData.value} </div>
             </body>
           </html>`,
           // #email-body img {
