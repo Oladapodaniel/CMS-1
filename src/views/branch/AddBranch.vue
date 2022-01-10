@@ -19,41 +19,18 @@
                         <div class="col-md-10 offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Branch name</label>
+                                    <label for="" class="">Branch name <sup class="text-danger">*</sup> </label>
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <input type="text" v-model="churchName" class="form-control" />
+                                    <input type="text" v-model="churchName" class="form-control" :class="{ 'is-invalid' : !isNameValid }" @blur="checkNameValue"/>
+                                    <div class="invalid-feedback">
+                                        Please enter branch name.
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div> 
-                    <!-- <div class="row my-2 pt-4">
-                        <div class="col-md-6 offset-md-2">
-                            <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Email </label>
-                                </div>
-                        
-                                <div class="col-md-8">
-                                    <input type="text" v-model="Email" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                    </div> 
-                    <div class="row my-2 pt-4">
-                        <div class="col-md-6 offset-md-2">
-                            <div class="row">
-                                <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Phone number </label>
-                                </div>
-                        
-                                <div class="col-md-8">
-                                    <input type="text" v-model="phoneNumber" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>  -->
                     <div class="row my-1 mt-2">
                         <div class="col-md-10  offset-md-2">
                             <div class="row">
@@ -71,7 +48,7 @@
                         <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Level </label>
+                                    <label for="" class="">Level <sup class="text-danger">*</sup> </label>
                                 </div>
                         
                                 <div class="col-md-8">
@@ -98,11 +75,14 @@
                         <div class="col-md-10  offset-md-2">
                             <div class="row">
                                 <div class="col-md-4 text-md-right align-self-center">
-                                    <label for="" class="">Pastor email </label>
+                                    <label for="" class="">Pastor email <sup class="text-danger">*</sup> </label>
                                 </div>
                         
                                 <div class="col-md-8">
-                                    <input type="text" v-model="pastorEmail" class="form-control" />
+                                    <input type="text" v-model="pastorEmail" class="form-control" :class="{ 'is-invalid' : !isEmailValid }" @blur="checkEmailValue" />
+                                    <div class="invalid-feedback">
+                                        Please enter your email.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -288,6 +268,8 @@ export default {
         const loading = ref(false)
         const loadingCode = ref(false)
         const value = ref()
+        const isNameValid = ref(true)
+        const isEmailValid = ref(true)
 
 
         const imageSelected = (e) => {
@@ -342,60 +324,70 @@ export default {
 
 
         const addBranch = async () => {
-            let getHierarchyId = branches.value.find(i => {
-                return i.children.some(j => j.id == value.value.id)
-            })
-            console.log(getHierarchyId)
-            const formData = new FormData();
-             formData.append( "churchName", churchName.value ? churchName.value : "");  
-             formData.append( "address", Address.value ? Address.value : "");
-             formData.append( "parentID", value.value ? value.value.id : "");
-             formData.append( "pastorName", pastorName.value ? pastorName.value : "");
-             formData.append( "email", pastorEmail.value ? pastorEmail.value : ""); 
-             formData.append( "pastorPhone", pastorPhone.value ? pastorPhone.value : "");
-             formData.append( "image", image.value ? image.value : "");
-            //  formData.append( "countryID", 1275);
-             formData.append( "duplicateAttendances", replicateAttendance.value);
-             formData.append( "duplicateEvents", replicateEvent.value);
-             formData.append( "duplicateGroups", replicateGroup.value);
-             console.log(encodeURIComponent(formData))
-        try {
-          loading.value = true;
-          let { data } = await axios.post('/api/Branching', formData);
-          loading.value = false
-          // SEND SMS
-          let SMSBody = {
-            category: "",
-            contacts: [],
-            emailAddress: "",
-            emailDisplayName: "",
-            gateWayToUse: "hybridKonnect",
-            groupedContacts: [],
-            isPersonalized: true,
-            isoCode: isoCode.value,
-            message: `YOU HAVE BEEN ADDED AS A BRANCH ON CHURCHPLUS, \n You are on the right place and track, take control of your ministry, know the key information that will help you make better decision and become an effective manager. Use your credentials below to login and get started now \n Email: ${pastorEmail.value} \n Password: Branch@123 please do well to change your password after you login`,
-            // subject: "Churchplus",
-            toOthers: pastorPhone.value
-          }
-          console.log(data)
-          if (data.status) {
-              axios.post('/api/Messaging/sendSms', SMSBody)
-                .then(res => console.log(res))
-                .catch(err => console.log(err))
-              toast.add({
-                severity: "success",
-                summary: "Branch created",
-                detail: data.message,
-                life: 3000,
-            });
-            setTimeout(() => {
-                router.push("/tenant/branch/branchsummary")
-            }, 3000);
-          }
-        } catch (err) {
-            console.log(err)
+            if (value.value) {
+                let getHierarchyId = branches.value.find(i => {
+                    return i.children.some(j => j.id == value.value.id)
+                })
+                console.log(getHierarchyId)
+                const formData = new FormData();
+                formData.append( "churchName", churchName.value ? churchName.value : "");  
+                formData.append( "address", Address.value ? Address.value : "");
+                formData.append( "parentID", value.value ? value.value.id : "");
+                formData.append( "pastorName", pastorName.value ? pastorName.value : "");
+                formData.append( "email", pastorEmail.value ? pastorEmail.value : ""); 
+                formData.append( "pastorPhone", pastorPhone.value ? pastorPhone.value : "");
+                formData.append( "image", image.value ? image.value : "");
+                //  formData.append( "countryID", 1275);
+                formData.append( "duplicateAttendances", replicateAttendance.value);
+                formData.append( "duplicateEvents", replicateEvent.value);
+                formData.append( "duplicateGroups", replicateGroup.value);
+                console.log(encodeURIComponent(formData))
+            try {
+            loading.value = true;
+            let { data } = await axios.post('/api/Branching', formData);
             loading.value = false
+            // SEND SMS
+            let SMSBody = {
+                category: "",
+                contacts: [],
+                emailAddress: "",
+                emailDisplayName: "",
+                gateWayToUse: "hybridKonnect",
+                groupedContacts: [],
+                isPersonalized: true,
+                isoCode: isoCode.value,
+                message: `YOU HAVE BEEN ADDED AS A BRANCH ON CHURCHPLUS, \n You are on the right place and track, take control of your ministry, know the key information that will help you make better decision and become an effective manager. Use your credentials below to login and get started now \n Email: ${pastorEmail.value} \n Password: Branch@123 please do well to change your password after you login`,
+                // subject: "Churchplus",
+                toOthers: pastorPhone.value
             }
+            console.log(data)
+            if (data.status) {
+                axios.post('/api/Messaging/sendSms', SMSBody)
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err))
+                toast.add({
+                    severity: "success",
+                    summary: "Branch created",
+                    detail: data.message,
+                    life: 3000,
+                });
+                setTimeout(() => {
+                    router.push("/tenant/branch/branchsummary")
+                }, 3000);
+            }
+            } catch (err) {
+                console.log(err)
+                loading.value = false
+                }
+            }   else {
+                toast.add({
+                    severity: "warn",
+                    summary: "No level selected",
+                    detail: "Choose the level you want to create this branch under, then click Save.",
+                    life: 8000,
+                });
+            }
+            
         }
 
         const generateCode = async() => {
@@ -438,6 +430,22 @@ export default {
             });
         }
 
+        const checkNameValue = () => {
+            if(churchName.value.length == 0) {
+                isNameValid.value = false
+            }   else {
+                isNameValid.value = true
+            }
+        }
+        
+        const checkEmailValue = () => {
+            if(pastorEmail.value.length == 0) {
+                isEmailValid.value = false
+            }   else {
+                isEmailValid.value = true
+            }
+        }
+
         return {
           addBranch,
           churchName,
@@ -462,7 +470,11 @@ export default {
           copyCode,
           isoCode,
           loading,
-          loadingCode
+          loadingCode,
+          checkNameValue,
+          isNameValid,
+          isEmailValid,
+          checkEmailValue
         }
     },
 }
