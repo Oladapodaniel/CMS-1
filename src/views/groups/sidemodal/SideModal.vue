@@ -1,5 +1,5 @@
 <template>
-    <div class="container container-wide container-top shadow-lg border rounded" v-if="show">
+    <div class="container container-wide container-top shadow-lg border rounded" v-if="show" style="background: red">
         <div class="row">
             <div class="container">
                 <div class="row">
@@ -51,7 +51,7 @@ export default {
 <style scoped>
 .show-Times{
   /* display: block; */
-   width: 875px;
+   width: 100%;
    height: 98%;
    overflow: scroll;
    overflow-x: hidden;
@@ -59,8 +59,8 @@ export default {
     position: fixed;
     right: 0;
     top: 0;
-    z-index: 9;
-    background: #fff;
+    z-index: 0;
+    background: #92999f;
     box-shadow: 5px 10px 18px #888888;
     border-radius: 10px;
     transition: all .8s cubic-bezier(0.645, 0.045, 0.355, 1);

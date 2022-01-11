@@ -555,7 +555,7 @@
               label="Send"
               :model="sendOptions"
               :disabled="disableBtn"
-              @click="data" data-toggle="modal" data-target="#sendsmsbtn"
+              @click="data" data-toggle="modal" data-backdrop="false" data-target="#sendsmsbtn"
             ></SplitButton>
           </span>
           <!-- <router-link :to=" route.fullPath === '/tenant/sms/compose' ? '/tenant/sms/sent' : '/errorpage/expiredSubscription'"
@@ -567,7 +567,7 @@
         <div class="row">
           <div class="col-md-12">
             <div
-              class="modal fade"
+              class="modal fade rubbish"
               id="sendsmsbtn"
               tabindex="-1"
               aria-labelledby="exampleModalLabel"

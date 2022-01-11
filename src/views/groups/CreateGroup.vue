@@ -982,10 +982,14 @@
       </div>
     </Dialog>
      <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
-      <smsComponent :phoneNumbers="contacts"/>
+       <div class="m-wrapper" >
+          <smsComponent :phoneNumbers="contacts"/>
+       </div>
     </SideBar>
      <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
-      <emailComponent :selectedGroupMembers="selectedGroupMembers"/>
+       <div class="m-wrapper">
+         <emailComponent :selectedGroupMembers="selectedGroupMembers"/>
+       </div>
     </SideBar>
   </div>
 </template>
@@ -1793,6 +1797,14 @@ export default {
     left: 0px;
     width: 50%;
     opacity: 1;
+}
+.m-wrapper {
+      background-color: white!important;
+    width: 875px;
+    position: absolute;
+    right: 0px;
+    top: 0;
+    height: 100%;
 }
 
 .hide-basetwo {
