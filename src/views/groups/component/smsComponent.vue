@@ -561,7 +561,7 @@
           <!-- <router-link :to=" route.fullPath === '/tenant/sms/compose' ? '/tenant/sms/sent' : '/errorpage/expiredSubscription'"
             class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark"
           > -->
-            Discard
+            <span class="btn default-btn ml-3">Discard</span>
           <!-- </router-link> -->
         </div> 
         <div class="row">

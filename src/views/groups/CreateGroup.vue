@@ -798,7 +798,7 @@
                           class="dropdown-menu"
                           aria-labelledby="dropdownMenuButton"
                         >
-                          <a class="dropdown-item" >
+                          <a class="dropdown-item c-pointer" >
                           <!-- <a class="dropdown-item" v-if="member.phoneNumber"> -->
                             <a 
                               @click="test(member)"
@@ -806,7 +806,7 @@
                             >
                           </a>
                           <!-- <a class="dropdown-item" v-if="member.email" href=""> -->
-                          <a class="dropdown-item">
+                          <a class="dropdown-item c-pointer">
                             <a 
                               @click="testEmail(member)"
                             >Send Email</a>
@@ -909,13 +909,13 @@
                           class="dropdown-menu"
                           aria-labelledby="dropdownMenuButton"
                         >
-                          <a class="dropdown-item" v-if="member.phone">
+                          <a class="dropdown-item c-pointer" v-if="member.phone">
                             <router-link
                               :to="`/tenant/sms/compose?phone=${member.phone}`"
                               >Send SMS</router-link
                             >
                           </a>
-                          <a class="dropdown-item" v-if="member.email">
+                          <a class="dropdown-item c-pointer" v-if="member.email">
                             <router-link
                               :to="`/tenant/email/compose?phone=${member.email}`"
                               >Send Email</router-link
@@ -1755,56 +1755,44 @@ export default {
 .baseline {
     transition: all 150ms ease-in-out;
     background-color: #136acd;
-    position: absolute;
-    /* background-color: #33475b; */
-    /* color: #136acd" */
+    position: relative;
     border-radius: 10px;
-    /* bottom: -2.5px; */
-    z-index: 175;
     height: 4px;
-    top: 33px;
+    top: 5px;
     left: 0px;
-    width: 35%;
+    /* width: 35%; */
     opacity: 1;
 }
 
 .hide-base {
      transition: all 150ms ease-in-out;
     background-color: #136acd;
-    position: absolute;
-    /* background-color: #33475b; */
-    /* color: #136acd" */
+    position: relative;
     border-radius: 10px;
-    /* bottom: -2.5px; */
     z-index: 175;
     height: 4px;
-    top: 33px;
+    top: 35px;
     left: 0px;
-    width: 35%;
     opacity: 0;
 }
 .baselinetwo {
-     transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out;
     background-color: #136acd;
-    position: absolute;
-    /* background-color: #33475b; */
-    /* color: #136acd" */
+    position: relative;
     border-radius: 10px;
-    /* bottom: -2.5px; */
-    z-index: 175;
     height: 4px;
-    top: 33px;
+    top: 5px;
     left: 0px;
-    width: 50%;
     opacity: 1;
 }
 .m-wrapper {
-      background-color: white!important;
+    background-color: white!important;
     width: 875px;
     position: absolute;
     right: 0px;
     top: 0;
     height: 100%;
+    padding: 70px;
 }
 .m-wrapper2 {
       background-color: white!important;
@@ -1812,7 +1800,8 @@ export default {
     position: absolute;
     right: 0px;
     top: 0;
-    /* height: 100%; */
+    height: 100%;
+    padding: 70px;
 }
 
 .hide-basetwo {
@@ -1830,20 +1819,35 @@ export default {
     width: 50%;
     opacity: 0;
 }
+    @media screen and (max-width: 947px ){
+        .m-wrapper, .m-wrapper2 {
+          width: 700px;
+          padding: 50px;
+      }
+    }
+
     @media screen and (max-width: 767px ){
-        .baseline {
+        /* .baseline {
             width: 40%;
         }
         .hide-base {
             width: 40%;
+        } */
+         .m-wrapper, .m-wrapper2 {
+            width: 400px;
+            padding: 40px;
         }
     }
     @media screen and (max-width: 575px ){
-        .baseline {
+        /* .baseline {
             width: 20%;
         }
         .hide-base {
             width: 20%;
+        } */
+        .m-wrapper, .m-wrapper2 {
+            width: 350px;
+            padding: 20px;
         }
     }
     

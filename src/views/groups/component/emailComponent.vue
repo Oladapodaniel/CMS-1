@@ -48,13 +48,13 @@
         </div>
       </div>
         <!-- {{ selectedGroupMembers  }} 'yytyytytyty' -->
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-12 pr-0">
           <hr class="hr my-1" />
         </div>
-      </div>
+      </div> -->
 
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-3 col-lg-2 align-self-center">
           <span class="small-text">Send to : </span>
         </div>
@@ -85,7 +85,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="row mb-1">
         <div class="col-md-12 pr-0">

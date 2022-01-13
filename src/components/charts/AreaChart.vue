@@ -20,7 +20,7 @@ export default {
         chart: {
           type: "line",
           renderTo: props.domId,
-          height: route.fullPath.includes("attendanceperformancereport") ? 500 : '250px'
+          height: route.fullPath.includes("attendanceperformancereport") || route.fullPath.includes("branch_report") ? 500 : '250px'
         },
         title: {
           text: `${props.title}`,

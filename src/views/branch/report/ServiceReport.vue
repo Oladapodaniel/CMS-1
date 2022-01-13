@@ -2,7 +2,7 @@
 <div class="container-fluid mt-5 mb-4">
   <div class="row d-flex justify-content-between px-3">
               <!-- <div class="heading-text">Attendance Report</div> -->
-              <h3 class="font-weight-bold mt-2 mb-2">Church ServiceReport</h3>
+              <h3 class="font-weight-bold mt-2 mb-2">Church Activities Attendance Report</h3>
               <div class="default-btn border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">
@@ -13,60 +13,65 @@
               </div>
         </div>
      <div>
-            <!-- <span class="mt-5 mb-3">This reports gives an indepth view of the growth and attendance pattern of the ministry.</span> -->
-
-        </div>
+      </div>
                 <div style="background: #ebeff4;" class="row m-0 py-5 mb-2" >
-                              <div class="col-12 col-md-6 col-lg-3">
-                                  <div><label for="" class="font-weight-bold">Select Event</label></div>
+                    <div class="col-md-6 mb-3">
+                      <div class="font-weight-bold">Select branch</div>
+                      <BranchSelect @selectedbranch="setSelectedBranch" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <ProgressSpinner class="loader-icon" v-if="loading" />
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3" v-show="allEvents.length > 0">
+                      
+                        <div><label for="" class="font-weight-bold">Select Event</label></div>
+                        <div>
+                          <Dropdown  :options="allEvents" optionLabel="text" placeholder="Select event" class="w-100" v-model="selectedEvent" />
+                            <!-- <MultiSelect v-model="selectedEvents" :options="allEvents" optionLabel="text" placeholder="Select Events" :filter="true" class="multiselect-custom w-100">
+                                <template #value="slotProps">
+                                    <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
+                                        <div>{{option.text}}</div>
+                                    </div>
+                                    <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                        All Events
+                                    </template>
+                                </template>
+                                <template #option="slotProps">
+                                    <div class="country-item">
+                                        <div>{{slotProps.option.text}}</div>
+                                    </div>
+                                </template>
+                            </MultiSelect> -->
+                        </div>
 
-                                  <div>
-                                      <!-- <Dropdown v-model="selectedEvents" :options="allEvents" optionLabel="text" class="w-100" placeholder="Select Member" :filter="false" filterPlaceholder="Find Car"/> -->
-                                      <MultiSelect v-model="selectedEvents" :options="allEvents" optionLabel="text" placeholder="Select Events" :filter="true" class="multiselect-custom w-100">
-                                          <template #value="slotProps">
-                                              <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
-                                                  <div>{{option.text}}</div>
-                                              </div>
-                                              <template v-if="!slotProps.value || slotProps.value.length === 0">
-                                                  All Events
-                                              </template>
-                                          </template>
-                                          <template #option="slotProps">
-                                              <div class="country-item">
-                                                  <div>{{slotProps.option.text}}</div>
-                                              </div>
-                                          </template>
-                                      </MultiSelect>
-                                  </div>
-
-                              </div>
-                              <div class="col-12 col-md-6 col-lg-3">
-                                  <div class=""><label for="" class=" ml-2 font-weight-bold">Start Date</label></div>
-                                  <div>
-                                      <div>
-                                          <Calendar id="icon" v-model="startDate" class="calendar1 w-100" :showIcon="true" dateFormat="dd/mm/yy" />
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="col-12 col-md-6 col-lg-3">
-                                  <div><label for="" class="font-weight-bold">End Date</label></div>
-                                  <div>
-                                          <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy" />
-                                      </div>
-                              </div>
-                              <div class="col-12 col-md-6 col-lg-3">
-                                  <label for="" ></label>
-                                  <div class="mt-2">
-                                      <button @click="getActivityReport()" class="btn default-btn primary-bg "><div class="text-white">Generate Report</div></button>
-                                  </div>
-                              </div>
-                          </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3" v-show="allEvents.length > 0">
+                        <div class=""><label for="" class=" ml-2 font-weight-bold">Start Date</label></div>
+                        <div>
+                            <div>
+                                <Calendar id="icon" v-model="startDate" class="calendar1 w-100" :showIcon="true" dateFormat="dd/mm/yy" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3" v-show="allEvents.length > 0">
+                        <div><label for="" class="font-weight-bold">End Date</label></div>
+                        <div>
+                            <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3" v-show="allEvents.length > 0">
+                        <label for="" ></label>
+                        <div class="mt-2">
+                            <button @click="getActivityReport()" class="btn default-btn primary-bg "><div class="text-white">Generate Report</div></button>
+                        </div>
+                    </div>
+                </div>
              <div id="element-to-print">
                  <h3 class="font-weight-bold mt-5 ml-2"  v-show="activityReport > 0"> SERVICE ANALYSIS REPORT </h3>
 
                  <div class=" borderInner mb-2">
                      <h5 class="ml-3 mt-4"></h5>
-                         <div class="round-border" v-show="activityReport.length > 0" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                         <div v-show="activityReport.length > 0" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                         <PerformanceColumnChart
                             domId="chart"
                             title="Attendance Analysis Chart"
@@ -93,7 +98,7 @@
 
                     <div class=" borderInner mt-5">
                      <h5 class="ml-3 mt-4"></h5>
-                         <div class="round-border" v-show="activityReport.length > 0" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                         <div v-show="activityReport.length > 0" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                         <PerformanceColumnChart
                             domId="chart1"
                             title="Attendance Analysis Chart By Category"
@@ -163,9 +168,9 @@
 import { computed, ref } from 'vue';
 import PerformanceColumnChart from "../../../components/charts/ReportColumnChart.vue";
 import groupData from '../../../services/groupArray/groupResponse';
-import MultiSelect from 'primevue/multiselect';
+// import MultiSelect from 'primevue/multiselect';
 
-// import Dropdown from "primevue/dropdown";
+import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import ReportAreaChart from "../../../components/charts/AreaChart.vue";
 import axios from "@/gateway/backendapi";
@@ -175,15 +180,19 @@ import exportService from "../../../services/exportFile/exportservice"
 import printJS from "print-js";
 import Listbox from 'primevue/listbox';
 import { useToast } from 'primevue/usetoast';
+import BranchSelect from "../component/BranchSelect.vue"
+import ProgressSpinner from 'primevue/progressspinner';
     export default {
         components:{
-          // Dropdown,
+          Dropdown,
           Listbox,
-          MultiSelect,
+          // MultiSelect,
             Calendar,
             // InputText,
             PerformanceColumnChart,
-            ReportAreaChart
+            ReportAreaChart,
+            BranchSelect,
+            ProgressSpinner
 
         },
     setup() {
@@ -195,8 +204,8 @@ import { useToast } from 'primevue/usetoast';
     const fileToExport = ref([]);
     const bookTypeList = ref([ { name: 'xlsx' },{ name: 'csv'}, {name: 'txt'}, {name: 'pdf'} ]);
     const showExport = ref(false);
-    const allEvents = ref({});
-    const selectedEvents =ref()
+    const allEvents = ref([]);
+    const selectedEvent =ref({})
     const series = ref([])
     const activityReport = ref([])
     const attendanceSeries = ref([])
@@ -219,19 +228,29 @@ import { useToast } from 'primevue/usetoast';
      const downloadFile = () => {
         exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
       }
+    const loading = ref(false)
+    const branchId = ref("")
 
-    const getAllEvents = ()=>{
-            axios.get('/api/Reports/events/getEvents')
-            .then((res)=>{
-                allEvents.value = res.data;
-            })
-            .catch((err)=> console.log(err));
+    const setSelectedBranch = async(payload) => {
+      loading.value = true
+      branchId.value = payload.id
+      try {
+        let { data } = await axios.get(`/api/BranchReports/events/Events?tenantID=${payload.id}`)
+        loading.value = false
+        console.log(data)
+        allEvents.value = data
+      }
+      catch (err) {
+        loading.value = false
+        console.log(err)
+      }
     }
-     getAllEvents()
-     const getActivityReport = ()=>{
+
+  
+     const getActivityReport = ()=> {
+    
        activityReport.value = []
-       const eventId = selectedEvents.value.length === 1 ? selectedEvents.value[0].id : ''
-         axios.get(`/api/BranchReports/event/getActivitiesAttendanceReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&tenantID=${eventId}`)
+         axios.get(`/api/branchreports/event/getactivityanalysisreport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}&eventId=${selectedEvent.value.id}&tenantID=${branchId.value}`)
          .then((res)=>{
              activityReport.value = res.data;
              console.log(activityReport.value);
@@ -334,103 +353,6 @@ import { useToast } from 'primevue/usetoast';
                   })
             })
             console.log(categoryData.value)
-        //     attendanceGroup.value.Babies ? attendanceGroup.value.Babies.forEach(i => {
-        //     let babiesIndex = Object.keys(i).findIndex(i => i === 'attendance')
-        //     let babiesValue = Object.values(i)[babiesIndex]
-        //     babiesData.value.unshift(babiesValue)
-        //     console.log(babiesData.value)
-        // }) : []
-
-        //  categoryData.value.push({
-        //         name: 'Babies',
-        //         color: '#3f37c9',
-        //         data: babiesData.value
-        //     })
-
-        //    attendanceGroup.value.FeMale ? attendanceGroup.value.FeMale.forEach(i => {
-        //     let womenIndex = Object.keys(i).findIndex(i => i === 'attendance')
-        //     let womenValue = Object.values(i)[womenIndex]
-        //     womenData.value.unshift(womenValue)
-           
-        // }) : []
-
-        //  categoryData.value.push({
-        //         name: 'Women',
-        //         color: '#43eb10',
-        //         data: womenData.value
-        //     })
-        //     attendanceGroup.value.Male ? attendanceGroup.value.Male.forEach(i => {
-        //     let maleIndex = Object.keys(i).findIndex(i => i === 'attendance')
-        //     let maleValue = Object.values(i)[maleIndex]
-        //     maleData.value.unshift(maleValue)
-        //     console.log(maleData)
-        // }) : []
-
-        //  categoryData.value.push({
-        //         name: 'male',
-        //         color: '#a207f0',
-        //         data: maleData.value
-        //     })
-
-        //     attendanceGroup.value.Boy ? attendanceGroup.value.Boy.forEach(i => {
-        //     let boyIndex = Object.keys(i).findIndex(i => i === 'attendance')
-        //     let boyValue = Object.values(i)[boyIndex]
-        //     boyData.value.unshift(boyValue)
-        // }) : []
-
-        //  categoryData.value.push({
-        //         name: 'Boy',
-        //         color: '#e7f20c',
-        //         data: boyData.value
-        //     })
-        //     attendanceGroup.value.Girl ? attendanceGroup.value.Girl.forEach(i => {
-        //     let girlIndex = Object.keys(i).findIndex(i => i === 'attendance')
-        //     let girlValue = Object.values(i)[girlIndex]
-        //     girlData.value.unshift(girlValue)
-            
-        // }) : []
-
-        //  categoryData.value.push({
-        //         name: 'Girl',
-        //         color: '#818182',
-        //         data: girlData.value
-        //     })
-
-        //      attendanceGroup.value.Children ?  attendanceGroup.value.Children.forEach(i => {
-        //     let ChildrenIndex = Object.keys(i).findIndex(i => i === 'attendance')
-        //     let ChildrenValue = Object.values(i)[ChildrenIndex]
-        //     ChildrenData.value.unshift(ChildrenValue)
-        //     console.log(ChildrenData)
-        // }) : []
-        //  categoryData.value.push({
-        //         name: 'Children',
-        //         color: '#ed6109',
-        //         data: ChildrenData.value
-        //     })
-        //      attendanceGroup.value.Teenagers ? attendanceGroup.value.Teenagers.forEach(i => {
-        //     let TeenagersIndex = Object.keys(i).findIndex(i => i === 'attendance')
-        //     let TeenagersValue = Object.values(i)[TeenagersIndex]
-        //    TeenagersData.value.unshift(TeenagersValue)
-        // }) : []
-
-        //  categoryData.value.push({
-        //         name: 'Teenagers',
-        //         color: '#b01105',
-        //         data: TeenagersData.value
-        //     })
-
-        //     attendanceGroup.value.singles ? attendanceGroup.value.singles.forEach(i => {
-        //     let SinglesIndex = Object.keys(i).findIndex(i => i === 'attendance')
-        //     let SinglesValue = Object.values(i)[SinglesIndex]
-        //    SinglesData.value.unshift(SinglesValue)
-        // }) : []
-        //  categoryData.value.push({
-        //         name: 'Singles',
-        //         color: '#f7d68f',
-        //         data: SinglesData.value
-        //     })
-            
-
         return categoryData.value
       })
 
@@ -443,7 +365,7 @@ import { useToast } from 'primevue/usetoast';
             formatDate,
             startDate,
             endDate,
-            selectedEvents,
+            selectedEvent,
             allEvents,
             activityReport,
            getActivityReport,
@@ -473,7 +395,10 @@ import { useToast } from 'primevue/usetoast';
           fileToExport,
           fileName,
           showReport,
-          groupedActivityService
+          groupedActivityService,
+          setSelectedBranch,
+          loading,
+          branchId
         }
 
     }
@@ -503,11 +428,11 @@ import { useToast } from 'primevue/usetoast';
 .table-header-area-main {
   background-color: #ebeff4;
 }
-.round-border{
+/* .round-border{
    border-radius: 0.5rem;
    box-shadow: 0 0.063rem 0.25rem #02172e45;
    border: 0.063rem solid #dde2e6;
-}
+} */
 
 .table-main {
     width: 100% !important;
@@ -579,9 +504,11 @@ border-top-right-radius: 0 !important;
 
     }
     .lineGrap{
-   border-radius: 0.5rem;
-   box-shadow: 0 0.063rem 0.25rem #02172e45;
-   border: 0.063rem solid #dde2e6;
+   border-radius: 30px;
+   box-shadow: 0px 1px 4px #02172e45;
+   padding: 20px;
+   /* box-shadow: 0 0.063rem 0.25rem #02172e45;
+   border: 0.063rem solid #dde2e6; */
        font-weight: bold;
     }
     .borderInner{
@@ -605,6 +532,11 @@ border-top-right-radius: 0 !important;
     .p-multiselect {
         width: 100%;
     }
+}
+
+.loader-icon {
+    animation-duration: 0.8s;
+    width: 47px;
 }
 
 </style>

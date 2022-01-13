@@ -36,7 +36,7 @@ export default {
         chart: {
           type: "column",
           renderTo: props.domId,
-          height: route.fullPath.includes('attendanceperformancereport') ? 500 : 300,
+          height: route.fullPath.includes('attendanceperformancereport') || route.fullPath.includes("branch_report") ? 500 : 300,
         },
         credits: {
           enabled: false,

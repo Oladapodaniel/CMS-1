@@ -4,12 +4,12 @@
             <div ><h3 class="font-weight-bold"> Reports</h3></div>
         </div>
         <div class="row" style=" background: #f5f8fa;">
-            <div class="col-12 col-sm-4  c-pointer " @click="toggleMember">
+            <div class="col-12 col-sm-6  c-pointer " @click="toggleMember">
                 <div class="p-3 header4"> Membership </div> 
                 <div :class="{ 'baseline' : showMember, 'hide-base' : !showMember }"></div>
             </div>
-            <div class="col-12 col-sm-4 c-pointer" @click="toggleService">
-                <div class="p-3 header4"> Service  </div> 
+            <div class="col-12 col-sm-6 c-pointer" @click="toggleService">
+                <div class="p-3 header4">Church Activities</div> 
                 <div :class="{ 'baseline' : showService, 'hide-base' : !showService }"></div>
             </div>
         </div>

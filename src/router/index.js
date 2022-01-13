@@ -489,13 +489,13 @@ const routes = [
 
                         },
                         {
-                            path: 'branchreport',
-                            name: "branchreport",
+                            path: 'branch_report',
+                            name: "BranchReport",
                             meta: {
                                 title: 'Church - Members',
                             },
                             component: () =>
-                                import ( /* webpackChunkName: "peopleempty" */ '../views/branch/report/index.vue')
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/branch/report/BranchReport.vue')
 
                         },
                         // {
