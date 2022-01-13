@@ -253,14 +253,14 @@
       </div>
       <!-- <div :class="{ 'show-Times' : showSMS, 'hide-Times' : !showSMS }"> -->
         <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
-        <div class="bg-dange m-wrapper">
+        <div class="m-wrapper" :class="{ 'm-wrapper': showSMS, 'no-show': !showSMS }">
           <smsComponent :groupData ="groupListDetails" />
         </div>
       </SideBar>
       <!-- </div> -->
       <!-- <div :class="{ 'show-Times' : showSMS, 'hide-Times' : !showSMS }"> -->
       <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
-        <div class="m-wrapper">
+        <div class="m-wrapper2">
           <emailComponent :groupData ="groupListDetails" />
         </div>
       </SideBar>
@@ -799,6 +799,8 @@ export default {
   color: #9b9a9c;
 }
 
+
+
 .m-wrapper {
       background-color: white!important;
     width: 875px;
@@ -806,6 +808,22 @@ export default {
     right: 0px;
     top: 0;
     height: 100%;
+    transition: all 5s ease-out;
+    /* transition: all  8s cubic-bezier(0.645, 0.045, 0.355, 1); */
+}
+.m-wrapper2 {
+      background-color: white!important;
+    width: 875px;
+    transition: all 3s ease-out;
+    position: absolute;
+    right: 0px;
+    top: 0;
+    /* height: 100%; */
+}
+.no-show {
+  width: -875px;
+  transition: all 3s ease-out;
+  /* transition: all  8s cubic-bezier(0.645, 0.045, 0.355, 1); */
 }
 
 .hover:hover {

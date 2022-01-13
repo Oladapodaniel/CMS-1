@@ -28,10 +28,10 @@ export default {
     props: [ 'show', 'title' ],
     setup(props, { emit }) {
 
-        const showTimes = ref(true)
-        const Times = () =>{
-            showTimes.value = !showTimes.value
-        }
+        // const show = ref(false)
+        // const Times = () =>{
+        //     show.value = !show.value
+        // }
 
         const closeModal = () => {
             emit('closesidemodal')
@@ -39,8 +39,8 @@ export default {
         }
 
         return {
-            Times ,
-            showTimes,
+            // Times ,
+            // show,
             closeModal,
             
         }
@@ -52,6 +52,7 @@ export default {
 .show-Times{
   /* display: block; */
    width: 100%;
+   /* width: calc(100% - 0px); */
    height: 98%;
    overflow: scroll;
    overflow-x: hidden;
@@ -60,17 +61,19 @@ export default {
     right: 0;
     top: 0;
     z-index: 0;
-    background: #92999f;
+    /* opacity: 0.5; */
+    background: #a0a3a7;
     box-shadow: 5px 10px 18px #888888;
     border-radius: 10px;
-    transition: all .8s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: all 5s ease-out;
+    /* transition: all 8s cubic-bezier(0.645, 0.045, 0.355, 1); */
 }
 .hide-Times{
   /* display: none; */
-   position: fixed;
+   /* position: fixed;
    overflow: hidden;
    width: 0;
-    right: -800px;
+    right: -800px; */
     top: -50px;
     /* z-index: 9; */
     transition: all  0.8s cubic-bezier(0.645, 0.045, 0.355, 1);

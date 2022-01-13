@@ -987,7 +987,7 @@
        </div>
     </SideBar>
      <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
-       <div class="m-wrapper">
+       <div class="m-wrapper2">
          <emailComponent :selectedGroupMembers="selectedGroupMembers"/>
        </div>
     </SideBar>
@@ -1805,6 +1805,14 @@ export default {
     right: 0px;
     top: 0;
     height: 100%;
+}
+.m-wrapper2 {
+      background-color: white!important;
+    width: 875px;
+    position: absolute;
+    right: 0px;
+    top: 0;
+    /* height: 100%; */
 }
 
 .hide-basetwo {

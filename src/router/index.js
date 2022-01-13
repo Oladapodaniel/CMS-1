@@ -227,6 +227,16 @@ const routes = [
                     },
 
                 ]
+                
+            },
+            {
+                path: 'archivedpeople',
+                meta: {
+                    title: 'Churchplus - Archived People',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "importpeople" */ '../views/people/ArchivedPeople.vue'),
+                name: 'ArchivedPeople'
             },
             {
                 path: 'firsttimermanagement/:personId?',
@@ -476,6 +486,16 @@ const routes = [
                             },
                             component: () =>
                                 import ( /* webpackChunkName: "peopleempty" */ '../views/branch/people/People.vue')
+
+                        },
+                        {
+                            path: 'branchreport',
+                            name: "branchreport",
+                            meta: {
+                                title: 'Church - Members',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/branch/report/index.vue')
 
                         },
                         // {
