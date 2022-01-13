@@ -618,7 +618,7 @@
                 class="row"
                 v-if="marked.length > 0 && groupMembers.length > 0"
               >
-                <div class="col-md-12 d-flex align-content-between">
+                <div class="col-md-12 d-flex align-content-between pb-2">
                   <a
                     href="#"
                     class="tool"
@@ -626,7 +626,7 @@
                     data-target="#myModal"
                   >
                     <i
-                      class="pi pi-reply text-primary ml-n4 mb-2 c-pointer d-flex align-items-center px-4 mr-3"
+                      class="pi pi-reply text-primary c-pointer d-flex align-items-center mr-4"
                       style="font-size: 20px; font-weight: bold"
                       v-tooltip.top="'move to group'"
                     >
@@ -640,12 +640,13 @@
                     data-target="#myModal1"
                   >
                     <i
-                      class="pi pi-copy text-primary ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
+                      class="pi pi-copy text-primary c-pointer d-flex align-items-center mr-4"
                       style="font-size: 20px; font-weight: bold"
                       v-tooltip.right="'copy to group'"
                     >
                     </i>
                   </a>
+                  <i class="fa fa-file-archive-o text-primary c-pointer mr-4" v-tooltip.top="'Archive member(s)'" @click="openPositionArchive('center')" aria-hidden="true" style="font-size: 20px"></i>
                   <a href="#" @click="sendMarkedMemberSms"><i class="pi pi-comment"></i></a>
                   <a href="#" @click="sendMarkedMemberEmail" class="pl-4"><i class="pi pi-envelope"></i></a>
                 </div>
@@ -799,19 +800,19 @@
                           aria-labelledby="dropdownMenuButton"
                         >
                           <a class="dropdown-item" >
-                          <!-- <a class="dropdown-item" v-if="member.phoneNumber"> -->
                             <a 
                               @click="test(member)"
                               > Send SMS</a
                             >
                           </a>
-                          <!-- <a class="dropdown-item" v-if="member.email" href=""> -->
                           <a class="dropdown-item">
                             <a 
                               @click="testEmail(member)"
                             >Send Email</a>
                           </a>
-                              <!-- :to="`/tenant/email/compose?phone=${member.email}`" -->
+                           <a class="dropdown-item cursor-pointer" @click="archive(member.personID, 'single')">
+                            Archive
+                          </a>
                           <a
                             class="dropdown-item c-pointer"
                             @click="confirmDelete(member.personID, index)"
@@ -924,6 +925,9 @@
                           <a class="dropdown-item cursor-pointer" @click="requestApproval(member)">
                             Request Approval
                           </a>
+                          <a class="dropdown-item cursor-pointer" @click="archive(member.personID, 'single')">
+                            Archive
+                          </a>
                           <a
                             class="dropdown-item c-pointer"
                             @click="confirmDelete(member.personID, index)"
@@ -977,9 +981,17 @@
         <div class="row">
             <div class="col-md-12">
             <NewPerson @cancel="() => display = false" @person-id="getWardId($event)"  @show-group-modal="setGroupModal" />
-              <!-- @person-id="getFatherId($event)" -->
             </div>
       </div>
+    </Dialog>
+    <Dialog header="Archive members" v-model:visible="displayPositionArchive" :style="{width: '50vw'}" :position="positionArchive" :modal="true">
+        <p class="p-m-0">You are about to archive your member(s). Do you want to continue ?</p>
+        <template #footer>
+            <div class="d-flex justify-content-end">
+              <div class="default-btn bg-white text-center mr-2 c-pointer" @click="closeArchiveModal">No</div>
+              <div class="default-btn border-0 primary-bg text-center text-white c-pointer" @click="archive('', 'multiple')">Yes</div>
+            </div>
+        </template>
     </Dialog>
      <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
       <smsComponent :phoneNumbers="contacts"/>
@@ -1050,6 +1062,8 @@ export default {
     const isGroupLeader = ref(false)
     const enableLogin = ref(false)
     const showEmail = ref(false)
+    const positionArchive = ref('center');
+    const displayPositionArchive = ref(false);
     
     const closeGroupModal = ref()
     // const moveMembers =() =>{
@@ -1630,6 +1644,52 @@ export default {
       closeGroupModal.value.click();
     }
 
+    const openPositionArchive = (pos) => {
+        positionArchive.value = pos;
+        displayPositionArchive.value = true;
+    };
+
+    const closeArchiveModal = () => {
+      displayPositionArchive.value = false
+    }
+
+
+    const archive = async(id, type) => {
+      console.log(marked.value)
+      let archiveBody = type == 'single' ? [id] : marked.value.map(i => i.personID)
+      console.log(archiveBody)
+      try {
+            const { data } = await axios.post("/api/People/archive", archiveBody);
+            if (data && type == 'single') {
+              groupMembers.value = groupMembers.value.filter((item) => {
+                return item.personID !== id
+              });
+              toast.add({
+                severity: "success",
+                summary: "Archived",
+                detail: "Member archived succesfully",
+                life: 5000,
+              });
+            }
+            if (data && type == 'multiple') {
+              groupMembers.value = groupMembers.value.filter((item) => {
+                let y = marked.value.findIndex(j => j.personID == item.personID)
+                if (y >= 0) return false
+                return true
+              });
+              toast.add({
+                severity: "success",
+                summary: "Archived",
+                detail: "Member(s) archived succesfully",
+                life: 5000,
+              });
+              displayPositionArchive.value = false
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return {
       groupData,
       selectedAttendanceId,
@@ -1695,9 +1755,12 @@ export default {
      getWardId,
      uploadToGroup,
      closeGroupModal,
-     displayView
-    //  wardSearchedMembers,
-    // wardSearchForUsers
+     displayView,
+    archive,
+    openPositionArchive,
+    positionArchive,
+    displayPositionArchive,
+    closeArchiveModal
 
 
     };

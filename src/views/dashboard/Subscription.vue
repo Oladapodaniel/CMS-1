@@ -350,7 +350,6 @@ export default {
       userService.getCurrentUser()
         .then(res => {
           currentUser.value = res
-          console.log(res, 'logged');
           userEmail.value = res.userEmail;
           churchName.value = res.churchName;
           tenantId.value = res.tenantId;
@@ -388,7 +387,6 @@ export default {
     const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
 
     const expiryDate = ref("");
-    console.log(selectMonth.value.name);
     const selectMonths = ref([
       { name: "1", code: "NY" },
       { name: "2", code: "RM" },
@@ -414,10 +412,8 @@ export default {
     selectCurrencyArr.value = ["NGN", "USD", "GHS", "ZAR"];
 
     const existingPlan = ref({});
-    console.log(existingPlan.value.membershipSize, "🎊🎊🎊");
     const daysToEndOfSubscription = ref(0);
     const selectSubscription = () => {
-      // axios.get("/api/Subscription/GetSubscription").then((res) => {
       axios.get("/api/Subscription/subscriptions").then((res) => {
         console.log(res, "RES");
         Plans.value = res.data;
@@ -425,18 +421,26 @@ export default {
         existingPlan.value.amount = Plans.value.amount;
         existingPlan.value.description = Plans.value.description;
         existingPlan.value.amountInDollar = Plans.value.amountInDollar;
-        existingPlan.value.membershipSize = Plans.value.membershipSize;
-        subscriptionPlans.value = res.data.subscriptionPlans.filter(i => i.description !== "FREE PLAN")
-        // selectedPlan.value = subscriptionPlans.value.find(
-        //   (i) => i.description === "PLAN"
-        // );
-        // subSelectedAmount.value = selectedPlan.value.amountInNaira
-        // selectedPlan.value = res.data.returnObject.description;
+        existingPlan.value.membershipSize = Plans.value.membershipSize;   
+
+        // Remove preceeding plans from list
+
+        // const joined = subscriptionPlans.value.map(i => i.id).join("")
+        // const splitted = joined.split(selectedPlan.value.id)
+        // subscriptionPlans.value = subscriptionPlans.value.splice(splitted[0].length)
+
+        res.data.subscriptionPlans.forEach(i => {
+          if (i.membershipSize >= Plans.value.membershipSize) {
+            subscriptionPlans.value.push(i)
+          }
+        })
+
+        // Get current plan
 
         selectedPlan.value = subscriptionPlans.value.find(
           (i) => i.id == Plans.value.id
         );
-        console.log(selectedPlan.value)
+
         currentAmount.value = res.data.amountInNaira;
         currentPlan.value = existingPlan.value.description;
         productsList.value = res.data.productsList;
@@ -448,8 +452,7 @@ export default {
         ).price : [];
         smsPrice.value = productsList.value && productsList.value.length > 0 ? productsList.value.find((i) => i.name === "SMS").price : [];
        
-        // console.log(plans.value.subscriptionExpiration, 'qwer');
-
+    
         daysToEndOfSubscription.value = calculateRemomainingMonthsOfSubscription(res.data.subscriptionExpiration)
       });
     };
@@ -638,35 +641,24 @@ export default {
  ${appendLeadingZeroes(currentDate.getSeconds())}${appendLeadingZeroes(
       currentDate.getMilliseconds()
     )}`;
-    console.log(formattedDate);
+  
 
     const initializePayment = (paymentGateway) => {
-      console.log(currentUser.value, 'curent user list');
       const payload = {
       gateway: paymentGateway === 0 ? 'paystack' : 'flutterwave',
       totalAmount: TotalAmount.value,
       tenantId: currentUser.value.tenantId,
       orderId: uuidv4()
     }
-    // console.log(payload, 'initialize payment payload');
      axios
      .post('/api/payment/initializesubscription',payload)
      .then((res) => {
        close.value.click();
-      //  purchaseIsSuccessful.value = true;
-        // store.dispatch("addPurchasedUnits", totalSMSUnits.value);
        initializedOrder.value = res.data;
-       console.log(res, 'initializepayment');
      })
     }
     const payWithPaystack = (e) => {
       initializePayment(0);
-      console.log(e.srcElement.alt);
-
-      // selectedGateway.value = e.srcElement.alt;
-      // emit("selected-gateway", selectedGateway.value);
-
-      // close.click();
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
@@ -691,33 +683,10 @@ export default {
             detail: "You have cancelled the transaction",
             life: 2500,
           });
-          console.log("closed");
         },
         callback: function(response) {
           subscriptionPayment(response);
           //Route to where you confirm payment status
-          console.log(response, "Payment Received");
-          // console.log(donation);
-
-          // axios
-          //   .post(`/confirmDonation?txnref=${response.trxref}`, donation)
-          //   .then((res) => {
-          //     finish();
-          //     console.log(res, "success data");
-          //   })
-          //   .catch((err) => {
-          //     finish();
-          //     toast.add({
-          //       severity: "error",
-          //       summary: "Confirmation failed",
-          //       detail:
-          //         "Confirming your purchase failed, please contact support at info@churchplus.co",
-          //       life: 4000,
-          //     });
-          //     console.log(err, "error confirming payment");
-          // });
-
-          // emit("payment-successful", true);
         },
       });
       handler.openIframe();
@@ -736,17 +705,7 @@ export default {
     const payWithFlutterwave = (e) => {
       console.log(TotalAmount.value, 'total amount calculated')
       initializePayment(1)
-      console.log(e.srcElement.alt)
-      // Get and send clicked payment gateway to parent
-      // selectedGateway.value = e.srcElement.alt
-      // emit('selected-gateway', selectedGateway.value)
-
-      // Close payment modal
-      // props.close.click()
-       
-       console.log(selectedCurrency.value)
-      // console.log(email)
-
+  
       window.FlutterwaveCheckout({
                 public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
                 tx_ref: uuidv4().substring(0,8),

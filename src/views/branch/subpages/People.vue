@@ -17,17 +17,17 @@
       </div>
 
       <loadingComponent :loading="loading" />
-      <div class="row table" v-if="searchBranchMember">
+      <div class="row table" v-if="branchMembers.length > 0">
       <div class="col-12 px-0" id="table">
         <div class="top-con">
-          <div class="table-top">
+          <div class="table-top  d-flex justify-content-end">
             <!-- <div class="filter col-2">
               <p @click="toggleFilterFormVissibility" class="mt-2">
                 <i class="fas fa-filter"></i>
                 FILTER
               </p>
-            </div>
-            <div class="col-2">
+            </div> -->
+            <div class="col-5 col-sm-3 col-md-2">
               <p @click="toggleSearch" class="search-text w-100 mt-2">
                 <i class="pi pi-search"></i> SEARCH
               </p>
@@ -45,14 +45,13 @@
                   type="text"
                   placeholder="Search..."
                   v-model="searchText"
-                  @input="searchMemberInDB"
                 />
                 <span class="empty-btn">x</span>
                 <span class="search-btn">
                   <i class="pi pi-search"></i>
                 </span>
               </label>
-            </div> -->
+            </div>
           </div>
         </div>
         <div
@@ -319,12 +318,12 @@
 
         <div class="col-12">
           <div class="table-footer">
-            <!-- <Pagination
+            <Pagination
               @getcontent="getPeopleByPage"
               :itemsCount="50"
               :currentPage="currentPage"
-              :totalItems="totalItem"
-            /> -->
+     
+            />
           </div>
         </div>
       </div>
@@ -342,12 +341,14 @@ import axios from "@/gateway/backendapi";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import loadingComponent from "@/components/loading/LoadingComponent";
+import Pagination from "../../../components/pagination/PaginationButtons.vue";
 
 export default {
   // props: ["list", "peopleCount"],
   components: {
     BranchSelect,
-    loadingComponent
+    loadingComponent,
+    Pagination
   },
 
   // directives: {
@@ -362,10 +363,12 @@ export default {
     const filterFormIsVissible = ref(false);
     const searchIsVisible = ref(false);
     const searchText = ref("");
-    const loading = ref(false)
+    const loading = ref(false);
+    const branchId = ref("");
 
     const setSelectedBranch = async(payload) => {
       loading.value = true
+      branchId.value = payload.id
       try {
         let { data } = await axios.get(`/api/BranchNetwork/People?branchID=${payload.id}`)
         loading.value = false
@@ -392,15 +395,11 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
-    const searchMemberInDB = () => {
-      console.log('Searching...😘')
-    }
-
     const searchBranchMember = computed(() => {
       if (branchMembers.value.length > 0 && !searchText.value) return branchMembers.value
-      // return branchMembers.value.filter(i => {
-      //   return 
-      // })
+      return branchMembers.value.filter(i => {
+        return i.firstName.toLowerCase().includes(searchText.value.toLowerCase())
+      })
     })
 
     const deleteMember = (id) => {
@@ -460,6 +459,21 @@ export default {
         },
       });
     };
+
+    const currentPage = ref(0);
+    const getPeopleByPage = async (page) => {
+      if (page < 0) return false;
+      try {
+        const { data } = await axios.get(
+          `/api/BranchNetwork/People?branchID=${branchId.value}&page=${page}`
+        );
+        console.log(data)
+        branchMembers.value = data;
+        currentPage.value = page;
+      } catch (error) {
+        console.log(error);
+      }
+    };
     
 
     return {
@@ -467,14 +481,17 @@ export default {
       selectedBranch,
       branchMembers,
       filterFormIsVissible,
+      searchIsVisible,
       toggleFilterFormVissibility,
       toggleSearch,
-      searchMemberInDB,
       searchBranchMember,
       searchText,
       showConfirmModal,
       deleteMember,
-      loading
+      loading,
+      getPeopleByPage,
+      branchId,
+      currentPage
     };
   },
 };

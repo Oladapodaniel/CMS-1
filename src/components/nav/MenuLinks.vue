@@ -237,7 +237,7 @@
               'router-link-exact-active': route.path.includes('/tenant/event'),
             }"
           >
-            <span @click="toggleBranchDropDown" v-if="admin || basicuser">
+            <span @click="toggleBranchDropDown" v-if="admin || basicUser">
               <img
                 src="../../assets/dashboardlinks/events-icon.svg"
                 class="link-icon"
@@ -262,7 +262,7 @@
                 >Dashboard</router-link
               >
             </li>
-            <li class="dd-list-item" v-if="admin || basicuser">
+            <li class="dd-list-item" v-if="admin || basicUser">
               <router-link class="dd-link-item routelink" :to="`/tenant/branch/branch_members`"
                 >People</router-link
               >
@@ -277,19 +277,19 @@
                 >Communication</router-link
               >
             </li>
-            <li class="dd-list-item" v-if="false">
-              <router-link class="dd-link-item routelink" to="/tenant/reports"
-                >Report</router-link
+            <li class="dd-list-item" v-if="admin || basicUser">
+              <router-link class="dd-link-item routelink" to="/tenant/branch/branch_attendance"
+                >Attendance</router-link
               >
             </li>
-            <li class="dd-list-item" v-if="false">
-              <router-link class="dd-link-item routelink" to="/tenant/attendancecheckin"
+            <li class="dd-list-item" v-if="admin || basicUser">
+              <router-link class="dd-link-item routelink" to="/tenant/branch/branch_transactions"
                 >Financial</router-link
               >
             </li>
             <li class="dd-list-item" v-if="false">
-              <router-link class="dd-link-item routelink" to="/tenant/events"
-                >Event</router-link
+              <router-link class="dd-link-item routelink" to="/tenant/reports"
+                >Report</router-link
               >
             </li>
           </ul>
@@ -306,6 +306,16 @@
             Reports
           </a>
           <!-- </router-link> -->
+          <a v-if="admin || basicUser || followup"  class="link routelink">
+                <router-link class="dd-link-item routelink" to="/tenant/followup">
+                <img
+                  src="../../assets/dashboardlinks/follow-up-icon.svg"
+                  class="link-icon"
+                  alt=""
+                />
+                Follow up
+                </router-link>
+              </a>
 
           <div v-if="admin || basicUser || mobileAdmin">
             <div>
@@ -369,16 +379,7 @@
             </div>
           </div>
         
-          <a v-if="followup"  class="link follow-up routelink">
-                <router-link class="dd-link-item routelink" to="/tenant/followup">
-                <img
-                  src="../../assets/dashboardlinks/follow-up-icon.svg"
-                  class="link-icon"
-                  alt=""
-                />
-                Follow up
-                </router-link>
-              </a>
+        
           </div>
           <div class="w-100 align-self-end">
             <hr class="hr" />
@@ -773,7 +774,7 @@ export default {
 }
 
 .branch-list {
-      /* height: 295px; */
+      height: 165px;
 }
 
 .acc-list {

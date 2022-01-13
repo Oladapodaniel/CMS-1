@@ -472,10 +472,30 @@ const routes = [
                             path: 'branch_members',
                             name: "BranchMembers",
                             meta: {
-                                title: 'Church - Members',
+                                title: 'Church - Branch Members',
                             },
                             component: () =>
-                                import ( /* webpackChunkName: "peopleempty" */ '../views/branch/people/People.vue')
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/branch/subpages/People.vue')
+
+                        },
+                        {
+                            path: 'branch_transactions',
+                            name: "BranchTransactions",
+                            meta: {
+                                title: 'Church - Branch Transactions',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/branch/subpages/BranchTransactions.vue')
+
+                        },
+                        {
+                            path: 'branch_attendance',
+                            name: "BranchAttendance",
+                            meta: {
+                                title: 'Church - Branch Attendance',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/branch/subpages/BranchAttendance.vue')
 
                         },
                         // {
@@ -500,33 +520,33 @@ const routes = [
                         //             }
                         //         ]        
                         // },
-                        {
-                            path: 'firsttimerslist',
-                            name: 'FirstTimerList',
-                            meta: {
-                                title: 'Churchplus - First Timers',
-                            },
-                            component: () =>
-                                import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
-                        },
-                        {
-                            path: 'reports',
-                            name: 'ReportList',
-                            meta: {
-                                title: 'Churchplus - Reports',
-                            },
-                            component: () =>
-                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Index.vue'),
-                        },
-                        {
-                            path: 'events',
-                            name: 'EventsList',
-                            meta: {
-                                title: 'Churchplus - Event Forms',
-                            },
-                            component: () =>
-                            import ( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
-                        },
+                        // {
+                        //     path: 'firsttimerslist',
+                        //     name: 'FirstTimerList',
+                        //     meta: {
+                        //         title: 'Churchplus - First Timers',
+                        //     },
+                        //     component: () =>
+                        //         import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
+                        // },
+                        // {
+                        //     path: 'reports',
+                        //     name: 'ReportList',
+                        //     meta: {
+                        //         title: 'Churchplus - Reports',
+                        //     },
+                        //     component: () =>
+                        //     import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Index.vue'),
+                        // },
+                        // {
+                        //     path: 'events',
+                        //     name: 'EventsList',
+                        //     meta: {
+                        //         title: 'Churchplus - Event Forms',
+                        //     },
+                        //     component: () =>
+                        //     import ( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
+                        // },
                     ]
                 
             },

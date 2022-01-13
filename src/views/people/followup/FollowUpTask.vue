@@ -1,5 +1,5 @@
 <template>
-    <div class="table" v-for="(item, index) in tasks" :key="index">
+    <div class="table" style="box-shadow: none" v-for="(item, index) in tasks" :key="index">
         <div class="container">
             <div class="row p-3">
                 <div class="col-md-5">
@@ -16,11 +16,11 @@
                     <Dropdown v-model="item.selectedStatus" :filter="false" :options="statuses" optionLabel="name" class="mt-1 w-100" placeholder="Select status" @change="markCompleted(item, index)" />
                 </div>
                 <div class="col-6 d-block d-md-none"></div>
-                <div class="col-5 mt-3 pt-2 pt-md-0">
+                <div class="col-5 pt-2 pt-md-0">
                     <div class="font-weight-700">Priority</div>
                     <div>{{ getPriority(item.priority).name }}</div>
                 </div>
-                <div class="col-6 mt-3 pt-2 pt-md-0">
+                <div class="col-6 pt-2 pt-md-0">
                     <div class="font-weight-700">Task type</div>
                     <div>{{ createdTypes(item.type) }}</div>
                 </div>
