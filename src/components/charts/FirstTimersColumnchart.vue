@@ -25,7 +25,7 @@ import Highcharts from "highcharts";
 export default {
   components: {},
 
-  props: [ "domId", "columndata"],
+  props: [ "domId", "columndata", "yAxis", "desc"],
 
   setup(props) {
     const chart = ref(null);
@@ -40,20 +40,19 @@ export default {
         renderTo: props.domId,
     },
     title: {
-        text: 'Inflow Summary'
+        text: props.desc
     },
     // subtitle: {
     //     text: 'Source: WorldClimate.com'
     // },
     xAxis: {
-        categories: [props.columndata.categories
-        ],
+        categories: props.columndata.categories,
         crosshair: true
     },
     yAxis: {
         min: 0,
         title: {
-            text: 'No.Guest'
+            text: props.yAxis
         }
     },
     tooltip: {

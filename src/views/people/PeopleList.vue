@@ -165,13 +165,14 @@
             >
             </i>
           </a>
+          <i class="fa fa-file-archive-o color-groupicon c-pointer ml-2 mr-2" v-if="marked.length > 0" v-tooltip.top="'Archive member(s)'" @click="openPositionArchive('center')" aria-hidden="true" style="font-size: 20px"></i>
           <i
             class="pi pi-trash color-deleteicon c-pointer pt-2 px-2"
-            v-tooltip.top="'Delete Member'"
+            v-tooltip.top="'Delete Member(s)'"
             style="font-size: 20px"
             v-if="marked.length > 0"
             @click="showConfirmModal1"
-          ></i> &nbsp; &nbsp;
+          ></i>&nbsp; &nbsp;
           <span class="c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberSms">Send SMS</span> &nbsp; &nbsp;
           <span class="c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberEmail">Send Email</span>
         </div>
@@ -444,6 +445,9 @@
                       >Send Email</router-link
                     >
                   </a>
+                  <a class="dropdown-item elipsis-items cursor-pointer" @click="archive(person.id, 'single')">
+                    Archive
+                  </a>
                   <a class="dropdown-item elipsis-items">
                     <router-link
                       :to="`/tenant/people/add/${person.id}`"
@@ -489,6 +493,15 @@
       </div>
     </div>
   </div>
+  <Dialog header="Archive members" v-model:visible="displayPositionArchive" :style="{width: '50vw'}" :position="positionArchive" :modal="true">
+      <p class="p-m-0">You are about to archive your member(s). Do you want to continue ?</p>
+      <template #footer>
+          <div class="d-flex justify-content-end">
+            <div class="default-btn bg-white text-center mr-2 c-pointer" @click="closeArchiveModal">No</div>
+            <div class="default-btn border-0 primary-bg text-center text-white c-pointer" @click="archive('', 'multiple')">Yes</div>
+          </div>
+      </template>
+  </Dialog>
   <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
     <smsComponent :phoneNumbers="contacts"/>
   </SideBar>
@@ -552,6 +565,8 @@ export default {
     const currentUser = ref({})
     const route = useRoute();
     // const store = useStore();
+    const positionArchive = ref('center');
+    const displayPositionArchive = ref(false);
 
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -986,6 +1001,50 @@ export default {
         }
         getCurrentlySignedInUser()
 
+    const openPositionArchive = (pos) => {
+        positionArchive.value = pos;
+        displayPositionArchive.value = true;
+    };
+
+    const closeArchiveModal = () => {
+      displayPositionArchive.value = false
+    }
+
+    const archive = async(id, type) => {
+      let archiveBody = type == 'single' ? [id] : marked.value.map(i => i.id)
+      console.log(archiveBody)
+      try {
+            const { data } = await axios.post("/api/People/archive", archiveBody);
+            if (data && type == 'single') {
+              churchMembers.value = churchMembers.value.filter((item) => {
+                return item.id !== id
+              });
+              toast.add({
+                severity: "success",
+                summary: "Archived",
+                detail: "Member archived succesfully",
+                life: 5000,
+              });
+            }
+            if (data && type == 'multiple') {
+              churchMembers.value = churchMembers.value.filter((item) => {
+                let y = marked.value.findIndex(j => j.id == item.id)
+                if (y >= 0) return false
+                return true
+              });
+              toast.add({
+                severity: "success",
+                summary: "Archived",
+                detail: "Member(s) archived succesfully",
+                life: 5000,
+              });
+            displayPositionArchive.value = false
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return {
       churchMembers,
       getAllMembersAndAddToGroup,
@@ -1036,7 +1095,12 @@ export default {
       chooseGrouptoMoveAllMembers,
       route,
       currentUser,
-      addClass
+      addClass,
+      archive,
+      openPositionArchive,
+      positionArchive,
+      displayPositionArchive,
+      closeArchiveModal
     };
   },
 };

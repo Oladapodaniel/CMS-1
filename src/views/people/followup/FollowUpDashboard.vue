@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="container-fluid">
+    <div class="container-fluid mt-4">
       <div class="row mb-4 px-0">
         <div class="col-md-6 sub-header">
           Overview
@@ -57,7 +57,7 @@
           </div>
         </div>
 
-        <!-- <div class="col-md-2 item-Area mb-4">
+        <div class="col-md-2 item-Area mb-4">
           <div class="row p-2 mb-2 d-flex justify-content-between">
               <div class="top-icon-div d-flex justify-content-center align-items-center ml-2">
                 <i class="pi pi-list text-center"></i>
@@ -67,7 +67,7 @@
           <div class="row p-2">
               <p class="item-text ml-2 text-truncate">Activity Involved</p>
           </div>
-        </div> -->
+        </div>
       </div>
     </div>
       <div class="row mt-5 mother-row">
@@ -110,7 +110,7 @@ import { onMounted, ref } from "vue";
 import axios from "@/gateway/backendapi";
 import FunnelChart from "@/components/charts/FunnelChart.vue";
 import PieChart from "@/components/charts/FirstTimerPiechart.vue";
-import ColumnChart from "../../components/charts/FirstTimersColumnchart.vue";
+import ColumnChart from "@/components/charts/FirstTimersColumnchart.vue";
 // import BarChart from "@/components/charts/FirstTimersBarchart.vue";
 export default {
     components: {

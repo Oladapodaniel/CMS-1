@@ -1,51 +1,7 @@
 <template>
   <div class="container-wide">
     <div class="my-con">
-      <!-- <div class="summary px-3">
-        <p class="summary-header">Summary</p>
-        <div class="boards">
-          <div class="board">
-            <div class="board-top">
-              <p class="total-text mb-0">TOTAL MEMBERS</p>
-              <img
-                class="trend-icon"
-                src="../../assets/dashboardlinks/trend-icon.svg"
-                alt=""
-              />
-            </div>
-            <h4 class="total">{{ getFirstTimerSummary.totalFirstTimer }}</h4>
-            <p>
-              <span class="percent"
-                >+{{ getFirstTimerSummary.firstTimerPercentageGrowth }}%
-              </span>
-              <span class="percent-text"> Since last month</span>
-            </p>
-          </div>
-          <div class="chart-con">
-            <div style="width: 45%" class="ml-md-4 chart1">
-              <ByGenderChart
-                domId="chart"
-                title="Invitation Source"
-                distance="5"
-                :titleMargin="10"
-                :summary="getFirstTimerSummary.invitationSource"
-              />
-            </div>
-            <div style="width: 45%" class="chart2">
-              <ByMaritalStatusChart
-                domId="second"
-                title="Interested In Joining"
-                :titleMargin="10"
-                :summary="getFirstTimerSummary.interestedInJoining"
-              />
-            </div>
-          </div>
-        </div>
-      </div> -->
-
           <FirstTimersChartArea/>
-
-      <!-- tosin 1 -->
       <div class="table">
         <div class="top-con">
           <div class="table-top px-2">
