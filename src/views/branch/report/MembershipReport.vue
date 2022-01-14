@@ -1,6 +1,6 @@
 <template>
-    <div class="container-fluid mb-4">
-       <div class="row d-flex justify-content-between px-3">
+    <div class="container-fluid mt-5 mb-4 p-0">
+       <div class="row d-flex justify-content-between px-3 mb-3">
               <div class="heading-text">Member Report</div>
               <div class="default-btn border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
@@ -11,10 +11,14 @@
                         </div>
               </div>
         </div>
-        <div class="container-fluid  mt-2 ">
-            <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
-              <div class="col-10">
-                <BranchSelect class="w-50" @selectedbranch="setSelectedBranch"  />
+        <div class="container-fluid mt-2 ">
+            <div class="row py-5 " style="background: #ebeff4;">
+              <div class="col-6 mb-3">
+                <div class="font-weight-bold">Select branch</div>
+                <BranchSelect class="w-100" @selectedbranch="setSelectedBranch"  />
+              </div>
+              <div class="col-md-6 mb-3">
+                <ProgressSpinner class="loader-icon" v-if="loading" />
               </div>
                 <div class="col-12 col-md-6 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 " :class="{ 'show-dropdown': showDropDown, 'hide-dropdown' : !showDropDown}">
                     <div><label for="" class="font-weight-bold">Select Members</label></div>
@@ -188,6 +192,7 @@ import Listbox from 'primevue/listbox';
 import MultiSelect from 'primevue/multiselect';
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice"
+import ProgressSpinner from 'primevue/progressspinner';
 export default {
     components: {
         BranchSelect,
@@ -196,6 +201,7 @@ export default {
         Listbox,
         MultiSelect,
         // PaginationButtons
+        ProgressSpinner
          },
     setup() {
     const selectedMember = ref();
@@ -416,20 +422,12 @@ export default {
     const setSelectedBranch = async(payload) => {
       loading.value = true
       branchMemberID.value = payload.id
-      showDropDown.value = true;
       try {
         let { data } = await axios.get(`/api/BranchReports/persons/getMemberClassification?tenantID=${payload.id}`)
         loading.value = false
         console.log(data)
          memberShips.value = data;
-        if (data.length === 0) {
-          toast.add({
-              severity: "warn",
-              summary: "No members found",
-              detail: "There are no members in this branch yet.",
-              life: 7000,
-            });
-        }
+         showDropDown.value = true;
       }
       catch (err) {
         loading.value = false

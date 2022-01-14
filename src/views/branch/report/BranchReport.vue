@@ -1,7 +1,7 @@
 <template>
     <div class="container container-top container-wide">
         <div class=" row mt-2" >
-            <div ><h3 class="font-weight-bold"> Reports</h3></div>
+            <div ><h3 class="page-header">Branch Reports</h3></div>
         </div>
         <div class="row" style=" background: #f5f8fa;">
             <div class="col-12 col-sm-6  c-pointer " @click="toggleMember">
@@ -14,10 +14,10 @@
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col-12" v-if="showMember">
+            <div class="col-12 p-0" v-if="showMember">
                 <Member/>
             </div>
-            <div class="col-12" v-if="showService">
+            <div class="col-12 p-0" v-if="showService">
                 <Service/> 
             </div>
         </div>
@@ -69,6 +69,9 @@ export default {
 
 
 <style scoped>
+.page-header {
+    font: normal normal 800 29px Nunito sans;
+}
 
 .header4{
     font-size: 20px;
