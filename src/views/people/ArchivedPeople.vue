@@ -31,12 +31,21 @@
                   aria-expanded="false"
                 ></i>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item cursor-pointer elipsis-items">
-                    Set to active
+                  <a class="dropdown-item cursor-pointer elipsis-items"
+                  >
+                    Unarchive
                   </a>
-                  <a class="dropdown-item cursor-pointer  elipsis-items">
-                    Edit
-                  </a>
+                  <div class="dropdown-item cursor-pointer  elipsis-items">
+                     <router-link
+                              :to="{
+                                name: 'AddPerson',
+                                params: { personId: archived.id },
+                              }"
+                            >
+                              <a class="dropdown-item cursor-pointer elipsis-items"> Edit </a>
+                            </router-link>
+                    <!-- Edit -->
+                  </div>
                   <a class="dropdown-item elipsis-items">
                     <!-- <router-link
                       :to="`/tenant/people/add/${person.id}`"
