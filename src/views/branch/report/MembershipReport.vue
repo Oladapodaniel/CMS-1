@@ -1,223 +1,242 @@
 <template>
-    <div class="  container-top  mb-4  ">
-        <div class="row d-flex justify-content-between px-3">
-            <div class="heading-text">Membership Report</div>
-            <div class="default-btn mb-2 border-secondary font-weight-normal c-pointer"
+    <div class="container-fluid mt-5 mb-4 p-0">
+       <div class="row d-flex justify-content-between px-3 mb-3">
+              <div class="heading-text">Member Report</div>
+              <div class="default-btn border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
-                style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
-                <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
-                      <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
-                </div>
-            </div>
-            <!-- <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div> -->
+                style="width: fixed; position:relative">
+                        Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
+                        <div class=" c-pointer" style="width: 6rem; z-index:1000; position:absolute" v-if="showExport">
+                              <Listbox @click="downloadFile" v-model="selectedFileType" :options="bookTypeList" optionLabel="name"/>
+                        </div>
+              </div>
         </div>
-           <!-- date area -->
-        <div class="container-fluid my-2 pt-4 pb-5   bg-area">
-            <div class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3  ">
+        <div class="container-fluid mt-2 ">
+            <div class="row py-5 " style="background: #ebeff4;">
+              <div class="col-6 mb-3">
+                <div class="font-weight-bold">Select branch</div>
+                <BranchSelect class="w-100" @selectedbranch="setSelectedBranch"  />
+              </div>
+              <div class="col-md-6 mb-3">
+                <ProgressSpinner class="loader-icon" v-if="loading" />
+              </div>
+                <div class="col-12 col-md-6 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 " :class="{ 'show-dropdown': showDropDown, 'hide-dropdown' : !showDropDown}">
+                    <div><label for="" class="font-weight-bold">Select Members</label></div>
+                    <div>
+                        <MultiSelect v-model="selectedMember" :options="memberShips" optionLabel="name" placeholder="Select Member" :filter="true" class="multiselect-custom w-100">
+                            <template #value="slotProps">
+                                <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
+                                    <div>{{option.name}}</div>
+                                </div>
+                                <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                    Select Member
+                                </template>
+                            </template>
+                            <template #option="slotProps">
+                                <div class="country-item">
+                                    <div>{{slotProps.option.name}}</div>
+                                </div>
+                            </template>
+                        </MultiSelect>
+                    </div>
 
-              <div class="col-md-4 col-sm-12 px-md-0">
-                  <div class="p-field p-col-12 pt-md-2 pb-2">
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 " :class="{ 'show-dropdown': showDropDown, 'hide-dropdown' : !showDropDown}">
+                    <div class=""><label for="" class=" ml-2 font-weight-bold">Gender</label></div>
                     <div>
-                      <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+                        <MultiSelect v-model="selectedGender" :options="memberGender" optionLabel="name" placeholder="Select gender" :filter="true" class="multiselect-custom w-100">
+                            <template #value="slotProps">
+                                <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
+                                    <div>{{option.name}}</div>
+                                </div>
+                                <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                    Select Gender
+                                </template>
+                            </template>
+                            <template #option="slotProps">
+                                <div class="country-item">
+                                    <div>{{slotProps.option.name}}</div>
+                                </div>
+                            </template>
+                        </MultiSelect>
                     </div>
-                    <Calendar dateFormat="dd/mm/yy" class="w-100" id="icon" v-model="startDate" :showIcon="true" />
-                  </div>
-              </div>
-              <div class="col-md-4 col-sm-12 pr-md-0">
-                  <div class="p-field p-col-12 pt-md-2">
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 " :class="{ 'show-dropdown': showDropDown, 'hide-dropdown' : !showDropDown}">
+                    <div><label for="" class="font-weight-bold">Marital Status</label></div>
                     <div>
-                      <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+                        <MultiSelect v-model="selectedMaritalStatus" :options="memberMaritalStatus" optionLabel="name" placeholder="Marital status" :filter="true" class="multiselect-custom w-100">
+                            <template #value="slotProps">
+                                <div class="country-item country-item-value bg-secondary font-weight-bold small " v-for="option of slotProps.value" :key="option.code">
+                                    <div>{{option.name}}</div>
+                                </div>
+                                <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                    Marital status
+                                </template>
+                            </template>
+                            <template #option="slotProps">
+                                <div class="country-item">
+                                    <div>{{slotProps.option.name}}</div>
+                                </div>
+                            </template>
+                        </MultiSelect>
                     </div>
-                    <Calendar dateFormat="dd/mm/yy" class="w-100" id="icon" v-model="endDate" :showIcon="true" />
-                  </div>
-              </div>
-              <div class="col-md-4 col-sm-12 pr-md-0">
-                  <div class="p-field p-col-12 pt-md-2">
-                    <button
-                            class="default-btn generate-report c-pointer font-weight-normal mt-4"
-                            @click="generateReport">
-                            Generate Report
-                    </button>
-                  </div>
-              </div>
-            </div>
-        </div>
-    <!--end of date area -->
-      <div id="element-to-print">
-        <div  class="container-fluid ">
-            <div class="row w-100" >
-                <!-- <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                    <div class="mt-5 display-1 font-weight-bold text-center heading-text">
-                       First Timers Analysis Report 
-                    </div>
-                </div> -->
-                <!-- <div class="col-12 w-100 text-center ">
-                    <div class="col-12   text-center">
-                        <div class="col-12 font-weight-bold">Firsttimer By Event Date</div>
-                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                        <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                            <PerformanceColumnChart
-                                domId="chart1"
-                                title="Firsttimer By Event Date"
-                                distance="5"
-                                :titleMargin="10"
-                                :data="pieChart"
-                                subtitle="Monthly Attendance of Events"
-                                :series="mappedEventDate"
-                                :attendanceSeries="attendanceSeries"
-                        
-                            />
-                        </div>            
-                    </div>
-                </div> -->
-             </div>
-            <div class="  row " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                <div class="col-12 container-fluid round-border mt-3 d-flex flex-wrap">
-                    <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                        <div class="col-12  text-center">
-                            <div class="col-12  font-weight-bold">Gender Distribution</div>
-                            <div class="col-12 " >
-                                <PerformancePieChart
-                                domId="chart2"
-                                distance="5"
-                                :titleMargin="10"
-                                :summary="mappedGender"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                        <div class="col-12  text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0 ">
-                            <div class="col-12  font-weight-bold ">Marital Status</div>
-                            <div class="col-12 " >
-                            <PerformancePieChart
-                               domId="chart3"
-                                distance="5"
-                                :titleMargin="10"
-                                :summary="mappedMaritalStatus"
-                            />
-                            </div>
-                        </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3" :class="{ 'show-dropdown': showDropDown, 'hide-dropdown' : !showDropDown}">
+                    <label for="" ></label>
+                    <div class="mt-2" @click="genarateReport">
+                        <button class=" default-btn generate-report c-pointer font-weight-normal ">Generate Report </button>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- <div > -->
-            <!-- <div class="row "> -->
-        <section>
-            <!-- table header -->
-            <div class="mt-4 container-fluid table-main px-0 remove-styles2 remove-border responsiveness " 
-            :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
-                <table class="table remove-styles mt-0  table-hover table-header-area  " id="table">
-                <thead class="table-header-area-main">
-                    <tr
-                    class="text-capitalize text-nowrap"
-                    style="border-bottom: 0"
-                    >
-                    <!-- <th scope="col">Church Activity</th> -->
-                    <th scope="col">Name</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Home Address</th>
-                    <th scope="col">Gender</th>
-                    <!-- <th scope="col">Marital Status</th> -->
-                    <!-- <th scope="col">Activity Date</th> -->
-                    <!-- <th scope="col">Current Status</th> -->
-                    </tr>
-                </thead>
-                <tbody class="font-weight-bold text-nowrap" style="font-size: small " >
-                    <tr v-for="(firstTimer, index) in firstTimerInChurch" :key="index">
-                    <!-- <td>{{ firstTimer.event }}</td> -->
-                    <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
-                    <td>{{ firstTimer.mobilePhone }}</td>
-                    <td>{{ firstTimer.email }}</td>
-                    <td>{{ firstTimer.homeAddress }}</td>
-                    <td>{{ firstTimer.gender }}</td>
-                    <!-- <td>{{ firstTimer.maritalStatus }}</td> -->
-                    <!-- <td>{{ formatDate(firstTimer.activityDate) }}</td> -->
-                    <!-- <td>{{ firstTimer.status }}</td> -->
-                    </tr>
-                </tbody>
-                </table>
-                <!-- <div class="table-foot d-flex justify-content-end mt-n3">
-                <PaginationButtons />
-                </div> -->
-            </div>
-            <!--end table header -->
-        </section>
-      </div>
+        <div id="element-to-print">
+
+        
+          <div  class="container-fluid  ">
+              <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                  <!-- <div class="col-12 ">
+                      <div class="mt-5 pb-2 text-center Display-1 heading-text">
+                          Congregation Members Report
+                      </div>
+                  </div> -->
+                  <div class="col-12 mt-4 round-border d-flex flex-wrap">
+                      <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                      <div class="col-12 mt-sm-3 mt-md-0 mt-lg-2  text-center">
+                          <div class="col-12 font-weight-bold">Membership By Gender</div>
+                          <!-- <div class="col-12" >No Data Available</div> -->
+                          <div class="col-12">
+                              <MembershipPieChart
+                                  domId="chart1"
+                                  distance="5"
+                                  :titleMargin="10"
+                                  :summary="mappedGender"
+                              />
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                      <div class="col-12  mt-3 mt-sm-3 mt-md-0 mt-lg-2 text-center">
+                          <div class="col-12  font-weight-bold">Membership By Marital Status</div>
+                          <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                          <div class="col-12 " >
+                              <MembershipPieChart
+                                  domId="chart2"
+                                  distance="5"
+                                  :titleMargin="10"
+                                  :summary="mappedMaritalStatus"
+                              />
+                          </div>
+                      </div>
+                  </div>
+                  </div>
+              </div>
+          </div>
+          <!-- <div > -->
+              <!-- <div class="row "> -->
+                  <section>
+                      <!-- table header -->
+                      <div  class=" mt-4 container-fluid table-main px-0 remove-styles2 remove-border responsiveness  "
+                      :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
+                          <table class="table remove-styles mt-0 table-hover table-header-area " id="table" >
+                          <thead class="table-header-area-main" >
+                              <tr
+                              class="text-capitalize text-nowrap"
+                              style="border-bottom: 0"
+                              >
+                              <!-- <th scope="col">Church Activity</th> -->
+                              <th scope="col">Membership</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">Phone</th>
+                              <th scope="col">Email</th>
+                              <th scope="col">Home Address</th>
+                              <th scope="col">Gender</th>
+                              <!-- <th scope="col">Marital Status</th>
+                              <th scope="col">Age Group</th>
+                              <th scope="col">Birthday</th> -->
+                              </tr>
+                          </thead>
+                          <tbody class=" small-text font-weight-bold text-nowrap" >
+                              <tr v-for="(member, index) in membersInChurch" :key="index">
+                              <!-- <td>{{member.churchActivity}}</td> -->
+                              <td>{{member.membership}}</td>
+                              <td>{{member.name}}</td>
+                              <td>{{member.mobilePhone}}</td>
+                              <td>{{member.email}}</td>
+                              <td>{{member.homeAddress}}</td>
+                              <td>{{member.gender}}</td>
+                              <!-- <td>{{member.maritalStatus}}</td>
+                              <td>{{member.ageGroup}}</td>
+                              <td>{{member.birthDay}}</td> -->
+                              </tr>
+                          </tbody>
+                          </table>
+                          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
+                          <PaginationButtons />
+                          </div> -->
+                      </div>
+                      <!--end table header -->
+                  </section>
+        </div>
             <!-- </div> -->
         <!-- </div> -->
     </div>
 </template>
 
 <script>
-import {computed,ref } from "vue";
-import Calendar from "primevue/calendar";
-// import Dropdown from "primevue/dropdown";
-import Listbox from 'primevue/listbox';
+import {computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
-import PerformancePieChart from '../../../components/charts/ReportPieChart.vue';
+import BranchSelect from "../component/BranchSelect.vue"
+import MembershipPieChart from '../../../components/charts/ReportPieChart.vue';
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
-import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
+import Listbox from 'primevue/listbox';
 import MultiSelect from 'primevue/multiselect';
-import dateFormatter from  "../../../services/dates/dateformatter";
 import printJS from "print-js";
 import exportService from "../../../services/exportFile/exportservice"
+import ProgressSpinner from 'primevue/progressspinner';
 export default {
     components: {
-        MultiSelect,
+        BranchSelect,
+        MembershipPieChart,
+        // Dropdown,
         Listbox,
-        PerformancePieChart,
-        PerformanceColumnChart,
-        // Dropdown, 
-        Calendar, 
-        // PaginationButtons 
-        },
+        MultiSelect,
+        // PaginationButtons
+        ProgressSpinner
+         },
     setup() {
-    const showReport = ref(false);
-    const startDate = ref("");
-    const endDate = ref("");
-    const firstTimerInChurch = ref([]);
+    const selectedMember = ref();
+    const selectedGender = ref();
+    const selectedMaritalStatus = ref();
+    const showReport = ref(false)
+    const showDropDown = ref(false)
+    const memberShips = ref({});
+    const memberMaritalStatus = ref({});
+    const memberGender = ref({});
+    // const genderSummary = ref([]);
+    const membersInChurch = ref([]);
     const genderChartResult = ref([]);
+    const memberChartResult = ref([]);
     const maritalStatusChartResult = ref([]);
-    const eventDateChartResult = ref([]);
-    // const attendanceSeries = ref("weekly");
-    const attendanceData = ref([]);
-    const mainAttendanceData = ref([]);
+    const ageGroupChartResult = ref([]);
     const showExport = ref(false);
     const fileName = ref("")
-    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'},{name: 'pdf'} ])
+    const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'}, {name: 'pdf'} ])
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);
-    
+    const branchMemberID = ref([])
+     const loading = ref(false)
 
-    const attendanceChart = computed(() => {
-         if (firstTimerInChurch.value.length === 0) return []
-            attendanceData.value = []
-            mainAttendanceData.value = []
-           firstTimerInChurch.value.forEach(i => {
-            let attendanceIndex = Object.keys(i).findIndex(i => i === 'activityDate')
-            let attendanceValue = Object.values(i)[attendanceIndex]
-            attendanceData.value.push(attendanceValue)     
-         });
-         mainAttendanceData.value.push({
-             name: 'Attendance',
-             color: '#002044',
-             data: attendanceData.value
-         })
-         return mainAttendanceData.value  
-     })
-    const genderChart = (array, key) => {
+   const genderChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
-       genderChartResult.value = []
+        genderChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
         return result;
       }, []); // empty object is the initial value for result object
+      // genderChartResult.value
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
@@ -233,8 +252,34 @@ export default {
       if (genderChartResult.value.length === 0) return []
       return genderChartResult.value.map(i => i)
     })
+   const memberChart = (array, key) => {
+       // Accepts the array and key
+      // Return the end result
+      memberChartResult.value = []
+      let result = array.reduce((result, currentValue) => {
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+          currentValue
+        );
+        return result;
+      }, []); // empty object is the initial value for result object
+      // genderChartResult.value
 
-       const maritalStatusChart = (array, key) => {
+      for (const prop in result) {
+        // genderChartResult.value
+        console.log(prop, result[prop])
+        memberChartResult.value.push({
+          name: prop,
+          value: result[prop].length
+        })
+      }
+    };
+
+    const mappedMember = computed(() => {
+      if (memberChartResult.value.length === 0) return []
+      return memberChartResult.value.map(i => i)
+    })
+   const maritalStatusChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
        maritalStatusChartResult.value = []
@@ -261,10 +306,9 @@ export default {
       if (maritalStatusChartResult.value.length === 0) return []
       return maritalStatusChartResult.value.map(i => i)
     })
-    const eventDateChart = (array, key) => {
+   const ageGroupChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
-      eventDateChartResult.value = []
       let result = array.reduce((result, currentValue) => {
         // If an array already present for key, push it to the array. Else create an array and push the object
         (result[currentValue[key]] = result[currentValue[key]] || []).push(
@@ -276,88 +320,159 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
-        eventDateChartResult.value.push({
+        // ageGroupChartResult.value = []
+        ageGroupChartResult.value.push({
           name: prop,
-        //   value: result[prop].length
+          value: result[prop].length
         })
       }
-      console.log(eventDateChartResult.value)
     };
 
-    const mappedEventDate = computed(() => {
-      if (eventDateChartResult.value.length === 0) return []
-      return eventDateChartResult.value.map(i => formatDate(i.name))
+    const mappedAgeGroup = computed(() => {
+      if (ageGroupChartResult.value.length === 0) return []
+      return ageGroupChartResult.value.map(i => i)
     })
 
-    const generateReport = () => {
-        axios
-        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
-        .then((res) => {
-
-          console.log(res, "🎄🎄🎄");
-          firstTimerInChurch.value = res.data;
-          console.log(firstTimerInChurch.value, "✌️✌️");
-          genderChart(res.data,'gender')
-          maritalStatusChart(res.data,'maritalStatus')
-          eventDateChart(res.data,'activityDate')
-          setTimeout(() => {
-                        fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
-                        fileToExport.value = exportService.tableToJson(document.getElementById("table"))
-                    }, 1000)
-
-                     showReport.value = true;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-       
-
-    }
-
-    const downloadFile = () => {
+      const downloadFile = () => {
         exportService.downLoadExcel(selectedFileType.value.name, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport.value)
       }
 
-    const formatDate = (date) => {
-      return dateFormatter.normalDate(date);
+    const genarateReport = () => {
+        const memberID =  selectedMember.value.map((i) => i.id)
+        const genderID =  selectedGender.value.map((i) => i.id)
+        const maritalStatusID = selectedMaritalStatus.value.map((i) => i.id)
+        let body = {
+        gender : genderID,
+        maritalStatus : maritalStatusID,
+        membershipStatus : maritalStatusID,
+        membershipType : memberID
+        }
+        axios.post(`/api/BranchReports/persons/getAllContactsByParameterReport?tenantID=${branchMemberID.value}`,body)
+        .then((res) =>{
+            console.log(res.data)
+            membersInChurch.value = res.data;
+            console.log(membersInChurch.value, 'allbyGideon')
+            genderChart(res.data,'gender')
+            memberChart(res.data,'membership')
+            maritalStatusChart(res.data,'maritalStatus')
+            ageGroupChart(res.data,'ageGroup')
+            setTimeout(() => {
+                        fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
+                        fileToExport.value = exportService.tableToJson(document.getElementById("table"))
+                    }, 1000)
+                    
+                    showReport.value = true;
+
+        }).catch((error) =>{
+            console.log(error)
+        })
+
+          showReport.value = true;
+
+    }
+
+
+    // const getMemberClassification = async () => {
+    //   try {
+    //     axios
+    //       .get('/api/BranchReports/persons/getMemberClassification')
+    //       .then((res) => {
+    //         memberShips.value = res.data;
+    //       })
+    //       .catch((err) => console.log(err));
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
+    // getMemberClassification();
+
+    const getMaritalStatus = async () => {
+      try {
+        axios
+          // .get('/api/Reports/people/getMaritalStatus')
+          .get('/api/BranchReports/persons/getMaritalStatus')
+          .then((res) => {
+            memberMaritalStatus.value = res.data;
+            // console.log(res,'gideon');
+          })
+          .catch((err) => console.log(err));
+        // donationSummary.value = data;
+      } catch (err) {
+        console.log(err);
+      }
     };
+    getMaritalStatus();
+
+    const getGender = async () => {
+      try {
+        axios
+          .get('/api/BranchReports/persons/getGender')
+          .then((res) => {
+            memberGender.value = res.data;
+            // console.log(res,'Samson');
+          })
+          .catch((err) => console.log(err));
+        // donationSummary.value = data;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getGender();
+
+    const setSelectedBranch = async(payload) => {
+      loading.value = true
+      branchMemberID.value = payload.id
+      try {
+        let { data } = await axios.get(`/api/BranchReports/persons/getMemberClassification?tenantID=${payload.id}`)
+        loading.value = false
+        console.log(data)
+         memberShips.value = data;
+         showDropDown.value = true;
+      }
+      catch (err) {
+        loading.value = false
+        console.log(err)
+      }
+    }
 
      return {
-        //  allMembersInChurch,
-        attendanceChart,
-        mainAttendanceData,
-        attendanceData,
+        loading,
+       setSelectedBranch,
+       branchMemberID,
+        genarateReport,
         genderChartResult,
-        // attendanceSeries,
-        maritalStatusChart,
-        genderChart,
-        eventDateChart,
-        mappedGender,
-        mappedMaritalStatus,
-        mappedEventDate,
+        memberChartResult,
         maritalStatusChartResult,
-        eventDateChartResult,
-        startDate,
-        endDate,
-        generateReport,
+        ageGroupChartResult,
+        genderChart,
+        memberChart,
+        maritalStatusChart,
+        ageGroupChart,
         showReport,
+        showDropDown,
+        //  genderSummary,
+        memberShips,
+        memberMaritalStatus,
+        memberGender,
+        membersInChurch,
+        mappedGender,
+        mappedMember,
+        mappedMaritalStatus,
+        mappedAgeGroup,
+        selectedMember,
+        selectedGender,
+        selectedMaritalStatus,
         showExport,
-        fileHeaderToExport,
-        fileToExport,
-        selectedFileType,
-        bookTypeList,
         fileName,
+        bookTypeList,
+        selectedFileType,
+        fileToExport,
+        fileHeaderToExport,
         printJS,
-        downloadFile,
         // downLoadExcel,
-        //  series,
-        //  membership,
-        //  gender,
-        //  maritalStatus,
-         formatDate,
-         firstTimerInChurch
-     }
+        downloadFile
     }
+}
 }
 </script>
 
@@ -371,28 +486,30 @@ export default {
 .hide-report{
     display: none;
 }
-
-.responsiveness{
-  max-width: 100%;
-  /* overflow-y: scroll; */
+.show-dropdown {
+    display: block;
+}
+.hide-dropdown {
+    display: none;
 }
 
-/* .default-btn {
-     font-weight: 600;
+
+.default-btn {
+    /* font-weight: 600;
     white-space: initial;
     font-size: 1rem;
-    border-radius: 3rem; 
-    border: 1px solid #002044; 
-    padding: .5rem 1.25rem;
+    border-radius: 3rem; */
+    /* border: 1px solid #002044; */
+    /* padding: .5rem 1.25rem;
     width: auto;
-	border:none; 
-    outline: transparent !important; 
-    max-height: 40px;
+	border:none; */
+    /* outline: transparent !important; */
+    /* max-height: 40px;
     background: #6c757d47 !important;
     color:#000;
     text-decoration: none;
-    min-width: 121px; 
-} */
+    min-width: 121px; */
+}
 
 .default-btn:hover {
   text-decoration: none;
@@ -465,6 +582,7 @@ border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
 overflow-x: scroll;
 }
+
 .move-enter-active {
   animation: move-in .8s;
 }
@@ -492,10 +610,10 @@ overflow-x: scroll;
 }
 
 .multiselect-custom {
-    
+
         padding-top: .1rem;
         padding-bottom: .1rem;
-    
+
 }
 
     .country-item-value {

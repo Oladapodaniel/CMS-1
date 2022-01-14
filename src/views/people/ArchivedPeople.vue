@@ -14,15 +14,15 @@
       <!-- <div class="col-1 d-none d-md-block small-text text-dark text-capitalize font-weight-bold" style="font-size:16px;">Action</div> -->
                     <!-- <div class="col-2 d-none d-md-block">NEW CONVERTS</div> -->
   </div>
-  <div class="row table-body font-weight-small mt-3">
-      <div class="col-1 d-none d-md-block" ></div>
-      <div class="col-2 d-none d-md-block small-text text-dark text-capitalize font-weight-bold" style="font-size:13px;">Ogbara Godstar</div>
-      <div class="col-2 d-none d-md-block small-text text-dark text-capitalize font-weight-bold" style="font-size:13px;">07067664473</div>
-      <div class="col-3 d-none d-md-block small-text text-dark text-capitalize font-weight-bold" style="font-size:13px;">ogbaragodstar@gmail.com</div>
-      <div class="col-3 d-none d-md-block small-text text-dark text-capitalize font-weight-bold" style="font-size:13px;">Festac Mile 2 road</div>
-      <div class="col-1 d-none d-md-block small-text text-dark text-capitalize font-weight-bold" style="font-size:13px;">
+  <div class="row table-body font-weight-small mt-3" v-for="(archived,index) in archivedMember" :key="index">
+      <div class="col-1 text-center d-none d-md-block" > <input type="checkbox"></div>
+      <div class="col-2 d-none d-md-block small-text text-secondary text-capitalize " style="font-size:14px;">{{archived.firstName}} {{archived.lastName}}</div>
+      <div class="col-2 d-none d-md-block small-text text-secondary  text-capitalize " style="font-size:14px;">{{archived.mobilePhone}}</div>
+      <div class="col-3 d-none d-md-block small-text text-secondary  text-capitalize " style="font-size:14px;">{{archived.email}}</div>
+      <div class="col-3 d-none d-md-block small-text text-secondary  text-capitalize " style="font-size:14px;">{{archived.homeAddress}}</div>
+      <div class="col-1 d-none d-md-block small-text text-secondary  text-capitalize " style="font-size:14px;">
 
-        <div class="dropdown ">
+        <div class="dropdown text-center ">
                 <i
                   class="fas fa-ellipsis-v cursor-pointer alignLeft"
                   id="dropdownMenuButton"
@@ -31,12 +31,21 @@
                   aria-expanded="false"
                 ></i>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item cursor-pointer elipsis-items">
-                    Set to active
+                  <a class="dropdown-item cursor-pointer elipsis-items"
+                  >
+                    Unarchive
                   </a>
-                  <a class="dropdown-item cursor-pointer  elipsis-items">
-                    Edit
-                  </a>
+                  <div class="dropdown-item cursor-pointer  elipsis-items">
+                     <router-link
+                              :to="{
+                                name: 'AddPerson',
+                                params: { personId: archived.id },
+                              }"
+                            >
+                              <a class="dropdown-item cursor-pointer elipsis-items"> Edit </a>
+                            </router-link>
+                    <!-- Edit -->
+                  </div>
                   <a class="dropdown-item elipsis-items">
                     <!-- <router-link
                       :to="`/tenant/people/add/${person.id}`"
@@ -65,16 +74,20 @@
 </template>
 
 <script>
-
+import  { ref } from "vue";
 import axios from "@/gateway/backendapi";
 export default {
+
   setup() {
-    
+      // const ArchivedMember = ref([]);
+      const archivedMember = ref([]);
+
       const getArchivedPeople = () => {
         axios
-        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
+        .get('/api/People/archivedmembers')
         .then((res) => {
-          console.log(res, "🎄🎄🎄");
+          archivedMember.value = res.data;
+          console.log(res.data, "🎄🎄🎄");
         })
         .catch((err) => {
           console.log(err);
@@ -83,7 +96,8 @@ export default {
       getArchivedPeople()
 
     return{
-
+      archivedMember
+      // ArchivedMember,
     }
   },
 }

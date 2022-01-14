@@ -239,8 +239,8 @@
           >
             <span @click="toggleBranchDropDown" v-if="admin || basicUser">
               <img
-                src="../../assets/dashboardlinks/events-icon.svg"
-                class="link-icon"
+                src="../../assets/dashboardlinks/branches.svg"
+                class="link-icon branch"
                 alt=""
               />
               <span class="drop-link"
@@ -287,8 +287,8 @@
                 >Financial</router-link
               >
             </li>
-            <li class="dd-list-item" v-if="false">
-              <router-link class="dd-link-item routelink" to="/tenant/reports"
+            <li class="dd-list-item" v-if="admin || basicUser">
+              <router-link class="dd-link-item routelink" to="/tenant/branch/branch_report"
                 >Report</router-link
               >
             </li>
@@ -367,15 +367,15 @@
                 />
                 Media & Monetization
               </a>
-
-              <a v-if="false"  class="link routelink">
+<!-- /tenant/archivedpeople -->
+              <router-link v-if="false"  to="" class="link routelink text-decoration-none">
                 <img
-                  src="../../assets/dashboardlinks/branches.svg"
+                  src="../../assets/dashboardlinks/people.svg"
                   class="link-icon"
                   alt=""
                 />
-                Branches
-              </a>
+                Archived People
+              </router-link>
             </div>
           </div>
         
@@ -669,6 +669,10 @@ export default {
   padding-right: 10px;
 }
 
+.link-icon.branch {
+  opacity: .6;
+}
+
 .link-image {
   width: 25px;
   height: 24px;
@@ -774,7 +778,7 @@ export default {
 }
 
 .branch-list {
-      height: 165px;
+      height: 217px;
 }
 
 .acc-list {

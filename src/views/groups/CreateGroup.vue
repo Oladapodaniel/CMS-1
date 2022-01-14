@@ -806,7 +806,7 @@
                               > Send SMS</a
                             >
                           </a>
-                          <a class="dropdown-item" v-if="member.email" href="">
+                          <a class="dropdown-item" v-if="member.email">
                           <!-- <a class="dropdown-item c-pointer"> -->
                             <a 
                               @click="testEmail(member)"
@@ -913,16 +913,10 @@
                           aria-labelledby="dropdownMenuButton"
                         >
                           <a class="dropdown-item c-pointer" v-if="member.phone">
-                            <router-link
-                              :to="`/tenant/sms/compose?phone=${member.phone}`"
-                              >Send SMS</router-link
-                            >
+                            <a @click="test(member)">Send SMS</a>
                           </a>
                           <a class="dropdown-item c-pointer" v-if="member.email">
-                            <router-link
-                              :to="`/tenant/email/compose?phone=${member.email}`"
-                              >Send Email</router-link
-                            >
+                            <a @click="testEmail(member)">Send Email</a>
                           </a>
                           <a class="dropdown-item cursor-pointer" @click="requestApproval(member)">
                             Request Approval

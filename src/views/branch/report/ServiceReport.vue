@@ -1,8 +1,8 @@
 <template>
-<div class="container-fluid mt-5 mb-4">
-  <div class="row d-flex justify-content-between px-3">
+<div class="container-fluid mt-5 mb-4 p-0">
+  <div class="row d-flex justify-content-between px-3 mb-3">
               <!-- <div class="heading-text">Attendance Report</div> -->
-              <h3 class="font-weight-bold mt-2 mb-2">Church Activities Attendance Report</h3>
+              <h3 class="heading-text">Church Activities Attendance Report</h3>
               <div class="default-btn border-secondary font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">
@@ -504,7 +504,7 @@ border-top-right-radius: 0 !important;
 
     }
     .lineGrap{
-   border-radius: 30px;
+   /* border-radius: 30px; */
    box-shadow: 0px 1px 4px #02172e45;
    padding: 20px;
    /* box-shadow: 0 0.063rem 0.25rem #02172e45;
@@ -537,6 +537,10 @@ border-top-right-radius: 0 !important;
 .loader-icon {
     animation-duration: 0.8s;
     width: 47px;
+}
+
+.heading-text {
+  font: normal normal 800 1.5rem Nunito sans;
 }
 
 </style>
