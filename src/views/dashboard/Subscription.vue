@@ -382,7 +382,7 @@ export default {
 
     const emailSelectedValue = ref("");
     const subSelectedAmount = ref("");
-    const isProduction = false
+    const isProduction = true
     const initializedOrder = ref("");
     const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
 
