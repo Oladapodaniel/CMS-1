@@ -698,7 +698,7 @@ export default {
               ? "https://ravemodal-dev.herokuapp.com/v3.js"
               : "https://checkout.flutterwave.com/v3.js";
             document.getElementsByTagName("head")[0].appendChild(script);
-            console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
+            // console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
     }
     getFlutterwaveModules()
 
@@ -707,7 +707,7 @@ export default {
       initializePayment(1)
   
       window.FlutterwaveCheckout({
-                public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
+                public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
                 tx_ref: uuidv4().substring(0,8),
                 amount: TotalAmount.value,
                 currency: Plans.value.paymentCurrency,
