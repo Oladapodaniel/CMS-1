@@ -1001,17 +1001,10 @@ export default {
         }
       })
 
-      try {
-        let res = await axios.get(`/api/People/GetPersonInfoWithAssignments/${data.followupPersonID}`)
-        currentContact.value = {
-          firstName: res.data.firstName,
-          lastName: res.data.lastName,
-          id: res.data.personId
+      currentContact.value = {
+          name: `${data.followupPersonName}`,
+          id: data.followupPersonID
         }
-      }
-      catch (err) {
-        console.log(err)
-      }
     };
 
     const getMemberToEdit = () => {
