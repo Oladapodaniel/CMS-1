@@ -445,7 +445,7 @@ export default {
     })
 
     const admin = ref(roleOfCurrentUser.value.some(i => i.toLowerCase() === 'admin'))
-    const followup = ref(roleOfCurrentUser.value.length == 1 && roleOfCurrentUser.value[0].toLowerCase() == 'followup')
+    const followup = ref(roleOfCurrentUser.value.some(i => i.toLowerCase() === 'followup'))
     const basicUser = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'basicuser'))
     const financialAccount = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'financialaccount'))
     const mobileAdmin = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'mobileadmin'))
