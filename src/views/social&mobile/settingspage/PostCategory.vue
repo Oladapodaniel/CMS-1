@@ -77,7 +77,7 @@ import ImagePicker from '@/components/image-picker/ImagePicker';
             const display = ref(false);
 
             const category = ref({ });
-            const tenantId = ref(store.getters.currentUser.tenantId);
+            const tenantId = ref("");
             console.log(tenantId.value, "outside");
             const categoryImageUrl = ref("")
 
@@ -105,12 +105,17 @@ import ImagePicker from '@/components/image-picker/ImagePicker';
             }
 
             const getTenantId = async () => {
-                try {
+                if (store.getters && store.getters.currentUser) {
+                    tenantId.value = store.getters.currentUser.tenantId
+                }   else {
+                    try {
                     const response = await membershipService.getSignedInUser()
-                    tenantId.value = response.tenantId;
-                } catch (error) {
-                    console.log(error);
+                        tenantId.value = response.tenantId;
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }
+                
             }
 
             const chooseImage = () => {
