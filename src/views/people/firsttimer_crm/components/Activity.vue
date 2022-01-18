@@ -168,7 +168,7 @@
                                 </OverlayPanel>
                             </div>
                             
-                            <div class="col-4 label-text mt-3 mt-md-0">Set status</div>
+                            <div class="col-4 label-text mt-3 mt-md-0 d-block d-md-none">Set status</div>
 
                             <div class="col-8 d-block d-md-none mt-3 mt-md-0">
                                 <div @click="toggleTaskStatus" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
