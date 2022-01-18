@@ -27,10 +27,6 @@
                     <div class="col-12 card-bg p-4">
                         <div class="row d-flex justify-content-between">
                             <div>
-                                <!-- <div class="col align-self-center">
-                                    <span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.noteIcon, 'unroll-note-icon' : !item.noteIcon}" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;Note</span>
-                                     by {{ item.person }} 
-                                </div> -->
                                 <div class="col align-self-center font-weight-700">Note</div>
                             </div>
                             <div>
@@ -63,8 +59,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 mt-4 enlargen-font" v-if="!item.taskIcon">
-                        {{ item.loggedTask ? item.loggedTask.instructions : "Create your task" }}
+                    <div class="col-12 mt-4 enlargen-font d-flex" v-if="!item.taskIcon">
+                        <div class="checked" v-if="item.loggedTask.status == 2"><i class="pi pi-check text-white"></i></div> <div>{{ item.loggedTask ? item.loggedTask.instructions : "Create your task" }} </div>
                     </div>
                     <div class="col-12">
                         <transition name="fade">
@@ -81,7 +77,9 @@
                             <div class="col-12">
                                 <hr />
                             </div>
-                            <div class="col-4 col-md-6 label-text mt-3">Due date</div>
+                            <div class="col-4 col-md-8 label-text mt-3">Due date</div>
+
+                            <div class="col-4 col-md-4 label-text mt-3 d-none d-md-block">Set status</div>
 
                             <div class="col-8 col-md-12 d-block d-md-none mt-3">
                                 <div @click="toggleDueDate" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
@@ -96,7 +94,7 @@
                                 </OverlayPanel>
                             </div>
 
-                            <div class="col-md-12 mt-2 d-none d-md-block mb-4">
+                            <div class="col-md-8 mt-2 d-none d-md-block mb-4">
                                 <div @click="toggleDueDate" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
                                      {{ item.selectedDueDate && Object.keys(item.selectedDueDate).length > 0 ? item.selectedDueDate.name : getDueDate(item.loggedTask.dueDate) }}&nbsp; <i class="pi pi-sort-down"></i>
                                 </div>
@@ -104,6 +102,21 @@
                                     <div class="container-fluid p-0">
                                         <div class="row hover-log" v-for="(item, dueDateIndex) in dueDate" :key="dueDateIndex">
                                             <div class="py-2 px-3" @click="setDueDate(index, indx, item)">{{ item.name }}</div>
+                                        </div>
+                                    </div>
+                                </OverlayPanel>
+                            </div>
+
+                            
+
+                            <div class="col-md-4 mt-2 d-none d-md-block mb-4">
+                                <div @click="toggleTaskStatus" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                     {{ selectedTask && selectedTask.name ? selectedTask.name : statuses.find(j => j.value == item.loggedTask.status).name }}&nbsp; <i class="pi pi-sort-down"></i>
+                                </div>
+                                <OverlayPanel ref="taskStatusOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                    <div class="container-fluid p-0">
+                                        <div class="row hover-log" v-for="(taskItem, taskStatusIndex) in statuses" :key="taskStatusIndex">
+                                            <div class="py-2 px-3" @click="setTaskStatus(taskItem, item.loggedTask)">{{ taskItem.name }}</div>
                                         </div>
                                     </div>
                                 </OverlayPanel>
@@ -150,6 +163,21 @@
                                         <div class="py-2 px-3">Search whom you want to assign this task</div>
                                         <div class="py-2 px-3">
                                             <SearchMember @memberdetail="chooseContact($event, index, indx)"/>
+                                        </div>
+                                    </div>
+                                </OverlayPanel>
+                            </div>
+                            
+                            <div class="col-4 label-text mt-3 mt-md-0">Set status</div>
+
+                            <div class="col-8 d-block d-md-none mt-3 mt-md-0">
+                                <div @click="toggleTaskStatus" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                     {{ selectedTask && selectedTask.name ? selectedTask.name : statuses.find(j => j.value == item.loggedTask.status).name }}&nbsp; <i class="pi pi-sort-down"></i>
+                                </div>
+                                <OverlayPanel ref="taskStatusOp" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                    <div class="container-fluid p-0">
+                                        <div class="row hover-log" v-for="(taskItem, taskStatusIndex) in statuses" :key="taskStatusIndex">
+                                            <div class="py-2 px-3" @click="setTaskStatus(taskItem, item.loggedTask)">{{ taskItem.name }}</div>
                                         </div>
                                     </div>
                                 </OverlayPanel>
@@ -360,12 +388,15 @@ export default {
         const todoOp = ref()
         const priorityOp = ref()
         const contactOp = ref()
+        const taskStatusOp = ref()
         const displayComment = ref(false)
         const taskComment = ref("")
         const editCommentVar = ref(false)
         const commentId = ref("")
         const commentIndexToEdit = ref({})
         const taskCommentRef = ref()
+        const selectedTask = ref({})
+        const statuses = ref([ { name: 'Pending', value: 0 }, { name: 'InProgress', value: 1 }, { name: 'Completed', value: 2 }, { name: 'Cancelled', value: 3 }, { name: 'Rescheduled', value: 4 }, { name: 'Stalled', value: 5 } ])
 
         const toggleNoteIcon = (index) => {
             emit('individualtoggle', index)
@@ -447,6 +478,10 @@ export default {
         
         const toggleContact = (event) => {
             contactOp.value.toggle(event);
+        };
+        
+        const toggleTaskStatus = (event) => {
+            taskStatusOp.value.toggle(event);
         };
 
         const toggleLogIcon = (index, indx) => {
@@ -618,6 +653,41 @@ export default {
             dueDateOp.value.hide();
         }
 
+        const setTaskStatus = async(item, task) => {
+            selectedTask.value = item
+            taskStatusOp.value.hide()
+       
+            const body = {
+                id: task.id,
+                instructions: task.instructions,
+                dateCreated: task.dateCreated,
+                dateUpdated: task.dateCreated,
+                reminder: task.reminder,
+                dueDate: task.dueDate,
+                note: task.note,
+                type: task.type,
+                priority: task.priority,
+                personID: task.personID,
+                contacts: task.contacts,
+                status: item.value
+                }
+
+            try {
+                const res = await frmservice.editTask(task.id, body)
+                console.log(res)
+                toast.add({
+                    severity: "success",
+                    summary: "Status updated",
+                    detail: "Status updated successfully",
+                    life: 5000,
+                });
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        
+
     
         return {
             noteIcon,
@@ -664,8 +734,12 @@ export default {
             chooseContact,
             editTask,
             reminders,
-            setDueDate
-
+            setDueDate,
+            selectedTask,
+            statuses,
+            taskStatusOp,
+            toggleTaskStatus,
+            setTaskStatus
         }
     }
 }
