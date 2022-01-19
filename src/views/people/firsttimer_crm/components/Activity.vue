@@ -60,13 +60,17 @@
                 </div>
                 <div class="row">
                     <div class="col-12 mt-4 enlargen-font d-flex" v-if="!item.taskIcon">
-                        <div class="checked" v-if="item.loggedTask.status == 2"><i class="pi pi-check text-white"></i></div> <div>{{ item.loggedTask ? item.loggedTask.instructions : "Create your task" }} </div>
+                        <div class="checked-first" v-if="item.loggedTask.status == 2"><i class="pi pi-check text-white adjust-icon"></i></div>
+                        <div class="checked-inprogress" v-if="item.loggedTask.status == 1"></div>
+                        <div class="checked-pending" v-if="item.loggedTask.status == 0"></div>
+                        <div class="checked-cancel" v-if="item.loggedTask.status == 3"></div>
+                         <div>{{ item.loggedTask ? item.loggedTask.instructions : "Create your task" }} </div>
                     </div>
                     <div class="col-12">
                         <transition name="fade">
                             <div class="row mt-4" v-if="item.taskIcon">
                                 <div class="col-1 align-self-center">
-                                    <div class="checked"><i class="pi pi-check text-white"></i></div>
+                                    <div class="checked" v-if="item.loggedTask.status == 2"><i class="pi pi-check text-white"></i></div>
                                 </div>
                             <div class="col-11 p-2 d-flex task-border justify-content-between" :class="{ 'hover-border' : item.hoverTask }" @mouseover="onHoverBorderTask(index, indx)" @mouseleave="outHoverBorderTask(index, indx)" v-if="!item.editTask" @click="toggleEditTask(index, indx)">
                                 <div v-if="!item.loggedTask.instructions">Create a task here</div>
@@ -168,7 +172,7 @@
                                 </OverlayPanel>
                             </div>
                             
-                            <div class="col-4 label-text mt-3 mt-md-0">Set status</div>
+                            <div class="col-4 label-text mt-3 mt-md-0 d-block d-md-none">Set status</div>
 
                             <div class="col-8 d-block d-md-none mt-3 mt-md-0">
                                 <div @click="toggleTaskStatus" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
@@ -794,6 +798,44 @@ export default {
     border: 2px solid rgb(0, 189, 165);
     border-radius: 50%;
     text-align: center
+}
+
+.checked-first {
+    width: 25px;
+    height: 25px;
+    background-color: rgb(0, 189, 165);
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.checked-inprogress {
+    width: 25px;
+    height: 25px;
+    background-color: rgb(213, 206, 3);
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.checked-pending {
+    width: 25px;
+    height: 25px;
+    background-color: rgb(211, 145, 3);
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.checked-cancel {
+    width: 25px;
+    height: 25px;
+    background-color: rgb(189, 19, 0);
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.adjust-icon {
+    position: relative;
+    top: -3px;
+    left: 4px;
 }
 
 .task-border {

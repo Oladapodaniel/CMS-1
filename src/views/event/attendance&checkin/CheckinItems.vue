@@ -13,7 +13,7 @@
 
         <div class="row" v-if="items.length > 0 && !loading">
           <div class="col-md-12 px-0">
-            <List :list="items" :errorOcurred="errorOccurred" @attendance-checkin="removeCheckin" />
+            <List :list="items" :errorOcurred="errorOccurred" @attendance-checkin="removeCheckin" :totalItems="totalItems" @pagedattendance="setPagedAttendance" />
           </div>
         </div>
         <div class="row" v-if="cantGetItems">
@@ -40,6 +40,7 @@ export default {
     const loading = ref(false);
     const errorOccurred = ref(false);
     const cantGetItems = ref(true);
+    const totalItems = ref(0);
 
     // const getAttendanceItems = async () => {
       try {
@@ -47,7 +48,8 @@ export default {
         loading.value = true;
         const response = await attendanceservice.getItems();
         console.log(response, "checkins");
-        items.value = items.value ? response : [ ];
+        items.value = items.value ? response.items : [ ];
+        totalItems.value = response.totalItems
         loading.value = false;
       } catch (error) {
         cantGetItems.value = true;
@@ -63,12 +65,18 @@ export default {
         items.value.splice(payload, 1)
     }
 
+    const setPagedAttendance = (payload) => {
+      items.value = payload.items
+    }
+
     return {
       items,
       loading,
       errorOccurred,
       cantGetItems,
-      removeCheckin
+      removeCheckin,
+      totalItems,
+      setPagedAttendance
     };
   },
 };

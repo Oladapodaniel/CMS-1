@@ -11,18 +11,22 @@
                     <div>{{ getDueDate(item.dueDate) }}</div>
                 </div>
                 <div class="col-6 col-md-3 mt-3 pt-2 pt-md-0">
-                    <!-- <Checkbox id="binary" v-model="item.markAsCompleted" @click="markCompleted(item)" :binary="true"/> &nbsp; &nbsp; -->
-                    <div class="font-weight-600">Set status</div>
-                    <Dropdown v-model="item.selectedStatus" :filter="false" :options="statuses" optionLabel="name" class="mt-1 w-100" placeholder="Select status" @change="markCompleted(item, index)" />
+                    <div class="font-weight-700">Contact</div>
+                    <div>{{ item.contacts }}</div>
                 </div>
                 <div class="col-6 d-block d-md-none"></div>
-                <div class="col-5 pt-2 pt-md-0">
+                <div class="col-md-5 pt-2 pt-md-0">
                     <div class="font-weight-700">Priority</div>
                     <div>{{ getPriority(item.priority).name }}</div>
                 </div>
-                <div class="col-6 pt-2 pt-md-0">
+                <div class="col-md-4 pt-2 pt-md-0">
                     <div class="font-weight-700">Task type</div>
                     <div>{{ createdTypes(item.type) }}</div>
+                </div>
+                <div class="col-md-3 pt-2 pt-md-0">
+                    <!-- <Checkbox id="binary" v-model="item.markAsCompleted" @click="markCompleted(item)" :binary="true"/> &nbsp; &nbsp; -->
+                    <div class="font-weight-700">Set status</div>
+                    <Dropdown v-model="item.selectedStatus" :filter="false" :options="statuses" optionLabel="name" class="mt-1 w-100" placeholder="Select status" @change="markCompleted(item, index)" />
                 </div>
             </div>
         </div>

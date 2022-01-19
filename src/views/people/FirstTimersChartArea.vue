@@ -2,14 +2,22 @@
   <div class="container">
     <div class="container-fluid">
       <div class="row mb-4 px-0">
-        <div class="col-md-6 sub-header">
+        <div class="col-md-5 sub-header">
           Overview
         </div>
 
-        <div class="col-md-3"></div>
+        <div class="col-md-4">
+          <Dropdown class="w-100"
+              v-model="selectedContactOwner"
+              :options="contactOwners"
+              optionLabel="name"
+              placeholder="Select contact owner"
+              @change="getAllDatePeriods"
+          />
+        </div>
         <div class="col-md-3">
-               <div class="mb-4 px-0 mr-n5">
-           <Dropdown class="w-100 border-0"
+          <div class="mb-4 px-0 mr-n5">
+           <Dropdown class="w-100"
               v-model="selectedPeriod"
               :options="periodRange"
               optionLabel="name"
@@ -136,28 +144,53 @@ export default {
       ]);
       const defaultStartDate = new Date(new Date().setDate(new Date().getDate() - 30)).toLocaleDateString("en-US");
       const defaultEndDate = new Date().toLocaleDateString("en-US")
+      const contactOwners = ref([])
+      const selectedContactOwner = ref({})
 
 
       const getAllDatePeriods = () => {
               let startDate = selectedPeriod.value.code
               let endDate = new Date().toLocaleDateString("en-US")
 
-             axios.get(`/api/FirsttimerManager/analytics?startDate=${startDate}&endDate=${endDate}`).then((res)=> {
-               analyticsData.value = res.data.returnObject;
-               console.log(analyticsData.value)
-          }).catch((err)=> {
-            console.log(err, "✔️✔️✔️")
-          })
+             if (selectedContactOwner.value && Object.keys(selectedContactOwner.value).length > 0) {
+               axios.get(`/api/FirsttimerManager/analytics?startDate=${startDate}&endDate=${endDate}&personId=${selectedContactOwner.value.id}`).then((res)=> {
+                    analyticsData.value = res.data.returnObject;
+                    console.log(analyticsData.value)
+                }).catch((err)=> {
+                  console.log(err)
+                })
+             }  else {
+               axios.get(`/api/FirsttimerManager/analytics?startDate=${startDate}&endDate=${endDate}`).then((res)=> {
+                  analyticsData.value = res.data.returnObject;
+                    console.log(analyticsData.value)
+                }).catch((err)=> {
+                  console.log(err)
+                })
+             }
       }
 
 
 
-      const showItem =() =>{
+      const getContactOwners = () => {
+             axios.get(`/api/FirsttimerManager/contactowners`).then((res)=> {
+               console.log(res)
+               contactOwners.value = res.data.map(i => {
+                 i.name = i.firstName + ' ' + i.lastName
+                 return i
+               })
+               console.log(contactOwners.value)
+          }).catch((err)=> {
+            console.log(err)
+          })
+      }
+      getContactOwners()
+
+      const showItem = () => {
              axios.get(`/api/FirsttimerManager/analytics?startDate=${defaultStartDate}&endDate=${defaultEndDate}`).then((res)=> {
                analyticsData.value = res.data.returnObject;
                console.log(analyticsData.value)
           }).catch((err)=> {
-            console.log(err, "✔️✔️✔️")
+            console.log(err)
           })
       }
 
@@ -178,6 +211,8 @@ export default {
           defaultStartDate,
           defaultEndDate,
           showItem,
+          contactOwners,
+          selectedContactOwner
         }
     },
 
