@@ -870,7 +870,7 @@ export default {
             try {
                 let res = await frmservice.getLifeCycle()
                 console.log(res)
-                lifeCycle.value = res.returnObject
+                lifeCycle.value = res.returnObject.sort((a, b) => a.order - b.order);
             }
             catch (err) {
                 console.log(err)
