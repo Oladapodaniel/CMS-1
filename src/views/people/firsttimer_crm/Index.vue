@@ -3,7 +3,10 @@
     <canvas ref="confeti" width="300" height="300" class="active canvas-style" v-show="displayAnim"></canvas>
         <div class="row">
             <div class="col-12 col-md-4 p-0 side-bar">
-                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails" @calllogdesc="setCallLogDesc" :smsLog="smsLog" @resetlog="resetLog" :activityType="activityType" @updatelogtoview="updateLogToView" @displayanim="setDisplayAnim"/>
+                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" 
+                :personDetails="personDetails" @calllogdesc="setCallLogDesc" 
+                :smsLog="smsLog" @resetlog="resetLog" :activityType="activityType" 
+                @updatelogtoview="updateLogToView" @displayanim="setDisplayAnim" @togglenotemodal="clickNoteModal" @toggleemailmodal="clickEmailModal" @toggletaskmodal="clickTaskModal"/>
             </div>
             <div class="col-12 col-md-8 main-view">
                 <div class="row">
@@ -240,6 +243,223 @@
             </div>
         </div>
     </Dialog>
+    <!--- Modal for Note small devices----->
+    <button type="button" data-toggle="modal" data-target="#notesmalldevices" ref="noteModalRef" hidden> toggler mdalo
+    </button>
+    <div class="modal fade" id="notesmalldevices">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notesmalldevices">Create note</h5>
+                    <button type="button" ref="close" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="pi pi-times"></i></span>
+                    </button>
+                    
+                </div>
+                <div class="modal-body">
+                <textarea v-model="note" rows="12" class="form-control mt-4" placeholder="Type your note..."></textarea>
+                    <div class="d-flex justify-content-start mt-2">
+                        <div class="primary-bg default-btn border-0 text-white text-center c-pointer" data-dismiss="modal"  @click="saveNote">Save</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button class="btn btn-secondary" data-dismiss="modal">close</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!--- Modal for Email small devices----->
+    <button type="button" data-toggle="modal" data-target="#emailsmalldevices" ref="emailModalRef" hidden> toggler mdalo
+    </button>
+    <div class="modal fade" id="emailsmalldevices">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="emailsmalldevices"> Compose Email</h5>
+                    <button type="button" ref="close" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="pi pi-times"></i></span>
+                    </button>
+                    
+                </div>
+                <div class="modal-body">
+                <div class="container" style="height: 480px">
+            <div class="row" v-if="!displayEmailPane">
+                <div class="col-12 mt-3 font-weight-700 text-center">
+                    Keep track of your email activity in your CRM
+                </div>
+                <div class="col-12 mt-3 text-center">
+                    <!-- Connect your email account to Churchplus to begin sending emails from your CRM. All your email conversations will appear in the timeline below.Learn more -->
+                    Send an email from your FRM to {{ personDetails.firstName }} {{ personDetails.lastName }}. All email and conversations will appear in the activity and email tab.
+                </div>
+                <!-- <div class="col-4 mt-5">
+                    <div class="mail-connect">
+                        <div>
+                            <img src="../../../assets/gmail.svg"/>
+                        </div>
+                        <div class="mt-3">Connect Gmail</div>
+                    </div>
+                </div>
+                 <div class="col-4 mt-5">
+                    <div class="mail-connect">
+                        <div>
+                            <img src="../../../assets/outlook-365.png" style="width: 43px"/>
+                        </div>
+                        <div class="mt-3">Connect Office 365</div>
+                    </div>
+                </div> -->
+                <div class="offset-3 col-6 mt-5" @click="toggleDisplayEmailPane">
+                    <div class="mail-connect">
+                        <div>
+                            <img src="../../../assets/unknown-email.svg"/>
+                        </div>
+                        <div class="mt-3">Compose Email</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" v-else>
+                <div class="col-12 mt-3">
+                    <!-- <input type="text" class="form-control" value="oladapoadniel@gmail.com" disabled/> -->
+                    <span class="p-float-label">
+                        <InputText id="inputtext" class="w-100" style="border-radius: 0.25rem !important; border: 1px solid #ced4da !important;" type="text" disabled/>
+                        <label for="inputtext">{{ personDetails.email }}</label>
+                    </span>
+                </div>
+                <div class="col-12 mt-4">
+                    <input type="text" class="form-control" v-model="emailSubject" placeholder="subject"/>
+                    <!-- <span class="p-float-label">
+                        <InputText id="inputtext" class="w-100" style="border-radius: 0.25rem !important; border: 1px solid #ced4da !important;" type="text" />
+                        <label for="inputtext">Enter your subject</label>
+                    </span> -->
+                </div>
+                <div class="col-12 mt-3">
+                    <Editor v-model="emailBody" editorStyle="height: 260px"/>
+                </div>
+                <div class="col-12 mt-2 d-flex justify-content-start">
+                    <!-- <Button label="Send" icon="pi pi-check"  autofocus /> -->
+                    <div class="primary-bg default-btn border-0 text-white text-center c-pointer" data-dismiss="modal" @click="sendEmail">Send</div>
+                </div>
+            </div>
+        </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button class="btn btn-secondary" data-dismiss="modal">close</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!--- Modal for Task small devices----->
+    <button type="button" data-toggle="modal" data-target="#tasksmalldevices" ref="taskModalRef" hidden> toggler mdalo
+    </button>
+    <div class="modal fade" id="tasksmalldevices">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tasksmalldevices">Create Task</h5>
+                    <button type="button" ref="close" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="pi pi-times"></i></span>
+                    </button>
+                    
+                </div>
+                <div class="modal-body">
+               <div class="container" style="height: 480px">
+            <div class="row mt-3">
+               <div class="row">
+                        <div class="col-12">
+                            <textarea class="form-control col-12" placeholder="Enter your task" v-model="theTask"></textarea>
+                        </div>
+                        <div class="col-6 label-text mt-3">Due date</div>
+                        <div class="col-6 label-text mt-3">Reminder</div>
+                        <div class="col-6 mt-2">
+                            <div @click="toggleDueDate" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                {{ Object.keys(selectedDueDate).length > 0 ? selectedDueDate.name : 'Select due date' }} &nbsp; <i class="pi pi-sort-down"></i>
+                            </div>
+                            <OverlayPanel ref="dueDateRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <div class="container-fluid p-0">
+                                    <div class="row hover-log" v-for="(item, index) in dueDate" :key="index">
+                                        <div class="py-2 px-3 " @click="setDueDate(item)">{{ item.name }}</div>
+                                    </div>
+                                </div>
+                            </OverlayPanel>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <div @click="toggleReminder" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                {{ Object.keys(selectedReminder).length > 0 ? selectedReminder.name : 'Select reminder' }}&nbsp; <i class="pi pi-sort-down"></i>
+                            </div>
+                            <OverlayPanel ref="reminderRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <div class="container-fluid p-0">
+                                    <div class="row hover-log" v-for="(item, index) in getReminder" :key="index">
+                                        <div class="py-2 px-3 " @click="setReminder(item)">{{ item.name }}</div>
+                                    </div>
+                                </div>
+                            </OverlayPanel>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <hr />
+                        </div>
+                        <div class="col-4 label-text">Type</div>
+                        <div class="col-4 label-text">Priority</div>
+                        <!-- <div class="col-2 label-text">Queue</div> -->
+                        <div class="col-4 label-text">Assigned to</div>
+                        <!-- <div class="col-5 label-text"></div> -->
+                        <!-- <div class="col-4"></div> -->
+                        <div class="col-4 mt-2">
+                            <div @click="toggleTodo" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                {{ Object.keys(selectedTodo).length > 0 ? selectedTodo.value : 'Todo&nbsp;' }} <i class="pi pi-sort-down"></i>
+                            </div>
+                            <OverlayPanel ref="todoTask" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <div class="container-fluid p-0">
+                                    <div class="row hover-log" v-for="(item, index) in activityType" :key="index">
+                                        <div class="py-2 px-3" @click="setActivityType(item)">{{ item.value }}</div>
+                                    </div>
+                                </div>
+                            </OverlayPanel>
+                        </div>
+                        <div class="col-4 mt-2">
+                            <div @click="togglePriority" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                {{ Object.keys(selectedPriority).length > 0 ? selectedPriority.name : 'Select priority' }}&nbsp; <i class="pi pi-sort-down"></i>
+                            </div>
+                            <OverlayPanel ref="priorityRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <div class="container-fluid p-0">
+                                    <div class="row hover-log" v-for="(item, index) in taskPriority" :key="index">
+                                        <div class="py-2 px-3" @click="setPriority(item)">{{ item.name }}</div>
+                                    </div>
+                                </div>
+                            </OverlayPanel>
+                        </div>
+                        <div class="col-4 mt-2">
+                            <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
+                                {{ selectedContact && Object.keys(selectedContact).length > 0 ? selectedContact.name ? selectedContact.name : `${selectedContact.firstName} ${selectedContact.lastName}` : "Select contact" }}&nbsp; <i class="pi pi-sort-down"></i>
+                            </div>
+                            <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
+                                <div class="container-fluid p-0">
+                                    <div class="py-2 px-3">Search whom you want to assign this task</div>
+                                    <div class="py-2 px-3">
+                                        <SearchMember v-bind:currentMember="selectedContact" @memberdetail="chooseContact"/>
+                                    </div>
+                                </div>
+                            </OverlayPanel>
+                        </div>
+
+                        <div class="col-12">
+                        <textarea class="form-control col-12 mt-3" rows="4" v-model="taskNote" placeholder="Notes..."></textarea>
+                        <div class="d-flex justify-content-start">
+                            <div class="col-2 mt-3 pointer-cursor primary-bg default-btn border-0 text-white text-center c-pointer" data-dismiss="modal" @click="saveTask">Save</div>
+                        </div>
+                        </div>
+            
+                </div>
+            </div>
+        </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button class="btn btn-secondary" data-dismiss="modal">close</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -328,6 +548,11 @@ export default {
         // const inputFocus = ref(false)
         const confeti = ref()
         const displayAnim = ref(false)
+        const noteModalRef = ref()
+        const emailModalRef = ref()
+        
+        const taskModalRef = ref()
+        
 
         
 
@@ -873,6 +1098,16 @@ export default {
                 router.push('/tenant/firsttimerslist')
             }, 8000);
         }
+
+        const clickNoteModal = () => {
+            noteModalRef.value.click();
+        }
+        const clickEmailModal = () => {
+            emailModalRef.value.click();
+        }
+        const clickTaskModal = () => {
+            taskModalRef.value.click();
+        }
     
 
         return {
@@ -975,7 +1210,14 @@ export default {
             setDueDateTask,
             confeti,
             displayAnim,
-            setDisplayAnim   
+            setDisplayAnim,
+            noteModalRef,
+            emailModalRef,
+            
+            taskModalRef,
+            clickNoteModal,
+            clickEmailModal,
+            clickTaskModal
         }
     }
 }
