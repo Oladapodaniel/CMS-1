@@ -88,7 +88,7 @@
         <div class="container" style="height: 480px">
             <div class="row" v-if="!displayEmailPane">
                 <div class="col-12 mt-3 font-weight-700 text-center">
-                    Keep track of your email activity in your CRM
+                    Keep track of your email activity in your FRM
                 </div>
                 <div class="col-12 mt-3 text-center">
                     <!-- Connect your email account to Churchplus to begin sending emails from your CRM. All your email conversations will appear in the timeline below.Learn more -->
