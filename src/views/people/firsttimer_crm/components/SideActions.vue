@@ -20,7 +20,7 @@
                 <div><i class="pi pi-pencil uniform-primary-color c-pointer" @click="editContactName"></i></div>
             </div>
         </div>
-        <div class="d-block d-sm-none">
+        <!-- <div class="d-block d-sm-none">
             <div class="row  d-flex justify-content-center mt-5">
                 <div @click="toggleNoteModal" class="c-pointer">
                     <div class="icon-bg" v-tooltip.top="'Create a note'"><i class="pi pi-user-edit"></i></div>
@@ -30,7 +30,6 @@
                     <div class="icon-bg c-pointer" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
                     <div>Email</div>
                 </div>
-                <!-- @click="call" -->
                 <div class="ml-4 c-pointer"  @click="toggleSmsModal">
                     <div class="icon-bg" v-tooltip.top="'Send an sms'"><i class="pi pi-phone"></i></div>
                     <div>SMS</div>
@@ -44,8 +43,7 @@
                     <div>Log</div>
                 </div>
             </div>
-        </div>
-        <div class=" d-none d-sm-block border">
+        </div> -->
             <div class="row  d-flex justify-content-center mt-5">
                 <div @click="openNoteEditor" class="c-pointer">
                     <div class="icon-bg" v-tooltip.top="'Create a note'"><i class="pi pi-user-edit"></i></div>
@@ -69,7 +67,6 @@
                     <div>Log</div>
                 </div>
             </div>
-        </div>
     </div>
     <hr class="mt-4"/>
     <div class="container mt-4">
@@ -355,14 +352,6 @@
                     </div>
         </OverlayPanel>
         
-        <OverlayPanel ref="logDropDownMobile" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                    <div class="container-fluid p-0">
-                        <div class="row hover-log" v-for="(item, index) in activityLogs" :key="index">
-                            <div class="py-2 px-3 " @click="toggleLogModalPane($event, item)">{{ item.value }}</div>
-                        </div>
-                    </div>
-        </OverlayPanel>
-        
         <OverlayPanel ref="callDropDown" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                     <div class="container-fluid p-0">
                         <div class="row">
@@ -373,7 +362,7 @@
         </OverlayPanel>
 
         <!-- Log Pane -->
-        <Dialog :header="'Log ' + selectedLog.value" v-model:visible="displayLogPane" :style="{width: '50vw'}" :position="position" :modal="true">
+        <Dialog :header="'Log ' + selectedLog.value" v-model:visible="displayLogPane" :style="{width: window.innerWidth > 400 ? '50vw' : '100vw'}" :position="position" :modal="true">
             <!-- style="height: 480px" -->
            <div class="container-fluid">
                <div class="row">
@@ -436,7 +425,7 @@
         </Dialog>
        
         <!-- SMS Pane -->
-        <Dialog header="Send SMS" v-model:visible="displaySMSPane" :style="{width: '50vw'}" :position="position" :modal="true">
+        <Dialog header="Send SMS" v-model:visible="displaySMSPane" :style="{width: window.innerWidth > 400 ? '50vw' : '100vw'}" :position="position" :modal="true">
            <div class="container-fluid">
                <div class="row mt-3">
                    <div class="p-0 col-md-12">
@@ -517,145 +506,6 @@
             </div>
           </div>
         </div>
-
-        
-              <!--- Modal for Log small devices----->
-
-    <button type="button" data-toggle="modal" data-target="#logsmalldevices" ref="logModalRef" hidden>
-    </button>
-    <div class="modal fade" id="logsmalldevices">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="logsmalldevices">Log {{`${selectedLog.value}`}}</h5>
-                    <button type="button" ref="close" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"><i class="pi pi-times"></i></span>
-                    </button>
-                    
-                </div>
-                <div class="modal-body">
-               <div class="container-fluid">
-               <div class="row">
-                   <div class="col-6 pl-0">
-                       <div class="label-text">Contacted</div>
-                       <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 mt-1 c-pointer">{{ selectedContactLog }} &nbsp; <i class="pi pi-sort-down"></i></div>
-                       <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                            <div class="container p-0">
-                                <div class="row">
-                                    <div class="col-12 py-2 px-3 hover-cursor-cancel">{{ `${personDetails.firstName} ${personDetails.lastName}(${selectedLog.value === 'email' ? personDetails.email : personDetails.phoneNumber})`}}</div>
-                                </div>
-                            </div>
-                        </OverlayPanel>
-                   </div>
-                   <div class="col-6 pr-0">
-                       <div class="label-text">{{ selectedLog.value }} Outcome</div>
-                       <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleOutcome" aria:haspopup="true" aria-controls="overlay_panel">{{ Object.keys(selectedCallOutcome).length > 0 ? selectedCallOutcome.value : "Select an outcome &nbsp;" }} <i class="pi pi-sort-down"></i></div>
-                       <OverlayPanel ref="outcomeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                            <div class="container-fluid p-0">
-                                <div class="row" v-for="(item, index) in outcomeList" :key="index">
-                                    <div class="col-12 py-2 px-3 hover-log" @click="chooseCallOutcome(item)">{{ item.value }}</div>
-                                </div>
-                            </div>
-                        </OverlayPanel>
-                   </div>
-               </div>
-               <!-- <div class="row mt-2">
-                   <div class="col-6">
-                       <div class="label-text">Date</div>
-                       <div class="mt-1 uniform-primary-color font-weight-700">
-                           <input type="date" class="form-control" />
-                       </div>
-                   </div>
-                   <div class="col-6">
-                       <div class="label-text">Time</div>
-                       <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleTime" aria:haspopup="true" aria-controls="overlay_panel">2:12PM &nbsp; <i class="pi pi-sort-down"></i></div>
-                       <OverlayPanel ref="timeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                            <div class="container">
-                                <div class="row">
-                                    here here time
-                                </div>
-                            </div>
-                        </OverlayPanel>
-                   </div>
-               </div> -->
-               <!-- <div class="row">
-                   <div class="col-12">
-                       <hr />
-                   </div>
-               </div> -->
-               <div class="row mt-3">
-                   <div class="col-12 p-0">
-                       <textarea name="" :placeholder="`Describe the ${selectedLog.value}...`" class="w-100 form-control" rows="6" v-model="callLogDesc"></textarea>
-                   </div>
-               </div>
-               <div class="row d-flex justify-content-start mt-3">
-                    <div class="primary-bg default-btn border-0 text-white text-center c-pointer" data-dismiss="modal" @click="saveLog">Save</div>
-                </div>
-           </div>
-                </div>
-                <div class="modal-footer">
-                    <!-- <button class="btn btn-secondary" data-dismiss="modal">close</button> -->
-                </div>
-            </div>
-        </div>
-    </div>
-            <!--- Modal for SMS small devices----->
-    <button type="button" data-toggle="modal" data-target="#smssmalldevices" ref="smsModalRef" hidden> toggler mdalo
-    </button>
-    <div class="modal fade" id="smssmalldevices">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="smssmalldevices">Send SMS</h5>
-                    <button type="button" ref="close" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"><i class="pi pi-times"></i></span>
-                    </button>
-                    
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row mt-3">
-                            <div class="p-0 col-md-12">
-                                    <div class="dropdown">
-                                        <div class="btn btn-default small-text border w-100 d-flex justify-content-between align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                                        <!-- @click="closeDropdownIfOpen" -->
-                                        <div>{{ Object.keys(selectedSender).length > 0 ? selectedSender.mask : "Select Sender Id" }}</div>
-                                        <i class="pi pi-chevron-down"></i>
-                                        </div>
-                                        <div
-                                        class="dropdown-menu w-100 pb-0 border-0"
-                                        aria-labelledby="dropdownMenuButton"
-                                        >
-                                        <div class="px-2">
-            
-                                        </div>
-                                        <a v-for="(item, index) in senderIDs" :key="index"
-                                            class="dropdown-item c-pointer small-text  py-2" @click="setIdToSubject(item)"
-                                            >{{ item.mask }}
-                                        </a>
-                                        <a
-                                            class="dropdown-item c-pointer text-center create-new-bg border-top py-2" data-toggle="modal" data-target="#senderIdModal"
-                                            ><i class="pi pi-plus-circle"></i>&nbsp;Request new sender id
-                                            </a
-                                        >
-                                        </div>
-                                    </div>
-                                    </div>
-                            <div class="col-12 p-0 mt-3">
-                                <textarea name="" placeholder="Type your message here ..." class="w-100 form-control" rows="12" v-model="smsMessage"></textarea>
-                            </div>
-                        </div>
-                        <div class="row d-flex justify-content-start mt-3">
-                            <div class="primary-bg default-btn border-0 text-white text-center c-pointer" data-dismiss="modal" @click="sendSms">Send</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <!-- <button class="btn btn-secondary" data-dismiss="modal">close</button> -->
-                </div>
-            </div>
-        </div>
-    </div>
 </template>
 
 <script>
@@ -684,16 +534,13 @@ export default {
     directives: {
         'tooltip': Tooltip
     },
-    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog", "allcontact","updatelogtoview", "displayanim", "togglenotemodal","toggleemailmodal" , "toggletaskmodal"],
+    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog", "allcontact","updatelogtoview", "displayanim", ],
     props: ["personDetails", "smsLog", "activityType"],
     setup (props, { emit }) {
         // const confirm = useConfirm()
         const toast = useToast()
         const route = useRoute()
         const store = useStore()
-        const smsModalRef = ref()
-        const logModalRef = ref()
-        const logDropDownMobile = ref(false)
         const selectedContact = ref({})
         // const contacts = ref([])
         const lifeCycle = ref([])
@@ -849,23 +696,18 @@ export default {
             callDropDown.value.toggle(event);
         }
 
+        const innerWidth = computed(() => {
+            return window.innerWidth;
+        })
+
         const toggleLog = (event) => {
             logDropDown.value.toggle(event);
-
-        }
-        const toggleLogModal = (event) => {
-            logDropDownMobile.value.toggle(event);
 
         }
 
         const toggleLogPane = (e, item) => {
             logDropDown.value.hide();
             displayLogPane.value = true;
-            console.log(e)
-            selectedLog.value = item
-        }
-        const toggleLogModalPane = (e, item) => {
-            logModalRef.value.click();
             console.log(e)
             selectedLog.value = item
         }
@@ -1459,31 +1301,7 @@ export default {
             }
         }
 
-        const toggleNoteModal = () => {
-            emit("togglenotemodal")
-        }
-        const toggleEmailModal = () => {
-            emit("toggleemailmodal")
-        }
-       const toggleSmsModal = () => {
-           smsModalRef.value.click();
-   
-            
-        }
-       
-        const toggleTaskModal = () => {
-            emit("toggletaskmodal")
-        }
-        // const toggleLogModal = () => {
-        //     emit("togglelogmodal")
-        // }
-
-
         return {
-            logDropDownMobile,
-            toggleLogModalPane,
-            smsModalRef,
-            logModalRef,
             selectedContact,
             // contacts,
             lifeCycle,
@@ -1597,11 +1415,8 @@ export default {
             requestbtn,
             tenantId,
             route,
-            toggleNoteModal,
-            toggleEmailModal,
-            toggleSmsModal,
-            toggleTaskModal,
-            toggleLogModal
+            window,
+            innerWidth
         }
             
     }
@@ -1609,12 +1424,6 @@ export default {
 </script>
 
 <style scoped>
-.disply-none{
-    display: none !important;
-}
-.disply-block{
-    display: block !important;
-}
 .contact-name {
     font-size: 36px;
     font-weight: 200
