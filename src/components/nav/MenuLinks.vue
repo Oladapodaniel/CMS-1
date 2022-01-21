@@ -306,7 +306,7 @@
             Reports
           </a>
           <!-- </router-link> -->
-          <a v-if="admin || basicUser || followup"  class="link routelink">
+          <a v-if="followup"  class="link routelink">
                 <router-link class="dd-link-item routelink" to="/tenant/followup">
                 <img
                   src="../../assets/dashboardlinks/follow-up-icon.svg"
