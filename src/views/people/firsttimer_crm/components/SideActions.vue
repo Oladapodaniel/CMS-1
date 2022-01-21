@@ -362,7 +362,7 @@
         </OverlayPanel>
 
         <!-- Log Pane -->
-        <Dialog :header="'Log ' + selectedLog.value" v-model:visible="displayLogPane" :style="{width: window.innerWidth > 400 ? '50vw' : '100vw'}" :position="position" :modal="true">
+        <Dialog :header="'Log ' + selectedLog.value" v-model:visible="displayLogPane" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="position" :modal="true">
             <!-- style="height: 480px" -->
            <div class="container-fluid">
                <div class="row">
@@ -425,7 +425,7 @@
         </Dialog>
        
         <!-- SMS Pane -->
-        <Dialog header="Send SMS" v-model:visible="displaySMSPane" :style="{width: window.innerWidth > 400 ? '50vw' : '100vw'}" :position="position" :modal="true">
+        <Dialog header="Send SMS" v-model:visible="displaySMSPane" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="position" :modal="true">
            <div class="container-fluid">
                <div class="row mt-3">
                    <div class="p-0 col-md-12">
