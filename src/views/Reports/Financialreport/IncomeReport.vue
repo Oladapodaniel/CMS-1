@@ -112,34 +112,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border text-center mt-3" style="height: 60vh; ">
-                        <div class="col-12  font-weight-bold ">Membership By Distribution</div>
-                        <div class="col-12">No Data Available</div>
-                        <div class="col-12 " style="height: 50vh;">
-                            <ByMaritalStatusChart
-                                domId="chart2"
-                                title="Interested In Joining"
-                                :titleMargin="10"
-                                :summary="summary"
-                            />
-                        </div>
-                    </div>
-                </div> -->
-                <!-- <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12  border text-center mt-3 " style="height: 60vh;">
-                        <div class="col-12 w-100  font-weight-bold">Membership By Age Group</div>
-                        <div class="col-12">No Data Available</div>
-                        <div class="col-12 " style="height: 50vh;">
-                             <ByMaritalStatusChart
-                                domId="chart3"
-                                title="Interested In Joining"
-                                :titleMargin="10"
-                                :summary="summary"
-                            />
-                        </div>
-                    </div>
-                </div> -->
             </div>
       <!-- table header -->
       <div class="container-fluid table-main px-0 remove-styles2 remove-border my-5" >
@@ -171,16 +143,17 @@
               <td class="totalAmount">Total Income</td>
               <td></td>
               <td></td>
-              <td class="totalAmount">#{{numberWithCommas(grouped(group))}}</td>
+              <td></td>
+              <td class="totalAmount">{{ currencySymbol }}{{numberWithCommas(grouped(group))}}</td>
               <td></td>
             </tr>  
           </tbody>
-            <tr class="second-row">
-              <td class="totalAmount">Grand Total</td>
+            <tr class="grand-total">
+              <td class="gross-total">Grand Total</td>
               <td></td>
               <td></td>
               <td></td>
-              <td class="totalAmount">{{ currencySymbol }}{{numberWithCommas(grandTotal)}}</td>
+              <td class="gross-total responsive-horizontalrule">{{ currencySymbol }}{{numberWithCommas(grandTotal)}}<hr class="horizontal-rule"></td>
               <td></td>
             </tr> 
         </table>
@@ -194,7 +167,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed} from "vue";
+import { ref, computed} from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
@@ -279,34 +252,30 @@ export default {
           incomeReportData.value = res.data
            console.log(incomeReportData.value, 'incomereportData');
             pieChartData.value = [];
-            //  console.log(res, 'income response');
              toggleReport.value = true;
              getIncomeDetails.value = res.data
             const resMap = res.data.filter(i => i !== null)
-            // console.log(resMap)
             groupedAccountName.value = groupResponse.groupData(resMap, 'accountName')
-            // console.log(groupedAccountName, 'abc');
-             
-            //  console.log(res.data, 'getIncomeDetails');
              const accountNameMap = res.data.map(i => i && i.accountName ? i.accountName : '')
-            //  console.log(accountNameMap, "CCCCCCCC");
              const groupAccountName = new Set(accountNameMap)
              series.value = [...groupAccountName].filter(i => i !== "")
-             console.log(series.value, 'serrrrr');
             console.log(groupAccountName, 'groupAccountName...');
+
             groupAccountName.forEach(i => {
+              let initialValueSum = 0
+              let responseFiltered = res.data.filter(j => j && j.accountName ? j.accountName === i : false)
+              responseFiltered.forEach(i => {
+                initialValueSum += Math.abs(i.amount)
+              })
                 const data = {
                     name: i,
-                    value: res.data.filter(j => j && j.accountName ? j.accountName === i : false).length
+                    value: initialValueSum
                 }
                 pieChartData.value.push(data)
-                // console.log(i, 'groupAccountNameLLL');
             })
 
             columnChartData.value = constructChartData(res.data, groupAccountName);
-            // console.log(columnChartData.value, "COLUMN CHART DATA");
-            // console.log(pieChartData.value, 'pieChartData,,,,');
-
+    
             setTimeout(() => {
                 fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
                 fileToExport.value = exportService.tableToJson(document.getElementById("table"))
@@ -354,9 +323,6 @@ export default {
      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     const grouped = (group) => {
-      // alert(group)
-      
-      console.log(groupedAccountName.value , 'star11');
       if (!groupedAccountName.value || !groupedAccountName.value[group] ) return 0
       // console.log(group)
       const sum = groupedAccountName.value[group]
@@ -557,5 +523,26 @@ export default {
 .second-row {
   /* vertical-align: bottom; */
   background:  #dee2e6;
+}
+
+.grand-total {
+  background: #136acd;
+}
+
+.gross-total {
+  font-weight: 800;
+  font-size: 19px;
+  color: #fff;
+}
+
+.horizontal-rule {
+  border-radius: 5px;
+  margin: 0.125rem 0;
+  background: white;
+  height: 3px;
+}
+
+.responsive-horizontalrule {
+    display: inline-block;
 }
 </style>
