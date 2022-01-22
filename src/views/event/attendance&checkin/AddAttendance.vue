@@ -212,14 +212,13 @@
             </div>
           </div>
         </div>
+
         <div class="row my-3">
           <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right">
             <label for="" class="font-weight-600">Group</label>
           </div>
           <div class="col-sm-7 col-md-6 col-lg-5">
-            <MultiSelect v-model="selectedGroups" :options="groups" optionLabel="name" placeholder="Select group" display="chip" class="w-100" />
-
-            <!-- <Dropdown
+            <Dropdown
               v-model="selectedGroup"
               :options="groups"
               optionLabel="name"
@@ -227,7 +226,7 @@
               :filter="false"
               filterPlaceholder="Search grouped contacts"
               style="width: 100%"
-            /> -->
+            />
             <div class="row mt-5">
               <!-- <div class="col-md-12 d-flex justify-content-center">
                 <button
@@ -480,7 +479,7 @@
                 <button
                   class="default-btn primary-bg text-white border-0 contn-btn"
                   @click="onContinue"
-                  :disabled="!selectedEvent.id || selectedGroups.length === 0"
+                  :disabled="!selectedEvent.id || !selectedGroup.id"
                 >
                   Save and Continue
                 </button>
@@ -500,13 +499,12 @@
 
 <script>
 import Dropdown from "primevue/dropdown";
-import MultiSelect from 'primevue/multiselect';
 import { computed, ref } from "vue";
 import router from "@/router/index";
 import groupService from "../../../services/groups/groupsservice";
 import eventsService from "../../../services/events/eventsservice";
 import CreateEventModal from "../../../components/attendance/AttendanceEventModal";
-// import attendanceservice from "../../../services/attendance/attendanceservice";
+import attendanceservice from "../../../services/attendance/attendanceservice";
 import { useStore } from "vuex";
 import { useToast } from 'primevue/usetoast';
 import axios from "@/gateway/backendapi";
@@ -515,9 +513,8 @@ import axio from  'axios'
 import moment from "moment";
 
 
-
 export default {
-  components: { Dropdown, MultiSelect,CreateEventModal },
+  components: { Dropdown, CreateEventModal },
 
   setup() {
     const store = useStore();
@@ -553,8 +550,7 @@ export default {
     const slot = ref("")
 
 
-    // const selectedGroup = ref({});
-    const selectedGroups = ref([]);
+    const selectedGroup = ref({});
     const getGroups = async () => {
       try {
         const response = await groupService.getGroups();
@@ -676,7 +672,7 @@ export default {
 
       let checkinEvent = {
           eventId: selectedEvent.value.id,
-          groupIDs: selectedGroups.value.map(i => i.id),
+          groupID: selectedGroup.value.id,
           eventDate: moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0],
         }
         slot.value ? checkinEvent.registrationSlot = slot.value : ""
@@ -700,7 +696,7 @@ export default {
       formData.append("isPaidFor", addPaidClass.value)
       amount.value ? formData.append("amount", amount.value) : ""
       selectedEvent.value ? formData.append("activityId", selectedEvent.value.id) : ""
-      selectedGroups.value ? formData.append("groupIDs", selectedGroups.value.map(i => i.id)) : ""
+      selectedGroup.value ? formData.append("groupId", selectedGroup.value.id) : ""
       formData.append("enableRegistration", true)
       slot.value ? formData.append("registrationSlot", slot.value) : ""
 
@@ -708,22 +704,18 @@ export default {
         console.log('free and no image')
         
       try {
-          // const response = await attendanceservice.saveCheckAttendanceItem(checkinEvent);
-          const response = await axios.post('/api/CheckinAttendance/MultipleCheckinAttendanceItem', checkinEvent)
+          const response = await attendanceservice.saveCheckAttendanceItem(checkinEvent);
           console.log(response)
-          for (let i = 0; i < response.data.length; i++) {
-            const element = response.data[i];
-            store.dispatch("attendance/setItemData", element);
-          }
+          store.dispatch("attendance/setItemData", response);
           router.push({
             name: "CheckinType",
             query: {
               activityID: selectedEvent.value.id,
               activityName: selectedEvent.value.name,
-              groupId: selectedGroups.value[0].id,
-              groupName: selectedGroups.value[0].name,
-              id: response.data[0].id,
-              code: response.data[0].attendanceCode,
+              groupId: selectedGroup.value.id,
+              groupName: selectedGroup.value.name,
+              id: response.id,
+              code: response.attendanceCode,
             },
           });
         } catch (error) {
@@ -741,8 +733,8 @@ export default {
               query: {
                 activityID: selectedEvent.value.id,
                 activityName: selectedEvent.value.name,
-                groupId: selectedGroup.value[0].id,
-                groupName: selectedGroup.value[0].name,
+                groupId: selectedGroup.value.id,
+                groupName: selectedGroup.value.name,
                 id: data.returnObject.checkInAttendanceResult.id,
                 code: data.returnObject.checkInAttendanceResult.attendanceCode
               },
@@ -762,8 +754,8 @@ export default {
               query: {
                 activityID: selectedEvent.value.id,
                 activityName: selectedEvent.value.name,
-                groupId: selectedGroup.value[0].id,
-                groupName: selectedGroup.value[0].name,
+                groupId: selectedGroup.value.id,
+                groupName: selectedGroup.value.name,
                 id: data.returnObject.checkInAttendanceResult.id,
                 code: data.returnObject.checkInAttendanceResult.attendanceCode
               },
@@ -774,6 +766,7 @@ export default {
           console.log(err)
         }
       }
+       console.log('heareeeejrklnaejvhil')
     };
 
     const showPaidTab = () => {
@@ -883,7 +876,7 @@ export default {
       events,
       selectEvent,
       display,
-      // selectedGroup,
+      selectedGroup,
       closeModal,
       newActModal,
       eventCategories,
@@ -932,8 +925,7 @@ export default {
       setBank,
       bankSearchText,
       filteredBanks,
-      slot,
-      selectedGroups
+      slot
     };
   },
 };
