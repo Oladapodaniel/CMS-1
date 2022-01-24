@@ -445,8 +445,14 @@
                       >Send Email</router-link
                     >
                   </a>
-                  <a class="dropdown-item elipsis-items cursor-pointer" @click="archive(person.id, 'single')">
+                  <a class="dropdown-item elipsis-items cursor-pointer text-color" @click="archive(person.id, 'single')">
                     Archive
+                  </a>
+                  <a class="dropdown-item elipsis-items cursor-pointer">
+                    <router-link :to="`/tenant/firsttimermanagement/${person.id}?memberType=1`"
+                      class="itemroute-color text-color">
+                      Follow Up
+                    </router-link>
                   </a>
                   <a class="dropdown-item elipsis-items">
                     <router-link
