@@ -170,6 +170,7 @@
                   data-target="#importgroup"
                   ref="modalBtn"
                   style="border-radius: 3rem; padding: 0.5rem 1.25rem;"
+                  @click="importMember"
                 >
                   Import
                 </div>
@@ -1062,6 +1063,7 @@ export default {
     const isGroupLeader = ref(false)
     const enableLogin = ref(false)
     const showEmail = ref(false)
+    const totalItems = ref("")
     const positionArchive = ref('center');
     const displayPositionArchive = ref(false);
     
@@ -1110,7 +1112,9 @@ export default {
 
         const attendanceCheckin = async () => {
             const response = await attendanceservice.getItems();
-            attendanceData.value = response.filter((i) => i.groupID === route.params.groupId);
+            console.log(response, 'response attendance');
+            attendanceData.value = response.items.filter((i) => i.groupID === route.params.groupId);
+            totalItems.value = response.totalItems
             const attendanceItem = response.find((i) => i.groupID === route.params.groupId);
             if(attendanceItem && attendanceItem.id) selectedAttendanceId.value = attendanceItem.id;
             return attendanceItem;
@@ -1584,6 +1588,16 @@ export default {
       }
     };
 
+    const importMember = () => {
+      if (!route.params.groupId) {
+         toast.add({
+            severity: "warn",
+            summary: "Add a group",
+            detail: "Please ensure a group is added before you import",
+            life: 4000,
+          });
+      }
+    }
     const requestApproval = async(member) => {
       const memberToApprove = {
           groupId: member.groupID,
@@ -1742,6 +1756,7 @@ export default {
       showAttendanceCheckin, 
       // wardSearchString,
      getWardId,
+     totalItems,
      attendanceData,
      testEmail,
      selectedGroupMembers,
@@ -1760,7 +1775,8 @@ export default {
     openPositionArchive,
     positionArchive,
     displayPositionArchive,
-    closeArchiveModal
+    closeArchiveModal,
+    importMember
 
 
     };

@@ -373,7 +373,7 @@
                     :attendanceSeries="attendanceSeries"
                   />
                 </div>
-                <div v-else>
+                <div v-else class="ColumnChartDiv">
                   <ColumnChart
                     domId="chart4"
                     title="First Timer Inflow"
@@ -1414,6 +1414,11 @@ tbody tr:nth-child(even) {
 }
 
 @media (max-width: 305px) {
+  /* .ColumnChartDiv {
+    font-size: 25px;
+    font-weight: 600;
+    margin: 0 0 -24px 0;
+  } */
   /* .adjust-view {
     top: 85.5em;
   } */

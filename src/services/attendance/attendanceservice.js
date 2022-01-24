@@ -126,7 +126,7 @@ const checkout = async (body) => {
 const generateEventReportDefaultMessage = (eventAnalysisData) => {
     console.log(eventAnalysisData, "data");
     if (eventAnalysisData.activityToday) {
-    let message = `SERVICE REPORT\n          ======\n${eventAnalysisData.activityToday.name}\nDate: ${new Date(eventAnalysisData.activityToday.date).toLocaleDateString()}\n\nTotal Attendance: ${eventAnalysisData.todayAttendance}\nTotal Offering: ${eventAnalysisData.tenantCurrencyName} ${eventAnalysisData.todayOffering}`;
+    let message = `SERVICE REPORT\n          ======\n${eventAnalysisData.activityToday.name}\nDate: ${new Date(eventAnalysisData.activityToday.activityDate).toLocaleDateString()}\n\nTotal Attendance: ${eventAnalysisData.todayAttendance}\nTotal Offering: ${eventAnalysisData.tenantCurrencyName} ${eventAnalysisData.todayOffering}`;
 
     if (eventAnalysisData.todayVsLastWeekAttendancePercentage > 0) {
         message += `\n\nWe recorded a ${eventAnalysisData.todayVsLastWeekAttendancePercentage}% increase in attendance since last week.`;
