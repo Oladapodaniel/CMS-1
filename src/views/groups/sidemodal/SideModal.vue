@@ -1,17 +1,8 @@
 <template>
-    <div class="container container-wide container-top shadow-lg border rounded" v-if="show" style="background: red">
+    <div class="container container-wide container-top">
         <div class="row">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h4 class="d-flex justify-content-between">
-                            <!-- <span>{{ title }}</span> -->
-                            <!-- <span @click="closeModal"><i class="pi pi-times"></i></span> -->
-                        </h4>
-                    </div>
-                </div>
                 <div :class="{ 'show-Times' : show, 'hide-Times' : !show }" class="border"> 
-                    <!-- <div @click="Times"></div> -->
                     <span class=" pl-2 text-center" @click="closeModal"><i class="times cursor-pointer pt-2 mt-2 rounded pi pi-times"></i></span>
                     <slot />
                 </div>
@@ -22,7 +13,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+// import { ref } from "vue";
 
 export default {
     props: [ 'show', 'title' ],
@@ -50,33 +41,34 @@ export default {
 
 <style scoped>
 .show-Times{
-  /* display: block; */
    width: 100%;
-   /* width: calc(100% - 0px); */
-   height: 98%;
+   height: 100%;
    overflow: scroll;
    overflow-x: hidden;
-   /* overflow-y: hidden; */
     position: fixed;
     right: 0;
     top: 0;
     z-index: 0;
-    /* opacity: 0.5; */
     background: #a0a3a7;
     box-shadow: 5px 10px 18px #888888;
     border-radius: 10px;
-    transition: all 5s ease-out;
-    /* transition: all 8s cubic-bezier(0.645, 0.045, 0.355, 1); */
+    transform: translate(0px, 0px);
+    transition: transform  0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 .hide-Times{
-  /* display: none; */
-   /* position: fixed;
-   overflow: hidden;
-   width: 0;
-    right: -800px; */
-    top: -50px;
-    /* z-index: 9; */
-    transition: all  0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+   width: 100%;
+   height: 100%;
+   overflow: scroll;
+   overflow-x: hidden;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 0;
+    background: #a0a3a7;
+    box-shadow: 5px 10px 18px #888888;
+    border-radius: 10px;
+    transform: translate(2000px, 0px);
+    transition: transform  0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 .main-container {
     background: salmon;

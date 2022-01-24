@@ -197,7 +197,7 @@
                       <div class="cs-select day">
                         <Dropdown
                           v-model="person.dayOfBirth"
-                          :options="birthDaysArr"
+                          :options="['Day', ...birthDaysArr ]"
                           placeholder="Day"
                           style="width: 100%"
                         />
@@ -209,7 +209,7 @@
                       <div class="cs-select month">
                         <Dropdown
                           v-model="person.monthOfBirth"
-                          :options="months"
+                          :options="['Month', ...months]"
                           placeholder="Month"
                           @change="
                             editBirthDateValue('month', person.monthOfBirth)
@@ -224,7 +224,7 @@
                       <div class="cs-select year">
                         <Dropdown
                           v-model="person.yearOfBirth"
-                          :options="birthYearsArr"
+                          :options="['Year', ...birthYearsArr]"
                           placeholder="Year"
                           style="width: 100%"
                         />
@@ -244,7 +244,7 @@
                         <Dropdown
                           placeholder="Day"
                           v-model="person.dayOfWedding"
-                          :options="annDaysArr"
+                          :options="['Day', ...annDaysArr]"
                           style="width: 100%"
                         />
                         <!-- <SelectElem :typ="'membership'" name="annday" :options="['Day', ...annDaysArr]" value="Day" @input="itemSelected"/> -->
@@ -255,7 +255,7 @@
                       <div class="cs-select month">
                         <Dropdown
                           v-model="person.monthOfWedding"
-                          :options="months"
+                          :options="['Month', ...months]"
                           placeholder="Month"
                           @change="
                             editAnnDateValue('month', person.monthOfWedding)
@@ -270,7 +270,7 @@
                       <div class="cs-select year">
                         <Dropdown
                           v-model="person.yearOfWedding"
-                          :options="birthYearsArr"
+                          :options="['Year', ...birthYearsArr]"
                           placeholder="Year"
                           style="width: 100%"
                         />
@@ -691,26 +691,26 @@ export default {
         "occupation",
         personObj.occupation ? personObj.occupation : ""
       );
-      formData.append("dayOfBirth", +personObj.dayOfBirth);
+      formData.append("dayOfBirth", personObj.dayOfBirth > 0 ? +personObj.dayOfBirth : 0);
       formData.append(
         "monthOfBirth",
         months.indexOf(personObj.monthOfBirth) >= 0
           ? months.indexOf(personObj.monthOfBirth) + 1
           : 0
       );
-      formData.append("yearOfBirth", +personObj.yearOfBirth);
+      formData.append("yearOfBirth", personObj.yearOfBirth > 0 ? +personObj.yearOfBirth : 0);
       formData.append(
         "occupation",
         personObj.occupation ? personObj.occupation : ""
       );
-      formData.append("yearOfWedding", +personObj.yearOfWedding);
+      formData.append("yearOfWedding", personObj.yearOfWedding > 0 ? +personObj.yearOfWedding : 0);
       formData.append(
         "monthOfWedding",
         months.indexOf(personObj.monthOfWedding) >= 0
           ? months.indexOf(personObj.monthOfWedding) + 1
           : 0
       );
-      formData.append("dayOfWedding", +personObj.dayOfWedding);
+      formData.append("dayOfWedding", personObj.dayOfWedding > 0 ? +personObj.dayOfWedding : 0);
       formData.append(
         "peopleClassificationID",
         selectedMembership.value ? selectedMembership.value.id : ""
@@ -1001,17 +1001,10 @@ export default {
         }
       })
 
-      try {
-        let res = await axios.get(`/api/People/GetPersonInfoWithAssignments/${data.followupPersonID}`)
-        currentContact.value = {
-          firstName: res.data.firstName,
-          lastName: res.data.lastName,
-          id: res.data.personId
+      currentContact.value = {
+          name: `${data.followupPersonName}`,
+          id: data.followupPersonID
         }
-      }
-      catch (err) {
-        console.log(err)
-      }
     };
 
     const getMemberToEdit = () => {

@@ -801,13 +801,13 @@
                           aria-labelledby="dropdownMenuButton"
                         >
                           <!-- <a class="dropdown-item c-pointer" > -->
-                          <a class="dropdown-item" v-if="member.phone">
+                          <a class="dropdown-item c-pointer" v-if="member.phone">
                             <a 
                               @click="test(member)"
                               > Send SMS</a
                             >
                           </a>
-                          <a class="dropdown-item" v-if="member.email">
+                          <a class="dropdown-item c-pointer" v-if="member.email">
                           <!-- <a class="dropdown-item c-pointer"> -->
                             <a 
                               @click="testEmail(member)"

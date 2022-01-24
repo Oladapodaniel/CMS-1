@@ -127,7 +127,7 @@
           <div class="row">
             <div
               class=" col-12 py-2 px-0 c-pointer tr-border-bottom hover"
-              v-for="item in searchBranchAttendance"
+              v-for="(item, index) in searchBranchAttendance"
               :key="item.id"
             >
               <div class="row w-100" style="margin: 0">
@@ -275,7 +275,7 @@
                             </router-link>
                             <a
                               class="dropdown-item elipsis-items cursor-pointer"
-                              @click="showConfirmModal(item.id)"
+                              @click="showConfirmModal(item.id, index)"
                               >Delete</a
                             >
                           </div>
@@ -312,7 +312,7 @@
 import { ref, computed } from '@vue/runtime-core';
 import BranchSelect from "../component/BranchSelect.vue"
 import axios from "@/gateway/backendapi";
-// import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import loadingComponent from "@/components/loading/LoadingComponent";
 import dateFormatter from '../../../services/dates/dateformatter';
@@ -331,7 +331,7 @@ export default {
   // },
 
   setup() {
-    // const confirm = useConfirm()
+    const confirm = useConfirm()
     const toast = useToast()
     const selectedBranch = ref({})
     const branchAttendance = ref([])
@@ -397,63 +397,72 @@ export default {
       }
     };
 
-    // const deleteMember = (id) => {
-    //   axios
-    //     .delete(`/api/People/DeleteOnePerson/${id}`)
-    //     .then((res) => {
-    //       console.log(res);
-    //       branchAttendance.value = branchAttendance.value.filter(
-    //         (item) => item.id !== id
-    //       );
-    //       if (res.data.response.includes("@")) {
-    //         let disRes = res.data.response.split("@")
-    //         toast.add({
-    //           severity: "info",
-    //           summary: "Info",
-    //           detail: disRes[0],
-    //           life: 10000,
-    //         });
-    //       } else {
-    //         toast.add({
-    //           severity: "success",
-    //           summary: "Confirmed",
-    //           detail: "Member Deleted",
-    //           life: 5000,
-    //         });
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       toast.add({
-    //         severity: "error",
-    //         summary: "Delete Error",
-    //         detail: "Deleting member failed",
-    //         life: 3000,
-    //       });
-    //       console.log(err);
-    //     });
-    // };
+    const deleteAttendance = (id, index) => {
+      axios
+        .delete(`/api/CheckInAttendance/checkout?attendanceId=${id}`)
+        .then((res) => {
+          console.log(res.status);
+          if (res.status === 200) {
+            toast.add({
+              severity: "success",
+              summary: "Delete Successful",
+              detail: `${res.data}`,
+              life: 3000,
+            });
+            branchAttendance.value.splice(index, 1)
+          } else {
+            toast.add({
+              severity: "warn",
+              summary: "Delete Failed",
+              detail: `Please Try Again`,
+              life: 3000,
+            });
+          }
+        })
+        .catch((err) => {
+          //     finish()
+          if (err.response) {
+            console.log(err.response);
+            toast.add({
+              severity: "error",
+              summary: "Unable to delete",
+              detail: `${err.response}`,
+              life: 3000,
+            });
+          } else if (
+            err && err.response && err.response.toString().toLowerCase().includes("network error")
+          ) {
+            toast.add({
+              severity: "warn",
+              summary: "Unable to delete",
+              detail: `Please ensure you have a strong internet connection`,
+              life: 3000,
+            });
+          }
+        });
+    };
 
-    // const showConfirmModal = (id) => {
-    //   confirm.require({
-    //     message: "Are you sure you want to proceed?",
-    //     header: "Confirmation",
-    //     icon: "pi pi-exclamation-triangle",
-    //     acceptClass: "confirm-delete",
-    //     rejectClass: "cancel-delete",
-    //     accept: () => {
-    //       deleteMember(id);
-    //       // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-    //     },
-    //     reject: () => {
-    //       toast.add({
-    //         severity: "info",
-    //         summary: "Rejected",
-    //         detail: "You have rejected",
-    //         life: 3000,
-    //       });
-    //     },
-    //   });
-    // };
+    const showConfirmModal = (id, index) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteAttendance(id, index);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
     
 
     return {
@@ -466,8 +475,8 @@ export default {
       toggleSearch,
       searchBranchAttendance,
       searchText,
-      // showConfirmModal,
-      // deleteMember,
+      showConfirmModal,
+      deleteAttendance,
       loading,
       formatDate,
       getPeopleByPage,
