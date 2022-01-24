@@ -12,7 +12,7 @@
             <div class="row mb-4">
                 <div class="col-12 d-flex justify-content-end">
                     <div class="mr-3">
-                        <Dropdown  :options="periods" optionLabel="name" placeholder="Select a period" class="w-100" v-model="selectedPeriod" @change="getPeriod" />
+                        <Dropdown  :options="periods" optionLabel="name" placeholder="Last 30days" class="w-100" v-model="selectedPeriod" @change="getPeriod" />
                     </div>
                     <div>
                         <CascadeSelect :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100" placeholder="Select a branch" v-model="selectedBranch" @change="getBranchAnalytics"/>

@@ -3,7 +3,10 @@
     <canvas ref="confeti" width="300" height="300" class="active canvas-style" v-show="displayAnim"></canvas>
         <div class="row">
             <div class="col-12 col-md-4 p-0 side-bar">
-                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails" @calllogdesc="setCallLogDesc" :smsLog="smsLog" @resetlog="resetLog" :activityType="activityType" @updatelogtoview="updateLogToView" @displayanim="setDisplayAnim"/>
+                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" 
+                :personDetails="personDetails" @calllogdesc="setCallLogDesc" 
+                :smsLog="smsLog" @resetlog="resetLog" :activityType="activityType" 
+                @updatelogtoview="updateLogToView" @displayanim="setDisplayAnim" />
             </div>
             <div class="col-12 col-md-8 main-view">
                 <div class="row">
@@ -68,10 +71,8 @@
             </div>
         </div>
     </div>
-    
     <!-- Modal for Note -->
-            
-    <Dialog header="Create note" v-model:visible="displayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
+    <Dialog header="Create note" v-model:visible="displayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="position" :modal="true">
         <!-- <Editor v-model="note" editorStyle="height: 320px"/> -->
         <textarea v-model="note" rows="12" class="form-control mt-4" placeholder="Type your note..."></textarea>
          <div class="d-flex justify-content-start mt-2">
@@ -81,7 +82,7 @@
    
    <!-- Modal for email -->
     <Dialog header="Compose
-     email" v-model:visible="emailDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
+     email" v-model:visible="emailDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}"  :position="position" :modal="true">
         <div class="container" style="height: 480px">
             <div class="row" v-if="!displayEmailPane">
                 <div class="col-12 mt-3 font-weight-700 text-center">
@@ -149,7 +150,7 @@
 
 
     <!-- Modal for task -->
-     <Dialog header="Create task" v-model:visible="taskDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
+     <Dialog header="Create task" v-model:visible="taskDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="position" :modal="true">
         <div class="container" style="height: 480px">
             <div class="row mt-3">
                <div class="row">
@@ -328,6 +329,7 @@ export default {
         // const inputFocus = ref(false)
         const confeti = ref()
         const displayAnim = ref(false)
+        
 
         
 
@@ -874,7 +876,9 @@ export default {
             }, 8000);
         }
     
-
+        const innerWidth = computed(() => {
+            return window.innerWidth;
+        })
         return {
             toggleActivity,
             toggleNotes,
@@ -975,7 +979,9 @@ export default {
             setDueDateTask,
             confeti,
             displayAnim,
-            setDisplayAnim   
+            setDisplayAnim,
+            window,
+            innerWidth,
         }
     }
 }

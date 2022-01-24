@@ -20,29 +20,53 @@
                 <div><i class="pi pi-pencil uniform-primary-color c-pointer" @click="editContactName"></i></div>
             </div>
         </div>
-        <div class="row d-flex justify-content-center mt-5">
-            <div @click="openNoteEditor" class="c-pointer">
-                <div class="icon-bg" v-tooltip.top="'Create a note'"><i class="pi pi-user-edit"></i></div>
-                <div>Note</div>
+        <!-- <div class="d-block d-sm-none">
+            <div class="row  d-flex justify-content-center mt-5">
+                <div @click="toggleNoteModal" class="c-pointer">
+                    <div class="icon-bg" v-tooltip.top="'Create a note'"><i class="pi pi-user-edit"></i></div>
+                    <div>Note</div>
+                </div>
+                <div class="ml-4" @click="toggleEmailModal">
+                    <div class="icon-bg c-pointer" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
+                    <div>Email</div>
+                </div>
+                <div class="ml-4 c-pointer"  @click="toggleSmsModal">
+                    <div class="icon-bg" v-tooltip.top="'Send an sms'"><i class="pi pi-phone"></i></div>
+                    <div>SMS</div>
+                </div>
+                <div class="ml-4 c-pointer" @click="toggleTaskModal">
+                    <div class="icon-bg" v-tooltip.top="'Create a task'"><i class="pi pi-calendar-plus"></i></div>
+                    <div>Task</div>
+                </div>
+                <div class="ml-4 c-pointer" v-tooltip.top="'Log a call, email'" @click="toggleLogModal" aria:haspopup="true" aria-controls="overlay_panel">
+                    <div class="icon-bg"><i class="pi pi-plus"></i></div>
+                    <div>Log</div>
+                </div>
             </div>
-            <div class="ml-4" @click="openEmailModal">
-                <div class="icon-bg c-pointer" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
-                <div>Email</div>
+        </div> -->
+            <div class="row  d-flex justify-content-center mt-5">
+                <div @click="openNoteEditor" class="c-pointer">
+                    <div class="icon-bg" v-tooltip.top="'Create a note'"><i class="pi pi-user-edit"></i></div>
+                    <div>Note</div>
+                </div>
+                <div class="ml-4" @click="openEmailModal">
+                    <div class="icon-bg c-pointer" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
+                    <div>Email</div>
+                </div>
+                <!-- @click="call" -->
+                <div class="ml-4 c-pointer"  @click="toggleCallSmsPane($event)">
+                    <div class="icon-bg" v-tooltip.top="'Send an sms'"><i class="pi pi-phone"></i></div>
+                    <div>SMS</div>
+                </div>
+                <div class="ml-4 c-pointer" @click="openTaskEditor">
+                    <div class="icon-bg" v-tooltip.top="'Create a task'"><i class="pi pi-calendar-plus"></i></div>
+                    <div>Task</div>
+                </div>
+                <div class="ml-4 c-pointer" v-tooltip.top="'Log a call, email'" @click="toggleLog" aria:haspopup="true" aria-controls="overlay_panel">
+                    <div class="icon-bg"><i class="pi pi-plus"></i></div>
+                    <div>Log</div>
+                </div>
             </div>
-            <!-- @click="call" -->
-            <div class="ml-4 c-pointer"  @click="toggleCallSmsPane($event)">
-                <div class="icon-bg" v-tooltip.top="'Send an sms'"><i class="pi pi-phone"></i></div>
-                <div>SMS</div>
-            </div>
-            <div class="ml-4 c-pointer" @click="openTaskEditor">
-                <div class="icon-bg" v-tooltip.top="'Create a task'"><i class="pi pi-calendar-plus"></i></div>
-                <div>Task</div>
-            </div>
-            <div class="ml-4 c-pointer" v-tooltip.top="'Log a call, email'" @click="toggleLog" aria:haspopup="true" aria-controls="overlay_panel">
-                <div class="icon-bg"><i class="pi pi-plus"></i></div>
-                <div>Log</div>
-            </div>
-        </div>
     </div>
     <hr class="mt-4"/>
     <div class="container mt-4">
@@ -338,7 +362,7 @@
         </OverlayPanel>
 
         <!-- Log Pane -->
-        <Dialog :header="'Log ' + selectedLog.value" v-model:visible="displayLogPane" :style="{width: '50vw'}" :position="position" :modal="true">
+        <Dialog :header="'Log ' + selectedLog.value" v-model:visible="displayLogPane" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="position" :modal="true">
             <!-- style="height: 480px" -->
            <div class="container-fluid">
                <div class="row">
@@ -401,7 +425,7 @@
         </Dialog>
        
         <!-- SMS Pane -->
-        <Dialog header="Send SMS" v-model:visible="displaySMSPane" :style="{width: '50vw'}" :position="position" :modal="true">
+        <Dialog header="Send SMS" v-model:visible="displaySMSPane" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="position" :modal="true">
            <div class="container-fluid">
                <div class="row mt-3">
                    <div class="p-0 col-md-12">
@@ -510,7 +534,7 @@ export default {
     directives: {
         'tooltip': Tooltip
     },
-    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog", "allcontact","updatelogtoview", "displayanim"],
+    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog", "allcontact","updatelogtoview", "displayanim", ],
     props: ["personDetails", "smsLog", "activityType"],
     setup (props, { emit }) {
         // const confirm = useConfirm()
@@ -672,6 +696,10 @@ export default {
             callDropDown.value.toggle(event);
         }
 
+        const innerWidth = computed(() => {
+            return window.innerWidth;
+        })
+
         const toggleLog = (event) => {
             logDropDown.value.toggle(event);
 
@@ -693,6 +721,7 @@ export default {
                 toggleSMSPane()
             }
         }
+        
 
         const toggleSMSPane = () => {
             callDropDown.value.hide();
@@ -1272,7 +1301,6 @@ export default {
             }
         }
 
-
         return {
             selectedContact,
             // contacts,
@@ -1386,7 +1414,9 @@ export default {
             saveSenderId,
             requestbtn,
             tenantId,
-            route
+            route,
+            window,
+            innerWidth
         }
             
     }
