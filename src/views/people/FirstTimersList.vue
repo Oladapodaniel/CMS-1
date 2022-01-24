@@ -1,7 +1,24 @@
 <template>
   <div class="container-wide">
+     <div class="row mt-3 botom">
+            <!-- <div class="col-12"> -->
+                <div class="col-12 col-sm-6 c-pointer "  @click="dashboard">
+                    <div  class="font-weight-bold h5 col-12  ">Dashboard</div>
+                    <div class="" :class="{ 'baseline' : showDashboard, 'hide-base' : !showDashboard }"></div>
+                </div>
+                <div class="col-12 col-sm-6  c-pointer" @click="firstTimerTable">
+                    <div class="font-weight-bold h5 col-12  ">FirstTimer</div>
+                    <div class="" :class="{ 'baselinetwo' : showFirstTimer, 'hide-basetwo' : !showFirstTimer }"></div>
+                </div>
+                <!-- <div class="hr"><hr /></div> -->
+            <!-- </div> -->
+            
+        </div>
     <div class="my-con">
-      <FirstTimersChartArea/>
+      <div v-if="showDashboard">
+          <FirstTimersChartArea/>
+      </div>
+    
       <!-- <div class="table">
         <div class="top-con">
           <div class="table-top px-2">
@@ -397,7 +414,7 @@
           />
         </div>
       </div> -->
-      
+      <div v-if="showFirstTimer">
       <div class="row table">
       <div class="col-12 px-0" id="table">
         <div class="top-con">
@@ -529,7 +546,7 @@
                 />
                 <!-- <Checkbox id="binary" v-model="sendToMysef" :binary="true"/> -->
               </div>
-              <div class="small-text col-md-2 font-weight-bold">
+              <div class="small-text col-md-1 font-weight-bold">
                 NAME
               </div>
               <div class="small-text col-md-2 font-weight-bold">
@@ -541,9 +558,9 @@
               <div class="small-text col-md-2 font-weight-bold">
                 INTERESTED
               </div>
-              <!-- <div class="small-text col-md-1 font-weight-bold">
+              <div class="small-text col-md-1 font-weight-bold">
                 DATE
-              </div> -->
+              </div>
               <div class="small-text col-md-1 font-weight-bold">
                 MOVEMENT
               </div>
@@ -579,7 +596,7 @@
                   <!-- <Checkbox id="binary" v-model="item.check" :binary="true"/> -->
                 </div>
 
-                <div class="desc-head small-text col-md-2">
+                <div class="desc-head small-text col-md-1">
                   <div class="mb-0 d-flex justify-content-between">
                     <span
                       class="
@@ -665,7 +682,7 @@
                   </div>
                 </div>
                 
-                <!-- <div class="desc-head small-text col-md-1">
+                <div class="desc-head small-text col-md-1">
                   <div class="mb-0 d-flex justify-content-between">
                     <span
                       class="
@@ -688,7 +705,7 @@
                         </router-link>
                       </div>
                   </div>
-                </div> -->
+                </div>
                 
                 <div class="desc-head small-text col-md-1">
                   <div class="mb-0 d-flex justify-content-between">
@@ -845,6 +862,7 @@
       </div>
     </div>
     </div>
+    </div>
 
     <OverlayPanel
       ref="op"
@@ -898,6 +916,8 @@ export default {
   },
 
   setup() {
+    const showDashboard = ref(true)
+    const showFirstTimer = ref(false)
     const churchMembers = ref([]);
     const getFirstTimerSummary = ref({});
     const filter = ref({});
@@ -1125,6 +1145,17 @@ filter.value.phoneNumber ="";
 
     // function to checkmark a single first timer
     const checkedFirstTimer = ref([]);
+
+    const  dashboard = () => {
+            showDashboard.value = true;
+            showFirstTimer.value = false;
+        }
+
+    const  firstTimerTable = () => {
+            showFirstTimer.value = true;
+            showDashboard.value = false;
+        }
+
     const check1item = (ft) => {
       const firstTimerIdx = checkedFirstTimer.value.findIndex(
         (i) => i.id === ft.id
@@ -1343,6 +1374,10 @@ filter.value.phoneNumber ="";
     const convertToMembers = async () => {};
 
     return {
+      dashboard,
+      firstTimerTable,
+      showDashboard,
+      showFirstTimer,
       churchMembers,
       filterFormIsVissible,
       toggleFilterFormVissibility,
@@ -1392,6 +1427,67 @@ filter.value.phoneNumber ="";
 * {
   box-sizing: border-box;
   color: #02172e;
+}
+
+
+.baseline {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    position: relative;
+    border-radius: 10px;
+    height: 4px;
+    top: 5px;
+    left: 0px;
+    /* width: 35%; */
+    opacity: 1;
+}
+
+.botom{
+  border-bottom: 7px solid rgb(252, 248, 248);
+  border-radius: 2px;
+  position: relative;
+  /* border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px; */
+  
+  /* height: 4px; */
+}
+
+.hide-basetwo {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    position: absolute;
+    /* background-color: #33475b; */
+    /* color: #136acd" */
+    border-radius: 10px;
+    /* bottom: -2.5px; */
+    z-index: 175;
+    height: 4px;
+    top: 36px;
+    left: 0px;
+    width: 50%;
+    opacity: 0;
+}
+
+.hide-base {
+     transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    position: relative;
+    border-radius: 10px;
+    z-index: 175;
+    height: 4px;
+    top: 35px;
+    left: 0px;
+    opacity: 0;
+}
+.baselinetwo {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    position: relative;
+    border-radius: 10px;
+    height: 4px;
+    top: 5px;
+    left: 0px;
+    opacity: 1;
 }
 
 .data-value a {
