@@ -16,7 +16,7 @@
         </div>
     <div class="my-con">
       <div v-if="showDashboard">
-          <FirstTimersChartArea/>
+          <FirstTimersChartArea @firsttimers="setFirstTimers"/>
       </div>
     
       <!-- <div class="table">
@@ -546,7 +546,7 @@
                 />
                 <!-- <Checkbox id="binary" v-model="sendToMysef" :binary="true"/> -->
               </div>
-              <div class="small-text col-md-1 font-weight-bold">
+              <div class="small-text col-md-2 font-weight-bold">
                 NAME
               </div>
               <div class="small-text col-md-2 font-weight-bold">
@@ -555,7 +555,7 @@
               <div class="small-text col-md-2 font-weight-bold">
                 SOURCE
               </div>
-              <div class="small-text col-md-2 font-weight-bold">
+              <div class="small-text col-md-1 font-weight-bold">
                 INTERESTED
               </div>
               <div class="small-text col-md-1 font-weight-bold">
@@ -596,7 +596,7 @@
                   <!-- <Checkbox id="binary" v-model="item.check" :binary="true"/> -->
                 </div>
 
-                <div class="desc-head small-text col-md-1">
+                <div class="desc-head small-text col-md-2">
                   <div class="mb-0 d-flex justify-content-between">
                     <span
                       class="
@@ -660,7 +660,7 @@
                   </div>
                 </div>
                 
-                <div class="desc-head small-text col-md-2">
+                <div class="desc-head small-text col-md-1">
                   <div class="mb-0 d-flex justify-content-between">
                     <span
                       class="
@@ -983,7 +983,7 @@ export default {
             .catch((err) => console.log(err));
         })
         .catch((err) => {
-          /*eslint no-undef: "warn"*/
+          /eslint no-undef: "warn"/
           NProgress.done();
           if (err.response.status === 400) {
             toast.add({
@@ -1371,7 +1371,9 @@ filter.value.phoneNumber ="";
       }
     };
 
-    const convertToMembers = async () => {};
+    const setFirstTimers = (payload) => {
+      // churchMembers.value = payload
+    };
 
     return {
       dashboard,
@@ -1417,7 +1419,8 @@ filter.value.phoneNumber ="";
       loading,
       searchMember,
       clearAll,
-      hide
+      hide,
+      setFirstTimers
     };
   },
 };
@@ -1987,5 +1990,3 @@ a {
 }
 /* tosin */
 </style>
-
-

@@ -128,7 +128,7 @@ export default {
         Dropdown,
         // BarChart,
     },
-    setup() {
+    setup(props, { emit }) {
       const name1 = ref('Interested Visitors')
       const name2 = ref('How Did You Hear About Us')
       const startDate = ref("");
@@ -155,6 +155,7 @@ export default {
              if (selectedContactOwner.value && Object.keys(selectedContactOwner.value).length > 0) {
                axios.get(`/api/FirsttimerManager/analytics?startDate=${startDate}&endDate=${endDate}&personId=${selectedContactOwner.value.id}`).then((res)=> {
                     analyticsData.value = res.data.returnObject;
+                    emit('firsttimers', res.data.returnObject.firsttimers)
                     console.log(analyticsData.value)
                 }).catch((err)=> {
                   console.log(err)
