@@ -67,7 +67,7 @@ export default {
     background: #a0a3a7;
     box-shadow: 5px 10px 18px #888888;
     border-radius: 10px;
-    transform: translate(1380px, 0px);
+    transform: translate(2000px, 0px);
     transition: transform  0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 .main-container {

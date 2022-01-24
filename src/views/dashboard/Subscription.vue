@@ -271,7 +271,6 @@
                     alt="paystack"
                   />
                 </div>
-                <!-- <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/> -->
               </div>
               <div class="row row-button c-pointer" @click="payWithFlutterwave">
                 <div class="col-12 col-md-4 col-sm-7 offset-1">
@@ -354,8 +353,6 @@ export default {
           churchName.value = res.churchName;
           tenantId.value = res.tenantId;
           userCurrency.value = res.currency;
-          currentUser.value = res
-
         })
         .catch(err => {
           console.log(err);
@@ -460,7 +457,8 @@ export default {
     selectSubscription();
     const paymentFailed = ref(false);
 
-    const subscriptionPayment = (paystackResponse) => {
+    const subscriptionPayment = (response, gateway) => {
+      console.log(response, gateway)
       close.value.click();
       paymentFailed.value = false;
 
@@ -501,13 +499,14 @@ export default {
           emailUnits: selectEmail.value.name
             ? +selectEmail.value.name.split("-")[1]
             : 0,
-          totalAmount: selectedCurrency.value
-            ? convertAmountToTenantCurrency.value
-            : TotalAmount.value,
-          paymentGateway: "Paystack",
-          txnRefID: paystackResponse.trxref,
+          totalAmount: TotalAmount.value,
+          // totalAmount: selectedCurrency.value
+          //   ? convertAmountToTenantCurrency.value
+          //   : TotalAmount.value,
+          paymentGateway: gateway == 0 ? 'paystack' : 'flutterwave',
+          txnRefID: gateway == 0 ? response.trxref : response.tx_ref,
           productItems: products,
-          currency: selectedCurrency.value && currentUser ? selectedCurrency.value : "NGN",
+          currency: selectedCurrency.value,
         };
 
         if (selectMonth.value) {
@@ -540,19 +539,19 @@ export default {
       });
     };
     getRates();
-    const convertAmountToTenantCurrency = computed(() => {
-      if (!selectedCurrency.value) return TotalAmount.value;
-      let amountInDollar = 0;
-      if (TotalAmount.value) {
-        amountInDollar = TotalAmount.value / conversionrates.value[`usdngn`];
-      } else {
-        return 0;
-      }
-      return (
-        conversionrates.value[`usd${selectedCurrency.value.toLowerCase()}`] *
-        amountInDollar
-      );
-    });
+    // const convertAmountToTenantCurrency = computed(() => {
+    //   if (!selectedCurrency.value) return TotalAmount.value;
+    //   let amountInDollar = 0;
+    //   if (TotalAmount.value) {
+    //     amountInDollar = TotalAmount.value / conversionrates.value[`usdngn`];
+    //   } else {
+    //     return 0;
+    //   }
+    //   return (
+    //     conversionrates.value[`usd${selectedCurrency.value.toLowerCase()}`] *
+    //     amountInDollar
+    //   );
+    // });
 
     const emailAmount = computed(() => {
       if (!selectEmail.value.name) return 0;
@@ -597,11 +596,9 @@ export default {
     };
 
     const setSelectedPaymentCurrency = () => {
-      if ( currentUser.value && selectCurrencyArr.value.includes(currentUser.value.currency)) {
+      if ( currentUser.value) {
           selectedCurrency.value = currentUser.value.currency;
-        } else {
-          selectedCurrency.value = "USD";
-        }
+        } 
     }
 
     const getCurrencySymbol = async () => {
@@ -616,10 +613,7 @@ export default {
         });
     };
 
-    const convertedAmount = computed(() => {
-      if (!selectedCurrency.value) return "";
-      return converter.convertCurrencyTo(500, "usdngn", "usdghs");
-    });
+ 
 
     if (!currentUser.value || !currentUser.value.currency) {
       getCurrencySymbol();
@@ -657,7 +651,7 @@ export default {
        initializedOrder.value = res.data;
      })
     }
-    const payWithPaystack = (e) => {
+    const payWithPaystack = () => {
       initializePayment(0);
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
@@ -665,27 +659,20 @@ export default {
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
 
         email: currentUser.value.userEmail,
-        amount:
-          (selectedCurrency.value
-            ? Math.ceil(convertAmountToTenantCurrency.value)
-            : TotalAmount.value) * 100,
+        amount: TotalAmount.value * 100,
         ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
         currency: Plans.value.paymentCurrency,
-        // currency: "zar",
-
-        // firstname: name,
-        // ref: orderId,
         onClose: function() {
           // swal("Transaction Canceled!", { icon: "error" });
           toast.add({
             severity: "info",
             summary: "Transaction cancelled",
             detail: "You have cancelled the transaction",
-            life: 2500,
+            life: 3000,
           });
         },
         callback: function(response) {
-          subscriptionPayment(response);
+          subscriptionPayment(response, 0);
           //Route to where you confirm payment status
         },
       });
@@ -702,47 +689,46 @@ export default {
     }
     getFlutterwaveModules()
 
-    const payWithFlutterwave = (e) => {
+    const payWithFlutterwave = () => {
       console.log(TotalAmount.value, 'total amount calculated')
       initializePayment(1)
+
+      let country = "";
+
+      switch (selectedCurrency.value) {
+            case 'KES':
+             country = 'KE';
+              break;
+            case 'GHS':
+              country = 'GH';
+              break;
+            case 'ZAR':
+              country = 'ZA';
+              break;
+            case 'TZS':
+              country = 'TZ';
+              break;
+            
+            default:
+              country = 'NG';
+              break;
+        }
   
       window.FlutterwaveCheckout({
+                // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
                 public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
                 tx_ref: uuidv4().substring(0,8),
                 amount: TotalAmount.value,
-                currency: Plans.value.paymentCurrency,
                 currency: selectedCurrency.value,
+                country: country,
                 payment_options: 'card,ussd',
                 customer: {
                   // name: props.name,
-                  // email: currentUser.value.userEmail,
-                  email: "info@churchplus.co"
+                  email: currentUser.value.userEmail
                 },
                 callback: (response) => {
                   console.log("Payment callback", response)
-                    // props.donation.usedPaymentGateway = selectedGateway.value
-
-
-
-                    axios
-                          .post(`/confirmDonation?txnref=${response.tx_ref}`,)
-                          .then((res) => {
-                            // finish()
-                            console.log(res, "success data");
-
-                          })
-                          .catch((err) => {
-                            // finish()
-                            toast.add({
-                              severity: 'error',
-                              summary: 'Confirmation failed',
-                              detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
-                              life: 4000
-                              })
-                            console.log(err, "error confirming payment");
-                          });
-
-                        // emit('payment-successful', true)
+                    subscriptionPayment(response, 1)
                   },
                 onclose: () => console.log('Payment closed'),
                 customizations: {
@@ -818,8 +804,7 @@ export default {
       display,
       close,
       paymentFailed,
-      convertedAmount,
-      convertAmountToTenantCurrency,
+      // convertAmountToTenantCurrency,
       payWithFlutterwave,
       daysToEndOfSubscription,
       subscriptionDuration,
