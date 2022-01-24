@@ -173,7 +173,7 @@
                       />
                     </div>
 
-                    <div class="col-md-4 desc">
+                    <div class="col-md-4 desc" @click="groupClick(group.id)">
                       <p class="mb-0 d-flex justify-content-between">
                         <span
                           class=" text-dark font-weight-bold d-flex d-md-none fontIncrease"
@@ -274,6 +274,7 @@
 
 <script>
 import { ref, computed } from "vue";
+import { useRouter } from 'vue-router';
 import groupsService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
 import { useConfirm } from "primevue/useConfirm";
@@ -300,6 +301,7 @@ export default {
     const confirm = useConfirm();
     const showSMS = ref(false)
     const showEmail = ref(false)
+    const router = useRouter()
     // const route = useRoute();
 
     // const showSide = ref(false);
@@ -395,11 +397,16 @@ export default {
         groupListDetails.value = [{data:`group_${group.id}`}]
       }
     }
-
+    const groupClick = (id) => {
+          if (searchGroup.value.length) {
+                router.push(`/tenant/createpeoplegroup/${id}`)
+          } 
+    }
 
     return {
       // showSide,
       // sendSms,
+      groupClick,
       showSMS,
       showEmail,
       groups,

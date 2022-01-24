@@ -5,7 +5,7 @@
         <div class="col-sm-12">
         <div class="top mt-3 pl-0">
           <div class="events">
-            <div>Attendance & Check-in
+            <div class="attendanceResponsive">Attendance & Check-in
             </div>
           </div>
           <div class="actions">
@@ -174,5 +174,14 @@ export default {
     .button {
         margin-top: 10px;
     }
+}
+
+@media (max-width: 399px) {
+   .attendanceResponsive{
+        color: #02172E;
+        font-family: Nunito Sans !important;
+        font-size: 26px;
+        padding-top: 20px;
+   }
 }
 </style>

@@ -725,7 +725,8 @@ export default {
       } else if (!amount.value && !selectedBank.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value &&  image.value) {
         console.log("Free and image")
         try {
-            let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
+            let { data } = await axios.post('/api/CheckInAttendance/create/multiple', formData)
+            // let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
             console.log(data)
             store.dispatch("attendance/setEventReg", data.returnObject);
             router.push({

@@ -177,6 +177,19 @@ const getRoute = () => {
           margin-left: -1.4rem!important;
       }
   }
+
+  @media (max-width: 767px) {
+    .chart-header p {
+    font-size: 23px;
+    font-weight: 600;
+    margin: 0px 0px -25px -10px;
+    }
+    .icon-div img {
+    height: 108px;
+    margin-left: -30px;
+    margin-top: 32px;
+}
+  }
 </style>
 
 <style>

@@ -459,6 +459,11 @@ export default {
 .textbox-height {
   height: 41px
 }
+@media screen and (max-width: 360px) {
+  .page-header {
+    padding-top:31px;
+  }
+}
 
 .error-div {
   background: #fff8f8;
