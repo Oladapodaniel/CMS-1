@@ -1,7 +1,24 @@
 <template>
   <div class="container-wide">
+     <div class="row mt-3 botom">
+            <!-- <div class="col-12"> -->
+                <div class="col-12 col-sm-6 c-pointer "  @click="dashboard">
+                    <div  class="font-weight-bold h5 col-12  ">Dashboard</div>
+                    <div class="" :class="{ 'baseline' : showDashboard, 'hide-base' : !showDashboard }"></div>
+                </div>
+                <div class="col-12 col-sm-6  c-pointer" @click="firstTimerTable">
+                    <div class="font-weight-bold h5 col-12  ">FirstTimer</div>
+                    <div class="" :class="{ 'baselinetwo' : showFirstTimer, 'hide-basetwo' : !showFirstTimer }"></div>
+                </div>
+                <!-- <div class="hr"><hr /></div> -->
+            <!-- </div> -->
+            
+        </div>
     <div class="my-con">
-      <FirstTimersChartArea/>
+      <div v-if="showDashboard">
+          <FirstTimersChartArea @firsttimers="setFirsttimer"/>
+      </div>
+    
       <!-- <div class="table">
         <div class="top-con">
           <div class="table-top px-2">
@@ -397,7 +414,7 @@
           />
         </div>
       </div> -->
-      
+      <div v-if="showFirstTimer">
       <div class="row table">
       <div class="col-12 px-0" id="table">
         <div class="top-con">
@@ -538,12 +555,12 @@
               <div class="small-text col-md-2 font-weight-bold">
                 SOURCE
               </div>
-              <div class="small-text col-md-2 font-weight-bold">
+              <div class="small-text col-md-1 font-weight-bold">
                 INTERESTED
               </div>
-              <!-- <div class="small-text col-md-1 font-weight-bold">
+              <div class="small-text col-md-1 font-weight-bold">
                 DATE
-              </div> -->
+              </div>
               <div class="small-text col-md-1 font-weight-bold">
                 MOVEMENT
               </div>
@@ -643,7 +660,7 @@
                   </div>
                 </div>
                 
-                <div class="desc-head small-text col-md-2">
+                <div class="desc-head small-text col-md-1">
                   <div class="mb-0 d-flex justify-content-between">
                     <span
                       class="
@@ -665,7 +682,7 @@
                   </div>
                 </div>
                 
-                <!-- <div class="desc-head small-text col-md-1">
+                <div class="desc-head small-text col-md-1">
                   <div class="mb-0 d-flex justify-content-between">
                     <span
                       class="
@@ -688,7 +705,7 @@
                         </router-link>
                       </div>
                   </div>
-                </div> -->
+                </div>
                 
                 <div class="desc-head small-text col-md-1">
                   <div class="mb-0 d-flex justify-content-between">
@@ -845,6 +862,7 @@
       </div>
     </div>
     </div>
+    </div>
 
     <OverlayPanel
       ref="op"
@@ -898,6 +916,8 @@ export default {
   },
 
   setup() {
+    const showDashboard = ref(true)
+    const showFirstTimer = ref(false)
     const churchMembers = ref([]);
     const getFirstTimerSummary = ref({});
     const filter = ref({});
@@ -922,7 +942,6 @@ export default {
         .get("/api/People/GetFirsttimerSummary")
         .then((res) => {
           getFirstTimerSummary.value = res.data;
-          console.log(res.data);
         })
         .catch((err) => console.log(err));
     };
@@ -942,7 +961,6 @@ export default {
       axios
         .delete(`/api/People/DeleteOnePerson/${id}`)
         .then((res) => {
-          console.log(res);
           toast.add({
             severity: "success",
             summary: "Confirmed",
@@ -958,12 +976,11 @@ export default {
             .get("/api/People/GetFirsttimerSummary")
             .then((res) => {
               getFirstTimerSummary.value = res.data;
-              console.log(res.data);
             })
             .catch((err) => console.log(err));
         })
         .catch((err) => {
-          /*eslint no-undef: "warn"*/
+          /eslint no-undef: "warn"/
           NProgress.done();
           if (err.response.status === 400) {
             toast.add({
@@ -1008,10 +1025,8 @@ export default {
     };
 
     const getFirstTimers = () => {
-      console.log(route, "route");
       axios.get("/api/People/FirstTimer").then((res) => {
         churchMembers.value = res.data;
-        console.log(churchMembers.value, "Al iz well");
       });
     };
     getFirstTimers();
@@ -1035,7 +1050,6 @@ export default {
         .then((res) => {
           noRecords.value = true;
           filterResult.value = res.data;
-          console.log(filterResult.value);
         })
         .catch((err) => console.log(err));
     };
@@ -1125,6 +1139,17 @@ filter.value.phoneNumber ="";
 
     // function to checkmark a single first timer
     const checkedFirstTimer = ref([]);
+
+    const  dashboard = () => {
+            showDashboard.value = true;
+            showFirstTimer.value = false;
+        }
+
+    const  firstTimerTable = () => {
+            showFirstTimer.value = true;
+            showDashboard.value = false;
+        }
+
     const check1item = (ft) => {
       const firstTimerIdx = checkedFirstTimer.value.findIndex(
         (i) => i.id === ft.id
@@ -1134,7 +1159,6 @@ filter.value.phoneNumber ="";
       } else {
         checkedFirstTimer.value.splice(firstTimerIdx, 1);
       }
-      console.log(checkedFirstTimer.value, "it working");
     };
 
     // function to check all first timer
@@ -1151,7 +1175,6 @@ filter.value.phoneNumber ="";
       } else {
         checkedFirstTimer.value = [];
       }
-      console.log(checkedFirstTimer.value, "God is Good");
     };
 
     // Function to delete first timer
@@ -1162,13 +1185,10 @@ filter.value.phoneNumber ="";
     const display = ref(false);
     const deleteFirstTimer = () => {
       let dft = convert(checkedFirstTimer.value);
-      console.log(dft, "tosin");
       axios
         .post(`/api/People/DeletePeople`, dft)
         .then((res) => {
-          console.log(res.data, "God is awesome");
           let incomingRes = res.data.response;
-          console.log(incomingRes, "tosin");
           if (incomingRes.toString().toLowerCase().includes("all")) {
             toast.add({
               severity: "success",
@@ -1177,7 +1197,6 @@ filter.value.phoneNumber ="";
               life: 4000,
             });
             churchMembers.value = churchMembers.value.filter((item) => {
-              console.log(churchMembers.value, "God is good");
               const y = checkedFirstTimer.value.findIndex(
                 (i) => i.id === item.id
               );
@@ -1186,7 +1205,6 @@ filter.value.phoneNumber ="";
             });
           } else {
             let resArr = incomingRes.split("@");
-            console.log(resArr);
             toast.add({
               severity: "success",
               summary: "Confirmed",
@@ -1200,7 +1218,6 @@ filter.value.phoneNumber ="";
                 });
               } else {
                 let IdArr = resArr[1].split(",");
-                console.log(IdArr);
                 churchMembers.value = churchMembers.value.filter((item) => {
                   const y = IdArr.findIndex((i) => i === item.id);
                   if (y >= 0) return false;
@@ -1285,8 +1302,6 @@ filter.value.phoneNumber ="";
         let { data } = await axios.post(
           `/api/People/ConvertFirstTimerToMember?personId=${selectedPersonId.value}&membershipCategoryId=${id}`
         );
-        console.log(data);
-
         churchMembers.value = churchMembers.value.filter((i) => {
           return i.id !== selectedPersonId.value;
         });
@@ -1340,9 +1355,16 @@ filter.value.phoneNumber ="";
       }
     };
 
-    const convertToMembers = async () => {};
+  
+    const setFirsttimer = (payload) => {
+      churchMembers.value = payload
+    }
 
     return {
+      dashboard,
+      firstTimerTable,
+      showDashboard,
+      showFirstTimer,
       churchMembers,
       filterFormIsVissible,
       toggleFilterFormVissibility,
@@ -1373,7 +1395,6 @@ filter.value.phoneNumber ="";
       op,
       toggle,
       chooseCategory,
-      convertToMembers,
       selectedPersonId,
       totalFirsttimersCount,
       searchMemberInDB,
@@ -1382,7 +1403,8 @@ filter.value.phoneNumber ="";
       loading,
       searchMember,
       clearAll,
-      hide
+      hide,
+      setFirsttimer
     };
   },
 };
@@ -1392,6 +1414,67 @@ filter.value.phoneNumber ="";
 * {
   box-sizing: border-box;
   color: #02172e;
+}
+
+
+.baseline {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    position: relative;
+    border-radius: 10px;
+    height: 4px;
+    top: 5px;
+    left: 0px;
+    /* width: 35%; */
+    opacity: 1;
+}
+
+.botom{
+  border-bottom: 7px solid rgb(252, 248, 248);
+  border-radius: 2px;
+  position: relative;
+  /* border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px; */
+  
+  /* height: 4px; */
+}
+
+.hide-basetwo {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    position: absolute;
+    /* background-color: #33475b; */
+    /* color: #136acd" */
+    border-radius: 10px;
+    /* bottom: -2.5px; */
+    z-index: 175;
+    height: 4px;
+    top: 36px;
+    left: 0px;
+    width: 50%;
+    opacity: 0;
+}
+
+.hide-base {
+     transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    position: relative;
+    border-radius: 10px;
+    z-index: 175;
+    height: 4px;
+    top: 35px;
+    left: 0px;
+    opacity: 0;
+}
+.baselinetwo {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    position: relative;
+    border-radius: 10px;
+    height: 4px;
+    top: 5px;
+    left: 0px;
+    opacity: 1;
 }
 
 .data-value a {
@@ -1891,5 +1974,3 @@ a {
 }
 /* tosin */
 </style>
-
-
