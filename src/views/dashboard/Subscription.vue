@@ -490,7 +490,6 @@ export default {
           }
         }
         const body = {
-          // subscriptionPlanID: selectedPlan.value.id,
           durationInMonths: selectMonth.value.name
             ? +selectMonth.value.name
             : 0,
@@ -499,18 +498,11 @@ export default {
             ? +selectEmail.value.name.split("-")[1]
             : 0,
           totalAmount: TotalAmount.value,
-          // totalAmount: selectedCurrency.value
-          //   ? convertAmountToTenantCurrency.value
-          //   : TotalAmount.value,
           paymentGateway: gateway == 0 ? 'paystack' : 'flutterwave',
+          txnRefID: gateway == 0 ? response.trxref : response.transaction_id,
           productItems: products,
           currency: selectedCurrency.value,
         };
-        if (gateway == 0) {
-          body.txnRefID = response.trxref
-        } else {
-          body.transaction_id = response.tx_ref
-        }
 
         if (selectMonth.value) {
           body.subscriptionPlanID = selectedPlan.value.id;
