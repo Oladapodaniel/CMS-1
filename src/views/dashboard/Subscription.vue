@@ -462,8 +462,7 @@ export default {
       close.value.click();
       paymentFailed.value = false;
 
-      try {
-        const products = checkedBoxArr.value.map((i) => {
+      const products = checkedBoxArr.value.map((i) => {
           return {
             productName: i.name,
             productID: i.id,
@@ -504,33 +503,60 @@ export default {
           //   ? convertAmountToTenantCurrency.value
           //   : TotalAmount.value,
           paymentGateway: gateway == 0 ? 'paystack' : 'flutterwave',
-          txnRefID: gateway == 0 ? response.trxref : response.tx_ref,
           productItems: products,
           currency: selectedCurrency.value,
         };
+        if (gateway == 0) {
+          body.txnRefID = response.trxref
+        } else {
+          body.transaction_id = response.tx_ref
+        }
 
         if (selectMonth.value) {
           body.subscriptionPlanID = selectedPlan.value.id;
         }
 
-        axios
-          .post("/api/Subscription/SubscriptionPayment", body)
-          .then((res) => {
-            console.log(res);
-            display.value = true;
-            selectSubscription();
-            if (!res.data.returnObject.status) {
+      if (gateway == 0) {
+        try {
+          axios
+            .post("/api/Subscription/SubscriptionPayment", body)
+            .then((res) => {
+              console.log(res);
+              display.value = true;
+              selectSubscription();
+              if (!res.data.returnObject.status) {
+                paymentFailed.value = true;
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              display.value = true;
               paymentFailed.value = true;
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-            display.value = true;
-            paymentFailed.value = true;
-          });
-      } catch (error) {
-        console.log(error);
-      }
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          axios
+            .post("/api/Subscription/subscribe?paymentType=1", body)
+            .then((res) => {
+              console.log(res);
+              display.value = true;
+              selectSubscription();
+              if (!res.data.returnObject.status) {
+                paymentFailed.value = true;
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              display.value = true;
+              paymentFailed.value = true;
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      }  
     };
     const conversionrates = ref({});
     const getRates = () => {
