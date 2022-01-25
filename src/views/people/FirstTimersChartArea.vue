@@ -21,7 +21,7 @@
               v-model="selectedPeriod"
               :options="periodRange"
               optionLabel="name"
-              placeholder="Last 30days"
+              placeholder="Select period"
               @change="getAllDatePeriods"
           />
         </div>
@@ -128,7 +128,8 @@ export default {
         Dropdown,
         // BarChart,
     },
-    setup() {
+    emits: ["firsttimers"],
+    setup(props, { emit }) {
       const name1 = ref('Interested Visitors')
       const name2 = ref('How Did You Hear About Us')
       const startDate = ref("");
@@ -155,6 +156,7 @@ export default {
              if (selectedContactOwner.value && Object.keys(selectedContactOwner.value).length > 0) {
                axios.get(`/api/FirsttimerManager/analytics?startDate=${startDate}&endDate=${endDate}&personId=${selectedContactOwner.value.id}`).then((res)=> {
                     analyticsData.value = res.data.returnObject;
+                    emit('firsttimers', res.data.returnObject.firsttimers)
                     console.log(analyticsData.value)
                 }).catch((err)=> {
                   console.log(err)
@@ -162,6 +164,7 @@ export default {
              }  else {
                axios.get(`/api/FirsttimerManager/analytics?startDate=${startDate}&endDate=${endDate}`).then((res)=> {
                   analyticsData.value = res.data.returnObject;
+                  emit('firsttimers', res.data.returnObject.firsttimers)
                     console.log(analyticsData.value)
                 }).catch((err)=> {
                   console.log(err)
@@ -186,6 +189,7 @@ export default {
       getContactOwners()
 
       const showItem = () => {
+              selectedPeriod.value = periodRange.value.find(i => i.name.includes("30"))
              axios.get(`/api/FirsttimerManager/analytics?startDate=${defaultStartDate}&endDate=${defaultEndDate}`).then((res)=> {
                analyticsData.value = res.data.returnObject;
                console.log(analyticsData.value)

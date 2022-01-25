@@ -16,7 +16,7 @@
         </div>
     <div class="my-con">
       <div v-if="showDashboard">
-          <FirstTimersChartArea/>
+          <FirstTimersChartArea @firsttimers="setFirsttimer"/>
       </div>
     
       <!-- <div class="table">
@@ -942,7 +942,6 @@ export default {
         .get("/api/People/GetFirsttimerSummary")
         .then((res) => {
           getFirstTimerSummary.value = res.data;
-          console.log(res.data);
         })
         .catch((err) => console.log(err));
     };
@@ -962,7 +961,6 @@ export default {
       axios
         .delete(`/api/People/DeleteOnePerson/${id}`)
         .then((res) => {
-          console.log(res);
           toast.add({
             severity: "success",
             summary: "Confirmed",
@@ -978,12 +976,11 @@ export default {
             .get("/api/People/GetFirsttimerSummary")
             .then((res) => {
               getFirstTimerSummary.value = res.data;
-              console.log(res.data);
             })
             .catch((err) => console.log(err));
         })
         .catch((err) => {
-          /*eslint no-undef: "warn"*/
+          /eslint no-undef: "warn"/
           NProgress.done();
           if (err.response.status === 400) {
             toast.add({
@@ -1028,10 +1025,8 @@ export default {
     };
 
     const getFirstTimers = () => {
-      console.log(route, "route");
       axios.get("/api/People/FirstTimer").then((res) => {
         churchMembers.value = res.data;
-        console.log(churchMembers.value, "Al iz well");
       });
     };
     getFirstTimers();
@@ -1055,7 +1050,6 @@ export default {
         .then((res) => {
           noRecords.value = true;
           filterResult.value = res.data;
-          console.log(filterResult.value);
         })
         .catch((err) => console.log(err));
     };
@@ -1165,7 +1159,6 @@ filter.value.phoneNumber ="";
       } else {
         checkedFirstTimer.value.splice(firstTimerIdx, 1);
       }
-      console.log(checkedFirstTimer.value, "it working");
     };
 
     // function to check all first timer
@@ -1182,7 +1175,6 @@ filter.value.phoneNumber ="";
       } else {
         checkedFirstTimer.value = [];
       }
-      console.log(checkedFirstTimer.value, "God is Good");
     };
 
     // Function to delete first timer
@@ -1193,13 +1185,10 @@ filter.value.phoneNumber ="";
     const display = ref(false);
     const deleteFirstTimer = () => {
       let dft = convert(checkedFirstTimer.value);
-      console.log(dft, "tosin");
       axios
         .post(`/api/People/DeletePeople`, dft)
         .then((res) => {
-          console.log(res.data, "God is awesome");
           let incomingRes = res.data.response;
-          console.log(incomingRes, "tosin");
           if (incomingRes.toString().toLowerCase().includes("all")) {
             toast.add({
               severity: "success",
@@ -1208,7 +1197,6 @@ filter.value.phoneNumber ="";
               life: 4000,
             });
             churchMembers.value = churchMembers.value.filter((item) => {
-              console.log(churchMembers.value, "God is good");
               const y = checkedFirstTimer.value.findIndex(
                 (i) => i.id === item.id
               );
@@ -1217,7 +1205,6 @@ filter.value.phoneNumber ="";
             });
           } else {
             let resArr = incomingRes.split("@");
-            console.log(resArr);
             toast.add({
               severity: "success",
               summary: "Confirmed",
@@ -1231,7 +1218,6 @@ filter.value.phoneNumber ="";
                 });
               } else {
                 let IdArr = resArr[1].split(",");
-                console.log(IdArr);
                 churchMembers.value = churchMembers.value.filter((item) => {
                   const y = IdArr.findIndex((i) => i === item.id);
                   if (y >= 0) return false;
@@ -1316,8 +1302,6 @@ filter.value.phoneNumber ="";
         let { data } = await axios.post(
           `/api/People/ConvertFirstTimerToMember?personId=${selectedPersonId.value}&membershipCategoryId=${id}`
         );
-        console.log(data);
-
         churchMembers.value = churchMembers.value.filter((i) => {
           return i.id !== selectedPersonId.value;
         });
@@ -1371,7 +1355,10 @@ filter.value.phoneNumber ="";
       }
     };
 
-    const convertToMembers = async () => {};
+  
+    const setFirsttimer = (payload) => {
+      churchMembers.value = payload
+    }
 
     return {
       dashboard,
@@ -1408,7 +1395,6 @@ filter.value.phoneNumber ="";
       op,
       toggle,
       chooseCategory,
-      convertToMembers,
       selectedPersonId,
       totalFirsttimersCount,
       searchMemberInDB,
@@ -1417,7 +1403,8 @@ filter.value.phoneNumber ="";
       loading,
       searchMember,
       clearAll,
-      hide
+      hide,
+      setFirsttimer
     };
   },
 };
@@ -1987,5 +1974,3 @@ a {
 }
 /* tosin */
 </style>
-
-
