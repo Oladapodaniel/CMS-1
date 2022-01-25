@@ -546,7 +546,7 @@
                 />
                 <!-- <Checkbox id="binary" v-model="sendToMysef" :binary="true"/> -->
               </div>
-              <div class="small-text col-md-1 font-weight-bold">
+              <div class="small-text col-md-2 font-weight-bold">
                 NAME
               </div>
               <div class="small-text col-md-2 font-weight-bold">
@@ -555,7 +555,7 @@
               <div class="small-text col-md-2 font-weight-bold">
                 SOURCE
               </div>
-              <div class="small-text col-md-2 font-weight-bold">
+              <div class="small-text col-md-1 font-weight-bold">
                 INTERESTED
               </div>
               <div class="small-text col-md-1 font-weight-bold">
@@ -596,7 +596,7 @@
                   <!-- <Checkbox id="binary" v-model="item.check" :binary="true"/> -->
                 </div>
 
-                <div class="desc-head small-text col-md-1">
+                <div class="desc-head small-text col-md-2">
                   <div class="mb-0 d-flex justify-content-between">
                     <span
                       class="
@@ -660,7 +660,7 @@
                   </div>
                 </div>
                 
-                <div class="desc-head small-text col-md-2">
+                <div class="desc-head small-text col-md-1">
                   <div class="mb-0 d-flex justify-content-between">
                     <span
                       class="
