@@ -735,17 +735,22 @@ export default {
         try {
             let { data } = await axios.post('/api/CheckInAttendance/create/multiple', formData)
             // let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
-            console.log(data)
-            store.dispatch("attendance/setEventReg", data.returnObject);
+            let firstGroup = data.returnObject.checkInAttendanceResult.find(i => i.groupID == selectedGroups.value[0].id)
+            
+
+            for (let i = 0; i < data.returnObject.checkInAttendanceResult.length; i++) {
+              const element = data.returnObject.checkInAttendanceResult[i];
+              store.dispatch("attendance/setEventReg", element);
+            }
             router.push({
               name: "CheckinType",
               query: {
                 activityID: selectedEvent.value.id,
                 activityName: selectedEvent.value.name,
-                groupId: selectedGroup.value[0].id,
-                groupName: selectedGroup.value[0].name,
-                id: data.returnObject.checkInAttendanceResult.id,
-                code: data.returnObject.checkInAttendanceResult.attendanceCode
+                groupId: firstGroup.id,
+                groupName: selectedGroups.value[0].name,
+                id: firstGroup.id,
+                code: firstGroup.attendanceCode
               },
             });
         }
@@ -753,20 +758,24 @@ export default {
           console.log(err)
         }
       } else if (amount.value && selectedBank.value && accountNumber.value && selectedCashAccount.value && selectedIncomeAccount.value) {
-        console.log('image or not and paid')
+        console.log('image and paid')
         try {
-            let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
-            console.log(data)
-            store.dispatch("attendance/setEventReg", data.returnObject);
+            let { data } = await axios.post('/api/CheckInAttendance/create/multiple', formData)
+            let firstGroup = data.returnObject.checkInAttendanceResult.find(i => i.groupID == selectedGroups.value[0].id)
+            
+            for (let i = 0; i < data.returnObject.checkInAttendanceResult.length; i++) {
+              const element = data.returnObject.checkInAttendanceResult[i];
+              store.dispatch("attendance/setEventReg", element);
+            }
             router.push({
               name: "CheckinType",
               query: {
                 activityID: selectedEvent.value.id,
                 activityName: selectedEvent.value.name,
-                groupId: selectedGroup.value[0].id,
-                groupName: selectedGroup.value[0].name,
-                id: data.returnObject.checkInAttendanceResult.id,
-                code: data.returnObject.checkInAttendanceResult.attendanceCode
+                groupId: firstGroup.id,
+                groupName: selectedGroups.value[0].name,
+                id: firstGroup.id,
+                code: firstGroup.attendanceCode
               },
             });
             
