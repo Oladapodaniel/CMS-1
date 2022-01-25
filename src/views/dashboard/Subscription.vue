@@ -536,7 +536,7 @@ export default {
               console.log(res);
               display.value = true;
               selectSubscription();
-              if (!res.data.returnObject.status) {
+              if (!res.data.status) {
                 paymentFailed.value = true;
               }
             })
@@ -676,7 +676,7 @@ export default {
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
 
-        email: currentUser.value.userEmail,
+        email: "info@churchplus.co",
         amount: TotalAmount.value * 100,
         ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
         currency: Plans.value.paymentCurrency,
