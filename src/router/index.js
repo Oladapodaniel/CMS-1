@@ -6,7 +6,7 @@ import Pagination from '@/components/payment/PaymentSuccessful.vue';
 
 
 
-import TermsOfUse from '../components/temp/PaymentPage';
+// import TermsOfUse from '../components/temp/PaymentPage';
 
 const routes = [
     {
@@ -17,9 +17,10 @@ const routes = [
 
 
     {
-        path: '/terms',
+        path: '/termsofuse',
         name: 'TermsOfUse',
-        component: TermsOfUse,
+        component: () =>
+            import ( /* webpackChunkName: "login" */ '../views/account/TermsOfService.vue'),
         meta: {
             title: 'Churchplus - Terms Of Use',
         }
