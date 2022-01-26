@@ -14,7 +14,7 @@
                     <div class="mr-3">
                         <Dropdown  :options="periods" optionLabel="name" placeholder="Last 30days" class="w-100" v-model="selectedPeriod" @change="getPeriod" />
                     </div>
-                    <div>
+                    <div class="col-12 col-sm-4">
                         <CascadeSelect :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100" placeholder="Select a branch" v-model="selectedBranch" @change="getBranchAnalytics"/>
                     </div>
                 </div>
@@ -191,7 +191,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import Organisation from "../../components/charts/OrgChart2.vue"
 import BranchSettings from "../settings/BranchLevelSettings.vue"
@@ -201,6 +201,9 @@ import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
 import CascadeSelect from 'primevue/cascadeselect';
 import OrganizationChart from 'primevue/organizationchart';
+import { useStore } from "vuex";
+import userService from "../../services/user/userservice";
+
 export default {
     inheritAttrs: false,
     components: {
@@ -213,6 +216,7 @@ export default {
     },
     setup() {
         const toast = useToast()
+        const store = useStore();
         const periods = ref([
             {name: 'Last 30days', code:  new Date(new Date().setDate(new Date().getDate() - 30)).toLocaleDateString("en-US")},
 			{name: 'Last 90days', code:  new Date(new Date().setDate(new Date().getDate() - 90)).toLocaleDateString("en-US")},
@@ -233,7 +237,8 @@ export default {
         const selectedBranch = ref({})
         const selectedPeriod = ref({})
         const branchAnalytics = ref({})
-        const selection = ref({})
+        const selection = ref({});
+         const currentUserID = ref(store.getters.currentUser && store.getters.currentUser.tenantId ? store.getters.currentUser.tenantId : 0)
 
         const getBranches = async() => {
             try {
@@ -300,11 +305,47 @@ export default {
         }
         getBranches()
 
+        const b  = computed(() => {
+            console.log(selectedBranch.value, "SELECTED BRANCH")
+        })
+
+        const getCurrentUserID = async () =>{
+            try {
+                  const data = await userService.getCurrentUser();
+                  currentUserID.value = data.tenantId;
+                  // alert(currentUser.value)
+                //   console.log(data, "daataaaaa")
+                  } catch (error) {
+                      console.log(error);
+                  }
+        }
+
+        
+
+
+        const showBranchItem = async () => {
+            if (!currentUserID.value) await  getCurrentUserID()
+             let y;
+                 
+             console.log(currentUserID, "userid");
+             const x = branches.value.find(i => {
+                 let a = i.children.find(j => j.id === currentUserID.value);
+                 if (a) return i;
+                //  return i;
+             })
+             console.log(x, "XXXXXXXXX");
+             if (x)  {
+                 selectedBranch.value = x.children.find(j => j.id === currentUserID.value)
+                 console.log(selectedBranch.value,'Ogbara');
+             }
+         }
+         
+
         const getAllBranchList = async () => {
                     try {
                         axios
                         .get("/api/Branching/hierarchieswithbranches")
-                        .then((res) => {
+                        .then( async (res) => {
                             console.log(res.data);
                             branches.value = res.data.returnObject.map(i => {
                                 return {
@@ -318,8 +359,10 @@ export default {
                                     }) : ''
                                 }
                             })
+                            await showBranchItem()
+                            getBranchAnalytics()
 
-                            console.log(branches.value)
+                            console.log(branches.value, "ggggooostar")
                         })
                         .catch((err) => console.log(err));
                     } catch (err) {
@@ -387,6 +430,25 @@ export default {
             }
             
         }
+         
+            
+
+         const showPeriod = () =>{
+             selectedPeriod.value = periods.value.find(i => i.name.includes('30'))
+             axios.get(`/api/Branching/analytics?startDate=${selectedPeriod.value.code}&endDate=${new Date().toLocaleDateString("en-US")}&branchID=${selectedBranch.value.id}`)
+             .then((res) =>{
+                 console.log(res)
+                branchAnalytics.value = res.data
+             }) 
+            .catch((err) =>{
+                console.log(err)
+            }) 
+             
+         }
+            showPeriod()
+
+    
+         
 
         const getPeriod = () => {
             console.log(selectedPeriod.value)
@@ -414,7 +476,8 @@ export default {
             selectedPeriod,
             getPeriod,
             branchAnalytics,
-            selection
+            selection,
+            currentUserID
         }
     },
 }
