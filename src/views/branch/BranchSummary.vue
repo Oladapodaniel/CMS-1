@@ -10,7 +10,7 @@
         </div>
         <div class="contanier-fluid">
             <div class="row mb-4">
-                <div class="col-12 d-flex justify-content-end">
+                <div class="col-12 d-flex p-0 justify-content-end">
                     <div class="mr-3">
                         <Dropdown  :options="periods" optionLabel="name" placeholder="Last 30days" class="w-100" v-model="selectedPeriod" @change="getPeriod" />
                     </div>

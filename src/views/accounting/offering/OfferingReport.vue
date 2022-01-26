@@ -1836,6 +1836,12 @@ export default {
         max-width: 280px;
     }
     }
+    @media screen and (max-width: 640px) {
+     .page-hder {
+        font-size: 26px;
+        padding-top: 20px;
+      }
+    }
 
     .unapproved {
     background: #ffffff 0% 0% no-repeat padding-box;

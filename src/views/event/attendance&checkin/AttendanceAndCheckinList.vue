@@ -336,7 +336,7 @@
         </div>
       </div>
     </div>
-    
+    <!-- {{totalItems}} -->
       <div  class="row" v-if="errorOccurred">
         <div class="col-md-12 text-center">
           <p>Error getting items</p>

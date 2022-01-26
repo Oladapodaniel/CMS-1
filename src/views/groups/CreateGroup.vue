@@ -45,7 +45,7 @@
                           </div>
                       </div> -->
                   </div>
-                    <Attendancecheckin :list="attendanceData" />
+                    <Attendancecheckin :list="attendanceData" :totalItems="totalItems" />
                     <!-- <Attendancecheckin :attendanceID="selectedAttendanceId"  /> -->
                   </div>
                   <div v-if="attendance && attendance.length === 0">
@@ -1115,7 +1115,8 @@ export default {
             console.log(response, 'response attendance');
             attendanceData.value = response.items.filter((i) => i.groupID === route.params.groupId);
             totalItems.value = response.totalItems
-            const attendanceItem = response.find((i) => i.groupID === route.params.groupId);
+            console.log(totalItems.value, 'totalItems');
+            const attendanceItem = response.items.find((i) => i.groupID === route.params.groupId);
             if(attendanceItem && attendanceItem.id) selectedAttendanceId.value = attendanceItem.id;
             return attendanceItem;
         }
