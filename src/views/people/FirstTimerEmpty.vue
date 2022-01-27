@@ -392,14 +392,17 @@ export default {
 
 @media (max-width: 640px) {
     .top {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-    }
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+          }
     .actions {
         margin-top: 15px;
         display: flex;
-
+    }
+    .events {
+      font: normal normal 800 29px Nunito sans;
+      padding-top: 20px;
     }
 }
 

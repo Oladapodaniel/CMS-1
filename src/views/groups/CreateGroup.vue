@@ -1921,6 +1921,19 @@ export default {
         .hide-base {
             width: 20%;
         } */
+        .events {
+            padding-bottom: 22px;
+            font: normal normal 800 29px Nunito sans;
+            font-size: x-large;
+            /* padding-top: -10px; */
+          }
+        .botom {
+          display: flex;
+        }
+        .c-pointer {
+          cursor: pointer;
+          flex: 1;
+        }
         .m-wrapper, .m-wrapper2 {
             width: 350px;
             padding: 20px;

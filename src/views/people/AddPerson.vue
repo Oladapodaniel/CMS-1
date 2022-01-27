@@ -1256,6 +1256,11 @@ export default {
     height: 100px;
   }
 }
+@media (max-width: 640px) {
+  .header-text {
+    padding-top: 22px;
+  }
+}
 
 .text-grey {
   color: rgb(90, 90, 90)
