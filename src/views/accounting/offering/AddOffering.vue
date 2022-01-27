@@ -3,7 +3,7 @@
      <div class="bg col-md-10 offset-md-1">
      <div class="container">
         <div class="row">
-          <div class="text-center text-sm-left col-sm-5 events">Offering</div>
+          <div class="text-center text-sm-left col-sm-5 events pt-2">Offering</div>
           <div class=" text-center text-sm-right col-sm-7 ">
             <div class="row">
               <div class="col-md-12 d-lg-flex justify-content-end">
@@ -731,11 +731,11 @@
                       </div>
                     </div>
 
-                    <div class="row mt-4">
-                      <div class="col-md-6 d-md-flex justify-content-end">
+                    <div class="row mt-4 d-flex justify-content-between">
+                      <div class="col-6">
                         <button class="default-btn" data-dismiss="modal">Cancel</button>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-6">
                         <button
                           class="default-btn primary-bg border-0 text-white"
                           data-dismiss="modal"
