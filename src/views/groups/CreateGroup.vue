@@ -45,7 +45,7 @@
                           </div>
                       </div> -->
                   </div>
-                    <Attendancecheckin :list="attendanceData" />
+                    <Attendancecheckin :list="attendanceData" :totalItems="totalItems" />
                     <!-- <Attendancecheckin :attendanceID="selectedAttendanceId"  /> -->
                   </div>
                   <div v-if="attendance && attendance.length === 0">
@@ -1115,7 +1115,8 @@ export default {
             console.log(response, 'response attendance');
             attendanceData.value = response.items.filter((i) => i.groupID === route.params.groupId);
             totalItems.value = response.totalItems
-            const attendanceItem = response.find((i) => i.groupID === route.params.groupId);
+            console.log(totalItems.value, 'totalItems');
+            const attendanceItem = response.items.find((i) => i.groupID === route.params.groupId);
             if(attendanceItem && attendanceItem.id) selectedAttendanceId.value = attendanceItem.id;
             return attendanceItem;
         }
@@ -1920,6 +1921,19 @@ export default {
         .hide-base {
             width: 20%;
         } */
+        .events {
+            padding-bottom: 22px;
+            font: normal normal 800 29px Nunito sans;
+            font-size: x-large;
+            /* padding-top: -10px; */
+          }
+        .botom {
+          display: flex;
+        }
+        .c-pointer {
+          cursor: pointer;
+          flex: 1;
+        }
         .m-wrapper, .m-wrapper2 {
             width: 350px;
             padding: 20px;

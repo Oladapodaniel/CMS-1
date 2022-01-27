@@ -462,8 +462,7 @@ export default {
       close.value.click();
       paymentFailed.value = false;
 
-      try {
-        const products = checkedBoxArr.value.map((i) => {
+      const products = checkedBoxArr.value.map((i) => {
           return {
             productName: i.name,
             productID: i.id,
@@ -491,7 +490,6 @@ export default {
           }
         }
         const body = {
-          // subscriptionPlanID: selectedPlan.value.id,
           durationInMonths: selectMonth.value.name
             ? +selectMonth.value.name
             : 0,
@@ -500,11 +498,8 @@ export default {
             ? +selectEmail.value.name.split("-")[1]
             : 0,
           totalAmount: TotalAmount.value,
-          // totalAmount: selectedCurrency.value
-          //   ? convertAmountToTenantCurrency.value
-          //   : TotalAmount.value,
           paymentGateway: gateway == 0 ? 'paystack' : 'flutterwave',
-          txnRefID: gateway == 0 ? response.trxref : response.tx_ref,
+          txnRefID: gateway == 0 ? response.trxref : response.transaction_id,
           productItems: products,
           currency: selectedCurrency.value,
         };
@@ -513,24 +508,47 @@ export default {
           body.subscriptionPlanID = selectedPlan.value.id;
         }
 
-        axios
-          .post("/api/Subscription/SubscriptionPayment", body)
-          .then((res) => {
-            console.log(res);
-            display.value = true;
-            selectSubscription();
-            if (!res.data.returnObject.status) {
+      if (gateway == 0) {
+        try {
+          axios
+            .post("/api/Subscription/SubscriptionPayment", body)
+            .then((res) => {
+              console.log(res);
+              display.value = true;
+              selectSubscription();
+              if (!res.data.returnObject.status) {
+                paymentFailed.value = true;
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              display.value = true;
               paymentFailed.value = true;
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-            display.value = true;
-            paymentFailed.value = true;
-          });
-      } catch (error) {
-        console.log(error);
-      }
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          axios
+            .post("/api/Subscription/subscribe?paymentType=1", body)
+            .then((res) => {
+              console.log(res);
+              display.value = true;
+              selectSubscription();
+              if (!res.data.status) {
+                paymentFailed.value = true;
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              display.value = true;
+              paymentFailed.value = true;
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      }  
     };
     const conversionrates = ref({});
     const getRates = () => {
@@ -658,7 +676,7 @@ export default {
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
 
-        email: currentUser.value.userEmail,
+        email: "info@churchplus.co",
         amount: TotalAmount.value * 100,
         ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
         currency: Plans.value.paymentCurrency,

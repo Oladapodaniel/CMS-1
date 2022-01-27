@@ -10,9 +10,9 @@
         </div>
         <div class="contanier-fluid">
             <div class="row mb-4">
-                <div class="col-12 d-flex flex-wrap justify-content-end">
-                    <div class="mb-2 col-12 col-sm-3">
-                        <Dropdown  :options="periods" optionLabel="name" placeholder="Select Period" class="w-100" v-model="selectedPeriod" @change="getPeriod" />
+                <div class="col-12 d-flex p-0 justify-content-end">
+                    <div class="mr-3">
+                        <Dropdown  :options="periods" optionLabel="name" placeholder="Last 30days" class="w-100" v-model="selectedPeriod" @change="getPeriod" />
                     </div>
                     <div class="col-12 col-sm-4">
                         <CascadeSelect :options="branches" optionLabel="clabel" optionGroupLabel="label" :optionGroupChildren="['children']" class="w-100" placeholder="Select a branch" v-model="selectedBranch" @change="getBranchAnalytics"/>

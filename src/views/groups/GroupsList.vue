@@ -468,6 +468,9 @@ export default {
   .main-header {
     display: none;
   }
+  .yu {
+     margin-top: 3rem !important;
+  }
   .f-right {
     float: right;
   }
