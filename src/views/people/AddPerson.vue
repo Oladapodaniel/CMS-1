@@ -1,6 +1,6 @@
 <template>
-  <div class="my-con">
-    <div class="header mt-2">
+  <div class="my-con container-top">
+    <div class="header">
       <h3 class="header-text font-weight-bold">Add Contact</h3>
       <Toast />
     </div>
@@ -13,8 +13,8 @@
             <div class="inputs">
                <div class="input-field">
                 <label for="" class="label">Membership</label>
-                <div class="cstm-select">
-                  <div style="width: 330px">
+                <div class="cstm-select input border-0 p-0">
+          
                      <Dropdown
                       v-model="selectedMembership"
                       :options="memberships"
@@ -22,8 +22,7 @@
                       placeholder="--Select membership--"
                       style="width: 100%"
                     />
-              <!-- <SelectElem :typ="'membership'" name="membership" :options="['--Select membership--', ...peopleClassifications]" value="--Select membership--" @input="itemSelected"/>-->
-                  </div>
+              
                 </div>
               </div>
               <div class="input-field">
@@ -192,7 +191,6 @@
               <div class="input-field">
                 <label for="" class="label">Birthday</label>
                 <div class="status-n-gender">
-                  <div class="date-picker">
                     <div class="cstm-select">
                       <div class="cs-select day">
                         <Dropdown
@@ -232,13 +230,11 @@
                         <!-- <SelectElem :typ="'membership'" name="birthyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/> -->
                       </div>
                     </div>
-                  </div>
                 </div>
               </div>
               <div class="input-field">
                 <label for="" class="label">Wedding Anniversary</label>
                 <div class="status-n-gender">
-                  <div class="date-picker">
                     <div class="cstm-select">
                       <div class="cs-select day">
                         <Dropdown
@@ -277,7 +273,6 @@
                         <!-- <SelectElem :typ="'membership'" name="annyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/> -->
                       </div>
                     </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -1206,8 +1201,10 @@ export default {
   /* overflow: hidden; */
 }
 
-.celeb-tab {
-  margin-right: 147px;
+@media (min-width: 769px) {
+  .celeb-tab {
+    margin-right: 147px;
+  }
 }
 
 @media (min-width: 676px) and (max-width: 768px) {
@@ -1215,11 +1212,11 @@ export default {
     height: 113px;
   }
 }
-@media (max-width: 676px) and (max-width: 768px) {
+/* @media (max-width: 676px) and (max-width: 768px) {
   .submit-div {
     float: right;
   }
-}
+} */
 
 @media (min-width: 663px) and (max-width: 667px) {
   /* .bio-info.celeb-info {
@@ -1232,6 +1229,12 @@ export default {
     margin-top: 70px;
   }
 }*/
+
+@media screen and (max-width: 620px) {
+  .input {
+      width: 100%
+    }
+}
 
 @media (max-width: 376px) {
   /* .bio-info.celeb-info {
@@ -1256,11 +1259,7 @@ export default {
     height: 100px;
   }
 }
-@media (max-width: 640px) {
-  .header-text {
-    padding-top: 22px;
-  }
-}
+
 
 .text-grey {
   color: rgb(90, 90, 90)
