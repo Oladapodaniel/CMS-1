@@ -184,7 +184,7 @@
               <div class="input-field">
                 <label for="" class="label">Birthday</label>
                 <div class="status-n-gender">
-                  <div class="date-picker">
+                
                     <div class="cstm-select">
                       <div class="cs-select day">
                         <Dropdown
@@ -224,13 +224,12 @@
                         <!-- <SelectElem :typ="'membership'" name="birthyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/> -->
                       </div>
                     </div>
-                  </div>
+            
                 </div>
               </div>
               <div class="input-field">
                 <label for="" class="label">Wedding Anniversary</label>
                 <div class="status-n-gender">
-                  <div class="date-picker">
                     <div class="cstm-select">
                       <div class="cs-select day">
                         <Dropdown
@@ -269,7 +268,6 @@
                         <!-- <SelectElem :typ="'membership'" name="annyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/> -->
                       </div>
                     </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -1120,8 +1118,10 @@ export default {
   /* overflow: hidden; */
 }
 
-.celeb-tab {
-  margin-right: 147px;
+@media (min-width: 769px) {
+  .celeb-tab {
+    margin-right: 147px;
+  }
 }
 
 @media (min-width: 676px) and (max-width: 768px) {
@@ -1162,6 +1162,15 @@ export default {
 
   .cs-select.year {
     width: 90px;
+  }
+}
+
+@media (max-width: 620px) {
+  .cs-select {
+    width: 100%
+  }
+  .cstm-select {
+    width: 100%
   }
 }
 

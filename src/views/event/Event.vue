@@ -1461,11 +1461,11 @@
                       </div>
                     </div>
 
-                    <div class="row mt-4">
-                      <div class="col-md-6 d-md-flex justify-content-end">
+                    <div class="row mt-4 d-flex justify-content-between">
+                      <div class="col-6">
                         <button class="default-btn" data-dismiss="modal">Cancel</button>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-6">
                         <button
                           class="default-btn primary-bg border-0 text-white"
                           data-dismiss="modal"
@@ -3894,5 +3894,11 @@ input.codeInput {
   .attendance-body.stretch {
     height: 135px;
   }
+}
+@media (max-width: 600px) {
+  .events {
+    margin-top: 2rem;
+  }
+
 }
 </style>

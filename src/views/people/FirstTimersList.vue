@@ -1774,6 +1774,16 @@ a {
     align-items: center;
   }
 
+   .botom {
+    border-bottom: 7px solid rgb(252, 248, 248);
+    border-radius: 2px;
+    position: relative;
+    display: flex;
+  }
+  .c-pointer {
+    cursor: pointer;
+    flex: 1;
+  } 
   .more {
     margin-right: 0;
   }

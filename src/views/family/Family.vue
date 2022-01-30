@@ -1,12 +1,12 @@
 
 <template>
     <div class="container-wide container-top">
-      <div class="row my-3">
-        <div class="col-md-6">
+      <div class="row my-3 d-flex justify-content-between">
+        <div class="col-3 col-sm-6">
           <h2 class="page-header">Family</h2>
         </div>
 
-        <div class="col-md-6 d-flex justify-content-end head-button">
+        <div class="col-5 col-sm-6 head-button text-right">
           <router-link to="/tenant/addfamily">
             <button class="default-btn primary-bg border-0 text-white mr-3">Add Family</button>
           </router-link>

@@ -9,7 +9,7 @@
         <div class="col-md-3"></div>
         <div class="col-md-3">
                <div class="mb-4 px-0 mr-n5">
-           <Dropdown class="w-100 border-0"
+           <Dropdown class="w-100 "
               v-model="selectedPeriod"
               :options="periodRange"
               optionLabel="name"
