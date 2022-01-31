@@ -144,17 +144,17 @@
             </div>
             <div class="col-md-4"></div>
           </div>
-          <div class="row select-elem " v-if="false">
+          <div class="row select-elem ">
             <div class="col-12 col-md-3 text-md-right pr-0">
               <label class="small-text lb font-weight-600">Time zone</label>
             </div>
             <div class="col-12 col-md-5 form-group">
               <Dropdown
-                :fd="['kkj']"
-                :options="[1, 2, 3, 4, 5]"
+                :options="timeZone"
+                optionLabel="name"
                 placeholder="Select time zone"
                 style="width: 100%"
-                 v-model="selectTime"
+                v-model="selectTime"
               />
             </div>
             <div class="col-md-4"></div>
@@ -239,17 +239,19 @@ import Dropdown from "primevue/dropdown";
 import { ref} from 'vue';
 import { useToast } from "primevue/usetoast";
 import router from '../../router';
+import TimeZone from "@/services/user/timeZone"
 export default {
   components: { Dropdown},
   setup() {
     const toast = useToast()
     const churchData =ref({});
     let filterFields= ref([]);
+    const timeZone = ref(TimeZone.timeZones)
     let url = ref("");
     let a= ref("");
     let b= ref("b")
     let selectCountry= ref("");
-    let selectTime= ref("");
+    let selectTime= ref({});
     let image;
     const imageSelected = (e) => {
       image = e.target.files[0];
@@ -282,9 +284,9 @@ export default {
             selectCountry.value = countries.value.find(i => {
             return i.id === churchData.value.countryID
           })
-          console.log(countries.value);
         }
-        console.log(selectCountry.value)
+        
+        selectTime.value = TimeZone.timeZones.find(i => i.value == churchData.value.timeZone)
         console.log(churchData);
         
 
@@ -295,11 +297,6 @@ export default {
      
     const uploadData= ref({ });
     const display= ref(false)
-    //formData
-    // let formData = new formData =()=>{
-    //   formData.append("ChurchName", formData.ChurchName.value);
-    //   formData.append("AKA", formData.AKA.value);
-    // }
     const churchProfile = ()=>{
       let formData = new FormData()
       formData.append("ChurchName", churchData.value.churchName );
@@ -307,7 +304,7 @@ export default {
       formData.append("Address", churchData.value.address );      
       formData.append("PhoneNumber", churchData.value.phoneNumber );      
       formData.append("CountryID", selectCountry.value.id );      
-      formData.append("TimeZone", selectTime.value );      
+      formData.append("TimeZone", selectTime.value.value );      
       formData.append("WebsiteUrl", churchData.value.websiteUrl );      
       formData.append("HeadPastorName", churchData.value.headPastorName );      
       formData.append("HeadPastorEmail", churchData.value.headPastorEmail );      
@@ -353,6 +350,7 @@ export default {
       churchData,
       url,
       imageSelected,
+      timeZone,
       uploadImage,
       currentUser,
       countries,
@@ -360,7 +358,6 @@ export default {
       getChurchProfile,
       selectCountry,
       selectTime,
-      // uploadChurchDetail,
       uploadData,
       display,
       churchProfile,
