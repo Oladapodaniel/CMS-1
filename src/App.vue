@@ -5,9 +5,9 @@
         <div class="col-md-12 px-0">
           <ConnectionBar />
         </div>
-        <div class="col-md-12 px-0 text-center p-2 font-weight-700 bg-white" style="border: 2px solid red" v-if="speed">
+        <!-- <div class="col-md-12 px-0 text-center p-2 font-weight-700 bg-white" style="border: 2px solid red" v-if="speed">
           🖐 Slow network detected, kindly reload or wait till you have a strong network.
-        </div>
+        </div> -->
       </div>
     </div>
   <router-view class="view" />
@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       transitionName: null,
-      speed: null
+      // speed: null
     };
   },
 
@@ -76,28 +76,28 @@ export default {
   updated() {
     // console.log('updated triggered')
    
-    navigator.connection.onchange =  (speed) => {
-            //do what you need to do ,on speed change event
-            // console.log('Connection Speed Changed');
-            // console.log(speed)
-            if (speed.currentTarget.downlink > 7 && speed.currentTarget.downlink < 10) {
-              this.speed = true
-              // this.$toast.add({
-              //   severity: "info",
-              //   summary: "Slow network detected",
-              //   detail: "You have a slow network, kindly reload or wait till you have a strong network",
-              //   life: 5000,
-              // });
-            } else {
-              this.speed = false
-            }
+    // navigator.connection.onchange =  (speed) => {
+    //         //do what you need to do ,on speed change event
+    //         // console.log('Connection Speed Changed');
+    //         // console.log(speed)
+    //         if (speed.currentTarget.downlink > 7 && speed.currentTarget.downlink < 10) {
+    //           this.speed = true
+    //           // this.$toast.add({
+    //           //   severity: "info",
+    //           //   summary: "Slow network detected",
+    //           //   detail: "You have a slow network, kindly reload or wait till you have a strong network",
+    //           //   life: 5000,
+    //           // });
+    //         } else {
+    //           this.speed = false
+    //         }
 
-           }
+    //        }
   },
 
   mounted() {
     // console.log('mounted triggered')
-     this.speed = false
+    //  this.speed = false
     // let res = speed.speed()
     // console.log(res)
   //   window.addEventListener('DOMContentLoaded', () => {
