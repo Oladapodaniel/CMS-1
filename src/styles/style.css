@@ -1058,16 +1058,16 @@
 
     .info-box,
     .label-text-box {
-      width: 80% !important;
+      width: 89% !important;
     }
 
     .other {
       margin: 0 auto 20px;
     }
 
-    .celeb-tab {
+    /* .celeb-tab {
       margin-right: 20px
-    }
+    } */
   }
 
   @media screen and (min-width: 858px) {
