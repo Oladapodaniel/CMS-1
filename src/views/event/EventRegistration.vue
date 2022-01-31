@@ -43,7 +43,7 @@
           class="font-weight-600 text-center primary-text"
           v-if="!person.personId && !showLoading && loaded && !fetchingFailed"
         >
-          Details not found, please fill the form and confirm the registration
+          Please fill the form and confirm the registration
         </p>
         <!-- v-if="autosearch && !person.name" -->
       </div>

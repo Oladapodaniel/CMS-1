@@ -310,7 +310,7 @@
               <div class="input-field">
                 <label for="" class="label">Age</label>
                 <div class="cstm-select search-box">
-                  <div class="cs-select" style="width: 330px">
+                  <div class="cs-select age-group">
                     <Dropdown
                       v-model="selectedAgeGroup"
                       :options="ageGroups"
@@ -497,10 +497,10 @@
                   </p>
                 </div>
                 <div class="row mt-2">
-                  <div class="col-md-6 d-md-flex justify-content-end">
+                  <div class="col-6 d-md-flex justify-content-end">
                     <button class="default-btn" data-dismiss="modal">Cancel</button>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-6">
                     <button
                       class="default-btn primary-bg border-0 contn-btn text-white"
                       :data-dismiss="dismissAddToGroupModal"
@@ -531,7 +531,6 @@ import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
 import { useStore } from "vuex";
 import membershipService from "../../services/membership/membershipservice";
-import grousService from "../../services/groups/groupsservice";
 import swal from "sweetalert";
 // import lookupService from "../../services/lookup/lookupservice";
 
@@ -547,6 +546,7 @@ export default {
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
     const routeParams = ref("");
     const peopleInGroupIDs = ref([])
+    const route = useRoute();
 
     const loading = ref(false);
     const months = [
@@ -737,7 +737,7 @@ export default {
             loading.value = false;
               swal(
             "Registration Successful!",
-            "Your memberships detail has been added successfully!",
+            "Your membership details has been added successfully!",
             "success"
           );
           } 
@@ -772,9 +772,9 @@ export default {
       
     };
 
+    let ageGroups = ref([]);
     let genders = ref(store.getters["lookups/genders"]);
     let maritalStatus = ref(store.getters["lookups/maritalStatus"]);
-    let ageGroups = ref(store.getters["lookups/ageGroups"]);
     let memberships = ref(store.getters["lookups/peopleClassifications"]);
 
     const selectedMaritalStatus = ref(null);
@@ -785,29 +785,12 @@ export default {
       axios
         .get("/api/LookUp/GetAllLookUps")
         .then((res) => {
-          console.log(res, "lksa");
           genders.value = res.data.find(
             (i) => i.type.toLowerCase() === "gender"
           ).lookUps;
-          // try {
-          //   selectedGender.value = genders.value.find(
-          //     (i) => i.id === memberToEdit.value.genderID
-          //   );
-          // } catch (error) {
-          //   console.log(error);
-          // }
-
           maritalStatus.value = res.data.find(
             (i) => i.type.toLowerCase() === "maritalstatus"
           ).lookUps;
-          // try {
-          //   selectedMaritalStatus.value = maritalStatus.value.find(
-          //     (i) => i.id === memberToEdit.value.maritalStatusID
-          //   );
-          // } catch (error) {
-          //   console.log(error);
-          // }
-          console.log(maritalStatus, "MS");
         })
         .catch((err) => console.log(err.response));
     };
@@ -833,12 +816,11 @@ export default {
     };
 
     const getAgeGroups = () => {
-      console.log("Calling age");
       axios
-        .get("/api/Settings/GetTenantAgeGroups")
+        .get(`/public/AgeGroups?tenantId=${route.params.id}`)
         .then((res) => {
           ageGroups.value = res.data;
-          getPersonAgeGroupId();
+          // getPersonAgeGroupId();
           console.log(ageGroups.value);
         })
         .catch((err) => console.log(err.response));
@@ -856,20 +838,20 @@ export default {
       return maritalStatus.value.map((i) => i.value);
     });
 
-    const route = useRoute();
+    
     const memberToEdit = ref({});
 
-    const getPersonGenderId = () => {
-      if (memberToEdit.value && memberToEdit.value.personId) {
-        if (genders.value && genders.value.length > 0) {
-          selectedGender.value = genders.value.find(
-            (i) => i.id === memberToEdit.value.genderID
-          );
-        } else {
-          getLookUps();
-        }
-      }
-    };
+    // const getPersonGenderId = () => {
+    //   if (memberToEdit.value && memberToEdit.value.personId) {
+    //     if (genders.value && genders.value.length > 0) {
+    //       selectedGender.value = genders.value.find(
+    //         (i) => i.id === memberToEdit.value.genderID
+    //       );
+    //     } else {
+    //       getLookUps();
+    //     }
+    //   }
+    // };
 
     const getPersonMaritalStatusId = () => {
       if (memberToEdit.value && memberToEdit.value.personId) {
@@ -891,57 +873,57 @@ export default {
       }
     };
 
-    const getPersonAgeGroupId = () => {
-      if (memberToEdit.value && memberToEdit.value.personId) {
-        if (ageGroups.value && ageGroups.value.length > 0) {
-          selectedAgeGroup.value = ageGroups.value.find(
-            (i) => i.id === memberToEdit.value.ageGroupID
-          );
-        } else {
-          getAgeGroups();
-        }
-      }
-    };
+    // const getPersonAgeGroupId = () => {
+    //   if (memberToEdit.value && memberToEdit.value.personId) {
+    //     if (ageGroups.value && ageGroups.value.length > 0) {
+    //       selectedAgeGroup.value = ageGroups.value.find(
+    //         (i) => i.id === memberToEdit.value.ageGroupID
+    //       );
+    //     } else {
+    //       getAgeGroups();
+    //     }
+    //   }
+    // };
 
-    const populatePersonDetails = (data) => {
-      console.log(data, "🛒🛒🛒🛒🛒🛒")
-      person.firstName = data.firstName;
-      person.email = data.email;
-      person.lastName = data.lastName;
-      person.firstName = data.firstName;
-      person.mobilePhone = data.mobilePhone;
-      person.address = data.homeAddress;
-      person.occupation = data.occupation;
-      person.dayOfBirth = data.dayOfBirth;
-      person.monthOfBirth = data.monthOfBirth
-        ? months[data.monthOfBirth - 1]
-        : null;
-      person.dayOfWedding = data.dayOfWedding;
-      person.yearOfBirth = data.yearOfBirth;
-      person.monthOfWedding = data.monthOfWedding
-        ? months[data.monthOfWedding - 1]
-        : null;
-      person.yearOfWedding = data.yearOfWedding;
-      peopleInGroupIDs.value = data.personSpecificGroups.map(i => {
-        return {
-          groupId: i.id,
-          name: i.name
-        }
-      })
-    };
+    // const populatePersonDetails = (data) => {
+    //   console.log(data, "🛒🛒🛒🛒🛒🛒")
+    //   person.firstName = data.firstName;
+    //   person.email = data.email;
+    //   person.lastName = data.lastName;
+    //   person.firstName = data.firstName;
+    //   person.mobilePhone = data.mobilePhone;
+    //   person.address = data.homeAddress;
+    //   person.occupation = data.occupation;
+    //   person.dayOfBirth = data.dayOfBirth;
+    //   person.monthOfBirth = data.monthOfBirth
+    //     ? months[data.monthOfBirth - 1]
+    //     : null;
+    //   person.dayOfWedding = data.dayOfWedding;
+    //   person.yearOfBirth = data.yearOfBirth;
+    //   person.monthOfWedding = data.monthOfWedding
+    //     ? months[data.monthOfWedding - 1]
+    //     : null;
+    //   person.yearOfWedding = data.yearOfWedding;
+    //   peopleInGroupIDs.value = data.personSpecificGroups.map(i => {
+    //     return {
+    //       groupId: i.id,
+    //       name: i.name
+    //     }
+    //   })
+    // };
 
-    const getMemberToEdit = () => {
-      membershipService.getMemberById(route.params.personId).then((res) => {
-        memberToEdit.value = res;
-        populatePersonDetails(res);
-        getPersonGenderId();
-        getPersonMaritalStatusId();
-        getPersonPeopleClassificationId();
-        getPersonAgeGroupId();
-        console.log(res);
-        routeParams.value = route.params.personId;
-      });
-    };
+    // const getMemberToEdit = () => {
+    //   membershipService.getMemberById(route.params.personId).then((res) => {
+    //     memberToEdit.value = res;
+    //     populatePersonDetails(res);
+    //     getPersonGenderId();
+    //     getPersonMaritalStatusId();
+    //     getPersonPeopleClassificationId();
+    //     getPersonAgeGroupId();
+    //     console.log(res);
+    //     routeParams.value = route.params.personId;
+    //   });
+    // };
 
     if (route.params.personId) {
       getMemberToEdit(route.params.personId);
@@ -954,17 +936,9 @@ export default {
 
     const getGroups = async () => {
       try {
-        let groups = store.getters["groups/groups"];
-
-        if (groups && groups.length > 0) {
-          allGroups.value = groups;
-          return true;
-        } else {
-          let group = await grousService.getGroups();
-          if (group) {
-            allGroups.value = group;
-          }
-        }
+        let groups = await axios.get(`/public/groups?tenantId=${route.params.id}`)
+        console.log(groups)
+        allGroups.value = groups.data
       } catch (error) {
         console.log(error);
       }
@@ -1118,6 +1092,10 @@ export default {
   /* overflow: hidden; */
 }
 
+.cs-select.age-group {
+  width: 330px;
+}
+
 @media (min-width: 769px) {
   .celeb-tab {
     margin-right: 147px;
@@ -1169,8 +1147,21 @@ export default {
   .cs-select {
     width: 100%
   }
-  .cstm-select {
+  
+  .cs-select.age-group {
     width: 100%
+  }
+  .cstm-select {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .input {
+    margin: 0
+  }
+
+  .label-text-box {
+    padding: 0
   }
 }
 
