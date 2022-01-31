@@ -66,7 +66,7 @@
                    <div class="col-lg-5 col-sm-12 mt-lg-0 mt-sm-5 mt-md-5 mt-lg-0 mt-5 pl-lg-5 pr-lg-5 pl-sm-3 pr-3 pr-sm-2">
                        <div class="row">
                             <div class="col-12 mt-xl-0 mt-md-5">
-                                <h4 class="mt-sm-5 mt-5 mt-xl-0 mt-md-5 mt-lg-0">Admin Permission</h4>
+                                <h4 class="mt-sm-5 mt-5 mt-xl-0 mt-md-5 mt-lg-0 adminPermission">Admin Permission</h4>
                             </div>
 
                         </div>
@@ -595,5 +595,11 @@ import store from "@/store/store";
 }
 .rolesBackground{
     color: green;
+}
+
+@media (max-width: 771px) {
+    .adminPermission{
+        margin-top: 4rem!important;
+    }
 }
 </style>
