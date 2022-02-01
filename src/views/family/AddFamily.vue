@@ -875,4 +875,9 @@ export default {
 .page-header {
     font: normal normal 800 29px Nunito sans;
 }
+
+.dropdown-menu {
+    max-height: 500px;
+    overflow: scroll;
+}
 </style>
