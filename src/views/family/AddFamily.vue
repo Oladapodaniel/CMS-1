@@ -491,6 +491,8 @@ export default {
 
         const addExistingMember = (member) => {
           userSearchString.value = member.name;
+          email.value = member.email
+          homePhone.value = member.phone
           father.value = {
               firstName: member.name.split(" ")[0],
               lastName: member.name.split(" ")[1],
@@ -505,7 +507,6 @@ export default {
         const getFatherId = (payload) => {
           console.log(payload)
           userSearchString.value = payload.personFirstName
-
           father.value = {
               firstName: payload.personFirstName,
               id: payload.personId
@@ -540,6 +541,10 @@ export default {
 
         const addExistingMemberForMother = (member) => {
           motherSearchString.value = member.name;
+          if (!father.value) {
+              email.value = member.email;
+              homePhone.value = member.phone
+          }
           mother.value = {
               firstName: member.name.split(" ")[0],
               lastName: member.name.split(" ")[1],
