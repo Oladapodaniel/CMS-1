@@ -231,11 +231,11 @@ export default {
      //First Timer save
     async saveBranch(){
       let mappedLevel = this.branchList.map(i => i.level)
-      const maxLevel = mappedLevel.length > 0 ? Math.max.apply(null, mappedLevel) : 0
+      const maxLevel = mappedLevel.length > 0 ? Math.max.apply(null, mappedLevel) + 1 : 0
       try{
         let createBranchLevel = {
           name: this.branchTypes,
-          level : maxLevel + 1
+          level : maxLevel
         } 
         let branching = await axios.post('/branching/newhierarchy', createBranchLevel);
         // await axios.post('/firsttimercycle/create', createFirsttimer);

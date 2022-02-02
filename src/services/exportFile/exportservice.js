@@ -46,6 +46,11 @@ import html2pdf from "html2pdf.js"
             const header = fileHeaderToExport
             console.log(filterVal)
             console.log(fileHeaderToExport)
+            console.log(filterVal)
+            console.log(list)
+            console.log(header)
+            console.log(fileName)
+            console.log(selectedFileType)
 
             ExcelExport.exportFile(filterVal, list, header, fileName, selectedFileType)
         }
@@ -57,8 +62,8 @@ import html2pdf from "html2pdf.js"
             // let _th = document.getElementsByTagName("th");
             let _arr = [].map.call( _th, function( th ) {
                 return th.innerHTML;
-            }).join( ',' );
-            let _data = _arr.split(",");
+            }).join( '|' );
+            let _data = _arr.split("|");
             // console.log(_data)
             // console.log("html to JSON", _data);
             // emit('data-header-to-export', _data)
@@ -77,8 +82,8 @@ import html2pdf from "html2pdf.js"
             let _td = _tr.getElementsByTagName("td");
             let _arr = [].map.call( _td, function( td ) {
                 return td.innerHTML;
-            }).join( ',' );
-            let _data = _arr.split(",");
+            }).join( '|' );
+            let _data = _arr.split("|");
             // console.log(_data)
 
             _obj = Object.assign({}, _data)

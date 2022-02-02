@@ -137,12 +137,6 @@
                   </div>
                 </div>
               </div>
-
-              <div class="row">
-                <div class="col-md-12 px-0">
-                  <hr class="hr my-0" />
-                </div>
-              </div>
             </div>
           </div>
         </template>
@@ -241,6 +235,7 @@ export default {
         await axios.post('/firsttimercycle/create', createFirsttimer);
         this.getFirstTimerCyles()
         this.firstTimerTypes = ""
+        this.isDefault = false
          this.$toast.add({severity:'success', summary: '', detail:'New Guest Life Cycle Save Successfully', life: 3000});
       }catch(error){
         finish()

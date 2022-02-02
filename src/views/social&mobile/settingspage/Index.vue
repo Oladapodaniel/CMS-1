@@ -754,7 +754,12 @@ const saveFacbookDetail = async()=>{
   try{
     const response= await axios.post('/api/SocialMedia/connect', facebookDetail);
     console.log(response);
-    toast.add({severity:'success', summary: '', detail:'Successfully', life: 3000});
+    toast.add({
+      severity:'success', 
+      summary: 'Connected', 
+      detail:'Page connected successfully', 
+      life: 3000
+      });
     setTimeout(function () {
      userRoute()
     }, 1500);
