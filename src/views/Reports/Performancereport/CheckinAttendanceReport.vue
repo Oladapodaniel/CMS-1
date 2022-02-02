@@ -94,7 +94,7 @@ export default {
         const groupedReport = ref([])
         const groupedReportByDate = ref([])
         const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'}, {name: 'pdf'} ])
-        const selectedFileType = ref("")
+        const selectedFileType = ref({})
         const fileName = ref("")
         const showExport = ref(false)
         const fileToExport = ref([])
@@ -218,7 +218,6 @@ export default {
         // getIPDetails()
 
         const downLoadExcel = () => {
-            console.log('reaching here')
             if (selectedFileType.value.name === "pdf") {
                 // printJS({
                 // //   ignoreElements: ['ignore1', 'ignore2'],

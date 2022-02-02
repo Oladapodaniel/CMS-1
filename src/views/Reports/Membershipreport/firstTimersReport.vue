@@ -43,47 +43,7 @@
 
 
       </div>
-      <!-- placeholder="Select file type" -->
-
-      <!-- <transition name="move" mode="out-in">
-          <div class="row my-4" v-if="showExport">
-
-        <div class="col-sm-5">
-
-          <span class="p-float-label ml-n3">
-            <InputText
-              id="inputtext"
-              class="w-100"
-              type="text"
-              v-model="fileName"
-            />
-            <label for="inputtext">Enter file name</label>
-          </span>
-        </div>
-        <div class="col-sm-4">
-          <Dropdown
-            v-model="selectedFileType"
-            class="w-100"
-            :options="bookTypeList"
-            placeholder="Select file type"
-          />
-        </div>
-        <div @click="downloadFile" class="col-sm-2 offset-sm-1">
-          <div
-            class="
-              default-btn
-              d-flex
-              align-items-center
-              justify-content-center
-              c-pointer
-              generate-report
-            "
-          >
-            Download
-          </div>
-        </div>
-      </div>
-      </transition> -->
+    
 
     </div>
     <!--end of header area -->
@@ -173,7 +133,8 @@
                 style="border-bottom: 0; font-size:medium"
               >
                 <!-- <th scope="col">Church Activity</th> -->
-                <th scope="col">Name</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
                 <th scope="col">Phone</th>
                 <th scope="col">Email</th>
                 <th scope="col">Home Address</th>
@@ -186,8 +147,8 @@
             </thead>
             <tbody class="small-text font-weight-bold text-nowrap">
               <tr v-for="(firstTimer, index) in firstTimerInChurch" :key="index">
-                <!-- <td>{{ firstTimer.event }}</td> -->
-                <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
+                <td>{{ firstTimer.firstName }}</td>
+                <td>{{ firstTimer.lastName }}</td>
                 <td>{{ firstTimer.mobilePhone }}</td>
                 <td>{{ firstTimer.email }}</td>
                 <td>{{ firstTimer.homeAddress }}</td>
@@ -238,7 +199,7 @@ export default {
     const showExport = ref(false);
     const fileName = ref("");
     const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
-    const selectedFileType = ref("");
+    const selectedFileType = ref({});
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const generateReport = () => {
@@ -296,14 +257,7 @@ export default {
 
     /* Code For Exporting File */
     const downloadFile = () => {
- console.log(fileHeaderToExport.value, "🎁🎁")
-
-  console.log(fileName.value, "🎁🎁")
-  alert(selectedFileType.value)
-  console.log(fileToExport.value, "🎁🎁")
-
-      exportService.downLoadExcel(
-        selectedFileType.value, document.getElementById("element-to-print"), fileName.value, fileHeaderToExport.value,  fileToExport.value,);
+      exportService.downLoadExcel(selectedFileType.value.name, document.getElementById("element-to-print"), fileName.value, fileHeaderToExport.value,  fileToExport.value,);
     };
     /* End Code For Exporting File */
 

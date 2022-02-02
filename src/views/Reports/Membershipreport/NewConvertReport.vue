@@ -142,7 +142,8 @@
               style="border-bottom: 0; font-size:medium"
             >
               <!-- <th scope="col">Title</th> -->
-              <th scope="col">Name</th>
+              <th scope="col">First Name</th>
+              <th scope="col">Last Name</th>
                 <th scope="col">Phone</th>
               <th scope="col">Email</th>
               <th scope="col">Home Address</th>
@@ -162,7 +163,8 @@
             <tr v-for="(newConvert, index) in newConvertsInChurch"
             :key="index">
               <!-- <td>{{ newConvert.title }}</td> -->
-              <td>{{ newConvert.firstName }} {{ newConvert.lastName }}</td>
+              <td>{{ newConvert.firstName }}</td>
+              <td>{{ newConvert.lastName }}</td>
                <td>{{ newConvert.mobilePhone }}</td>
               <td>{{ newConvert.email }}</td>
                <td>{{ newConvert.homeAddress }}</td>
@@ -213,7 +215,7 @@ export default {
     const fileName = ref("");
     // const bookTypeList = ref(["xlsx", "csv", "txt"]);
     const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
-    const selectedFileType = ref("");
+    const selectedFileType = ref({});
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const allMembersInChurch = () => {
@@ -242,7 +244,7 @@ console.log(newConvertsInChurch.value, "✌️✌️");
             /* Code For Exporting File */
     const downloadFile = () => {
       exportService.downLoadExcel(
-        selectedFileType.value,
+        selectedFileType.value.name,
         document.getElementById("element-to-print"),
         fileName.value,
         fileHeaderToExport.value,
@@ -338,17 +340,18 @@ console.log(newConvertsInChurch.value, "✌️✌️");
 
 .remove-styles{
   border: none !important;
-box-shadow: none !important;
-    border-bottom: 0 !important;
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
+  box-shadow: none !important;
+  border-bottom: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
 .remove-styles2{
-padding-right: 0;
-padding-left: 0;
-border-top-left-radius: 0 !important;
-border-top-right-radius: 0 !important;
+  padding-right: 0;
+  padding-left: 0;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  overflow: scroll;
 }
 
 .remove-border{

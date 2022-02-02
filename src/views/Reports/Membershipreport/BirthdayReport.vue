@@ -194,7 +194,8 @@
                   class="small-text text-capitalize text-nowrap font-weight-bold"
                   style="border-bottom: 0; font-size:medium"
                 >
-                  <th scope="col">Name</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
                   <th scope="col">Birthday</th>
                   <th scope="col">Phone</th>
                   <th scope="col">Email</th>
@@ -207,7 +208,8 @@
               </thead>
               <tbody class="font-weight-bold text-nowrap" style="font-size: small">
                 <tr v-for="(item, index) in birthdays" :key="index">
-                  <td>{{ item.name }}</td>
+                  <td>{{ item.firstName }}</td>
+                  <td>{{ item.lastName }}</td>
                   <td>{{ item.birthDay }}</td>
                   <td>{{ item.mobilePhone }}</td>
                   <td>{{ item.email }}</td>
@@ -265,7 +267,7 @@ export default {
     const showReport = ref(false);
     const fileName = ref("");
     const bookTypeList = ref([{ name : 'xlsx'}, { name: 'csv'}, {name: 'txt'} ])
-    const selectedFileType = ref("");
+    const selectedFileType = ref({});
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const allMembersInChurch = () => {

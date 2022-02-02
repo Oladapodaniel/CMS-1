@@ -190,7 +190,7 @@ import { useToast } from 'primevue/usetoast';
     const toast = useToast()
     const showReport = ref(false);
     const fileName = ref("");
-    const selectedFileType = ref("");
+    const selectedFileType = ref({});
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);
     const bookTypeList = ref([ { name: 'xlsx' },{ name: 'csv'}, {name: 'txt'}, {name: 'pdf'} ]);
