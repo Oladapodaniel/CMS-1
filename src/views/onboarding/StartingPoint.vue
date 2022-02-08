@@ -6,7 +6,7 @@
           <div class="welcome-intro">
             <div v-if="!processing">
               <h1>Hey {{ name }}</h1>
-              <h2>What would you like to do in Churchplus?</h2>
+              <h2>What would you like to do in Assemblies of God Software?</h2>
             </div>
           </div>
         </div>
@@ -93,7 +93,7 @@
       </div>
     </div>
     <div class="logo">
-      <img src="../../assets/churchplus-logo.png" alt="" />
+      <img src="../../assets/assembly-of-god-logo-png-7.png" alt="" style="width: 100px" />
     </div>
   </div>
 </template>

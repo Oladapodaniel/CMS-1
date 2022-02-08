@@ -9,7 +9,7 @@
           <div class="onboarding-form-container">
             <div class="title-div">
               <div class="main-title">
-                <h1>Welcome to Churchplus!</h1>
+                <h1>Welcome to Assemblies of God!</h1>
               </div>
               <div class="sub-title">
                 <p>Tell us about you and your church</p>
@@ -176,6 +176,7 @@ export default {
         subscriptionPlanID: 1,
         countryId: 89,
         password: "password",
+        churchName: "Assemblies of God"
       },
 
       myValue: '',
