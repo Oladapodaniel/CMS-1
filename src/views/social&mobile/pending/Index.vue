@@ -80,9 +80,9 @@
                   <div class="col-md-12 d-flex flex-wrap">
                     <a
                       class="text-decoration-none c-pointer default-btn text-dark mr-3"
-                      
+                      @click="showDeleteModal(post)"
                     >
-                      <span>Not Approved</span>
+                      <span>Delete</span>
                       <span class="ml-3"><i class="pi pi-times"></i></span>
                     </a>
                     <a
@@ -266,6 +266,7 @@
             ></Skeleton>
           </div>
         </div>
+        <ConfirmDialog />
         <Toast />
       </div>
     </div>
@@ -290,6 +291,45 @@ export default {
         const tenantId = store.getters.currentUser.tenantId;
         const pendingPosts = ref([ ])
         const pageData = ref({})
+        const feed = ref([]);
+
+        const showDeleteModal = (post) => {
+            console.log(post, "post");
+            confirm.require({
+              message: "Are you sure you want to delete this post?",
+              header: "Confirmation",
+              icon: "pi pi-exclamation-triangle",
+              acceptClass: "confirm-delete",
+              rejectClass: "cancel-delete",
+              accept: () => {
+                deletePost(post);
+              },
+              reject: () => {
+                console.log("rejected");
+              },
+            });
+          };
+
+        const deletePost = async (post) => {
+            try {
+              await social_service.deletePost(post.postId);
+              feed.value = feed.value.filter(i => i.postId !== post.postId);
+              toast.add({
+                severity: "success",
+                summary: "Post Deleted",
+                detail: "The post has been deleted successfully",
+                life: 3000,
+              });
+            } catch (error) {
+              toast.add({
+                severity: "error",
+                summary: "Delete Error",
+                detail: "Post could not be deleted, please reload and try again",
+                life: 3000,
+              });
+            }
+          };
+
         const getPendingPosts = async (tenantId) => {
             try {
                 const response = await social_service.getPendingPosts(tenantId);
@@ -329,6 +369,8 @@ export default {
         }
 
         return {
+            showDeleteModal,
+            feed,
             pendingPosts,
             formatDate,
             loading,
