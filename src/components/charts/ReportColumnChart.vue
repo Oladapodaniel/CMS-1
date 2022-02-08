@@ -17,6 +17,7 @@
 <script>
 import { onMounted, onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
+import { useRoute } from "vue-router"
 export default {
   inheritAttrs: false,
   components: {},
@@ -26,6 +27,7 @@ export default {
   setup(props) {
     const chart = ref(null);
     const headerText = ref(null);
+    const route = useRoute()
 
     onUpdated(() => {
         headerText.value = props.header;
@@ -34,7 +36,7 @@ export default {
         chart: {
           type: "column",
           renderTo: props.domId,
-          height: 300,
+          height: route.fullPath.includes('attendanceperformancereport') || route.fullPath.includes("branch_report") ? 500 : 300,
         },
         credits: {
           enabled: false,
@@ -194,7 +196,7 @@ export default {
          /* border: 1px solid #DDE2E6; */
         /* border-radius: 30px; */
         margin: 0 0 24px 0;
-        /* box-shadow: 0px 1px 4px #02172E45; */
+        box-shadow: 0px 1px 4px #02172E45;
         /* border: 1px solid #DDE2E6; */
         padding: 25px 0;
     }

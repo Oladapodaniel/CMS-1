@@ -8,7 +8,7 @@
       position="top"
     >
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
           <NewMember @cancel="() => display = false" @refresh="refresh"/>
         </div>
       </div>
@@ -27,7 +27,6 @@
         <Toast />
       </div>
     </div>
-
     <div class="row over-con">
       <div class="col-md-12 py-4">
         <div class="row">
@@ -82,7 +81,7 @@
         <div class="row pt-2" :class="{ 'kiosk-tb-size': isKioskMode }">
               <Suspense>
                 <template #default>
-                    <TableData :isKiosk="isKioskMode" @refreshed="refreshed" :fetchUsers="fetchUsers" :searchText="searchText" />
+                    <TableData :isKiosk="isKioskMode" @refreshed="refreshed" :fetchUsers="fetchUsers" :attendanceId="attendanceID" :searchText="searchText" />
                 </template>
                 <template #fallback>
                     <div class="row">
@@ -221,6 +220,7 @@ import attendanceservice from '../../../services/attendance/attendanceservice';
 import { useToast } from 'primevue/usetoast';
 
 export default {
+    props: [ "attendanceID" ],
   components: { NewMember, TableData },
   setup() {
     const toast = useToast();

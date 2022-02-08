@@ -271,7 +271,6 @@
                     alt="paystack"
                   />
                 </div>
-                <!-- <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/> -->
               </div>
               <div class="row row-button c-pointer" @click="payWithFlutterwave">
                 <div class="col-12 col-md-4 col-sm-7 offset-1">
@@ -350,13 +349,10 @@ export default {
       userService.getCurrentUser()
         .then(res => {
           currentUser.value = res
-          console.log(res, 'logged');
           userEmail.value = res.userEmail;
           churchName.value = res.churchName;
           tenantId.value = res.tenantId;
           userCurrency.value = res.currency;
-          currentUser.value = res
-
         })
         .catch(err => {
           console.log(err);
@@ -383,12 +379,11 @@ export default {
 
     const emailSelectedValue = ref("");
     const subSelectedAmount = ref("");
-    const isProduction = false
+    const isProduction = true
     const initializedOrder = ref("");
     const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
 
     const expiryDate = ref("");
-    console.log(selectMonth.value.name);
     const selectMonths = ref([
       { name: "1", code: "NY" },
       { name: "2", code: "RM" },
@@ -414,10 +409,8 @@ export default {
     selectCurrencyArr.value = ["NGN", "USD", "GHS", "ZAR"];
 
     const existingPlan = ref({});
-    console.log(existingPlan.value.membershipSize, "🎊🎊🎊");
     const daysToEndOfSubscription = ref(0);
     const selectSubscription = () => {
-      // axios.get("/api/Subscription/GetSubscription").then((res) => {
       axios.get("/api/Subscription/subscriptions").then((res) => {
         console.log(res, "RES");
         Plans.value = res.data;
@@ -425,18 +418,26 @@ export default {
         existingPlan.value.amount = Plans.value.amount;
         existingPlan.value.description = Plans.value.description;
         existingPlan.value.amountInDollar = Plans.value.amountInDollar;
-        existingPlan.value.membershipSize = Plans.value.membershipSize;
-        subscriptionPlans.value = res.data.subscriptionPlans.filter(i => i.description !== "FREE PLAN")
-        // selectedPlan.value = subscriptionPlans.value.find(
-        //   (i) => i.description === "PLAN"
-        // );
-        // subSelectedAmount.value = selectedPlan.value.amountInNaira
-        // selectedPlan.value = res.data.returnObject.description;
+        existingPlan.value.membershipSize = Plans.value.membershipSize;   
+
+        // Remove preceeding plans from list
+
+        // const joined = subscriptionPlans.value.map(i => i.id).join("")
+        // const splitted = joined.split(selectedPlan.value.id)
+        // subscriptionPlans.value = subscriptionPlans.value.splice(splitted[0].length)
+
+        res.data.subscriptionPlans.forEach(i => {
+          if (i.membershipSize >= Plans.value.membershipSize) {
+            subscriptionPlans.value.push(i)
+          }
+        })
+
+        // Get current plan
 
         selectedPlan.value = subscriptionPlans.value.find(
           (i) => i.id == Plans.value.id
         );
-        console.log(selectedPlan.value)
+
         currentAmount.value = res.data.amountInNaira;
         currentPlan.value = existingPlan.value.description;
         productsList.value = res.data.productsList;
@@ -448,8 +449,7 @@ export default {
         ).price : [];
         smsPrice.value = productsList.value && productsList.value.length > 0 ? productsList.value.find((i) => i.name === "SMS").price : [];
        
-        // console.log(plans.value.subscriptionExpiration, 'qwer');
-
+    
         daysToEndOfSubscription.value = calculateRemomainingMonthsOfSubscription(res.data.subscriptionExpiration)
       });
     };
@@ -457,12 +457,12 @@ export default {
     selectSubscription();
     const paymentFailed = ref(false);
 
-    const subscriptionPayment = (paystackResponse) => {
+    const subscriptionPayment = (response, gateway) => {
+      console.log(response, gateway)
       close.value.click();
       paymentFailed.value = false;
 
-      try {
-        const products = checkedBoxArr.value.map((i) => {
+      const products = checkedBoxArr.value.map((i) => {
           return {
             productName: i.name,
             productID: i.id,
@@ -490,7 +490,6 @@ export default {
           }
         }
         const body = {
-          // subscriptionPlanID: selectedPlan.value.id,
           durationInMonths: selectMonth.value.name
             ? +selectMonth.value.name
             : 0,
@@ -498,37 +497,58 @@ export default {
           emailUnits: selectEmail.value.name
             ? +selectEmail.value.name.split("-")[1]
             : 0,
-          totalAmount: selectedCurrency.value
-            ? convertAmountToTenantCurrency.value
-            : TotalAmount.value,
-          paymentGateway: "Paystack",
-          txnRefID: paystackResponse.trxref,
+          totalAmount: TotalAmount.value,
+          paymentGateway: gateway == 0 ? 'paystack' : 'flutterwave',
+          txnRefID: gateway == 0 ? response.trxref : response.transaction_id,
           productItems: products,
-          currency: selectedCurrency.value && currentUser ? selectedCurrency.value : "NGN",
+          currency: selectedCurrency.value,
         };
 
         if (selectMonth.value) {
           body.subscriptionPlanID = selectedPlan.value.id;
         }
 
-        axios
-          .post("/api/Subscription/SubscriptionPayment", body)
-          .then((res) => {
-            console.log(res);
-            display.value = true;
-            selectSubscription();
-            if (!res.data.returnObject.status) {
+      if (gateway == 0) {
+        try {
+          axios
+            .post("/api/Subscription/SubscriptionPayment", body)
+            .then((res) => {
+              console.log(res);
+              display.value = true;
+              selectSubscription();
+              if (!res.data.returnObject.status) {
+                paymentFailed.value = true;
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              display.value = true;
               paymentFailed.value = true;
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-            display.value = true;
-            paymentFailed.value = true;
-          });
-      } catch (error) {
-        console.log(error);
-      }
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          axios
+            .post("/api/Subscription/subscribe?paymentType=1", body)
+            .then((res) => {
+              console.log(res);
+              display.value = true;
+              selectSubscription();
+              if (!res.data.status) {
+                paymentFailed.value = true;
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              display.value = true;
+              paymentFailed.value = true;
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      }  
     };
     const conversionrates = ref({});
     const getRates = () => {
@@ -537,19 +557,19 @@ export default {
       });
     };
     getRates();
-    const convertAmountToTenantCurrency = computed(() => {
-      if (!selectedCurrency.value) return TotalAmount.value;
-      let amountInDollar = 0;
-      if (TotalAmount.value) {
-        amountInDollar = TotalAmount.value / conversionrates.value[`usdngn`];
-      } else {
-        return 0;
-      }
-      return (
-        conversionrates.value[`usd${selectedCurrency.value.toLowerCase()}`] *
-        amountInDollar
-      );
-    });
+    // const convertAmountToTenantCurrency = computed(() => {
+    //   if (!selectedCurrency.value) return TotalAmount.value;
+    //   let amountInDollar = 0;
+    //   if (TotalAmount.value) {
+    //     amountInDollar = TotalAmount.value / conversionrates.value[`usdngn`];
+    //   } else {
+    //     return 0;
+    //   }
+    //   return (
+    //     conversionrates.value[`usd${selectedCurrency.value.toLowerCase()}`] *
+    //     amountInDollar
+    //   );
+    // });
 
     const emailAmount = computed(() => {
       if (!selectEmail.value.name) return 0;
@@ -594,11 +614,9 @@ export default {
     };
 
     const setSelectedPaymentCurrency = () => {
-      if ( currentUser.value && selectCurrencyArr.value.includes(currentUser.value.currency)) {
+      if ( currentUser.value) {
           selectedCurrency.value = currentUser.value.currency;
-        } else {
-          selectedCurrency.value = "USD";
-        }
+        } 
     }
 
     const getCurrencySymbol = async () => {
@@ -613,10 +631,7 @@ export default {
         });
     };
 
-    const convertedAmount = computed(() => {
-      if (!selectedCurrency.value) return "";
-      return converter.convertCurrencyTo(500, "usdngn", "usdghs");
-    });
+ 
 
     if (!currentUser.value || !currentUser.value.currency) {
       getCurrencySymbol();
@@ -638,86 +653,45 @@ export default {
  ${appendLeadingZeroes(currentDate.getSeconds())}${appendLeadingZeroes(
       currentDate.getMilliseconds()
     )}`;
-    console.log(formattedDate);
+  
 
     const initializePayment = (paymentGateway) => {
-      console.log(currentUser.value, 'curent user list');
       const payload = {
       gateway: paymentGateway === 0 ? 'paystack' : 'flutterwave',
       totalAmount: TotalAmount.value,
       tenantId: currentUser.value.tenantId,
       orderId: uuidv4()
     }
-    // console.log(payload, 'initialize payment payload');
      axios
      .post('/api/payment/initializesubscription',payload)
      .then((res) => {
        close.value.click();
-      //  purchaseIsSuccessful.value = true;
-        // store.dispatch("addPurchasedUnits", totalSMSUnits.value);
        initializedOrder.value = res.data;
-       console.log(res, 'initializepayment');
      })
     }
-    const payWithPaystack = (e) => {
+    const payWithPaystack = () => {
       initializePayment(0);
-      console.log(e.srcElement.alt);
-
-      // selectedGateway.value = e.srcElement.alt;
-      // emit("selected-gateway", selectedGateway.value);
-
-      // close.click();
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
 
-        email: currentUser.value.userEmail,
-        amount:
-          (selectedCurrency.value
-            ? Math.ceil(convertAmountToTenantCurrency.value)
-            : TotalAmount.value) * 100,
+        email: "info@churchplus.co",
+        amount: TotalAmount.value * 100,
         ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
         currency: Plans.value.paymentCurrency,
-        // currency: "zar",
-
-        // firstname: name,
-        // ref: orderId,
         onClose: function() {
           // swal("Transaction Canceled!", { icon: "error" });
           toast.add({
             severity: "info",
             summary: "Transaction cancelled",
             detail: "You have cancelled the transaction",
-            life: 2500,
+            life: 3000,
           });
-          console.log("closed");
         },
         callback: function(response) {
-          subscriptionPayment(response);
+          subscriptionPayment(response, 0);
           //Route to where you confirm payment status
-          console.log(response, "Payment Received");
-          // console.log(donation);
-
-          // axios
-          //   .post(`/confirmDonation?txnref=${response.trxref}`, donation)
-          //   .then((res) => {
-          //     finish();
-          //     console.log(res, "success data");
-          //   })
-          //   .catch((err) => {
-          //     finish();
-          //     toast.add({
-          //       severity: "error",
-          //       summary: "Confirmation failed",
-          //       detail:
-          //         "Confirming your purchase failed, please contact support at info@churchplus.co",
-          //       life: 4000,
-          //     });
-          //     console.log(err, "error confirming payment");
-          // });
-
-          // emit("payment-successful", true);
         },
       });
       handler.openIframe();
@@ -729,61 +703,50 @@ export default {
               ? "https://ravemodal-dev.herokuapp.com/v3.js"
               : "https://checkout.flutterwave.com/v3.js";
             document.getElementsByTagName("head")[0].appendChild(script);
-            console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
+            // console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
     }
     getFlutterwaveModules()
 
-    const payWithFlutterwave = (e) => {
+    const payWithFlutterwave = () => {
       console.log(TotalAmount.value, 'total amount calculated')
       initializePayment(1)
-      console.log(e.srcElement.alt)
-      // Get and send clicked payment gateway to parent
-      // selectedGateway.value = e.srcElement.alt
-      // emit('selected-gateway', selectedGateway.value)
 
-      // Close payment modal
-      // props.close.click()
-       
-       console.log(selectedCurrency.value)
-      // console.log(email)
+      let country = "";
 
+      switch (selectedCurrency.value) {
+            case 'KES':
+             country = 'KE';
+              break;
+            case 'GHS':
+              country = 'GH';
+              break;
+            case 'ZAR':
+              country = 'ZA';
+              break;
+            case 'TZS':
+              country = 'TZ';
+              break;
+            
+            default:
+              country = 'NG';
+              break;
+        }
+  
       window.FlutterwaveCheckout({
-                public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
+                // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
+                public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
                 tx_ref: uuidv4().substring(0,8),
                 amount: TotalAmount.value,
-                currency: Plans.value.paymentCurrency,
                 currency: selectedCurrency.value,
+                country: country,
                 payment_options: 'card,ussd',
                 customer: {
                   // name: props.name,
-                  // email: currentUser.value.userEmail,
-                  email: "info@churchplus.co"
+                  email: currentUser.value.userEmail
                 },
                 callback: (response) => {
                   console.log("Payment callback", response)
-                    // props.donation.usedPaymentGateway = selectedGateway.value
-
-
-
-                    axios
-                          .post(`/confirmDonation?txnref=${response.tx_ref}`,)
-                          .then((res) => {
-                            // finish()
-                            console.log(res, "success data");
-
-                          })
-                          .catch((err) => {
-                            // finish()
-                            toast.add({
-                              severity: 'error',
-                              summary: 'Confirmation failed',
-                              detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
-                              life: 4000
-                              })
-                            console.log(err, "error confirming payment");
-                          });
-
-                        // emit('payment-successful', true)
+                    subscriptionPayment(response, 1)
                   },
                 onclose: () => console.log('Payment closed'),
                 customizations: {
@@ -859,8 +822,7 @@ export default {
       display,
       close,
       paymentFailed,
-      convertedAmount,
-      convertAmountToTenantCurrency,
+      // convertAmountToTenantCurrency,
       payWithFlutterwave,
       daysToEndOfSubscription,
       subscriptionDuration,

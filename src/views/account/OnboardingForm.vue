@@ -91,7 +91,7 @@
                   <!-- <SelectElem :typ="'churchsize'" name="churchSize" :options="['--Select size range--', 'Between 1 - 100', 'Between 100 - 1000', 'Between 1000 - 100000']" value="--Select size range--" @input="itemSelected"/> -->
                 <Dropdown
                   v-model="userDetails.churchSize"
-                  :options="['Between 1 - 100', 'Between 101 - 200', 'Between 201 - 500', 'Between 501 - 2000', '2001 - 10,000']"
+                  :options="['1 - 100', '101 - 200', '201 - 500', '501 - 2000', '2001 - 10,000']"
                   style="width: 100%"
                   placeholder="Select size range"
                 />
@@ -173,7 +173,7 @@ export default {
       zipCode: "",
       step1Completed: true,
       userDetails: {
-        subscriptionPlanID: 9,
+        subscriptionPlanID: 1,
         countryId: 89,
         password: "password",
       },
@@ -205,7 +205,7 @@ export default {
       if (!this.userDetails.email) return false;
       this.userDetails.phoneNumber = this.userDetails.phoneNumber.includes("+")
         ? this.userDetails.phoneNumber
-        : `+${this.selectedCountry.phoneCode}${this.userDetails.phoneNumber.slice(1)}`;
+        : `+${this.selectedCountry.phoneCode}${this.userDetails.phoneNumber}`;
         console.log(this.selectedCountry, "country");
         this.userDetails.countryId = this.selectedCountry.id;
       console.log(this.userDetails, "userDetails");
@@ -220,6 +220,7 @@ export default {
             localStorage.removeItem("pretoken");
           } else {
             localStorage.setItem("token", res.data.token);
+            localStorage.setItem('roles', JSON.stringify(["Admin"]))
           }
           // this.$store.dispatch("setStartPoint", url)
           this.loading = false;

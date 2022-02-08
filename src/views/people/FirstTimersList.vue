@@ -1,52 +1,25 @@
 <template>
   <div class="container-wide">
-    <div class="my-con">
-      <!-- <div class="summary px-3">
-        <p class="summary-header">Summary</p>
-        <div class="boards">
-          <div class="board">
-            <div class="board-top">
-              <p class="total-text mb-0">TOTAL MEMBERS</p>
-              <img
-                class="trend-icon"
-                src="../../assets/dashboardlinks/trend-icon.svg"
-                alt=""
-              />
-            </div>
-            <h4 class="total">{{ getFirstTimerSummary.totalFirstTimer }}</h4>
-            <p>
-              <span class="percent"
-                >+{{ getFirstTimerSummary.firstTimerPercentageGrowth }}%
-              </span>
-              <span class="percent-text"> Since last month</span>
-            </p>
-          </div>
-          <div class="chart-con">
-            <div style="width: 45%" class="ml-md-4 chart1">
-              <ByGenderChart
-                domId="chart"
-                title="Invitation Source"
-                distance="5"
-                :titleMargin="10"
-                :summary="getFirstTimerSummary.invitationSource"
-              />
-            </div>
-            <div style="width: 45%" class="chart2">
-              <ByMaritalStatusChart
-                domId="second"
-                title="Interested In Joining"
-                :titleMargin="10"
-                :summary="getFirstTimerSummary.interestedInJoining"
-              />
-            </div>
-          </div>
+     <div class="row mt-3 botom">
+            <!-- <div class="col-12"> -->
+                <div class="col-12 col-sm-6 c-pointer "  @click="dashboard">
+                    <div  class="font-weight-bold h5 col-12  ">Dashboard</div>
+                    <div class="" :class="{ 'baseline' : showDashboard, 'hide-base' : !showDashboard }"></div>
+                </div>
+                <div class="col-12 col-sm-6  c-pointer" @click="firstTimerTable">
+                    <div class="font-weight-bold h5 col-12  ">FirstTimer</div>
+                    <div class="" :class="{ 'baselinetwo' : showFirstTimer, 'hide-basetwo' : !showFirstTimer }"></div>
+                </div>
+                <!-- <div class="hr"><hr /></div> -->
+            <!-- </div> -->
+            
         </div>
-      </div> -->
-
-          <FirstTimersChartArea/>
-
-      <!-- tosin 1 -->
-      <div class="table">
+    <div class="my-con">
+      <div v-if="showDashboard">
+          <FirstTimersChartArea @firsttimers="setFirsttimer"/>
+      </div>
+    
+      <!-- <div class="table">
         <div class="top-con">
           <div class="table-top px-2">
             <div class="select-all" v-if="churchMembers.length > 0">
@@ -123,7 +96,7 @@
                       w-100
                     "
                   >
-                    <!-- <div class="input-field"> -->
+           
 
                     <input
                       type="text"
@@ -131,7 +104,7 @@
                       placeholder="Name"
                       v-model="filter.name"
                     />
-                    <!-- </div> -->
+                
                   </div>
 
                   <div class="col-12 col-sm-6 form-group d-none d-md-block">
@@ -162,7 +135,7 @@
           </div>
         </div>
 
-        <!-- tosin -->
+  
         <div class="table-header font-weight-700">
           <div class="check"></div>
           <div
@@ -225,9 +198,7 @@
             <p>ACTION</p>
           </div>
         </div>
-        <!-- tosin -->
-
-        <!-- tosin 2 -->
+       
         <loadingComponent :loading="loading" />
         <div v-if="!loading">
           <div
@@ -257,7 +228,7 @@
                   <p>Name</p>
                 </div>
                 <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
                   class="itemroute-color"
                   >{{
                     person.fullName
@@ -267,41 +238,40 @@
                 >
               </div>
             </div>
-            <!-- <div class="mr-4"></div> -->
+        
             <div class="lastname data">
               <div class="data-con">
                 <div class="data-text">
                   <p>Phone</p>
                 </div>
                 <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
                   class="data-value itemroute-color"
                   >{{ person.phoneNumber }}</router-link
                 >
               </div>
             </div>
-            <!-- <div class="mr-5"></div> -->
+     
             <div class="phone data">
               <div class="data-con mr-4" style="text-align: right">
                 <div class="data-text">
                   <p>Source</p>
                 </div>
                 <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
                   class="itemroute-color"
                   >{{ person.howDidYouAboutUsName }}</router-link
                 >
               </div>
             </div>
 
-            <!-- <div class="mr-5"></div> -->
             <div class="phone data" style="text-align: right">
               <div class="data-con mr-4">
                 <div class="data-text">
                   <p>Interested</p>
                 </div>
                 <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
                   class="itemroute-color"
                   >{{
                     person.interestedInJoining === "Not_Specified"
@@ -319,7 +289,7 @@
                   <p>Date</p>
                 </div>
                 <router-link
-                  :to="`/tenant/firsttimermanagement/${person.id}`"
+                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
                   class="itemroute-color"
                   >{{
                     moment
@@ -332,10 +302,25 @@
                 >
               </div>
             </div>
+            
+            <div class="phone data">
+              <div class="data-con" style="text-align: right">
+                <div class="data-text text-right">
+                  <p>Movement</p>
+                </div>
+                <router-link
+                  :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
+                  class="itemroute-color"
+                  >{{
+                    person.movement
+                  }}</router-link
+                >
+              </div>
+            </div>
 
             <div>
               <router-link
-                :to="`/tenant/firsttimermanagement/${person.id}`"
+                :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
                 class="data-value itemroute-color"
               ></router-link>
             </div>
@@ -416,7 +401,7 @@
             Record not available in database
           </p>
         </div>
-        <!-- tosin 2 -->
+       
 
         <ConfirmDialog />
         <Toast />
@@ -428,8 +413,455 @@
             :currentPage="currentPage"
           />
         </div>
+      </div> -->
+      <div v-if="showFirstTimer">
+      <div class="row table">
+      <div class="col-12 px-0" id="table">
+        <div class="top-con">
+          <div class="table-top  d-flex justify-content-end">
+            <input
+              class="d-block d-md-none"
+              type="checkbox"
+              name="all"
+              id="all"
+              @change="markAllFirsttimer"
+              :checked="checkedFirstTimer.length === churchMembers.length"
+            />
+            <label class="d-block d-md-none">SELECT ALL</label>
+            <i
+                class="
+                  pi pi-trash
+                  text-danger
+                  mr-3
+                  c-pointer
+                  d-flex-inline
+                  align-items-center
+                "
+                style="font-size: 20px; margin-bottom: 12px"
+                v-if="checkedFirstTimer.length > 0"
+                @click="modal"
+              >
+              </i>
+              <div class="filter">
+                <p @click="toggleFilterFormVissibility" class="mt-2">
+                  <i class="pi pi-filter"></i>
+                  FILTER
+                </p>
+              </div>
+            <div class="col-5 col-sm-3 col-md-2">
+              <p @click="toggleSearch" class="search-text w-100 mt-2">
+                <i class="pi pi-search"></i> SEARCH
+              </p>
+            </div>
+
+            <div class="search d-flex ml-2">
+              <label
+                class="label-search d-flex"
+                :class="{
+                  'show-search': searchIsVisible,
+                  'hide-search': !searchIsVisible,
+                }"
+              >
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  v-model="searchText"
+                  @input="searchMemberInDB"
+                />
+                <span class="empty-btn">x</span>
+                <span class="search-btn">
+                  <i class="pi pi-search"></i>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+            class="filter-options"
+            :class="{ 'filter-options-shown': filterFormIsVissible }"
+          >
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-9">
+                  <div class="row">
+                    <div
+                      class="
+                        col-12 col-sm-6
+                        offset-sm-3 offset-md-0
+                        form-group
+                        inp
+                        w-100
+                      "
+                    >
+                      <!-- <div class="input-field"> -->
+
+                      <input
+                        type="text"
+                        class="input w-100 mb-n3"
+                        placeholder="Name"
+                        v-model="filter.name"
+                      />
+                      <!-- </div> -->
+                    </div>
+
+                    <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                      <input
+                        type="text"
+                        class="input w-100"
+                        placeholder="Phone Number"
+                        v-model="filter.phoneNumber"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row"></div>
+                </div>
+
+                <div class="col-md-3 d-flex flex-column align-items-center">
+                  <button class="apply-btn text-white" @click="applyFilter">
+                    Apply
+                  </button>
+                  <span class="mt-2">
+                    <a class="clear-link mr-2" @click="clearAll">Clear all</a>
+                    <span class="mx-2"
+                      ><i class="fas fa-circle" style="font-size: 4px"></i></span
+                    ><a class="hide-link ml-2" @click="hide">Hide</a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+    
+    <!-- <div > -->
+          <div class="container-fluid d-none d-md-block">
+            <div class="row t-header">
+              <div class="col-md-1">
+                <input
+                  type="checkbox"
+                  name="all"
+                  id="all"
+                  @change="markAllFirsttimer"
+                  :checked="checkedFirstTimer.length === churchMembers.length"
+                />
+                <!-- <Checkbox id="binary" v-model="sendToMysef" :binary="true"/> -->
+              </div>
+              <div class="small-text col-md-2 font-weight-bold">
+                NAME
+              </div>
+              <div class="small-text col-md-2 font-weight-bold">
+                PHONE NUMBER
+              </div>
+              <div class="small-text col-md-2 font-weight-bold">
+                SOURCE
+              </div>
+              <div class="small-text col-md-1 font-weight-bold">
+                INTERESTED
+              </div>
+              <div class="small-text col-md-1 font-weight-bold">
+                DATE
+              </div>
+              <div class="small-text col-md-1 font-weight-bold">
+                MOVEMENT
+              </div>
+              <div class="small-text col-md-1 font-weight-bold">
+                INTERACTION
+              </div>
+              <div class="small-text col-md-1 font-weight-bold">
+                ACTION
+              </div>
+            </div>
+          </div>
+        <div class="container-fluid">
+          <div class="row">
+            <loadingComponent :loading="loading" />
+            <div
+              class=" col-12 py-2 px-0 c-pointer tr-border-bottom hover"
+              v-for="person in searchMember"
+              :key="person.id"
+            >
+              <div class="row w-100" style="margin: 0">
+                <div
+                  class="col-md-1 d-flex d-md-block px-3 justify-content-end"
+                >
+                  <input
+                    type="checkbox"
+                    name=""
+                    id=""
+                    @change="check1item(person)"
+                    :checked="
+                      checkedFirstTimer.findIndex((i) => i.id === person.id) >= 0
+                    "
+                  />
+                  <!-- <Checkbox id="binary" v-model="item.check" :binary="true"/> -->
+                </div>
+
+                <div class="desc-head small-text col-md-2">
+                  <div class="mb-0 d-flex justify-content-between">
+                    <span
+                      class="
+                        text-dark
+                        font-weight-bold
+                        d-flex d-md-none
+                        fontIncrease
+                      "
+                      >Name</span
+                    >
+                    <div class="desc small-text text-right text-md-left">
+                        <router-link :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
+                          class="itemroute-color">
+                        {{ person.fullName
+                              ? person.fullName
+                              : `${person.firstName} ${person.lastName}` }}
+                        </router-link>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="desc-head col-md-2">
+                  <div class="d-flex justify-content-between">
+                    <span
+                      class="
+                        text-dark
+                        font-weight-bold
+                        d-flex d-md-none
+                        fontIncrease
+                      "
+                      >Phone Number</span
+                    >
+                    <div>
+                      <div class="desc small-text text-right text-md-left">
+                        <router-link :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
+                          class="itemroute-color">
+                        {{ person.phoneNumber }}
+                        </router-link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="desc-head small-text col-md-2">
+                  <div class="d-flex justify-content-between">
+                    <span
+                      class="
+                        text-dark
+                        font-weight-bold
+                        d-flex d-md-none
+                        fontIncrease
+                      "
+                      >Source</span
+                    >
+                    <div class="desc small-text text-right text-md-left">
+                        <router-link :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
+                          class="itemroute-color">
+                        {{ person.howDidYouAboutUsName }}
+                        </router-link>
+                      </div>
+                  </div>
+                </div>
+                
+                <div class="desc-head small-text col-md-1">
+                  <div class="mb-0 d-flex justify-content-between">
+                    <span
+                      class="
+                        text-dark
+                        font-weight-bold
+                        d-flex d-md-none
+                        fontIncrease
+                      "
+                      >Interested</span
+                    >
+                    <div class="desc small-text text-right text-md-left">
+                        <router-link :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
+                          class="itemroute-color">
+                        {{ person.interestedInJoining === "Not_Specified"
+                        ? "Not Sure"
+                        : person.interestedInJoining }}
+                        </router-link>
+                      </div>
+                  </div>
+                </div>
+                
+                <div class="desc-head small-text col-md-1">
+                  <div class="mb-0 d-flex justify-content-between">
+                    <span
+                      class="
+                        text-dark
+                        font-weight-bold
+                        d-flex d-md-none
+                        fontIncrease
+                      "
+                      >Date</span
+                    >
+                    <div class="desc small-text text-right text-md-left">
+                        <router-link :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
+                          class="itemroute-color">
+                        {{ moment
+                        .parseZone(
+                          new Date(person.date).toDateString(),
+                          "YYYY MM DD HH ZZ"
+                        )
+                        ._i.substr(4, 11) }}
+                        </router-link>
+                      </div>
+                  </div>
+                </div>
+                
+                <div class="desc-head small-text col-md-1">
+                  <div class="mb-0 d-flex justify-content-between">
+                    <span
+                      class="
+                        text-dark
+                        font-weight-bold
+                        d-flex d-md-none
+                        fontIncrease
+                      "
+                      >Movement</span
+                    >
+                    <div class="desc small-text text-right text-md-left">
+                        <router-link :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
+                          class="itemroute-color">
+                        {{ person.movement }}
+                        </router-link>
+                      </div>
+                  </div>
+                </div>
+                
+                <div class="desc-head small-text col-md-1">
+                  <div class="mb-0 d-flex justify-content-between">
+                    <span
+                      class="
+                        text-dark
+                        font-weight-bold
+                        d-flex d-md-none
+                        fontIncrease
+                      "
+                      >Interaction</span
+                    >
+                    <div class="desc small-text text-right text-md-left">
+                        <router-link :to="`/tenant/firsttimermanagement/${person.id}?memberType=0`"
+                          class="itemroute-color">
+                        {{ person.interactions }}
+                        </router-link>
+                      </div>
+                  </div>
+                </div>
+
+                <!-- <div class="small-text col-md-2 px-1">
+                  <p class="mb-0 d-flex justify-content-between">
+                    <span
+                      class="
+                        text-dark
+                        font-weight-bold
+                        d-flex d-md-none
+                        fontIncrease
+                      "
+                      >Donor</span
+                    >
+                    <span
+                      ><span class="primary-text c-pointer"
+                        ><router-link
+                          class="text-decoration-none fontIncrease"
+                          :to="{
+                            name: 'AddOffering',
+                            params: { offId: item.id },
+                          }"
+                          >{{ item.donor }}</router-link
+                        ></span
+                      ></span
+                    >
+                  </p>
+                </div> -->
+
+                <div class="col-md-1">
+                  <div>
+                    <div class="dropdown">
+                      <i
+                        class="fas fa-ellipsis-v cursor-pointer"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      ></i>
+                      <div
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        <a
+                          class="dropdown-item elipsis-items"
+                          @mouseover="toggle($event, person.id)"
+                          href="#"
+                        >
+                          Convert to member
+                        </a>
+
+                        <a
+                          class="dropdown-item elipsis-items"
+                          v-if="person.phoneNumber"
+                        >
+                          <router-link
+                            :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
+                            >Send SMS</router-link
+                          >
+                        </a>
+
+                        <a class="dropdown-item elipsis-items" v-if="person.email">
+                          <router-link
+                            :to="`/tenant/email/compose?phone=${person.email}`"
+                          >
+                            Send Email
+                          </router-link>
+                        </a>
+                        <a
+                          class="
+                            dropdown-item
+                            elipsis-items
+                            text-color
+                            cursor-pointer
+                          "
+                          href="#"
+                          @click.prevent="showConfirmModal(person.id)"
+                          >Delete</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!-- </div> -->
+
+
+         <!-- <div
+          class="col-md-12 col py-3"
+          v-if="
+            listOfOfferingItems.length === 0 &&
+            props.contributionTransactions.length !== 0 &&
+            !loading
+          "
+        >
+          <p class="text-danger d-flex justify-content-center">
+            Record not available in database
+          </p>
+        </div> -->
+        <!-- <div class="text-danger d-flex justify-content-center" v-else>No records found</div> -->
+
+        <div class="col-12">
+          <div class="table-footer">
+            <Pagination
+              @getcontent="getPeopleByPage"
+              :itemsCount="membersCount"
+              :totalItems="totalFirsttimersCount"
+              :currentPage="currentPage"
+            />
+          </div>
+        </div>
       </div>
-      <!-- tosin 1 -->
+    </div>
+    </div>
     </div>
 
     <OverlayPanel
@@ -484,6 +916,8 @@ export default {
   },
 
   setup() {
+    const showDashboard = ref(true)
+    const showFirstTimer = ref(false)
     const churchMembers = ref([]);
     const getFirstTimerSummary = ref({});
     const filter = ref({});
@@ -508,7 +942,6 @@ export default {
         .get("/api/People/GetFirsttimerSummary")
         .then((res) => {
           getFirstTimerSummary.value = res.data;
-          console.log(res.data);
         })
         .catch((err) => console.log(err));
     };
@@ -528,7 +961,6 @@ export default {
       axios
         .delete(`/api/People/DeleteOnePerson/${id}`)
         .then((res) => {
-          console.log(res);
           toast.add({
             severity: "success",
             summary: "Confirmed",
@@ -544,12 +976,11 @@ export default {
             .get("/api/People/GetFirsttimerSummary")
             .then((res) => {
               getFirstTimerSummary.value = res.data;
-              console.log(res.data);
             })
             .catch((err) => console.log(err));
         })
         .catch((err) => {
-          /*eslint no-undef: "warn"*/
+          /eslint no-undef: "warn"/
           NProgress.done();
           if (err.response.status === 400) {
             toast.add({
@@ -594,10 +1025,8 @@ export default {
     };
 
     const getFirstTimers = () => {
-      console.log(route, "route");
       axios.get("/api/People/FirstTimer").then((res) => {
         churchMembers.value = res.data;
-        console.log(churchMembers.value, "Al iz well");
       });
     };
     getFirstTimers();
@@ -621,7 +1050,6 @@ export default {
         .then((res) => {
           noRecords.value = true;
           filterResult.value = res.data;
-          console.log(filterResult.value);
         })
         .catch((err) => console.log(err));
     };
@@ -711,6 +1139,17 @@ filter.value.phoneNumber ="";
 
     // function to checkmark a single first timer
     const checkedFirstTimer = ref([]);
+
+    const  dashboard = () => {
+            showDashboard.value = true;
+            showFirstTimer.value = false;
+        }
+
+    const  firstTimerTable = () => {
+            showFirstTimer.value = true;
+            showDashboard.value = false;
+        }
+
     const check1item = (ft) => {
       const firstTimerIdx = checkedFirstTimer.value.findIndex(
         (i) => i.id === ft.id
@@ -720,7 +1159,6 @@ filter.value.phoneNumber ="";
       } else {
         checkedFirstTimer.value.splice(firstTimerIdx, 1);
       }
-      console.log(checkedFirstTimer.value, "it working");
     };
 
     // function to check all first timer
@@ -737,7 +1175,6 @@ filter.value.phoneNumber ="";
       } else {
         checkedFirstTimer.value = [];
       }
-      console.log(checkedFirstTimer.value, "God is Good");
     };
 
     // Function to delete first timer
@@ -748,13 +1185,10 @@ filter.value.phoneNumber ="";
     const display = ref(false);
     const deleteFirstTimer = () => {
       let dft = convert(checkedFirstTimer.value);
-      console.log(dft, "tosin");
       axios
         .post(`/api/People/DeletePeople`, dft)
         .then((res) => {
-          console.log(res.data, "God is awesome");
           let incomingRes = res.data.response;
-          console.log(incomingRes, "tosin");
           if (incomingRes.toString().toLowerCase().includes("all")) {
             toast.add({
               severity: "success",
@@ -763,7 +1197,6 @@ filter.value.phoneNumber ="";
               life: 4000,
             });
             churchMembers.value = churchMembers.value.filter((item) => {
-              console.log(churchMembers.value, "God is good");
               const y = checkedFirstTimer.value.findIndex(
                 (i) => i.id === item.id
               );
@@ -772,7 +1205,6 @@ filter.value.phoneNumber ="";
             });
           } else {
             let resArr = incomingRes.split("@");
-            console.log(resArr);
             toast.add({
               severity: "success",
               summary: "Confirmed",
@@ -786,7 +1218,6 @@ filter.value.phoneNumber ="";
                 });
               } else {
                 let IdArr = resArr[1].split(",");
-                console.log(IdArr);
                 churchMembers.value = churchMembers.value.filter((item) => {
                   const y = IdArr.findIndex((i) => i === item.id);
                   if (y >= 0) return false;
@@ -871,8 +1302,6 @@ filter.value.phoneNumber ="";
         let { data } = await axios.post(
           `/api/People/ConvertFirstTimerToMember?personId=${selectedPersonId.value}&membershipCategoryId=${id}`
         );
-        console.log(data);
-
         churchMembers.value = churchMembers.value.filter((i) => {
           return i.id !== selectedPersonId.value;
         });
@@ -926,9 +1355,16 @@ filter.value.phoneNumber ="";
       }
     };
 
-    const convertToMembers = async () => {};
+  
+    const setFirsttimer = (payload) => {
+      churchMembers.value = payload
+    }
 
     return {
+      dashboard,
+      firstTimerTable,
+      showDashboard,
+      showFirstTimer,
       churchMembers,
       filterFormIsVissible,
       toggleFilterFormVissibility,
@@ -959,7 +1395,6 @@ filter.value.phoneNumber ="";
       op,
       toggle,
       chooseCategory,
-      convertToMembers,
       selectedPersonId,
       totalFirsttimersCount,
       searchMemberInDB,
@@ -968,7 +1403,8 @@ filter.value.phoneNumber ="";
       loading,
       searchMember,
       clearAll,
-      hide
+      hide,
+      setFirsttimer
     };
   },
 };
@@ -978,6 +1414,67 @@ filter.value.phoneNumber ="";
 * {
   box-sizing: border-box;
   color: #02172e;
+}
+
+
+.baseline {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    position: relative;
+    border-radius: 10px;
+    height: 4px;
+    top: 5px;
+    left: 0px;
+    /* width: 35%; */
+    opacity: 1;
+}
+
+.botom{
+  border-bottom: 7px solid rgb(252, 248, 248);
+  border-radius: 2px;
+  position: relative;
+  /* border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px; */
+  
+  /* height: 4px; */
+}
+
+.hide-basetwo {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    position: absolute;
+    /* background-color: #33475b; */
+    /* color: #136acd" */
+    border-radius: 10px;
+    /* bottom: -2.5px; */
+    z-index: 175;
+    height: 4px;
+    top: 36px;
+    left: 0px;
+    width: 50%;
+    opacity: 0;
+}
+
+.hide-base {
+     transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    position: relative;
+    border-radius: 10px;
+    z-index: 175;
+    height: 4px;
+    top: 35px;
+    left: 0px;
+    opacity: 0;
+}
+.baselinetwo {
+    transition: all 150ms ease-in-out;
+    background-color: #136acd;
+    position: relative;
+    border-radius: 10px;
+    height: 4px;
+    top: 5px;
+    left: 0px;
+    opacity: 1;
 }
 
 .data-value a {
@@ -1277,6 +1774,16 @@ a {
     align-items: center;
   }
 
+   .botom {
+    border-bottom: 7px solid rgb(252, 248, 248);
+    border-radius: 2px;
+    position: relative;
+    display: flex;
+  }
+  .c-pointer {
+    cursor: pointer;
+    flex: 1;
+  } 
   .more {
     margin-right: 0;
   }
@@ -1362,8 +1869,9 @@ a {
 
 .t-header div {
   background: #dde2e6 0% 0% no-repeat padding-box;
-  font-size: 16px;
-  padding: 0.5rem 0;
+  font-size: 13px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .parent-desc.first {
   color: #8898aa;
@@ -1476,5 +1984,3 @@ a {
 }
 /* tosin */
 </style>
-
-

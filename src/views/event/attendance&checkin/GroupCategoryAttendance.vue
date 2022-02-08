@@ -192,7 +192,7 @@
           </div>
         </div>
         <div class="col-md-12 mb-3"></div>
-        <div class="row w-100">
+        <div class="row w-100" v-if="!route.query.fromBranch">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >

@@ -1,5 +1,5 @@
 <template>
-  <div class="my-con" @click="closeManualModalIfOpen">
+  <div class="my-con container-top" @click="closeManualModalIfOpen">
     <div class="header mt-2">
       <h3 class="header-text font-weight-bold">Add First timers</h3>
       <Toast />
@@ -37,7 +37,7 @@
               </div>
               <div class="input-field">
                 <label for="" class="label">Phone number</label>
-                <div class="d-flex flex-column">
+                <div class="d-flex flex-column widen">
                     <input
                     class="input form-control"
                     placeholder=""
@@ -83,7 +83,7 @@
               </div>
               <div class="input-field">
                 <label for="" class="label">Email</label>
-                  <div class="d-flex flex-column">
+                  <div class="d-flex flex-column widen">
                     <input
                     class="input form-control"
                     placeholder=""
@@ -107,7 +107,7 @@
 
                 <button
                   @click.prevent="selectEventAttended"
-                  class="form-control input dd small-text"
+                  class="form-control input dd small-text widen"
                 >
                   {{ selectedEventAttended ? selectedEventAttended.name : "Select service attended" }}
                   {{ newEvent.activity.date }}
@@ -202,7 +202,6 @@
               <div class="input-field">
                 <label for="" class="label">Birthday</label>
                 <div class="status-n-gender">
-                  <div class="date-picker">
                     <div class="cstm-select">
                       <div class="cs-select" style="width: 87px">
                         <Dropdown
@@ -235,18 +234,17 @@
                         />
                       </div>
                     </div>
-                  </div>
                 </div>
               </div>
               <div class="input-field">
                 <label for="" class="label">Choose contact owner</label>
-                <div class="input p-0 border-0">
+                <div class="input p-0 border-0 widen">
                   <SearchMembers v-bind:currentMember="firstTimersObj" @memberdetail="setContact"/>
                 </div>
               </div>
               <div class="input-field">
                 <label for="" class="label">Add to group</label>
-                <div class="p-2 border" style="width: 330px; margin: 4px 8px; border-radius: 3px">
+                <div class="p-2 border add-group">
                   <div v-for="(item, index) in firstTimerInGroup" :key='index'>
                     <div class="pt-1">{{ index + 1 }}. {{ item.name }}</div>
                   </div>
@@ -255,7 +253,7 @@
                 </div>
               </div>
             </div>
-            <div style="width: 225px">
+            <div style="width: 225px; margin: 0 auto">
               <ImageForm @pictureurl="setImageToUrl" />
             </div>
           </div>
@@ -281,8 +279,8 @@
           >
             <div class="inputs mt-3">
               <div class="input-field">
-                <div class="gender cstm-select">
-                  <div class="cs-select" style="width: 330px">
+                <div class="gender cstm-select widen">
+                  <div class="cs-select input-dropdown">
                     <Dropdown
                       v-model="selectedAboutUsSource"
                       :options="howDidYouAboutUs"
@@ -295,8 +293,8 @@
               </div>
               <div class="input-field">
                 <!-- <label for="" class="label">Events or Service Attended</label> -->
-                <div class="gender cstm-select">
-                  <div class="cs-select" style="width: 330px">
+                <div class="gender cstm-select widen">
+                  <div class="cs-select input-dropdown">
                     <Dropdown
                       v-model="selectedCommunicationMeans"
                       :options="comMeansArr"
@@ -308,8 +306,8 @@
               </div>
               <div class="input-field">
                 <!-- <label for="" class="label">Events or Service Attended</label> -->
-                <div class="gender cstm-select">
-                  <div class="cs-select" style="width: 330px">
+                <div class="gender cstm-select widen">
+                  <div class="cs-select input-dropdown">
                     <Dropdown
                       v-model="selectedJoinInterest"
                       :options="joinInterestArr"
@@ -321,8 +319,8 @@
               </div>
               <div class="input-field">
                 <!-- <label for="" class="label">Events or Service Attended</label> -->
-                <div class="gender cstm-select">
-                  <div class="cs-select" style="width: 330px">
+                <div class="gender cstm-select widen">
+                  <div class="cs-select input-dropdown">
                     <Dropdown
                       v-model="selectedVisitOption"
                       :options="wantVisitArr"
@@ -342,11 +340,11 @@
       
         <div class="inputs mt-2">
           <div class="submit-div">
-            <button class="action-btn cancel-btn btn" @click.prevent="onCancel">
+            <button class="default-btn cancel-btn btn ml-sm-3 mt-3" @click.prevent="onCancel">
               Cancel
             </button>
             <button
-                class="default-btn outline-none ml-3"
+                class="default-btn outline-none ml-sm-3 mt-3"
                 :class="{ 'btn-loading': loading }"
                 :disabled="loading"     
               >
@@ -357,7 +355,7 @@
                 <span>Save and add another</span>
                 <span></span>
               </button>
-            <button class="ml-3 submit-btn text-white btn" @click.prevent="saveAndRoute">
+            <button class="ml-sm-3 mt-3  submit-btn text-white btn" @click.prevent="saveAndRoute">
               Save
             </button>
           </div>
@@ -956,7 +954,7 @@ export default {
               validateEmail.value.classList.remove('is-invalid')
             } else {
               setTimeout(() => {
-                router.push(`/tenant/firsttimermanagement/${res.data.personID}`)
+                router.push(`/tenant/firsttimermanagement/${res.data.personID}?memberType=0`)
                 routeToFRM.value = false
               }, 2000)
             }
@@ -1482,7 +1480,7 @@ export default {
  @media (max-width: 620px) {
     .show-occ-tab {
       height: 144px;
-    }
+    }   
   }
 
 .submit-div {
@@ -1606,6 +1604,7 @@ export default {
 .manual-dd-icon {
   position: absolute;
   margin-right: 1rem;
+  margin-top: 16px;
 }
 
 .dd-search-con {
@@ -1621,14 +1620,37 @@ export default {
   border-top: none !important;
 }
 
+.add-group {
+  width: 330px; 
+  margin: 4px 8px; 
+  border-radius: 3px
+}
+
+.input-dropdown {
+  width: 330px
+}
+
 @media (max-width: 620px) {
   .submit-div {
     margin-left: 1em;
+    flex-direction: column-reverse;
   }
 
   .manual-dd-icon {
-    margin-right: -18rem;
-    margin-top: 2rem;
+    margin-top: 3rem;
+    right: 10px;
+  }
+
+  .widen {
+    width: 100%
+  }
+
+  .add-group {
+      width: 100%;
+    }
+
+  .input-dropdown {
+    width: 100%;
   }
 }
 

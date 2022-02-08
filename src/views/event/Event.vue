@@ -374,9 +374,9 @@
             </div>
             <div class="col-6 col-lg-3">
               <input
-                type="number"
+                type="text"
                 class="form-control"
-                v-model.number="item.amount"
+                v-model="item.amount"
                 placeholder="Enter Amount"
                 @input="sendAmount($event, index)"
               />
@@ -960,13 +960,23 @@
                   <label for="address" class="col-sm-3 text-sm-right col-form-label"
                     >Address</label
                   >
-                  <div class="col-sm-6 mb-4">
+                  <div class="col-sm-6">
                     <input
                       type="text"
                       v-model="firstTimersObj.address"
                       class="form-control input-first"
                       id="address"
                     />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="address" class="col-sm-3 text-sm-right col-form-label"
+                    >Contact owner</label
+                  >
+                  <div class="col-sm-6">
+                    <div class="p-0 border-0">
+                    <SearchMembers @memberdetail="setContact"/>
+                  </div>
                   </div>
                 </div>
 
@@ -1204,13 +1214,24 @@
                   <label for="address" class="col-sm-3 text-sm-right col-form-label"
                     >Address</label
                   >
-                  <div class="col-sm-6 mb-4">
+                  <div class="col-sm-6">
                     <input
                       type="text"
                       v-model="newConvertsObj.address"
                       class="form-control input-first"
                       id="address"
                     />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="address" class="col-sm-3 text-sm-right col-form-label"
+                    >Contact owner</label
+                  >
+                  <div class="col-sm-6">
+                    <div class="p-0 border-0">
+                    <SearchMembers @memberdetail="setContactNewConvert"/>
+                  </div>
                   </div>
                 </div>
 
@@ -1440,11 +1461,11 @@
                       </div>
                     </div>
 
-                    <div class="row mt-4">
-                      <div class="col-md-6 d-md-flex justify-content-end">
+                    <div class="row mt-4 d-flex justify-content-between">
+                      <div class="col-6">
                         <button class="default-btn" data-dismiss="modal">Cancel</button>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-6">
                         <button
                           class="default-btn primary-bg border-0 text-white"
                           data-dismiss="modal"
@@ -1562,23 +1583,19 @@
 </template>
 
 <script>
-// import { onMounted, ref } from "vue";
-// import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
 import store from "@/store/store.js"
-// import { useConfirm } from "primevue/useConfirm";
-
 import Toast from 'primevue/usetoast';
-
 import membershipService from "../../services/membership/membershipservice";
 import CurrencyConverter from "./CurrencyConverter"
 import Dropdown from 'primevue/dropdown';
 import CurrencyConverterService from '../../services/currency-converter/currencyConverter'
 import finish from "../../services/progressbar/progress";
+import SearchMembers from "../../components/membership/MembersSearch.vue"
 
 export default {
   components: {
-    CurrencyConverter, Dropdown, Toast
+    CurrencyConverter, Dropdown, Toast, SearchMembers
   },
   data() {
     return {
@@ -1938,10 +1955,14 @@ export default {
       let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
       let fromCurrencyRate = this.offeringItem[index].fromCurrencyRate
 
-      let amount = this.offeringItem[index].amount ? +this.offeringItem[index].amount : 0
+      let amount = this.offeringItem[index].amount.toString()
+      const removeCharacters = amount.replace(/[^0-9.]/g, "");
+      const toNumber = parseFloat(removeCharacters)
+
+      let amountToConvert = toNumber ? toNumber : 0
 
       try {
-        let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+        let result = await CurrencyConverterService.currencyConverter(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
         console.log(result)
         this.convertedAmount2[index] = result
       }
@@ -2610,12 +2631,17 @@ export default {
           }
           for (let index = 0; index < this.offeringItem.length; index++) {
             const i = this.offeringItem[index];
+
+            let amount = i.amount.toString()
+            const removeCharacters = amount.replace(/[^0-9.]/g, "");
+            const toNumber = parseFloat(removeCharacters)
+
             let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
             let fromCurrencyRate = i.fromCurrencyRate
-            let amount = i.amount ? +i.amount : 0
-            console.log(amount, fromCurrencyRate, toDestinationCurrencyRate)
+            let amountToConvert = toNumber ? +toNumber : 0
+            console.log(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
           try {
-            let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+            let result = await CurrencyConverterService.currencyConverter(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
             this.convertedAmount2.push(result)
             console.log(result, this.convertedAmount2)
           }
@@ -2766,6 +2792,10 @@ export default {
         }
     },
     async sendAmount (e, index) {
+      let amount = this.offeringItem[index].amount.toString()
+  
+      let removeCharacters = amount.replace(/[^0-9.]/g, "");
+      let toNumber = parseFloat(removeCharacters)
 
       this.currencyAmount = e.target.value
       this.currencyIndex = index
@@ -2774,12 +2804,12 @@ export default {
       let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
       let fromCurrencyRate = this.offeringItem[index].fromCurrencyRate
 
-      let amount = this.offeringItem[index].amount ? +this.offeringItem[index].amount : 0
+      let amountToConvert = toNumber ? toNumber : 0
 
-      console.log(amount, fromCurrencyRate, toDestinationCurrencyRate)
+      console.log(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
 
       try {
-        let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+        let result = await CurrencyConverterService.currencyConverter(amountToConvert, fromCurrencyRate, toDestinationCurrencyRate)
         console.log(result)
         this.convertedAmount2[index] = result
       }
@@ -2993,6 +3023,28 @@ export default {
                     console.log(error);
             }
         },
+        setContact (payload) {
+        if (!payload.email) {
+          this.$toast.add({
+            severity: "warn",
+            summary: "No email associate with the person",
+            detail: "This contact does not have any email, communicate with this person to create him as a user",
+            life: 15000,
+          });
+        }
+        this.firstTimersObj.contactOwnerId = payload.id
+      },
+      setContactNewConvert (payload) {
+        if (!payload.email) {
+          this.$toast.add({
+            severity: "warn",
+            summary: "No email associate with the person",
+            detail: "This contact does not have any email, communicate with this person to create him as a user",
+            life: 15000,
+          });
+        }
+        this.firstTimersObj.contactOwnerId = payload.id
+      }
         
   },
   async created() {
@@ -3092,11 +3144,6 @@ export default {
     },
     addContributionTotal() {
       if (this.convertedAmount2.length <= 0) return 0;
-      // if (this.convertedAmount.length === 1) return this.convertedAmount[0].amount;
-      // const amounts = this.offeringItem.map((i) => +i.amount);
-      // return amounts.reduce((a, b) => {
-      //   return (a || 0) + (b || 0);
-      // });
       return this.convertedAmount2.reduce((a, b) => {
         return +a + +b
       })
@@ -3847,5 +3894,11 @@ input.codeInput {
   .attendance-body.stretch {
     height: 135px;
   }
+}
+@media (max-width: 600px) {
+  .events {
+    margin-top: 2rem;
+  }
+
 }
 </style>

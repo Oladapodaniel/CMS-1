@@ -45,10 +45,10 @@
                  <div class="row g-3 align-items-center">
                         <div class="col-auto w-25">
                         </div>
-                        <div class="col-auto w-75 button-add">
+                        <div class="col-auto w-100 button-add">
                            <button type="button" class="btn btn-primary h-25 saveButton" style="float:right; margin-left:20px; border-radius:22px; font-size: 16px; font-weight: 600" @click="callButton">Save</button>
                            <!-- <button type="button" class="btn btn-secondary h-25 saveButton" style="float:right; margin-left:20px; border-radius:22px; font-size: 16px; font-weight: 600" @click="updateDefaultMessage">Save</button> -->
-                           <router-link to="/tenant/settings/defaultmessage"><button type="button" class="btn h-25 btn-outline-secondary" style="float:right; border-radius: 22px; font-size: 16px; font-weight: 600; outline: none; hover:none">Discard</button></router-link>
+                           <router-link to="/tenant/settings/defaultmessage"><button type="button" class="btn h-25 btn-outline-secondary discard mobileResp" style="float:right; border-radius: 22px; font-size: 16px; font-weight: 600; outline: none; hover:none">Discard</button></router-link>
                         </div> 
                 </div>
                  </div>
@@ -240,6 +240,16 @@ created(){
     .container{
     width: 100%
 }
+
+@media screen and (max-width: 375px) {
+    .mobileResp {
+        /* width: 94% !important; */
+        /* margin: auto;
+        margin-bottom: 20px; */
+        float: left;
+    }
+}
+
 .container h1{
     font-size: 25px;
     margin-top: 18px;

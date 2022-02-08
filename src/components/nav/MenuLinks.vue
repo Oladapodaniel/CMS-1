@@ -1,9 +1,12 @@
+
+
 <template>
   <div>
     <div class="nav-con">
       <div>
         <div class="nav" @click="linkClicked">
-          <div class="user">
+          <div class="w-100">
+            <div class="user">
             <img
               :src="churchLogo"
               v-if="churchLogo"
@@ -19,11 +22,11 @@
             <!-- <a  class="user-link">Grace... <span class="user-link-icon"> ></span></a> -->
             <a class="user-link"
               >{{ tenantDisplayName }}
-              <span class="user-link-icon"
+              <span class="user-link-icon c-pointer"
                 ><i class="pi pi-angle-right"></i></span
             ></a>
           </div>
-          <router-link to="/tenant" class="link routelink dashboard-link">
+          <router-link to="/tenant" class="link routelink dashboard-link" v-if="admin || basicUser || canAccessFirstTimers" >
             <img
               src="../../assets/dashboardlinks/dashboard-icon.svg"
               class="link-icon"
@@ -40,7 +43,7 @@
                 route.path.includes('first-time'),
             }"
           >
-            <span @click="togglePeopleDropDown">
+            <span @click="togglePeopleDropDown" v-if="admin || basicUser || groupLeader || canAccessFirstTimers">
               <img
                 src="../../assets/dashboardlinks/people.svg"
                 class="link-icon"
@@ -57,23 +60,23 @@
             </span>
           </a>
           <ul class="dd-list people-dd" :class="{ 'dd-hide-list': !peopleLinkDropped }">
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="admin || basicUser">
               <router-link class="dd-link-item routelink" :to="`/tenant/people`"
                 >Members</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="admin || basicUser || canAccessFirstTimers">
               <router-link class="dd-link-item routelink" :to="`/tenant/firsttimerslist`"
                 >First Timers</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="admin || basicUser || groupLeader">
               <router-link class="dd-link-item routelink" to="/tenant/peoplegroups"
                 >Groups</router-link
               >
             </li>
             <!-- Hidden -->
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="admin || basicUser">
               <router-link class="dd-link-item routelink" :to="{ name: 'Family' }">Families</router-link>
             </li>
           </ul>
@@ -84,8 +87,9 @@
             :class="{
               'router-link-exact-active': route.path.includes('communication'),
             }"
+            
           >
-            <span @click="toggleCommDropDown">
+            <span @click="toggleCommDropDown" v-if="admin || basicUser">
               <img
                 src="../../assets/dashboardlinks/com-icon.svg"
                 class="link-icon comm-link-icon"
@@ -118,7 +122,7 @@
             <!-- <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/whatsapp">Whatsapp</router-link>
             </li> -->
-            <li class="dd-list-item" >
+            <li class="dd-list-item" v-if="false">
               <router-link class="dd-link-item routelink" to="/tenant/Voice">Voice</router-link>
             </li>
           </ul>
@@ -130,7 +134,7 @@
               'router-link-exact-active': route.path.includes('/tenant/event'),
             }"
           >
-            <span @click="toggleEventsDropDown">
+            <span @click="toggleEventsDropDown" v-if="admin || basicUser">
               <img
                 src="../../assets/dashboardlinks/events-icon.svg"
                 class="link-icon"
@@ -173,9 +177,10 @@
             }"
 
           >
-            <span @click="toggleAccDropDown">
+            <span @click="toggleAccDropDown" v-if="admin || financialAccount">
               <img
-                src="../../assets/dashboardlinks/acc-icon.svg"
+                src="../../assets/dashboardlinks/acc-icon.svg
+                "
                 class="link-icon"
                 alt=""
               />
@@ -225,10 +230,73 @@
               >
             </li> -->
           </ul>
+          <!-- multiBranching -->
+            <a
+            class="link dd"
+            :class="{
+              'router-link-exact-active': route.path.includes('/tenant/event'),
+            }"
+          >
+            <span @click="toggleBranchDropDown" v-if="admin || basicUser">
+              <img
+                src="../../assets/dashboardlinks/branches.svg"
+                class="link-icon branch"
+                alt=""
+              />
+              <span class="drop-link"
+                >Branch
+                <span class="user-link-icon">
+                  <i
+                    class="pi pi-angle-up more-icon"
+                    :class="{ 'tbb-icon-rotate': branchLinkDropped }"
+                  ></i></span
+              ></span>
+            </span>
+          </a>
+          <ul
+            class="dd-list branch-list"
+            :class="{ 'dd-hide-list': !branchLinkDropped }"
+          >
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" :to="`/tenant/branch/branchsummary`"
+                >Dashboard</router-link
+              >
+            </li>
+            <li class="dd-list-item" v-if="admin || basicUser">
+              <router-link class="dd-link-item routelink" :to="`/tenant/branch/branch_members`"
+                >People</router-link
+              >
+            </li>
+            <li class="dd-list-item" v-if="false">
+              <router-link class="dd-link-item routelink" :to="`/tenant/firsttimerslist`"
+                >FirstTimer</router-link
+              >
+            </li>
+            <li class="dd-list-item" v-if="false">
+              <router-link class="dd-link-item routelink" :to="`/tenant/events`"
+                >Communication</router-link
+              >
+            </li>
+            <li class="dd-list-item" v-if="admin || basicUser">
+              <router-link class="dd-link-item routelink" to="/tenant/branch/branch_attendance"
+                >Attendance</router-link
+              >
+            </li>
+            <li class="dd-list-item" v-if="admin || basicUser">
+              <router-link class="dd-link-item routelink" to="/tenant/branch/branch_transactions"
+                >Financial</router-link
+              >
+            </li>
+            <li class="dd-list-item" v-if="admin || basicUser">
+              <router-link class="dd-link-item routelink" to="/tenant/branch/branch_report"
+                >Report</router-link
+              >
+            </li>
+          </ul>
 
           <!-- Hidden -->
           <!-- <router-link to="tenant/reports"> -->
-          <a class="link routelink" @click="goToReport">
+          <a class="link routelink" @click="goToReport" v-if="admin || basicUser || report">
             <img
               src="../../assets/dashboardlinks/reports-icon.svg"
               class="link-icon"
@@ -238,8 +306,18 @@
             Reports
           </a>
           <!-- </router-link> -->
+          <a v-if="followup"  class="link routelink">
+                <router-link class="dd-link-item routelink" to="/tenant/followup">
+                <img
+                  src="../../assets/dashboardlinks/follow-up-icon.svg"
+                  class="link-icon"
+                  alt=""
+                />
+                Follow up
+                </router-link>
+              </a>
 
-          <div>
+          <div v-if="admin || basicUser || mobileAdmin">
             <div>
               <p @click="showMore" class="more-tab">
                 <span>{{ dropDownText }}...</span>
@@ -252,14 +330,16 @@
               </p>
             </div>
             <div class="more-links" :class="{ 'hide-more-links': moreShown }">
-              <a v-if="false"  class="link follow-up routelink">
+              <!-- <a v-if="followup"  class="link follow-up routelink">
+                <router-link class="dd-link-item routelink" to="/tenant/followup">
                 <img
                   src="../../assets/dashboardlinks/follow-up-icon.svg"
                   class="link-icon"
                   alt=""
                 />
                 Follow up
-              </a>
+                </router-link>
+              </a> -->
 
               <router-link  to="/tenant/social" class="link routelink text-decoration-none">
                 <img
@@ -287,26 +367,54 @@
                 />
                 Media & Monetization
               </a>
-
-              <a v-if="false"  class="link routelink">
+<!-- /tenant/archivedpeople -->
+              <router-link v-if="false"  to="" class="link routelink text-decoration-none">
                 <img
-                  src="../../assets/dashboardlinks/branches.svg"
+                  src="../../assets/dashboardlinks/people.svg"
                   class="link-icon"
                   alt=""
                 />
-                Branches
-              </a>
+                Archived People
+              </router-link>
             </div>
           </div>
-          <hr class="hr" />
+        
+        
+          </div>
+          <div class="w-100 align-self-end">
+            <hr class="hr" />
+            <router-link class="text-dark" :to="basicUser ? '/tenant/settings/profile' : '/tenant/settings'" v-if="admin || basicUser"> 
+              <div class="link">
+                Settings
+              </div>
+            </router-link>
+            <div class="link" @click="logout">Logout</div>
+          </div>
 
-          <router-link class="link routelink" to="/tenant/settings"> Settings </router-link>
-          <hr class="hr" />
-          <a href="https://churchplus.azurewebsites.net/Account/LogOn" target="_a" class="link routelink">Visit ChurchPlus Classic</a>
-          <div class="link" @click="logout">Logout</div>
+
+         
+          
 
           <!-- Hidden -->
           <a class="link routelink" v-if="false"> Integration </a>
+          <!-- <OverlayPanel ref="flyOverRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
+              <div class="container-fluid p-0 my-3" >
+                <router-link class="text-dark" to="/tenant/settings"> 
+                <div class="row py-2 px-3 hover-flyover" @click="closeOverlay">
+                  Settings
+                  
+                </div>
+                </router-link>
+                
+                <a href="https://churchplus.azurewebsites.net/Account/LogOn" target="_a" class="text-dark">
+                <div class="row py-2 px-3 hover-flyover" @click="closeOverlay">
+                  
+                  Visit ChurchPlus Classic
+                  
+                </div>
+                </a>
+              </div>
+        </OverlayPanel> -->
         </div>
       </div>
     </div>
@@ -320,12 +428,33 @@ import store from "@/store/store";
 import axios from "@/gateway/backendapi";
 import { useRouter } from 'vue-router'
 import setupService from '../../services/setup/setupservice';
+import OverlayPanel from 'primevue/overlaypanel';
 export default {
+  components: {
+    OverlayPanel
+  },
   setup(props, { emit }) {
     const route = useRoute();
     const router = useRouter()
     const moreShown = ref(false);
     const churchLogo = ref("");
+    // const flyOverRef = ref(false)
+    const roleOfCurrentUser = computed(() => {
+      if (!localStorage.getItem('roles')) return []
+      return JSON.parse(localStorage.getItem('roles'))
+    })
+
+    const admin = ref(roleOfCurrentUser.value.some(i => i.toLowerCase() === 'admin'))
+    const followup = ref(roleOfCurrentUser.value.some(i => i.toLowerCase() === 'followup'))
+    const basicUser = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'basicuser'))
+    const financialAccount = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'financialaccount'))
+    const mobileAdmin = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'mobileadmin'))
+    const report = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'reports'))
+    const groupLeader = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'groupleader'))
+    const canAccessFirstTimers = ref(!admin.value && roleOfCurrentUser.value.some(i => i.toLowerCase() === 'canaccessfirsttimers'))
+    
+
+
     const showMore = () => {
       moreShown.value = !moreShown.value;
     };
@@ -336,6 +465,7 @@ export default {
       commLinkDropped.value = false;
       accLinkDropped.value = false;
       eventsLinkDropped.value = false;
+      branchLinkDropped.value = false
     };
 
     const commLinkDropped = ref(false);
@@ -344,11 +474,21 @@ export default {
       peopleLinkDropped.value = false;
       eventsLinkDropped.value = false;
       accLinkDropped.value = false;
+      branchLinkDropped.value = false
     };
 
     const eventsLinkDropped = ref(false);
     const toggleEventsDropDown = () => {
       eventsLinkDropped.value = !eventsLinkDropped.value;
+      commLinkDropped.value = false;
+      accLinkDropped.value = false;
+      peopleLinkDropped.value = false;
+      branchLinkDropped.value = false
+    };
+
+     const branchLinkDropped = ref(false);
+      const toggleBranchDropDown = () => {
+      branchLinkDropped.value = !branchLinkDropped.value;
       commLinkDropped.value = false;
       accLinkDropped.value = false;
       peopleLinkDropped.value = false;
@@ -360,6 +500,7 @@ export default {
       commLinkDropped.value = false;
       eventsLinkDropped.value = false;
       peopleLinkDropped.value = false;
+      branchLinkDropped.value = false
     };
 
     const dropDownText = computed(() => {
@@ -368,18 +509,32 @@ export default {
 
     const tenantInfo = ref({});
 
-    if (!store.getters.currentUser || !store.getters.currentUser.churchName) {
-      axios
-        .get("/dashboard")
-        .then((res) => {
-          tenantInfo.value = res.data;
-          console.log(res.data)
-        })
-        .catch((err) => console.log(err.respone));
-    } else {
-      tenantInfo.value.churchName = store.getters.currentUser.churchName;
-      tenantInfo.value.tenantId = store.getters.currentUser.tenantId;
+    const getChurchProfile = async() => {
+            try {
+                let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantInfo.value.tenantId}`)
+                churchLogo.value = res.data.returnObject.logo
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
+    const currentUser = () => {
+      if (!store.getters.currentUser || !store.getters.currentUser.churchName) {
+        axios
+          .get("/api/Membership/GetCurrentSignedInUser")
+          .then((res) => {
+            tenantInfo.value = res.data;
+            getChurchProfile()
+          })
+          .catch((err) => console.log(err.respone));
+      } else {
+        tenantInfo.value.churchName = store.getters.currentUser.churchName;
+        tenantInfo.value.tenantId = store.getters.currentUser.tenantId;
+        getChurchProfile()
+      }
     }
+    currentUser()
 
     const tenantDisplayName = computed(() => {
       if (!tenantInfo.value.churchName) return "";
@@ -396,28 +551,19 @@ export default {
       }
     }
 
-    const getChurchProfile = async() => {
-            try {
-                let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantInfo.value.tenantId}`)
-                console.log(res)
-                churchLogo.value = res.data.returnObject.logo
-            }
-            catch (err) {
-                console.log(err)
-            }
-        }
-        getChurchProfile()
-
     const logout = () => {
       localStorage.clear()
       router.push('/')
       store.dispatch('clearCurrentUser', {})
+      store.dispatch('groups/clearGroup')
+      store.dispatch('membership/clearMember')
       setupService.clearStore();
     }
 
     const goToReport = () => {
       router.push('/tenant/reports')
     }
+    
 
     return {
       route,
@@ -432,11 +578,22 @@ export default {
       toggleAccDropDown,
       eventsLinkDropped,
       toggleEventsDropDown,
+      toggleBranchDropDown,
       tenantDisplayName,
       linkClicked,
       churchLogo,
       logout,
-      goToReport
+      goToReport,
+      branchLinkDropped,
+      roleOfCurrentUser,
+      followup,
+      admin,
+      basicUser,
+      financialAccount,
+      mobileAdmin,
+      report,
+      groupLeader,
+      canAccessFirstTimers
     };
   },
 };
@@ -456,7 +613,7 @@ export default {
 
 .nav {
   display: flex;
-  flex-direction: column;
+  flex-direction: inherit;
   padding: 8px 20px 24px 4px;
   background: #ebeff4;
   z-index: 100;
@@ -512,10 +669,15 @@ export default {
   padding-right: 10px;
 }
 
+.link-icon.branch {
+  opacity: .6;
+}
+
 .link-image {
-  width: 40px;
-  height: 23px;
+  width: 25px;
+  height: 24px;
   padding-right: 0;
+  object-fit: cover;
 }
 
 .hr {
@@ -615,6 +777,10 @@ export default {
   height: 90px;
 }
 
+.branch-list {
+      height: 217px;
+}
+
 .acc-list {
   height: 168px;
 }
@@ -637,7 +803,7 @@ export default {
 .dd-link-item {
   color: #02172e;
   text-decoration: none;
-  opacity: 0.5;
+  /* opacity: 0.5; */
 }
 
 .comm-link-icon {
@@ -654,5 +820,17 @@ export default {
   /* .nav .link {
     opacity: 1;
   } */
+}
+
+/* .hover-flyover:hover {
+    background: rgba(202, 202, 202, 0.356);
+    cursor: pointer;
+    text-decoration: none;
+} */
+
+.push-link-down {
+    position: relative;
+    left: 0;
+    top: 27em;
 }
 </style>

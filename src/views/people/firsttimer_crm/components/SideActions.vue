@@ -20,29 +20,53 @@
                 <div><i class="pi pi-pencil uniform-primary-color c-pointer" @click="editContactName"></i></div>
             </div>
         </div>
-        <div class="row d-flex justify-content-center mt-5">
-            <div @click="openNoteEditor" class="c-pointer">
-                <div class="icon-bg" v-tooltip.top="'Create a note'"><i class="pi pi-user-edit"></i></div>
-                <div>Note</div>
+        <!-- <div class="d-block d-sm-none">
+            <div class="row  d-flex justify-content-center mt-5">
+                <div @click="toggleNoteModal" class="c-pointer">
+                    <div class="icon-bg" v-tooltip.top="'Create a note'"><i class="pi pi-user-edit"></i></div>
+                    <div>Note</div>
+                </div>
+                <div class="ml-4" @click="toggleEmailModal">
+                    <div class="icon-bg c-pointer" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
+                    <div>Email</div>
+                </div>
+                <div class="ml-4 c-pointer"  @click="toggleSmsModal">
+                    <div class="icon-bg" v-tooltip.top="'Send an sms'"><i class="pi pi-phone"></i></div>
+                    <div>SMS</div>
+                </div>
+                <div class="ml-4 c-pointer" @click="toggleTaskModal">
+                    <div class="icon-bg" v-tooltip.top="'Create a task'"><i class="pi pi-calendar-plus"></i></div>
+                    <div>Task</div>
+                </div>
+                <div class="ml-4 c-pointer" v-tooltip.top="'Log a call, email'" @click="toggleLogModal" aria:haspopup="true" aria-controls="overlay_panel">
+                    <div class="icon-bg"><i class="pi pi-plus"></i></div>
+                    <div>Log</div>
+                </div>
             </div>
-            <div class="ml-4" @click="openEmailModal">
-                <div class="icon-bg c-pointer" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
-                <div>Email</div>
+        </div> -->
+            <div class="row  d-flex justify-content-center mt-5">
+                <div @click="openNoteEditor" class="c-pointer">
+                    <div class="icon-bg" v-tooltip.top="'Create a note'"><i class="pi pi-user-edit"></i></div>
+                    <div>Note</div>
+                </div>
+                <div class="ml-4" @click="openEmailModal">
+                    <div class="icon-bg c-pointer" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
+                    <div>Email</div>
+                </div>
+                <!-- @click="call" -->
+                <div class="ml-4 c-pointer"  @click="toggleCallSmsPane($event)">
+                    <div class="icon-bg" v-tooltip.top="'Send an sms'"><i class="pi pi-phone"></i></div>
+                    <div>SMS</div>
+                </div>
+                <div class="ml-4 c-pointer" @click="openTaskEditor">
+                    <div class="icon-bg" v-tooltip.top="'Create a task'"><i class="pi pi-calendar-plus"></i></div>
+                    <div>Task</div>
+                </div>
+                <div class="ml-4 c-pointer" v-tooltip.top="'Log a call, email'" @click="toggleLog" aria:haspopup="true" aria-controls="overlay_panel">
+                    <div class="icon-bg"><i class="pi pi-plus"></i></div>
+                    <div>Log</div>
+                </div>
             </div>
-            <!-- @click="call" -->
-            <div class="ml-4 c-pointer"  @click="toggleCallSmsPane($event)">
-                <div class="icon-bg" v-tooltip.top="'Send an sms'"><i class="pi pi-phone"></i></div>
-                <div>SMS</div>
-            </div>
-            <div class="ml-4 c-pointer" @click="openTaskEditor">
-                <div class="icon-bg" v-tooltip.top="'Create a task'"><i class="pi pi-calendar-plus"></i></div>
-                <div>Task</div>
-            </div>
-            <div class="ml-4 c-pointer" v-tooltip.top="'Log a call, email'" @click="toggleLog" aria:haspopup="true" aria-controls="overlay_panel">
-                <div class="icon-bg"><i class="pi pi-plus"></i></div>
-                <div>Log</div>
-            </div>
-        </div>
     </div>
     <hr class="mt-4"/>
     <div class="container mt-4">
@@ -51,7 +75,7 @@
                 <i class="pi pi-angle-up uniform-primary-color c-pointer" :class="{ 'unroll-icon' : !contactIcon, 'roll-icon' : contactIcon }" @click="toggleContactIcon"></i>&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-weight-700">About This Contact</span>
             </div>
         </div>
-        <div class="row" :class="{ 'hide-contact' : !contactIcon, 'show-contact' : contactIcon }">
+        <div class="row" :class="{ 'hide-contact' : !contactIcon, 'show-contact' : contactIcon && route.query.memberType == 0, 'reduce-contact-height' : contactIcon && route.query.memberType == 1 }">
             <div class="col-12">
             <div class="row mt-4">
                 <div class="col-12 label-text">Email</div>
@@ -71,52 +95,17 @@
                         </div>
                 </div>
             </div>
-            <!-- <div class="row" @mouseover="toggleHoverPhone" @mouseleave="OutHoverPhone">
-                <div class="col-12 mt-4 label-text">Phone Number</div>
-                <div class="col-12 ml-2 mt-3" v-if="!hoverPhone">{{ personDetails.phoneNumber }}</div>
-                <div v-else class="col-12 mt-2">
-                    <input type="text" class="form-control phone-input" @blur="OutHoverPhone" v-model="personDetails.phoneNumber"/>
-                </div>
-                
-            </div> -->
+            
             <div class="row">
                 <div class="col-12 mt-4 label-text">Contact owner</div>
                 <div class="col-12 mt-2">
-                    <!-- <Contacts /> -->
-                    <!-- <Dropdown v-model="selectedContact" :options="contacts" :filter="true" class="w-100 phone-input" optionLabel="firstName" placeholder="Select Contact" /> -->
-                    <!-- <Dropdown v-model="selectedContact" :options="contacts" optionLabel="firstName" :filter="true" placeholder="Select a contact" :showClear="false" class="w-100 phone-input" @change="updateOwner">
-                        <template #value="slotProps">
-                            <div class="country-item country-item-value" v-if="slotProps.value">
-
-                                <div>{{slotProps.value.firstName}} {{slotProps.value.lastName}}</div>
-                            </div>
-                            <span v-else>
-                                {{slotProps.placeholder}}
-                            </span>
-                        </template>
-                        <template #option="slotProps">
-                            <div class="country-item">
-                             
-                                <div>{{slotProps.option.firstName}} {{slotProps.option.lastName}}</div>
-                            </div>
-                        </template>
-                    </Dropdown> -->
                     <SearchMember v-bind:currentMember="selectedContact" @memberdetail="updateOwner" :stylesidebarinput="true"/>
                 </div>
-                <!-- <div class="col-5 align-self-center">
-                    <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
-                </div> -->
             </div>
-            <!-- <div class="row">
-                <div class="col-12 mt-4 label-text">Last contacted</div>
-                <div class="col-12 mt-2">
-                    12/05/2012 11:59 PM GMT+1
-                </div>
-            </div> -->
-            <div class="row">
+
+            <div class="row" v-if="route.query.memberType == 0">
                 <div class="col-12 mt-4 label-text">Lifecycle stage</div>
                 <div class="col-12">
-                    <!-- <Dropdown v-model="selectedLifeCycle" :options="lifeCycle" class="w-100 phone-input" optionLabel="name" placeholder="Select Contact" @change="updateLifeCycle"/> -->
                     <div class="dropdown">
                         <div  class="phone-input form-control d-flex justify-content-between c-pointer"
                                 id="dropdownMenuButton"
@@ -146,7 +135,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" v-if="route.query.memberType == 0">
                 <div class="col-12 label-text mt-4">Lead Status</div>
                 <div class="col-12 mt-2">
                     <Dropdown v-model="selectedLeadStatus" :filter="false" :options="leadStatus" class="w-100 phone-input" optionLabel="name" placeholder="Select status" @change="updateLeadStatus" />
@@ -188,8 +177,8 @@
                             </div>
                 
                     </div>
-                    <div class="col-12 mt-4 label-text">Event of service attended</div>
-                    <div class="col-12 mt-2">
+                    <div class="col-12 mt-4 label-text" v-if="route.query.memberType == 0">Event of service attended</div>
+                    <div class="col-12 mt-2" v-if="route.query.memberType == 0">
                         <div class="dropdown">
                             <div class="cursor-pointer phone-input d-flex justify-content-between" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div>{{ Object.keys(selectedEventAttended).length > 0 ? selectedEventAttended.name : personDetails.activityID && eventsAttended.length > 0 ? eventsAttended.find(i => {
@@ -243,7 +232,7 @@
         </div>
     </div>
     <div class="container">
-        <div class="row">
+        <div class="row" v-if="route.query.memberType == 0">
             <div class="col-12 mt-4 font-weight-700">
                 <i class="pi pi-angle-up uniform-primary-color c-pointer" :class="{ 'unroll-icon' : !insightIcon, 'roll-icon' : insightIcon }" @click="toggleInsightIcon"></i>&nbsp;&nbsp;&nbsp;&nbsp;Insights
             </div>
@@ -269,6 +258,8 @@
             </div>
 
             <!-- <div class="cancel-btn btn-btn col-2 offset-3 ml-3 p-2 mt-3" @click="cancelTaskEdit">Cancel</div> -->
+        </div>
+        <div class="row">
             <div class="p-2 offset-3 col-6 mt-3 save-btn btn-btn c-pointer" @click="editBasicDetails">Update</div>
         </div>
     </div>
@@ -371,7 +362,7 @@
         </OverlayPanel>
 
         <!-- Log Pane -->
-        <Dialog :header="'Log ' + selectedLog.value" v-model:visible="displayLogPane" :style="{width: '50vw'}" :position="position" :modal="true">
+        <Dialog :header="'Log ' + selectedLog.value" v-model:visible="displayLogPane" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="position" :modal="true">
             <!-- style="height: 480px" -->
            <div class="container-fluid">
                <div class="row">
@@ -434,7 +425,7 @@
         </Dialog>
        
         <!-- SMS Pane -->
-        <Dialog header="Send SMS" v-model:visible="displaySMSPane" :style="{width: '50vw'}" :position="position" :modal="true">
+        <Dialog header="Send SMS" v-model:visible="displaySMSPane" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="position" :modal="true">
            <div class="container-fluid">
                <div class="row mt-3">
                    <div class="p-0 col-md-12">
@@ -543,7 +534,7 @@ export default {
     directives: {
         'tooltip': Tooltip
     },
-    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog", "allcontact","updatelogtoview", "displayanim"],
+    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog", "allcontact","updatelogtoview", "displayanim", ],
     props: ["personDetails", "smsLog", "activityType"],
     setup (props, { emit }) {
         // const confirm = useConfirm()
@@ -551,7 +542,7 @@ export default {
         const route = useRoute()
         const store = useStore()
         const selectedContact = ref({})
-        const contacts = ref([])
+        // const contacts = ref([])
         const lifeCycle = ref([])
         const selectedLifeCycle = ref({})
         const leadStatus = ref(frmservice.leadStatus())
@@ -705,6 +696,10 @@ export default {
             callDropDown.value.toggle(event);
         }
 
+        const innerWidth = computed(() => {
+            return window.innerWidth;
+        })
+
         const toggleLog = (event) => {
             logDropDown.value.toggle(event);
 
@@ -726,6 +721,7 @@ export default {
                 toggleSMSPane()
             }
         }
+        
 
         const toggleSMSPane = () => {
             callDropDown.value.hide();
@@ -871,16 +867,17 @@ export default {
             outcomeRef.value.hide()
         }
 
-        const getMembers = async () => {
-          try {
-            const { data } = await axios.get('/api/People/GetPeopleBasicInfo');
-            contacts.value = data;
-            emit('allcontact', data)
-          } catch (error) {
-            console.log(error);
-          }
-        };
-        getMembers();
+        // const getMembers = async () => {
+        //   try {
+        //     const { data } = await axios.get('/api/People/GetPeopleBasicInfo');
+        //     // contacts.value = data;
+        //     // console.log(data)
+        //     emit('allcontact', data)
+        //   } catch (error) {
+        //     console.log(error);
+        //   }
+        // };
+        // getMembers();
 
         const updateOwner = async(payload) => {
             const body = {
@@ -902,7 +899,7 @@ export default {
             try {
                 let res = await frmservice.getLifeCycle()
                 console.log(res)
-                lifeCycle.value = res.returnObject
+                lifeCycle.value = res.returnObject.sort((a, b) => a.order - b.order);
             }
             catch (err) {
                 console.log(err)
@@ -943,8 +940,18 @@ export default {
                 selectedLifeCycle.value = lifeCycle.value.find(i => i.id === props.personDetails.firstTimerCycleStageID)
             }
             
-            if (props.personDetails && contacts.value.length > 0) {
-                selectedContact.value = contacts.value.find(i => i.id === props.personDetails.contactOwnerID)
+            if (props.personDetails && route.query.memberType == 1) {
+                selectedContact.value = {
+                    name: props.personDetails.followupPersonName,
+                    id: props.personDetails.followupPersonID
+                }
+            }
+            
+            if (props.personDetails && route.query.memberType == 0) {
+                selectedContact.value = {
+                    name: props.personDetails.followUpPersonName,
+                    id: props.personDetails.contactOwnerID
+                }
             }
 
             if (props.personDetails && leadStatus.value.length > 0) {
@@ -987,7 +994,8 @@ export default {
         }
 
         const editBasicDetails = async() => {
-            let payload = {
+            if (route.query.memberType == 0) {
+                let payload = {
                 personId: route.params.personId,
                 email: props.personDetails.email,
                 firstName: props.personDetails.firstName,
@@ -1035,6 +1043,45 @@ export default {
             editEmailRef.value.hide();
             phoneRef.value.hide();
             addressRef.value.hide();
+            } else {
+                const formData = new FormData()
+                formData.append("firstName",props.personDetails.firstName)
+                formData.append("lastName",props.personDetails.lastName)
+                formData.append("mobilePhone",props.personDetails.phoneNumber)
+                formData.append("email",props.personDetails.email)
+                formData.append("dayOfBirth",selectedBirthday.value ? selectedBirthday.value : props.personDetails.birthday)
+                formData.append("monthOfBirth", selectedBirthMonth.value ? month.value.findIndex(i => i == selectedBirthMonth.value) + 1 : props.personDetails.birthMonth)
+                formData.append("yearOfBirth", selectedBirthYear.value ? selectedBirthYear.value : props.personDetails.birthYear)
+                formData.append("homeAddress", props.personDetails.address)
+                formData.append("followupPersonID", props.personDetails.followupPersonID)
+                formData.append("genderID", selectedGender.value && Object.keys(selectedGender.value).length > 0 ? selectedGender.value.id : props.personDetails.genderId)
+                // lastName: toghgr
+                // picture: 
+                // mobilePhone: 0890344443
+                // email: fkfmkk@de,m,f.com
+                // occupation: 
+                // dayOfBirth: 27
+                // monthOfBirth: 0
+                // yearOfBirth: 0
+                // occupation: 
+                // yearOfWedding: 0
+                // monthOfWedding: 0
+                // dayOfWedding: 0
+                // peopleClassificationID: 
+                // personGroups: 
+                // homeAddress: 
+                // maritalStatusID: 
+                // genderID: 1
+                // ageGroupID: 
+                // followupPersonID: 00000000-0000-0000-0000-000000000000
+
+                try {
+                    let { data } = await axios.put(`/api/People/UpdatePerson/${route.params.personId}`, formData)
+                    console.log(data)
+                } catch (err) {
+                    console.log(err)
+                }
+            }
         }
         
         watchEffect(() => {
@@ -1254,10 +1301,9 @@ export default {
             }
         }
 
-
         return {
             selectedContact,
-            contacts,
+            // contacts,
             lifeCycle,
             selectedLifeCycle,
             selectedLeadStatus,
@@ -1367,7 +1413,10 @@ export default {
             senderIdRef,
             saveSenderId,
             requestbtn,
-            tenantId
+            tenantId,
+            route,
+            window,
+            innerWidth
         }
             
     }
@@ -1500,6 +1549,13 @@ export default {
     transition: all 0.5s ease-in-out;
     /* overflow: hidden; */
 }
+
+.reduce-contact-height {
+    height: 296px;
+    transition: all 0.5s ease-in-out;
+    /* overflow: hidden; */
+}
+
 
 .dropdown-menu {
     max-height: 300px;

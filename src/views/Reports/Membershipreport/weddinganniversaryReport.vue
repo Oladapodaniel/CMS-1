@@ -199,7 +199,8 @@
                   class="small-text text-capitalize text-nowrap font-weight-bold"
                   style="border-bottom: 0; font-size:medium"
                 >
-                  <th scope="col">Name</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
                   <th scope="col">Wedding Day</th>
                   <th scope="col">Mobile Phone</th>
                   <th scope="col">Email</th>
@@ -215,7 +216,8 @@
                   v-for="(anniversary, index) in weddingAnniversary"
                   :key="index"
                 >
-                  <td>{{ anniversary.name }}</td>
+                  <td>{{ anniversary.FirstName }}</td>
+                  <td>{{ anniversary.LastName }}</td>
                   <td>{{ formatDate(anniversary.weddingDay) }}</td>
                   <td>{{ anniversary.mobilePhone }}</td>
                   <td>{{ anniversary.email }}</td>
@@ -272,7 +274,7 @@ export default {
     const fileName = ref("");
     // const bookTypeList = ref(["xlsx", "csv", "txt"]);
     const bookTypeList = ref([{name: "xlsx" }, {name: "csv" }, {name: "txt" }, {name: "" }]);
-    const selectedFileType = ref("");
+    const selectedFileType = ref({});
     const fileHeaderToExport = ref([]);
     const fileToExport = ref([]);
     const generateWeddingAnniversaryReport = () => {

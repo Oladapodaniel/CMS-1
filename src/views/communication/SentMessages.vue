@@ -168,20 +168,20 @@
                           </span>
                           <span class="small-text"
                             >{{
-                              sms.deliveryReport.filter((i) =>
-                                i.report.includes("sent")
+                              sms.report.filter((i) =>
+                                i.status.includes("sent")
                               ).length
                             }}
                             |
                             {{
-                              sms.deliveryReport.filter((i) =>
-                                i.report.includes("processed")
+                              sms.report.filter((i) =>
+                                i.status.includes("processed")
                               ).length
                             }}
                             |
                             {{
-                              sms.deliveryReport.filter((i) =>
-                                i.report.includes("failed")
+                              sms.report.filter((i) =>
+                                i.status.includes("failed")
                               ).length
                             }}</span
                           >
@@ -269,7 +269,11 @@ import stopProgressBar from "../../services/progressbar/progress";
 import Loading from "../../components/loading/LoadingComponent"
 
 export default {
-  components: { UnitsArea, PaginationButtons, Loading },
+  components: { 
+    UnitsArea, 
+    PaginationButtons, 
+    Loading 
+    },
   directives: {
     tooltip: Tooltip,
   },

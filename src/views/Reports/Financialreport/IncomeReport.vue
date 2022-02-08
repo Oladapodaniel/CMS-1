@@ -2,7 +2,7 @@
   <div class="container-fluid px-5 mt-5">
      <div class="row d-flex justify-content-between px-3">
             <h3 class="heading-text ml-1">Basic Income And Revenue Report</h3>
-                  <!-- {{groupedAccountName}} -->
+            <!-- {{currencySymbol}} -->
             <div class="default-btn  font-weight-normal c-pointer"
                 @click="() => (showExport = !showExport)"
                 style="width: fixed; position:relative">Export &nbsp; &nbsp; <i class="pi pi-angle-down" ></i>
@@ -41,33 +41,36 @@
     <!--end of header area -->
 
     <!-- date area -->
-    <div class="container-fluid my-3 px-0 bg-area">
+    <div class="container-fluid my-3  bg-area">
       <div
-        style="padding: 0.2rem 0 1.2rem 0"
-        class="row d-flex flex-row justify-content-center align-items-center"
+        class="row px-4 w-100 ml-md-5 px-sm-4 mt-sm-3"
       >
-        <!-- <div class="col-md-2">
-          <h4 class="small font-weight-bold ml-2">Date Range</h4>
-        </div> -->
-
-        <div class="col-md-7 d-sm-flex">
-          <div class="p-field p-col-12 p-md-4 mt-1">
-            <div><label for="icon" class="font-weight-bold">Start Date</label></div>
-            <Calendar id="icon" v-model="startDate" :showIcon="true" />
-          </div>
-          <div class="p-field p-col-12 p-md-4 my-1">
-            <div><label for="icon" class="font-weight-bold">End Date</label></div>
-            <Calendar id="endDate" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/>
+        <div class="col-md-4 col-sm-12 px-md-0">
+          <div class="p-field p-col-12 pt-md-2 pb-2">
+            <div>
+              <label for="icon" class="mb-0 font-weight-bold">Start Date</label>
+            </div>
+            <Calendar id="icon" class="w-100"  dateFormat="dd/mm/yy" v-model="startDate" :showIcon="true" />
           </div>
         </div>
-        
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center mt-4">
-          <button
-            class="default-btn generate-report c-pointer font-weight-normal"
-            @click="incomeEndPoint"
-          >
-            Generate &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
-          </button>
+        <div class="col-md-4 col-sm-12 px-md-0">
+          <div class="p-field p-col-12 pt-md-2">
+            <div>
+              <label for="icon" class="mb-0 font-weight-bold">End Date</label>
+            </div>
+            <Calendar id="endDate" class="w-100" v-model="endDate" :showIcon="true" dateFormat="dd/mm/yy"/>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-12 pr-md-0">
+          <div class="p-field p-col-12 pt-md-2">
+            <button
+              class="default-btn generate-report c-pointer font-weight-normal mt-4"
+              @click="incomeEndPoint"
+            >
+            Generate Report
+              <!-- Generate &nbsp; &nbsp; <i class="pi pi-angle-down"></i> -->
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -109,34 +112,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border text-center mt-3" style="height: 60vh; ">
-                        <div class="col-12  font-weight-bold ">Membership By Distribution</div>
-                        <div class="col-12">No Data Available</div>
-                        <div class="col-12 " style="height: 50vh;">
-                            <ByMaritalStatusChart
-                                domId="chart2"
-                                title="Interested In Joining"
-                                :titleMargin="10"
-                                :summary="summary"
-                            />
-                        </div>
-                    </div>
-                </div> -->
-                <!-- <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12  border text-center mt-3 " style="height: 60vh;">
-                        <div class="col-12 w-100  font-weight-bold">Membership By Age Group</div>
-                        <div class="col-12">No Data Available</div>
-                        <div class="col-12 " style="height: 50vh;">
-                             <ByMaritalStatusChart
-                                domId="chart3"
-                                title="Interested In Joining"
-                                :titleMargin="10"
-                                :summary="summary"
-                            />
-                        </div>
-                    </div>
-                </div> -->
             </div>
       <!-- table header -->
       <div class="container-fluid table-main px-0 remove-styles2 remove-border my-5" >
@@ -155,12 +130,13 @@
             </tr>
           </thead>
           <tbody class="font-weight-bold small-text text-nowrap" v-for="(group, index) in Array.from(series)" :key='index'>
+              
             <tr v-for="(item, index) in accounts(group)" :key='index'>
               <td>{{item ? item.fund : ''}}</td>
               <td>{{item ? item.accountCategory : ''}}</td>
               <td>{{item.accountName ? item.accountName : ''}}</td>
               <td>{{item ? item.description : ''}}</td>
-              <td>{{item ?  Math.abs(item.amount) : ''}}</td>
+              <td>{{item && item.currency ? item.currency.symbol : ''}}{{item ?  Math.abs(item.amount) : ''}}</td>
               <td>{{item ? formatDate(item.date): ''}}</td>
             </tr>        
             <tr class="second-row">
@@ -168,10 +144,18 @@
               <td></td>
               <td></td>
               <td></td>
-              <td class="totalAmount">#{{numberWithCommas(grouped(group))}}</td>
+              <td class="totalAmount">{{ currencySymbol }}{{numberWithCommas(grouped(group))}}</td>
               <td></td>
-            </tr>        
+            </tr>  
           </tbody>
+            <tr class="grand-total">
+              <td class="gross-total">Grand Total</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="gross-total responsive-horizontalrule">{{ currencySymbol }}{{numberWithCommas(grandTotal)}}<hr class="horizontal-rule"></td>
+              <td></td>
+            </tr> 
         </table>
         <div class="table-foot d-flex justify-content-end mt-n3">
           <PaginationButtons />
@@ -183,7 +167,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed} from "vue";
+import { ref, computed} from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
@@ -194,7 +178,7 @@ import ColumnChart2 from "@/components/charts/ReportColumnChart";
 import Listbox from 'primevue/listbox';
 import exportService from "../../../services/exportFile/exportservice"
 import axios from "@/gateway/backendapi";
-import axioz from "axios";
+// import axioz from "axios";
 import dateFormatter from  "../../../services/dates/dateformatter";
 import groupResponse from  "../../../services/groupArray/groupResponse";
 
@@ -210,14 +194,16 @@ export default {
     Listbox
   },
   setup() {
-    const startDate = ref(new Date());
-    const endDate = ref(new Date());
+    const startDate = ref("");
+    const endDate = ref("");
     const membersInChurch = ref([]);
     const toggleReport = ref(false);
     const summary = ref([]);
     const columnChartData = ref([]);
     const series = ref([]);
     const showReport = ref(false)
+    const incomeReportData = ref([])
+    const currentUser = ref([])
     //   onMounted (() => {
     //        columnChartData.value = [
     //             {
@@ -245,6 +231,7 @@ export default {
      const fileToExport = ref([]);
      const getIncomeDetails = ref([]);
      const showExport = ref(false);
+     const currencySymbol = ref('');
      const formatDate = (activityDate) => {
         return dateFormatter.monthDayYear(activityDate);
       };
@@ -259,38 +246,36 @@ export default {
     })
 
      const incomeEndPoint = () => {
-        axios
+         axios
         .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString("en-US")}&endDate=${new Date(endDate.value).toLocaleDateString("en-US")}`)
         .then((res) => {
+          incomeReportData.value = res.data
+           console.log(incomeReportData.value, 'incomereportData');
             pieChartData.value = [];
-             console.log(res, 'income response');
              toggleReport.value = true;
              getIncomeDetails.value = res.data
             const resMap = res.data.filter(i => i !== null)
-            console.log(resMap)
             groupedAccountName.value = groupResponse.groupData(resMap, 'accountName')
-            console.log(groupedAccountName, 'abc');
-             
-             console.log(res.data, 'getIncomeDetails');
              const accountNameMap = res.data.map(i => i && i.accountName ? i.accountName : '')
-             console.log(accountNameMap, "CCCCCCCC");
              const groupAccountName = new Set(accountNameMap)
-             series.value = groupAccountName
-             console.log(series.value, 'serrrrr');
+             series.value = [...groupAccountName].filter(i => i !== "")
             console.log(groupAccountName, 'groupAccountName...');
+
             groupAccountName.forEach(i => {
+              let initialValueSum = 0
+              let responseFiltered = res.data.filter(j => j && j.accountName ? j.accountName === i : false)
+              responseFiltered.forEach(i => {
+                initialValueSum += Math.abs(i.amount)
+              })
                 const data = {
                     name: i,
-                    value: res.data.filter(j => j && j.accountName ? j.accountName === i : false).length
+                    value: initialValueSum
                 }
                 pieChartData.value.push(data)
-                // console.log(i, 'groupAccountNameLLL');
             })
 
             columnChartData.value = constructChartData(res.data, groupAccountName);
-            console.log(columnChartData.value, "COLUMN CHART DATA");
-            console.log(pieChartData.value, 'pieChartData,,,,');
-
+    
             setTimeout(() => {
                 fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
                 fileToExport.value = exportService.tableToJson(document.getElementById("table"))
@@ -308,7 +293,7 @@ export default {
 
     // incomeEndPoint();
     const constructChartData  = (accounts, series) => {
-        console.log(series, 'SERIES...');
+        // console.log(series, 'SERIES...');
         const data = []
         series.forEach(i => {
 
@@ -318,11 +303,11 @@ export default {
                 data: Array.from( new Set(accounts.filter(j => j && j.accountName ? j.accountName === i : false)
                 .map(i => Math.abs(i.amount))))
             }
-            console.log(datum, 'DATUM');
+            // console.log(datum, 'DATUM');
             data.push(datum)
             // console.log(i, 'groupAccountNameLLL');
         })
-            console.log(data, 'DATUM');
+            // console.log(data, 'DATUM');
         return data;
     }
     const getRandomColor = () => {
@@ -338,9 +323,8 @@ export default {
      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     const grouped = (group) => {
-      // alert(group)
-      console.log(groupedAccountName.value , 'star');
       if (!groupedAccountName.value || !groupedAccountName.value[group] ) return 0
+      // console.log(group)
       const sum = groupedAccountName.value[group]
         .filter(i => i.amount)
         .map(i => i.amount)
@@ -348,18 +332,52 @@ export default {
       // console.log(sum, "SUM");
       return Math.abs(sum);
     }
+
+    const groupedCurrency = (group) => {
+      if (!groupedAccountName.value || !groupedAccountName.value[group] ) return ''
+      console.log(groupedAccountName, "groupedAccountName");
+      console.log(group, 'group');
+      return groupedAccountName.value[group].currency
+    }
     const accounts = (group) => {
+      // console.log(group, 'group111');
       // alert(group)
       if (!groupedAccountName.value || !groupedAccountName.value[group] ) return []
       return groupedAccountName.value[group]
     }
    
+   const grandTotal = computed( () => {
+     if (incomeReportData.value.length === 0 ) return 0
+     if (incomeReportData.value.length > 0 ) {
+       const totalAllGroupAmount = incomeReportData.value.filter(i => i !== null).map(i => i.amount).reduce((a,b) => a + b , 0)
+    //  console.log(totalAllGroupAmount, 'bbb')
+     return Math.abs(totalAllGroupAmount)
+     }
+   } )
+
+  const getCurrentlySignedInUser = async() => {
+      try {
+          const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+          console.log(res.data, 'getCurrentlySignedIn User')
+          currentUser.value = res.data
+          currencySymbol.value = currentUser.value.currencySymbol
+          console.log(currencySymbol.value, "currencySymbol");
+      } catch (err) {
+          /eslint no-undef: "warn"/
+          NProgress.done();
+          console.log(err);
+       }
+   }
+   getCurrentlySignedInUser()
+
     return {
       summary,
       Calendar,
       grouped,
       accounts,
+      groupedCurrency,
       startDate,
+      grandTotal,
       endDate,
       membersInChurch,
       toggleReport,
@@ -381,6 +399,9 @@ export default {
       incomeEndPoint,
       getRandomColor,
       numberWithCommas,
+      incomeReportData,
+      currencySymbol, 
+      currentUser,
     };
   },
 };
@@ -482,6 +503,9 @@ export default {
 .showClass { 
     display: block;
 }
+.pl-5, .px-5 {
+    padding-left: 6rem !important;
+}
 .exportButton {
     font-weight: 800;
     font-size: 1rem;
@@ -499,5 +523,26 @@ export default {
 .second-row {
   /* vertical-align: bottom; */
   background:  #dee2e6;
+}
+
+.grand-total {
+  background: #136acd;
+}
+
+.gross-total {
+  font-weight: 800;
+  font-size: 19px;
+  color: #fff;
+}
+
+.horizontal-rule {
+  border-radius: 5px;
+  margin: 0.125rem 0;
+  background: white;
+  height: 3px;
+}
+
+.responsive-horizontalrule {
+    display: inline-block;
 }
 </style>

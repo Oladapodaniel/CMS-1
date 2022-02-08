@@ -6,7 +6,7 @@
     </div>
     <div class="row row-button" @click="payWithPaystack">
       <div class="col-4 col-sm-7 offset-2">
-        <img class="w-100" src="../../assets/4PaystackLogo.png" alt="paystack"/>
+        <img class="img-pay" src="../../assets/4PaystackLogo.png" alt="paystack"/>
       </div>
     </div>
 
@@ -53,6 +53,7 @@ export default {
     // paystack
   },
   props: ['close', 'donation'],
+  emits: ['selected-gateway', 'payment-successful', 'set-props'],
 //   'orderId', 'donation', , 'amount', 'converted', 'name', 'email', 'gateways', 'currency'
   setup (props, { emit }) {
 
@@ -85,12 +86,20 @@ export default {
     // })
       
 
-    const payWithPaystack = (e) => {
+    const payWithPaystack = () => {
 
-      selectedGateway.value = e.srcElement.alt
+      selectedGateway.value = "paystack"
       emit('selected-gateway', selectedGateway.value)
    
      console.log(selectedGateway.value)
+     console.log(props.donation)
+
+    let body = {
+      transactionReference: props.donation.orderID,
+      amount: props.donation.contributionItems[0].amount * 100,
+      gateway: "paystack"
+    }
+     emit('set-props', body)
 
       props.close.click()
       /*eslint no-undef: "warn"*/
@@ -115,7 +124,7 @@ export default {
           
 
           axios
-            .post(`/confirmDonation?txnref=${response.trxref}`, props.donation)
+            .post(`/donated?paymentType=0`, props.donation)
             .then((res) => {
               finish()
               console.log(res, "success data");
@@ -257,5 +266,9 @@ export default {
 .row-button:hover {
   cursor: pointer;
   transform: scale(1.05, 1.05)
+}
+
+.img-pay {
+  width: 125px
 }
 </style>

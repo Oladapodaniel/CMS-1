@@ -325,9 +325,18 @@
           </div>
         </div>
       </div>
-
-      <!-- <div class="text-danger" v-else>No records found</div>  -->
+      <div class="col-12">
+        <div class="table-footer">
+          <Pagination
+            @getcontent="getPeopleByPage"
+            :itemsCount="50"
+            :currentPage="currentPage" 
+            :totalItems="totalItems"
+          />
+        </div>
+      </div>
     </div>
+    <!-- {{totalItems}} -->
       <div  class="row" v-if="errorOccurred">
         <div class="col-md-12 text-center">
           <p>Error getting items</p>
@@ -349,13 +358,16 @@ import { useToast } from "primevue/usetoast";
 import ConfirmDialog from "primevue/confirmdialog";
 import axios from "@/gateway/backendapi";
 import Toast from "primevue/toast";
+import Pagination from "../../../components/pagination/PaginationButtons.vue";
 
 export default {
-  props: ["list", "errorOccurred"],
-  components: { ConfirmDialog, Toast },
+  props: ["list", "errorOccurred", "totalItems"],
+  components: { ConfirmDialog, Toast, Pagination },
+  emits: ["pagedattendance"],
   setup(props, { emit }) {
     let toast = useToast();
     const expose = ref(false);
+    const loading = ref(false)
 
     const toggleEllips = () => {
       toggleEllips.value = !toggleEllips.value;
@@ -455,7 +467,26 @@ export default {
         searchText = "";
     }
 
+    const currentPage = ref(0);
+    const getPeopleByPage = async (page) => {
+      if (page < 0) return false;
+      try {
+        const { data } = await axios.get(
+          `/api/CheckInAttendance/AllCheckInAttendances?page=${page}`
+        );
+        console.log(data)
+        if (data.items.length > 0) {
+          emit("pagedattendance", data)
+        }
+        // branchTransactions.value = data.returnObject.contribution;
+        currentPage.value = page;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     return {
+      loading,
       expose,
       toggleEllips,
       formatDate,
@@ -466,6 +497,8 @@ export default {
       toggleSearch,
       searchIsVisible,
       removeSearchText,
+      currentPage,
+      getPeopleByPage
     };
   },
 };

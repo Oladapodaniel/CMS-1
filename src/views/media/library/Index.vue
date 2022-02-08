@@ -54,5 +54,9 @@ export default {
   .adjustButton {
     float: right;
   }
+  .main-title {
+    font-size: 2.2rem;
+    padding-top: 2rem;
+  }
 }
 </style>

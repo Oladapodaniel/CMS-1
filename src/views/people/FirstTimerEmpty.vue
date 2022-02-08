@@ -97,7 +97,7 @@
           <Skeleton width="100%" height="2rem" borderRadius="16px" />
         </div>
         <div class="col-md-2 my-2">
-          <Skeleton width="100%" height="2rem" />
+          <Skeleton width="100%" height="2rem" borderRadius="16px"/>
         </div>
       </div>
     </div>
@@ -392,14 +392,17 @@ export default {
 
 @media (max-width: 640px) {
     .top {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-    }
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+          }
     .actions {
         margin-top: 15px;
         display: flex;
-
+    }
+    .events {
+      font: normal normal 800 29px Nunito sans;
+      padding-top: 20px;
     }
 }
 

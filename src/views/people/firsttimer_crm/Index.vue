@@ -3,7 +3,10 @@
     <canvas ref="confeti" width="300" height="300" class="active canvas-style" v-show="displayAnim"></canvas>
         <div class="row">
             <div class="col-12 col-md-4 p-0 side-bar">
-                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails" @calllogdesc="setCallLogDesc" :smsLog="smsLog" @resetlog="resetLog" @allcontact="setAllContacts" :activityType="activityType" @updatelogtoview="updateLogToView" @displayanim="setDisplayAnim"/>
+                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" 
+                :personDetails="personDetails" @calllogdesc="setCallLogDesc" 
+                :smsLog="smsLog" @resetlog="resetLog" :activityType="activityType" 
+                @updatelogtoview="updateLogToView" @displayanim="setDisplayAnim" />
             </div>
             <div class="col-12 col-md-8 main-view">
                 <div class="row">
@@ -50,7 +53,7 @@
               
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
-                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp"  :loader="loader" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :allContacts="allContacts" :personDetails="personDetails" @commentindex="pushToComment" @removecommetfromview="removeCommentFromView" @editcommentinview="editCommentInView" @setduedate="setDueDateTask"/>
+                        <Activity :activities="searchActivities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp"  :loader="loader" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :personDetails="personDetails" @commentindex="pushToComment" @removecommetfromview="removeCommentFromView" @editcommentinview="editCommentInView" @setduedate="setDueDateTask"/>
                     </div>
                     <div class="col-12 px-0" v-if="showNotes" transition="bounce">
                         <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
@@ -62,16 +65,14 @@
                         <SMS :personDetails="personDetails" :logList="logList" @individualcallicon="setCallLogIcon" @opensmslogpane="opensmslogpane" @hoverLog="setHoverLogProp" @outhoverLog="setOutHoverLogProp"/>
                     </div>
                     <div class="col-12 px-0" v-if="showTasks" transition="bounce">
-                        <Tasks :addTask="taskList" @individualtoggletask="setIconMainTask" :taskTime="taskTime" @opentaskeditor="openTaskEditor" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" :allContacts="allContacts" :personDetails="personDetails" @hovertask="setHoverPropForTask" @outhovertask="setOutHoverPropForTask" @edittask="displayEditTaskField" @hidetaskfield="hideTaskField" @removecommetfromview="removeCommentFromViewTask" @editcommentinview="editCommentInViewTask"/>
+                        <Tasks :addTask="taskList" @individualtoggletask="setIconMainTask" @opentaskeditor="openTaskEditor" :dueDate="dueDate" :getReminder="getReminder" :activityType="activityType" :taskPriority="taskPriority" @hovertask="setHoverPropForTask" @outhovertask="setOutHoverPropForTask" @edittask="displayEditTaskField" @hidetaskfield="hideTaskField" @removecommetfromview="removeCommentFromViewTask" @editcommentinview="editCommentInViewTask"/>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
     <!-- Modal for Note -->
-            
-    <Dialog header="Create note" v-model:visible="displayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
+    <Dialog header="Create note" v-model:visible="displayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="position" :modal="true">
         <!-- <Editor v-model="note" editorStyle="height: 320px"/> -->
         <textarea v-model="note" rows="12" class="form-control mt-4" placeholder="Type your note..."></textarea>
          <div class="d-flex justify-content-start mt-2">
@@ -81,11 +82,11 @@
    
    <!-- Modal for email -->
     <Dialog header="Compose
-     email" v-model:visible="emailDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
+     email" v-model:visible="emailDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}"  :position="position" :modal="true">
         <div class="container" style="height: 480px">
             <div class="row" v-if="!displayEmailPane">
                 <div class="col-12 mt-3 font-weight-700 text-center">
-                    Keep track of your email activity in your CRM
+                    Keep track of your email activity in your FRM
                 </div>
                 <div class="col-12 mt-3 text-center">
                     <!-- Connect your email account to Churchplus to begin sending emails from your CRM. All your email conversations will appear in the timeline below.Learn more -->
@@ -149,7 +150,7 @@
 
 
     <!-- Modal for task -->
-     <Dialog header="Create task" v-model:visible="taskDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
+     <Dialog header="Create task" v-model:visible="taskDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: window.innerWidth > 767 ? '50vw' : '100vw'}" :position="position" :modal="true">
         <div class="container" style="height: 480px">
             <div class="row mt-3">
                <div class="row">
@@ -215,28 +216,15 @@
                                 </div>
                             </OverlayPanel>
                         </div>
-                        <!-- <div class="col-2 mt-2">
-                            <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
-                                None&nbsp; <i class="pi pi-sort-down"></i>
-                            </div>
-                            <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
-                                <div v-for="(item, index) in taskTime" :key="index">
-                                    <div class="px-3 py-1">{{ item.name }}</div>
-                                </div>
-                            </OverlayPanel>
-                        </div> -->
                         <div class="col-4 mt-2">
-                            <!-- <div>
-                                
-                            </div> -->
                             <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 c-pointer">
-                                {{ Object.keys(selectedContact).length > 0 ? selectedContact.name : "Select contact" }}&nbsp; <i class="pi pi-sort-down"></i>
+                                {{ selectedContact && Object.keys(selectedContact).length > 0 ? selectedContact.name ? selectedContact.name : `${selectedContact.firstName} ${selectedContact.lastName}` : "Select contact" }}&nbsp; <i class="pi pi-sort-down"></i>
                             </div>
                             <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}" class="p-0">
                                 <div class="container-fluid p-0">
                                     <div class="py-2 px-3">Search whom you want to assign this task</div>
                                     <div class="py-2 px-3">
-                                        <SearchMember @memberdetail="chooseContact"/>
+                                        <SearchMember v-bind:currentMember="selectedContact" @memberdetail="chooseContact"/>
                                     </div>
                                 </div>
                             </OverlayPanel>
@@ -256,7 +244,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue"
+import { computed, onMounted, ref, watchEffect } from "vue"
 import SideActions from "./components/SideActions"
 import Activity from "./components/Activity"
 import Notes from "./components/Notes"
@@ -267,7 +255,6 @@ import InputText from 'primevue/inputtext'
 import Dialog from 'primevue/dialog';
 import Editor from 'primevue/editor';
 import { useToast } from "primevue/usetoast";
-import Dropdown from "primevue/dropdown";
 import { useRoute } from "vue-router"
 import axios from "@/gateway/backendapi";
 import lookupTable from "../../../services/lookup/lookupservice"
@@ -290,7 +277,6 @@ export default {
         InputText,
         Dialog,
         Editor,
-        Dropdown,
         // SelectButton,
         SearchMember
     },
@@ -314,7 +300,6 @@ export default {
         const emailSubject = ref("")
         const displayEmailPane = ref(false)
         const taskDisplayPosition = ref(false)
-        const taskTime = ref([{ name: '08:00' },{ name: '09:00' }, { name: '10:00' }])
         const op = ref("")
         const todoTask = ref("")
         const theTask = ref("")
@@ -335,7 +320,7 @@ export default {
         const reminder = ref(getReminder)
         const reminderRef = ref("")
         const selectedReminder = ref({})
-        const allContacts = ref([])
+        // const allContacts = ref([])
         const selectedContact = ref({})
         const contactRef = ref("")
         const loader = ref(false)
@@ -344,6 +329,7 @@ export default {
         // const inputFocus = ref(false)
         const confeti = ref()
         const displayAnim = ref(false)
+        
 
         
 
@@ -574,7 +560,36 @@ export default {
                 console.log(err)
             })
         }
-        getPersonDetails()
+        if (route.query.memberType == 0) getPersonDetails()
+        
+        const getMemberPersonDetails = () => {
+            axios
+            .get(`/api/People/GetPersonInfoWithAssignments/${route.params.personId}`)
+            .then((res) => {
+                console.log(res)
+                // personDetails.value = res.data
+                personDetails.value = {
+                    pictureUrl: res.data.pictureUrl,
+                    firstName: res.data.firstName,
+                    lastName: res.data.lastName,
+                    email: res.data.email,
+                    phoneNumber: res.data.mobilePhone,
+                    address: res.data.homeAddress,
+                    genderId: res.data.genderID,
+                    maritalStatusId: res.data.maritalStatusID,
+                    birthday: res.data.dayOfBirth,
+                    birthMonth: res.data.monthOfBirth,
+                    birthYear: res.data.yearOfBirth,
+                    followupPersonID: res.data.followupPersonID,
+                    followupPersonName: res.data.followupPersonName
+
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+        if (route.query.memberType == 1) getMemberPersonDetails()
 
         const setCallLogDesc = (payload) => {
             logList.value.unshift(payload)
@@ -691,9 +706,9 @@ export default {
         })
         // getReminder()
 
-        const setAllContacts = (payload) => {
-            allContacts.value = payload
-        }
+        // const setAllContacts = (payload) => {
+        //     allContacts.value = payload
+        // }
 
         const setPriority = (payload) => {
             priorityRef.value.hide();
@@ -704,6 +719,15 @@ export default {
             contactRef.value.hide();
             selectedContact.value = payload
         }
+
+        watchEffect(() => {
+            if (personDetails.value) {
+                selectedContact.value = {
+                    name: personDetails.value.followUpPersonName,
+                    id: personDetails.value.contactOwnerID
+                }
+            }
+        })
 
         const getLogs = async() => {
             loader.value = true
@@ -852,7 +876,9 @@ export default {
             }, 8000);
         }
     
-
+        const innerWidth = computed(() => {
+            return window.innerWidth;
+        })
         return {
             toggleActivity,
             toggleNotes,
@@ -883,7 +909,6 @@ export default {
             displayEmailPane,
             openTaskEditor,
             taskDisplayPosition,
-            taskTime,
             toggle,
             op,
             theTask,
@@ -927,8 +952,8 @@ export default {
             taskNote,
             selectedPriority,
             setPriority,
-            allContacts,
-            setAllContacts,
+            // allContacts,
+            // setAllContacts,
             selectedContact,
             chooseContact,
             contactRef,
@@ -954,7 +979,9 @@ export default {
             setDueDateTask,
             confeti,
             displayAnim,
-            setDisplayAnim   
+            setDisplayAnim,
+            window,
+            innerWidth,
         }
     }
 }

@@ -6,16 +6,16 @@
         </div>
       </div>
     <div class="row" d-md-flex justify-content-md-between>
-      <div class="col-md-8 mb-md-5"><h2><i class="fa fa-meh-o" aria-hidden="true"></i> Subscription  Expired</h2></div>
-      <div class="col-md-4 mb-md-5 mt-2 mb-3 d-md-flex justify-content-md-end text-primary" ><router-link to="/subexpired" class="text-decoration-none default-btn primary-bg text-white border-0">Click here to Subscibe</router-link></div>  
+      <div class="col-md-8 mb-md-5"><h2><img src="../../assets/dashboardlinks/churchcloud.png" class="link-image" />Subscription  Expired</h2></div>
+      <div class="col-md-4 mb-md-5 mt-2 mb-3 d-md-flex justify-content-md-end text-primary text-center" ><router-link to="/subexpired" class="text-decoration-none default-btn primary-bg text-white border-0">Click here to Subscibe</router-link></div>  
       <div class="col-md-8">
-        <div class="mb-3">This page is not publicly available because your subscription has expired.</div>
-        <div class="mt-3 mt-md-5">
+        <div class="mb-3">Hey, this page is not publicly available because your subscription has expired.</div>
+        <div class="mt-md-2">
           <div>Things you can still do:</div>
           <ul class="list-unstyled mt-3">
-            <li class="mt-2"> <i class="pi pi-arrow-right text-primary mr-2 "></i><router-link class="text-primary" to="/subexpired">Subscribe</router-link></li>
-            <li class="mt-2"> <i class="pi pi-arrow-right text-primary mr-2"></i><router-link class="text-primary" to="/sendsmsexpired">Send SMS</router-link></li>
-            <li class="mt-2"> <i class="pi pi-arrow-right text-primary mr-2 "></i><router-link to="/buyunitsexpired" class="text-primary">Buy Unit</router-link></li>
+            <li> <i class="pi pi-arrow-right text-primary mr-2 "></i><router-link class="text-primary" to="/subexpired">Subscribe</router-link></li>
+            <li> <i class="pi pi-arrow-right text-primary mr-2"></i><router-link class="text-primary" to="/sendsmsexpired">Send SMS</router-link></li>
+            <li> <i class="pi pi-arrow-right text-primary mr-2 "></i><router-link to="/buyunitsexpired" class="text-primary">Buy Unit</router-link></li>
             <!-- <a href="" @click.prevent="plsSubscribe">Subscribe</a> -->
           </ul>
         </div>
@@ -25,7 +25,7 @@
         
       </div>
       <div class="col-md-4 d-none d-md-block">
-        <img src="../../assets/expired-sub.png" />
+        <img src="../../assets/expired-sub.png" class="w-100" />
       </div>
     </div>
     <div class="row d-flex justify-content-sm-end mt-5">
@@ -53,6 +53,8 @@ export default {
         localStorage.clear()
         router.push('/')
         store.dispatch('clearCurrentUser', {})
+        store.dispatch('groups/clearGroup')
+        store.dispatch('membership/clearMember')
         setupService.clearStore();
     }
 

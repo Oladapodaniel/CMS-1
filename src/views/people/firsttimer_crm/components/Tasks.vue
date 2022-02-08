@@ -194,7 +194,7 @@ import { useRoute } from "vue-router"
 import { useToast } from "primevue/usetoast";
 export default {
     inheritAttrs: false,
-    props: ['addTask', 'taskTime', 'activityType', 'dueDate', 'taskPriority', 'getReminder'],
+    props: ['addTask', 'activityType', 'dueDate', 'taskPriority', 'getReminder'],
     emits: ['individualtoggletask', 'opentaskeditor', 'hovertask', 'outhovertask', 'edittask', 'hidetaskfield', 'removecommetfromview'],
     components: {
         SearchMember

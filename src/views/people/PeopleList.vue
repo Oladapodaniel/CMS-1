@@ -94,6 +94,48 @@
     </div>
     <!-- group box area -->
 
+    <!-- group box area to add all members -->
+    <!-- The Modal -->
+    <div class="modal" id="myGroupModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h5 class="modal-title">Add all Members To Group</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <Dropdown
+              v-model="chooseGrouptoMoveAllMembers"
+              optionLabel="name"
+              :options="getAllGroups"
+              placeholder="Select a Group"
+              style="width: 100%"
+            >
+            </Dropdown>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn groupicon-color default-btn"
+              data-dismiss="modal"
+              @click="getAllMembersAndAddToGroup"
+              style="border: none"
+            >
+              Add to Group
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- group box area to add all members -->
+  
     <div class="table mx-0" :class="{ 'mt-0': marked.length > 0 }">
       <div class="table-top">
         <div class="select-all">
@@ -105,6 +147,15 @@
             :checked="marked.length === churchMembers.length"
           />
           <label>SELECT ALL</label>
+          <a href="#" data-toggle="modal" data-target="#myGroupModal">
+            <i
+              class="ml-3 mr-2 color-groupicon pi pi-plus-circle c-pointer"
+              v-tooltip.top="'Add all member to Group'"
+              style="font-size: 22px"
+              v-if="marked.length == 0"
+            >
+            </i>
+          </a>
           <a href="#" data-toggle="modal" data-target="#myModal">
             <i
               class="ml-3 mr-2 color-groupicon pi pi-users c-pointer"
@@ -114,13 +165,16 @@
             >
             </i>
           </a>
+          <i class="fa fa-file-archive-o color-groupicon c-pointer ml-2 mr-2" v-if="marked.length > 0" v-tooltip.top="'Archive member(s)'" @click="openPositionArchive('center')" aria-hidden="true" style="font-size: 20px"></i>
           <i
             class="pi pi-trash color-deleteicon c-pointer pt-2 px-2"
-            v-tooltip.top="'Delete Member'"
+            v-tooltip.top="'Delete Member(s)'"
             style="font-size: 20px"
             v-if="marked.length > 0"
             @click="showConfirmModal1"
-          ></i>
+          ></i>&nbsp; &nbsp;
+          <span class="c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberSms">Send SMS</span> &nbsp; &nbsp;
+          <span class="c-pointer" v-if="marked.length > 0" @click="sendMarkedMemberEmail">Send Email</span>
         </div>
         <div class="filter">
           <p @click="toggleFilterFormVissibility" class="">
@@ -391,6 +445,15 @@
                       >Send Email</router-link
                     >
                   </a>
+                  <a class="dropdown-item elipsis-items cursor-pointer text-color" @click="archive(person.id, 'single')">
+                    Archive
+                  </a>
+                  <a class="dropdown-item elipsis-items cursor-pointer">
+                    <router-link :to="`/tenant/firsttimermanagement/${person.id}?memberType=1`"
+                      class="itemroute-color text-color">
+                      Follow Up
+                    </router-link>
+                  </a>
                   <a class="dropdown-item elipsis-items">
                     <router-link
                       :to="`/tenant/people/add/${person.id}`"
@@ -436,6 +499,21 @@
       </div>
     </div>
   </div>
+  <Dialog header="Archive members" v-model:visible="displayPositionArchive" :style="{width: '50vw'}" :position="positionArchive" :modal="true">
+      <p class="p-m-0">You are about to archive your member(s). Do you want to continue ?</p>
+      <template #footer>
+          <div class="d-flex justify-content-end">
+            <div class="default-btn bg-white text-center mr-2 c-pointer" @click="closeArchiveModal">No</div>
+            <div class="default-btn border-0 primary-bg text-center text-white c-pointer" @click="archive('', 'multiple')">Yes</div>
+          </div>
+      </template>
+  </Dialog>
+  <SideBar :show="showSMS" :title="'Compose SMS'" @closesidemodal="() => showSMS = false">
+    <smsComponent :phoneNumbers="contacts"/>
+  </SideBar>
+  <SideBar :show="showEmail" :title="'Compose Email'" @closesidemodal="() => showEmail = false">
+    <emailComponent :selectedGroupMembers="markedMembers"/>
+  </SideBar>
 </template>
 
 <script>
@@ -446,12 +524,16 @@ import PaginationButtons from "../../components/pagination/PaginationButtons.vue
 import axios from "@/gateway/backendapi";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
+import { useRoute } from "vue-router";
 import store from "../../store/store";
 import stopProgressBar from "../../services/progressbar/progress";
 import membershipservice from "../../services/membership/membershipservice";
 import Tooltip from "primevue/tooltip";
 import Dropdown from "primevue/dropdown";
 import loadingComponent from "@/components/loading/LoadingComponent";
+import smsComponent from "../groups/component/smsComponent.vue";
+import emailComponent from "../groups/component/emailComponent.vue";
+import SideBar from "../groups/sidemodal/SideModal.vue";
 
 export default {
   props: ["list", "peopleCount"],
@@ -461,6 +543,9 @@ export default {
     PaginationButtons,
     Dropdown,
     loadingComponent,
+    smsComponent,
+    emailComponent,
+    SideBar
   },
 
   directives: {
@@ -468,6 +553,7 @@ export default {
   },
 
   setup(props) {
+    const addClass = ref(false)
     const churchMembers = ref([]);
     const filterFormIsVissible = ref(false);
     const filter = ref({});
@@ -477,7 +563,16 @@ export default {
     const noRecords = ref(false);
     const loading = ref(false);
     const searchText = ref("");
+    const showSMS = ref(false)
+    const showEmail = ref(false)
+    const contacts = ref([])
+    const markedMembers = ref([])
+    const chooseGrouptoMoveAllMembers = ref({})
+    const currentUser = ref({})
+    const route = useRoute();
     // const store = useStore();
+    const positionArchive = ref('center');
+    const displayPositionArchive = ref(false);
 
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -492,12 +587,22 @@ export default {
           churchMembers.value = churchMembers.value.filter(
             (item) => item.id !== id
           );
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Member Deleted",
-            life: 3000,
-          });
+          if (res.data.response.includes("@")) {
+            let disRes = res.data.response.split("@")
+            toast.add({
+              severity: "info",
+              summary: "Info",
+              detail: disRes[0],
+              life: 10000,
+            });
+          } else {
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: "Member Deleted",
+              life: 5000,
+            });
+          }
           store.dispatch("membership/removeMember", id);
           axios
             .get(`/api/People/GetMembershipSummary`)
@@ -631,7 +736,7 @@ export default {
         const response = await membershipservice.deletePeople(IDs);
         console.log(response, "RESPONSE");
 
-        if (response.response.toString().toLowerCase().includes("all")) {
+        if (response && response.response && response.response.toString().toLowerCase().includes("all")) {
           toast.add({
             severity: "success",
             summary: "Confirmed",
@@ -645,7 +750,7 @@ export default {
             return true;
           });
         } else {
-          let displayRes = response.response.split("@");
+          let displayRes = response && response.response ? response.response.split("@") : "";
           toast.add({
             severity: "info",
             detail: `${displayRes[0]}`,
@@ -864,8 +969,92 @@ export default {
         });
     };
 
+    const sendMarkedMemberSms = () => {
+     contacts.value = marked.value.filter( (i) => i.mobilePhone ).map( (i) => i.mobilePhone ).join()
+     showSMS.value = true;
+    }
+
+    const sendMarkedMemberEmail = () => {
+     markedMembers.value = marked.value.map( (i) => {
+       i.id = i.id
+       return i
+     });
+     showEmail.value = true;
+    }
+
+    const getAllMembersAndAddToGroup = () => {
+         axios
+        .post(`/api/Group/AddAllMembersToGroup?groupId=${chooseGrouptoMoveAllMembers.value.id}&tenantId=${currentUser.value.tenantId}`)
+        .then((res) => {
+          console.log(res, 'Add all memeber to group');
+          // getAllGroups.value = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } 
+    const getCurrentlySignedInUser = async() => {
+            try {
+                const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+                console.log(res.data)
+                currentUser.value = res.data
+                
+            } catch (err) {
+                /eslint no-undef: "warn"/
+                NProgress.done();
+                console.log(err);
+            }
+        }
+        getCurrentlySignedInUser()
+
+    const openPositionArchive = (pos) => {
+        positionArchive.value = pos;
+        displayPositionArchive.value = true;
+    };
+
+    const closeArchiveModal = () => {
+      displayPositionArchive.value = false
+    }
+
+    const archive = async(id, type) => {
+      let archiveBody = type == 'single' ? [id] : marked.value.map(i => i.id)
+      console.log(archiveBody)
+      try {
+            const { data } = await axios.post("/api/People/archive", archiveBody);
+            if (data && type == 'single') {
+              churchMembers.value = churchMembers.value.filter((item) => {
+                return item.id !== id
+              });
+              toast.add({
+                severity: "success",
+                summary: "Archived",
+                detail: "Member archived succesfully",
+                life: 5000,
+              });
+            }
+            if (data && type == 'multiple') {
+              churchMembers.value = churchMembers.value.filter((item) => {
+                let y = marked.value.findIndex(j => j.id == item.id)
+                if (y >= 0) return false
+                return true
+              });
+              toast.add({
+                severity: "success",
+                summary: "Archived",
+                detail: "Member(s) archived succesfully",
+                life: 5000,
+              });
+            displayPositionArchive.value = false
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return {
       churchMembers,
+      getAllMembersAndAddToGroup,
+      getCurrentlySignedInUser,
       getPeopleByPage,
       currentPage,
       filterFormIsVissible,
@@ -903,6 +1092,21 @@ export default {
       listOfPeople,
       loading,
       searchMember,
+      sendMarkedMemberSms,
+      showSMS,
+      sendMarkedMemberEmail,
+      showEmail,
+      contacts,
+      markedMembers,
+      chooseGrouptoMoveAllMembers,
+      route,
+      currentUser,
+      addClass,
+      archive,
+      openPositionArchive,
+      positionArchive,
+      displayPositionArchive,
+      closeArchiveModal
     };
   },
 };

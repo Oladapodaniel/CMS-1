@@ -3,7 +3,7 @@ import stopProgressBar from "../progressbar/progress";
 
 const getPostCategory = (tenantId) => {
     return new Promise((resolve, reject) => {
-        axios.get(`/mobile/v1/Feeds/GetPostCategory?tenantId=${tenantId}`)
+        axios.get(`/mobile/v1/Feeds/GetPostCategory?tenantId=${tenantId}&source=web`)
         .then(res => {
             console.log(res, "SOCIAL");
             resolve(res.data);

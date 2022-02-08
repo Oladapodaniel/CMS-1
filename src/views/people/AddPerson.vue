@@ -1,6 +1,6 @@
 <template>
-  <div class="my-con">
-    <div class="header mt-2">
+  <div class="my-con container-top">
+    <div class="header">
       <h3 class="header-text font-weight-bold">Add Contact</h3>
       <Toast />
     </div>
@@ -13,8 +13,8 @@
             <div class="inputs">
                <div class="input-field">
                 <label for="" class="label">Membership</label>
-                <div class="cstm-select">
-                  <div style="width: 330px">
+                <div class="cstm-select input border-0 p-0">
+          
                      <Dropdown
                       v-model="selectedMembership"
                       :options="memberships"
@@ -22,8 +22,7 @@
                       placeholder="--Select membership--"
                       style="width: 100%"
                     />
-              <!-- <SelectElem :typ="'membership'" name="membership" :options="['--Select membership--', ...peopleClassifications]" value="--Select membership--" @input="itemSelected"/>-->
-                  </div>
+              
                 </div>
               </div>
               <div class="input-field">
@@ -74,6 +73,12 @@
                   v-model="person.address"
                 />
               </div>
+               <div class="input-field">
+                <label for="" class="label">Choose contact owner</label>
+                <div class="input p-0 border-0">
+                  <SearchMembers @memberdetail="setContact" :currentMember="currentContact"/>
+                </div>
+              </div>
               <div class="input-field">
                 <label for=""></label>
                 <div class="status-n-gender">
@@ -103,6 +108,7 @@
                   </div>
                 </div>
               </div>
+             
             </div>
             <div class="image-div other">
               <div class="grey-bg">
@@ -185,12 +191,11 @@
               <div class="input-field">
                 <label for="" class="label">Birthday</label>
                 <div class="status-n-gender">
-                  <div class="date-picker">
                     <div class="cstm-select">
                       <div class="cs-select day">
                         <Dropdown
                           v-model="person.dayOfBirth"
-                          :options="birthDaysArr"
+                          :options="['Day', ...birthDaysArr ]"
                           placeholder="Day"
                           style="width: 100%"
                         />
@@ -202,7 +207,7 @@
                       <div class="cs-select month">
                         <Dropdown
                           v-model="person.monthOfBirth"
-                          :options="months"
+                          :options="['Month', ...months]"
                           placeholder="Month"
                           @change="
                             editBirthDateValue('month', person.monthOfBirth)
@@ -217,7 +222,7 @@
                       <div class="cs-select year">
                         <Dropdown
                           v-model="person.yearOfBirth"
-                          :options="birthYearsArr"
+                          :options="['Year', ...birthYearsArr]"
                           placeholder="Year"
                           style="width: 100%"
                         />
@@ -225,19 +230,17 @@
                         <!-- <SelectElem :typ="'membership'" name="birthyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/> -->
                       </div>
                     </div>
-                  </div>
                 </div>
               </div>
               <div class="input-field">
                 <label for="" class="label">Wedding Anniversary</label>
                 <div class="status-n-gender">
-                  <div class="date-picker">
                     <div class="cstm-select">
                       <div class="cs-select day">
                         <Dropdown
                           placeholder="Day"
                           v-model="person.dayOfWedding"
-                          :options="annDaysArr"
+                          :options="['Day', ...annDaysArr]"
                           style="width: 100%"
                         />
                         <!-- <SelectElem :typ="'membership'" name="annday" :options="['Day', ...annDaysArr]" value="Day" @input="itemSelected"/> -->
@@ -248,7 +251,7 @@
                       <div class="cs-select month">
                         <Dropdown
                           v-model="person.monthOfWedding"
-                          :options="months"
+                          :options="['Month', ...months]"
                           placeholder="Month"
                           @change="
                             editAnnDateValue('month', person.monthOfWedding)
@@ -263,14 +266,13 @@
                       <div class="cs-select year">
                         <Dropdown
                           v-model="person.yearOfWedding"
-                          :options="birthYearsArr"
+                          :options="['Year', ...birthYearsArr]"
                           placeholder="Year"
                           style="width: 100%"
                         />
                         <!-- <SelectElem :typ="'membership'" name="annyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/> -->
                       </div>
                     </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -536,9 +538,13 @@ import { useStore } from "vuex";
 import membershipService from "../../services/membership/membershipservice";
 import grousService from "../../services/groups/groupsservice";
 // import lookupService from "../../services/lookup/lookupservice";
+import SearchMembers from "../../components/membership/MembersSearch.vue"
 
 export default {
-  components: { Dropdown },
+  components: {
+    Dropdown,
+    SearchMembers
+  },
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
     const toast = useToast();
@@ -549,23 +555,12 @@ export default {
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
     const routeParams = ref("");
     const peopleInGroupIDs = ref([])
+    const followupPerson = ref({})
+    const currentContact = ref({})
 
     const loading = ref(false);
-    const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
+    // const day = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
+    const months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
     const birthMonth = ref(1);
     const birthDay = ref(1);
@@ -691,26 +686,26 @@ export default {
         "occupation",
         personObj.occupation ? personObj.occupation : ""
       );
-      formData.append("dayOfBirth", +personObj.dayOfBirth);
+      formData.append("dayOfBirth", personObj.dayOfBirth > 0 ? +personObj.dayOfBirth : 0);
       formData.append(
         "monthOfBirth",
         months.indexOf(personObj.monthOfBirth) >= 0
           ? months.indexOf(personObj.monthOfBirth) + 1
           : 0
       );
-      formData.append("yearOfBirth", +personObj.yearOfBirth);
+      formData.append("yearOfBirth", personObj.yearOfBirth > 0 ? +personObj.yearOfBirth : 0);
       formData.append(
         "occupation",
         personObj.occupation ? personObj.occupation : ""
       );
-      formData.append("yearOfWedding", +personObj.yearOfWedding);
+      formData.append("yearOfWedding", personObj.yearOfWedding > 0 ? +personObj.yearOfWedding : 0);
       formData.append(
         "monthOfWedding",
         months.indexOf(personObj.monthOfWedding) >= 0
           ? months.indexOf(personObj.monthOfWedding) + 1
           : 0
       );
-      formData.append("dayOfWedding", +personObj.dayOfWedding);
+      formData.append("dayOfWedding", personObj.dayOfWedding > 0 ? +personObj.dayOfWedding : 0);
       formData.append(
         "peopleClassificationID",
         selectedMembership.value ? selectedMembership.value.id : ""
@@ -735,6 +730,10 @@ export default {
       formData.append(
         "ageGroupID",
         selectedAgeGroup.value ? selectedAgeGroup.value.id : ""
+      );
+      formData.append(
+        "followupPersonID",
+        followupPerson.value.id ? followupPerson.value.id : "00000000-0000-0000-0000-000000000000"
       );
       console.log(formData);
       /*eslint no-undef: "warn"*/
@@ -972,8 +971,7 @@ export default {
       }
     };
 
-    const populatePersonDetails = (data) => {
-      console.log(data, "🛒🛒🛒🛒🛒🛒")
+    const populatePersonDetails = async (data) => {
       person.firstName = data.firstName;
       person.email = data.email;
       person.lastName = data.lastName;
@@ -997,6 +995,11 @@ export default {
           name: i.name
         }
       })
+
+      currentContact.value = {
+          name: `${data.followupPersonName}`,
+          id: data.followupPersonID
+        }
     };
 
     const getMemberToEdit = () => {
@@ -1098,6 +1101,18 @@ export default {
       
     };
 
+    const setContact = (payload) => {
+        if (!payload.email) {
+          toast.add({
+              severity: "warn",
+              summary: "No email associate with the person",
+              detail: "This contact does not have any email, communicate with this person to create him as a user",
+              life: 15000,
+            });
+        }
+        followupPerson.value = payload
+      }
+
     return {
       months,
       numberofYears,
@@ -1149,7 +1164,10 @@ export default {
       addToGroupError,
       dismissAddToGroupModal,
       routeParams,
-      peopleInGroupIDs
+      peopleInGroupIDs,
+      setContact,
+      followupPerson,
+      currentContact
     };
   },
 };
@@ -1183,8 +1201,10 @@ export default {
   /* overflow: hidden; */
 }
 
-.celeb-tab {
-  margin-right: 147px;
+@media (min-width: 769px) {
+  .celeb-tab {
+    margin-right: 147px;
+  }
 }
 
 @media (min-width: 676px) and (max-width: 768px) {
@@ -1192,11 +1212,11 @@ export default {
     height: 113px;
   }
 }
-@media (max-width: 676px) and (max-width: 768px) {
+/* @media (max-width: 676px) and (max-width: 768px) {
   .submit-div {
     float: right;
   }
-}
+} */
 
 @media (min-width: 663px) and (max-width: 667px) {
   /* .bio-info.celeb-info {
@@ -1209,6 +1229,12 @@ export default {
     margin-top: 70px;
   }
 }*/
+
+@media screen and (max-width: 620px) {
+  .input {
+      width: 100%
+    }
+}
 
 @media (max-width: 376px) {
   /* .bio-info.celeb-info {
@@ -1233,6 +1259,7 @@ export default {
     height: 100px;
   }
 }
+
 
 .text-grey {
   color: rgb(90, 90, 90)

@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12 py-4">
-                <h1 class="font-weight-bold main-title">Social and Mobile</h1>
+                <h1 class="font-weight-bold main-title pt-4">Social and Mobile</h1>
             </div>
         </div>
         <div class="row main-con">

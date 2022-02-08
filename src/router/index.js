@@ -6,7 +6,7 @@ import Pagination from '@/components/payment/PaymentSuccessful.vue';
 
 
 
-import TermsOfUse from '../components/temp/PaymentPage';
+// import TermsOfUse from '../components/temp/PaymentPage';
 
 const routes = [
     {
@@ -17,9 +17,10 @@ const routes = [
 
 
     {
-        path: '/terms',
+        path: '/termsofuse',
         name: 'TermsOfUse',
-        component: TermsOfUse,
+        component: () =>
+            import ( /* webpackChunkName: "login" */ '../views/account/TermsOfService.vue'),
         meta: {
             title: 'Churchplus - Terms Of Use',
         }
@@ -210,6 +211,7 @@ const routes = [
                     },
                     {
                         path: 'add/:personId?',
+                        name: 'AddPerson',
                         meta: {
                             title: 'Churchplus - Member Form',
                         },
@@ -226,14 +228,44 @@ const routes = [
                     },
 
                 ]
+                
+            },
+            {
+                path: 'archivedpeople',
+                meta: {
+                    title: 'Churchplus - Archived People',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "importpeople" */ '../views/people/ArchivedPeople.vue'),
+                name: 'ArchivedPeople'
             },
             {
                 path: 'firsttimermanagement/:personId?',
+                name: 'FirsttimerManagement',
                 meta: {
                     title: 'Churchplus - First Timer CRM',
                 },
                 component: () =>
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/firsttimer_crm/Index.vue')
+            },
+
+            // {
+            //     path: 'branch',
+            //     meta: {
+            //         title: 'Churchplus - Branch'
+            //     },
+            //     component: () =>
+            //         import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/FirstTimer'),
+            //      children: [
+
+            //      ]   
+            // },
+            {
+                path: 'followup',
+                name: 'Followup',
+                component: () =>
+                    import ( /* webpackChunkName: "sentemails" */ '@/views/people/followup/Index'),
+        
             },
             {
                 path: 'reports',
@@ -415,6 +447,131 @@ const routes = [
                     },
                 ]
             },
+            {
+            
+                path: 'branch',
+                name: "Branch",
+                meta: {
+                    title: 'Churchplus - Branch',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/Branch'),
+                    children : [
+                        {
+            
+                            path: 'branchsummary',
+                            name: "BranchSummary",
+                            meta: {
+                                title: 'Churchplus - Branch',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/BranchSummary')
+                            
+                        },
+                        {
+
+                            path: 'addbranch',
+                            name: "AddBranch",
+                            meta: {
+                                title: 'Churchplus - Branch',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "addfirsttimer" */ '../views/branch/AddBranch')
+                            
+                        },
+                        {
+                            path: 'branch_members',
+                            name: "BranchMembers",
+                            meta: {
+                                title: 'Church - Branch Members',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/branch/subpages/People.vue')
+
+                        },
+                        {
+                            path: 'branch_transactions',
+                            name: "BranchTransactions",
+                            meta: {
+                                title: 'Church - Branch Transactions',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/branch/subpages/BranchTransactions.vue')
+
+                        },
+                        {
+                            path: 'branch_attendance',
+                            name: "BranchAttendance",
+                            meta: {
+                                title: 'Church - Branch Attendance',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/branch/subpages/BranchAttendance.vue')
+
+                        },
+                        {
+                            path: 'branch_report',
+                            name: "BranchReport",
+                            meta: {
+                                title: 'Church - Members',
+                            },
+                            component: () =>
+                                import ( /* webpackChunkName: "peopleempty" */ '../views/branch/report/BranchReport.vue')
+
+                        },
+                        // {
+
+                        //     path: 'branch_people',
+                        //     name: "BranchPeoples",
+                        //     meta: {
+                        //         title: 'Churchplus - Members',
+                        //     },
+                        //     component: () =>
+                        //         import ( /* webpackChunkName: "people" */ '../views/people/People.vue'),
+                        //         children: [
+                        //             {
+                        //                 path: 'member',
+                        //                 name: "Member",
+                        //                 meta: {
+                        //                     title: 'Church - Members',
+                        //                 },
+                        //                 component: () =>
+                        //                     import ( /* webpackChunkName: "peopleempty" */ '../views/branch/people/People.vue')
+
+                        //             }
+                        //         ]        
+                        // },
+                        // {
+                        //     path: 'firsttimerslist',
+                        //     name: 'FirstTimerList',
+                        //     meta: {
+                        //         title: 'Churchplus - First Timers',
+                        //     },
+                        //     component: () =>
+                        //         import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
+                        // },
+                        // {
+                        //     path: 'reports',
+                        //     name: 'ReportList',
+                        //     meta: {
+                        //         title: 'Churchplus - Reports',
+                        //     },
+                        //     component: () =>
+                        //     import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Index.vue'),
+                        // },
+                        // {
+                        //     path: 'events',
+                        //     name: 'EventsList',
+                        //     meta: {
+                        //         title: 'Churchplus - Event Forms',
+                        //     },
+                        //     component: () =>
+                        //     import ( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
+                        // },
+                    ]
+                
+            },
+           
 
             // {
             //     path: 'attendanceservicereport',
@@ -684,7 +841,7 @@ const routes = [
                             title: 'Churchplus - SMS Communication - Sent Messages',
                         },
                         component: () =>
-                            import ( /* webpackChunkName: "sentmessages" */ '@/views/communication/SentMessages')
+                        import ( /* webpackChunkName: "sentmessages" */ '@/views/communication/SentMessages'),
                     },
                     {
                         path: 'draft',
@@ -823,7 +980,6 @@ const routes = [
                     }
                 ]
             },
-            // whatsapp
             {
                 path: 'whatsapp',
                 name: 'Whatsapp',
@@ -842,7 +998,6 @@ const routes = [
                             import ( /* webpackChunkName: "inbox" */ '@/views/communication/whatsapp/composeWhatsapp')
                     }]
             },
-            // voice
             {
                 path: 'voice',
                 name: 'voice',
@@ -869,6 +1024,15 @@ const routes = [
                 },
                 component: () =>
                     import ( /* webpackChunkName: "groups" */ '@/views/groups/GroupsList')
+            },
+            {
+                path: 'sidemodal',
+                name: 'SideModal',
+                meta: {
+                    title: 'Churchplus - Groups',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "groups" */ '@/views/groups/sidemodal/SideModal.vue')
             },
             {
                 path: 'createpeoplegroup/:groupId?',
@@ -1114,6 +1278,12 @@ const routes = [
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/FirstTimerSettings')
                     },
                     {
+                        path: 'branchlevelsettings',
+                        name: 'BranchLevelSettings',
+                        component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/BranchLevelSettings')
+                    },
+                    {
                         path: 'followupstatus',
                         name: 'FollowUpStatus',
                         component: () =>
@@ -1238,12 +1408,12 @@ const routes = [
             },
             {
                 path: 'onlinedonation',
-                name: 'Index',
+                name: 'DonateOnline',
                 meta: {
                     title: 'Churchplus - Online Donations',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/churchdonation/onlinedonation/Index')
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/churchdonation/onlinedonation/Index.vue')
             },
             {
                 path: 'payments/:editPayment?',
@@ -1457,7 +1627,7 @@ const routes = [
         meta: {
             title: 'Churchplus - ChildSignin',
         },
-        beforeEnter(to, from, next) {
+        beforeEnter() {
             window.location.href = "https://child-checkin-seven.vercel.app/";
         },
     },
@@ -1559,8 +1729,6 @@ const routes = [
             import ( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),
 
     },
-
-
 ]
 
 const router = createRouter({
@@ -1582,6 +1750,7 @@ router.beforeEach((to, from, next) => {
     //   }
 
     const token = localStorage.getItem("token")
+    const role = localStorage.getItem("roles") ? JSON.parse(localStorage.getItem("roles")) : ''
     const tokenIsValid = token && token.length > 30 ? true : false;
     const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
 
@@ -1601,8 +1770,16 @@ router.beforeEach((to, from, next) => {
 
 
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
-    if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
+    if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next") 
 
+    if((role && role.length === 1 && role[0] === "FollowUp" && token) && (to.path !== "/tenant/followup" && to.name !== "FirsttimerManagement")) {
+        localStorage.removeItem('token')
+        next("/")
+        console.log('12323')
+    }   else {
+        next(true)
+        console.e.log('heree')
+    }
     next(true)
 
 

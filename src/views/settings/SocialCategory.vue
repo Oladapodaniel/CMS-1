@@ -57,8 +57,11 @@
           </div>
 
           <div class="row table-header-row py-2 mt-5">
-            <div class="col-md-7">
+            <div class="col-md-4">
               <span class="py-2 font-weight-bold">NAME</span>
+            </div>
+            <div class="col-md-3">
+              <span class="py-2 font-weight-bold">MAKE PUBLIC</span>
             </div>
             <div class="col-md-5 text-center">
               <span class="py-2 font-weight-bold mr-md-5 mr-0">ACTION</span>
@@ -69,10 +72,18 @@
             <div class="col-md-12">
               <div class="row">
                 <div
-                  class="col-md-7 px-md-0 px-5 d-flex justify-content-between align-items-center mb-md-0 mb-5"
+                  class="col-md-4 px-md-0 px-5 d-flex justify-content-between align-items-center mb-md-0 mb-5"
                 >
                   <span class="py-2 hidden-header">NAME</span>
                   <span class="py-2 text-xs-left mr-md-0 ml-md-3 mr-4">{{ type.name }}</span>
+                </div>
+                <div
+                  class="col-md-3 px-md-0 px-5 d-flex justify-content-between align-items-center mb-md-0 mb-5"
+                >
+                  <span class="py-2 hidden-header">MAKE PUBLIC</span>
+                  <span class="py-2 text-xs-left mr-md-0 ml-md-3 mr-4">
+                    <Checkbox id="binary" v-model="type.isPublic" :binary="true" @change="updatePostCategory(index)"/>
+                  </span>
                 </div>
                 <div
                   class="col-md-5 mb-md-0 mb-2 col-12 d-flex justify-md-content-end justify-content-start align-items-end"
@@ -152,9 +163,8 @@ export default {
       tenantId: "",
      currentUser: store.getters.currentUser,
      image: '',
-     url: ''
-
-
+     url: '',
+     makePublic: false
     }
   },
 
@@ -162,7 +172,7 @@ export default {
     async getTypes(id) {
       try {
         this.loading = true
-        const { data } = await axios.get(`/mobile/v1/Feeds/GetPostCategory?TenantId=${id}`);
+        const { data } = await axios.get(`/mobile/v1/Feeds/GetPostCategory?tenantId=${id}&source=web`);
         // email=${this.$route.query.email}
         this.types = data;
         console.log(data);
@@ -213,7 +223,6 @@ export default {
         finish()
         console.log(error)
       }
-
     },
     async savePost(){
       if(this.postName === "" || this.currentUser.tenantId === "" || this.image === ""){
@@ -251,6 +260,22 @@ export default {
       this.image = e.target.files[0];
       this.url = URL.createObjectURL(this.image);
       console.log(this.url);
+    },
+    async updatePostCategory (index) {
+      const updateBody = this.types[index]
+      console.log(updateBody)
+      try {
+        let { data } = await axios.put('/mobile/v1/Feeds/UpdatePostCategory', updateBody)
+        this.$toast.add({
+          severity:'success', 
+          summary: data.response, 
+          detail: this.types[index].isPublic ? 'Post category is now made public for mobile users' : 'Post category is not public anymore', 
+          life: 5000
+        });
+      }
+      catch (err) {
+        console.log(err)
+      }
     }
   },
 
@@ -276,15 +301,6 @@ export default {
           console.log("current user found");
         }
   },
-//   if(data.roles.length > 0){
-//           data.roles.forEach(i => {
-//           if(i.toLowerCase() == "mobileuser" || i.toLowerCase() == "family"){
-//             localStorage.clear()
-//             toast.add({severity:'success', summary: '', detail:'Church User Deleted Successfully', life: 3000}) 
-//             router.push('/')
-//           }
-          
-//         })
  }
 </script>
 

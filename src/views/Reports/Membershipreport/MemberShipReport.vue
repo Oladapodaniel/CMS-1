@@ -169,7 +169,8 @@
                               >
                               <!-- <th scope="col">Church Activity</th> -->
                               <th scope="col">Membership</th>
-                              <th scope="col">Name</th>
+                              <th scope="col">First Name</th>
+                              <th scope="col">Last Name</th>
                               <th scope="col">Phone</th>
                               <th scope="col">Email</th>
                               <th scope="col">Home Address</th>
@@ -183,7 +184,8 @@
                               <tr v-for="(member, index) in membersInChurch" :key="index">
                               <!-- <td>{{member.churchActivity}}</td> -->
                               <td>{{member.membership}}</td>
-                              <td>{{member.name}}</td>
+                              <td>{{member.firstName}}</td>
+                              <td>{{member.lastName}}</td>
                               <td>{{member.mobilePhone}}</td>
                               <td>{{member.email}}</td>
                               <td>{{member.homeAddress}}</td>

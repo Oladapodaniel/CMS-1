@@ -28,10 +28,10 @@
 </template>
 
 <script>
-import { ref, computed, watchEffect } from "vue"
+import { ref, watchEffect } from "vue"
 import PaginationButtons from "../../../components/pagination/PaginationButtons.vue";
 import dateFormatter from '../../../services/dates/dateformatter';
-import { find } from 'highcharts';
+// import { find } from 'highcharts';
 export default {
     props: ['groupedReport', 'groupedReportByDate'],
     emits: ['data-to-export', 'data-header-to-export'],
@@ -80,7 +80,7 @@ export default {
         }
 
         const formatDate = (date) => {
-            return dateFormatter.normalDate(date)
+            return dateFormatter.monthDayYear(date)
         }
 
         const attendanceGrouped = (array, key) => {
@@ -109,8 +109,8 @@ export default {
                 let _th = document.getElementsByTagName("th");
                 let _arr = [].map.call( _th, function( th ) {
                     return th.innerHTML;
-                }).join( ',' );
-                let _data = _arr.split(",");
+                }).join( '|' );
+                let _data = _arr.split("|");
                 console.log(_data)
                 console.log("html to JSON", _data);
                 emit('data-header-to-export', _data)          
@@ -130,8 +130,8 @@ export default {
                 let _td = _tr.getElementsByTagName("td");
                 let _arr = [].map.call( _td, function( td ) {
                     return td.innerHTML;
-                }).join( ',' );
-                let _data = _arr.split(",");
+                }).join( '|' );
+                let _data = _arr.split("|");
                 // console.log(_data)
                 
                 _obj = Object.assign({}, _data)
