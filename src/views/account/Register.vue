@@ -1,10 +1,9 @@
 <template>
-  <div>
+  <div class="d-flex align-items-center adjust-content" style="justify-content: space-evenly; height: 100vh">
     <div class="main-section">
-      <div class="logo-con">
-        <a class="logo-link"
-          ><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"
-        /></a>
+      <div class="logo-con justify-content-center font-weight-700" style="font-size: 1.2em">
+        <!-- Mountain of Fire and Miracle Ministries -->
+        Assemblies of God Church
       </div>
       <div class="header">
         <div class="top-con">
@@ -144,6 +143,14 @@
           ></a>
         </div>
       </div>
+      <div class="logo-con">
+        <a class="logo-link"
+          ><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"
+        /></a>
+      </div>
+    </div>
+    <div class="first-order">
+      <img src="../../assets/assembly-of-god-logo-png-7.png" class="img-logo-pane"/>
     </div>
   </div>
 </template>
@@ -289,8 +296,10 @@ export default {
 }
 
 .main-section {
-  margin: auto;
-  padding: 10px;
+      width: 453px;
+    /* margin: auto; */
+    padding: 20px;
+    background: aliceblue;
 }
 
 .form-container {
@@ -539,5 +548,24 @@ export default {
 .free {
   font-weight: 800;
   color: #10898f;
+}
+
+.img-logo-pane {
+  width: 400px
+}
+
+@media (max-width: 880px) {
+  .first-order {
+    order: -1
+  }
+
+  .adjust-content {
+    flex-direction: column;
+  }
+
+  .img-logo-pane {
+    width: 100px;
+    margin-top: 65px
+  }
 }
 </style>

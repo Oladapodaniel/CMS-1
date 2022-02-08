@@ -2,7 +2,8 @@
   <div class="d-flex align-items-center adjust-content" style="justify-content: space-evenly; height: 100vh">
     <div class="main-section">
       <div class="logo-con justify-content-center font-weight-700" style="font-size: 1.2em">
-        Mountain of Fire and Miracle Ministries
+        <!-- Mountain of Fire and Miracle Ministries -->
+        Assemblies of God Church
       </div>
       <div class="header">
         <h1>Sign in</h1>
@@ -142,7 +143,7 @@
       </div>
     </div>
     <div class="first-order">
-      <img src="../../assets/mfm_logo.jpeg" class="img-logo-pane"/>
+      <img src="../../assets/assembly-of-god-logo-png-7.png" class="img-logo-pane"/>
     </div>
   </div>
 </template>
