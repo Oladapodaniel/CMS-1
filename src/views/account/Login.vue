@@ -136,11 +136,11 @@
           </div>
         </template>
       </Dialog>
-      <div class="logo-con">
+      <!-- <div class="logo-con">
         <a class="logo-link"
           ><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"
         /></a>
-      </div>
+      </div> -->
     </div>
     <div class="first-order">
       <img src="../../assets/assembly-of-god-logo-png-7.png" class="img-logo-pane"/>
