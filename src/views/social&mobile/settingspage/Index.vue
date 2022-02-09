@@ -272,7 +272,7 @@
       </div> -->
 
       <!--  End Modal -->
-      <!-- <div class="row mx-2 mx-md-0 my-4">
+      <div class="row mx-2 mx-md-0 my-4">
         <div class="col-md-9 bordersocials py-3 box box-shadow">
           <div class="row">
             <div class="col-md-8">
@@ -301,13 +301,14 @@
                 class="btn default-btn btntwi"
                 data-target="#exampleModal1"
                 data-toggle="modal"
+                @click="twitterLogin"
               >
                 Connect
               </button>
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
       <!--twitter area ended  -->
 
       <!--facebook-->
@@ -544,6 +545,7 @@ import axios from "@/gateway/backendapi";
 import {useToast} from 'primevue/usetoast';
 import { useRouter } from "vue-router";
 import Dropdown from "primevue/dropdown";
+import TwitterApi from 'twitter-api-v2';
 
 export default { 
   components: { Dropdown},
@@ -565,6 +567,13 @@ export default {
       router.push('/tenant/social/post')
     }
     const pagesBtn = ref()
+
+    const twitterLogin = async () =>{
+      const client = new TwitterApi({ appKey: 'vUtt1RW0dlLSgsSWyS8YN5MkP', appSecret: '8A3Ok8OYPUijQ3WlNNlAeklFStUVLln0ZbydGTTuxvQmgfqS4U' });
+      // const client = new TwitterApi({ appKey: CONSUMER_KEY, appSecret: CONSUMER_SECRET });
+      const authLink = await client.generateAuthLink('https://my.churchplus.co', { linkMode: 'authorize' });
+      console.log(authLink, 'many are call')
+    }
     //Local storage
     
   //   //Login facebook New
@@ -853,6 +862,7 @@ const saveFacbookDetail = async()=>{
       showDisplay,
       showDisplay1,
       facebookLogin,
+      twitterLogin,
       // pageAccessToken,
       getPageAccessToken,
       getSocialMediaContact,
