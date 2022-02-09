@@ -820,7 +820,7 @@
                             cursor-pointer
                           "
                           href="#"
-                          @click.prevent="showConfirmModal(person.id)"
+                          @click.prevent="showConfirmModal(person.id, index)"
                           >Delete</a
                         >
                       </div>
@@ -886,6 +886,8 @@
         </div>
       </div>
     </OverlayPanel>
+    <ConfirmDialog />
+        <Toast />
   </div>
 </template>
 
@@ -1001,8 +1003,8 @@ export default {
     };
 
     const confirm = useConfirm();
-    let toast = useToast();
-    const showConfirmModal = (id) => {
+    const toast = useToast();
+    const showConfirmModal = (id, index) => {
       confirm.require({
         message: "Are you sure you want to proceed?",
         header: "Confirmation",
@@ -1010,7 +1012,7 @@ export default {
         acceptClass: "confirm-delete",
         rejectClass: "cancel-delete",
         accept: () => {
-          deleteMember(id);
+          deleteMember(id, index);
           // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
         },
         reject: () => {
