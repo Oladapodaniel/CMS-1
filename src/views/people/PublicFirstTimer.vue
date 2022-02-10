@@ -5,9 +5,9 @@
             <div class="mt-3 col-12">Bio:</div>
         </div>
         <div class="row">
-            <div class="col-8 mt-3">
+            <div class="col-md-8 mt-3">
                 <div>
-                    <div class="d-flex justify-content-end">
+                    <div class="d-md-flex justify-content-md-end">
                    <label for="" class="label">Event or Service Attended</label>
                    <i class="pi pi-chevron-down dd manual-dd-icon" @click="selectEventAttended"></i>
                     <button
@@ -80,25 +80,25 @@
                 </div>
                 </div>
                 <div>
-                    <div class="d-flex justify-content-end mt-3">
+                    <div class="d-md-flex justify-content-md-end mt-3">
                         <label for="" class="label" >Firstname<span style="color: red"> *</span></label > 
                         <input type="text" class="input form-control" v-model="firstTimersObj.firstName" name="" id="firstname" required />
                     </div>
                 </div>
                 <div>
-                    <div class="d-flex justify-content-end mt-3">
+                    <div class="d-md-flex justify-content-md-end mt-3">
                     <label for="" class="label">Surname</label>
                         <input type="text" class="input form-control" placeholder="" v-model="firstTimersObj.lastName" name="" /> 
                     </div>
                 </div>
                 <div>
-                    <div class="d-flex justify-content-end mt-3">
+                    <div class="d-md-flex justify-content-md-end mt-3">
                     <label for="" class="label">Phone number</label>
                         <input class="input form-control" placeholder="" v-model="firstTimersObj.phoneNumber" type="text" :class="{ 'is-invalid' : !isPhoneValid }" id="phone number" ref="validatePhone" @blur="checkForDuplicatePhone" />
                     </div>
                 </div>
                 <div>
-                    <div class="d-flex justify-content-end mt-3">
+                    <div class="d-md-flex justify-content-md-end mt-3">
                     <div class="status-n-gender">
                         <div class="status cstm-select">
                             <div class="cs-select">
@@ -111,7 +111,7 @@
                             />
                             </div>
                         </div>
-                        <div class="gender cstm-select">
+                        <div class="gender cstm-select ">
                             <div class="cs-select">
                             <Dropdown
                                 v-model="selectedGender"
@@ -126,19 +126,19 @@
                     </div>
                 </div>
                 <div>
-                    <div class="d-flex justify-content-end mt-3">
+                    <div class="d-md-flex justify-content-md-end mt-3">
                     <label for="" class="label">Email</label>
                         <input class="input form-control" placeholder="" v-model="firstTimersObj.email" type="email" :class="{ 'is-invalid' : !isEmailValid}" id="email" ref="validateEmail" @blur="checkForDuplicateEmail" />
                     </div>
                 </div>
                 <div>
-                    <div class="d-flex justify-content-end mt-3">
+                    <div class="d-md-flex justify-content-md-end mt-3">
                         <label for="" class="label">Address</label>
                         <input type="text" class="input form-control" placeholder="" v-model="firstTimersObj.address" />
                     </div>
                 </div>
                 <div>
-                    <div class="d-flex justify-content-end mt-3">
+                    <div class="d-md-flex justify-content-md-end mt-3">
                         <label for="" class="label">Birthday</label>
                         <div class="status-n-gender">
                             <div class="cstm-select">
@@ -177,7 +177,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-md-4 img-parent">
                 <div style="width: 225px; margin: 0 auto">
                 <ImageForm @pictureurl="setImageToUrl" />
                 </div>
@@ -203,7 +203,7 @@
           >
               <div class="col-8 mt-3">
                   <div>
-                    <div class="d-flex justify-content-end">
+                    <div class="d-md-flex justify-content-md-end">
                             <Dropdown
                             v-model="selectedAboutUsSource"
                             :options="howDidYouAboutUs"
@@ -214,7 +214,7 @@
                     </div>
                   </div>
                   <div>
-                    <div class="d-flex justify-content-end mt-3">
+                    <div class="d-md-flex justify-content-md-end mt-3">
                         <Dropdown
                             v-model="selectedCommunicationMeans"
                             :options="comMeansArr"
@@ -224,7 +224,7 @@
                     </div>
                   </div>
                   <div>
-                    <div class="d-flex justify-content-end mt-3">
+                    <div class="d-md-flex justify-content-md-end mt-3">
                         <Dropdown
                             v-model="selectedJoinInterest"
                             :options="joinInterestArr"
@@ -234,7 +234,7 @@
                     </div>
                   </div>
                   <div>
-                    <div class="d-flex justify-content-end mt-3">
+                    <div class="d-md-flex justify-content-md-end mt-3">
                         <Dropdown
                             v-model="selectedVisitOption"
                             :options="wantVisitArr"
@@ -255,7 +255,7 @@
                     <button class="default-btn cancel-btn btn ml-sm-3 mt-3" @click.prevent="onCancel">
                     Cancel
                     </button>
-                    <button
+                    <!-- <button
                         class="default-btn outline-none ml-sm-3 mt-3"
                         :class="{ 'btn-loading': loading }"
                         :disabled="loading"     
@@ -266,7 +266,7 @@
                         ></i>
                         <span>Save and add another</span>
                         <span></span>
-                    </button>
+                    </button> -->
                     <button class="ml-sm-3 mt-3  submit-btn text-white btn" @click.prevent="saveAndRoute">
                     Save
                     </button>
@@ -725,7 +725,7 @@
                             <template #footer>
                             
                               <div
-                                class="col-md-12 d-md-flex justify-content-end p-0"
+                                class="col-md-12 d-md-md-flex justify-content-md-end p-0"
                               >
                                 <button
                                   type="button"
@@ -776,7 +776,7 @@
                                 </p>
                               </div>
                               <div
-                                class="col-md-12 d-md-flex justify-content-end"
+                                class="col-md-12 d-md-md-flex justify-content-md-end"
                               >
                                 <button
                                   type="button"
@@ -873,7 +873,7 @@
                       </p>
                     </div>
                     <div class="row mt-2">
-                      <div class="col-md-6 d-md-flex justify-content-end">
+                      <div class="col-md-6 d-md-md-flex justify-content-md-end">
                         <button class="default-btn" data-dismiss="modal">Cancel</button>
                       </div>
                       <div class="col-md-6">
@@ -1732,6 +1732,14 @@ export default {
     }   
   }
 
+  @media (min-width: 621px) and (max-width: 767px) {
+    .manual-dd-icon[data-v-24c46d98] {
+        position: absolute;
+        right: 12px;
+        margin-top: 3rem;
+    }   
+  }
+
 .submit-div {
   /* margin-left: 14em; */
   display: flex;
@@ -1881,6 +1889,10 @@ export default {
   width: 330px
 }
 
+.status-n-gender {
+    justify-content: space-between;
+}
+
 @media (max-width: 620px) {
   .submit-div {
     /* margin-left: 1em; */
@@ -1935,6 +1947,7 @@ export default {
 .input {
   height: 40px;
   border: 1px solid #b9c5cf;
+  margin: 0
 }
 
 .first-row {
@@ -2030,6 +2043,10 @@ template.p-dropdown-parent {
   padding: 0;
 }
 
+.gender.cstm-select {
+    margin: 0
+}
+
 @media screen and (max-width: 767px) {
   .select-elem {
     height: auto !important;
@@ -2037,6 +2054,14 @@ template.p-dropdown-parent {
 
   .select-div {
     padding: 0.8rem !important;
+  }
+
+  .img-parent {
+      order: -1
+  }
+
+  .input {
+      width: 100%
   }
 }
 

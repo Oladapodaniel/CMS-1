@@ -228,7 +228,10 @@ export default {
           return false;
         }
 
-        // i.toLowerCase() == "admin" || i.toLowerCase() == "basicuser" || i.toLowerCase() == "canaccessfirsttimers" || i.toLowerCase() == "canaccessfollowups" || i.toLowerCase() == "centerleader" || i.toLowerCase() == "financialaccount" || i.toLowerCase() == "mobileadmin" || i.toLowerCase() == "reports"
+        if (data.churchSize >= data.subscribedChurchSize) {
+            router.push("/errorpage/member-capacity-reached")
+          }
+
         if(data.roles.length > 0){
         let roleIndex = data.roles.findIndex(i => {
           return i.toLowerCase() == "family" || i.toLowerCase() == "mobileuser"
