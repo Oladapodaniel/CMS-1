@@ -42,13 +42,13 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                          <router-link
+                          <!-- <router-link
                             class="r-link text-decoration-none"
                             to="/tenant/sms/sent"
                           >
                             <i class="pi pi-arrow-circle-up mr-3 menu-icon"></i>
                             <span class="active">Sent</span>
-                          </router-link>
+                          </router-link> -->
                         </span>
                       </a>
                     </div>

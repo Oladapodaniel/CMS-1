@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="logo-con">
-      <a class="logo-link"
-        ><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"
-      /></a>
+      <div class="m-auto">
+        <img src="../../assets/assembly-of-god-logo-png-7.png" class="img-logo-pane"/>
+      </div>
     </div>
     <div class="main-con">
       <div class="main-section">
@@ -223,6 +223,10 @@ export default {
 
 .box-header-text {
   color: #0f0220;
+}
+
+.img-logo-pane {
+  width: 100px
 }
 
 @media screen and (max-width: 500px) {
