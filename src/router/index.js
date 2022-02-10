@@ -1781,6 +1781,7 @@ router.beforeEach((to, from, next) => {
             to.name === "TransactionPage" ||
             to.name === "PublicResetPassword" ||
             to.name === "PublicPerson" ||
+            to.name === "PublicFirstTimer" ||
             to.name === "EventRegistration") && !tokenIsValid) return next(true)
 
 

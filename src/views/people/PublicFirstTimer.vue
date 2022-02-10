@@ -1889,6 +1889,10 @@ export default {
   width: 330px
 }
 
+.status-n-gender {
+    justify-content: space-between;
+}
+
 @media (max-width: 620px) {
   .submit-div {
     /* margin-left: 1em; */
