@@ -7,7 +7,7 @@
                     <div class="" :class="{ 'baseline' : showDashboard, 'hide-base' : !showDashboard }"></div>
                 </div>
                 <div class="col-12 col-sm-6  c-pointer" @click="firstTimerTable">
-                    <div class="font-weight-bold h5 col-12  ">FirstTimer</div>
+                    <div class="font-weight-bold h5 col-12  ">First Timers</div>
                     <div class="" :class="{ 'baselinetwo' : showFirstTimer, 'hide-basetwo' : !showFirstTimer }"></div>
                 </div>
                 <!-- <div class="hr"><hr /></div> -->
@@ -789,14 +789,6 @@
                       >
                         <a
                           class="dropdown-item elipsis-items"
-                          @mouseover="toggle($event, person.id)"
-                          href="#"
-                        >
-                          Convert to member
-                        </a>
-
-                        <a
-                          class="dropdown-item elipsis-items"
                           v-if="person.phoneNumber"
                         >
                           <router-link
@@ -820,9 +812,16 @@
                             cursor-pointer
                           "
                           href="#"
-                          @click.prevent="showConfirmModal(person.id)"
+                          @click.prevent="showConfirmModal(person.id, index)"
                           >Delete</a
                         >
+                        <a
+                          class="dropdown-item elipsis-items"
+                          @mouseover="toggle($event, person.id)"
+                          href="#"
+                        >
+                          Convert to member
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -886,6 +885,8 @@
         </div>
       </div>
     </OverlayPanel>
+    <ConfirmDialog />
+        <Toast />
   </div>
 </template>
 
@@ -1001,8 +1002,8 @@ export default {
     };
 
     const confirm = useConfirm();
-    let toast = useToast();
-    const showConfirmModal = (id) => {
+    const toast = useToast();
+    const showConfirmModal = (id, index) => {
       confirm.require({
         message: "Are you sure you want to proceed?",
         header: "Confirmation",
@@ -1010,7 +1011,7 @@ export default {
         acceptClass: "confirm-delete",
         rejectClass: "cancel-delete",
         accept: () => {
-          deleteMember(id);
+          deleteMember(id, index);
           // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
         },
         reject: () => {
